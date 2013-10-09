@@ -1,28 +1,23 @@
--- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Oct 08, 2013 at 08:02 PM
--- Server version: 5.6.11
--- PHP Version: 5.5.3
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+CREATE TABLE shop_info (
+	shop_id int NOT NULL auto_increment,
+	shop_no varchar(200) NOT NULL default '',	
+	name varchar(200) NOT NULL default '',
+	address varchar(500) NOT NULL default '',
+    picture varchar(500) default '',
+	created_date timestamp,
+    created_by int default 0,
+    modified_date timestamp,
+    modified_by int default 0, 
+	PRIMARY KEY  (shop_id),
+	KEY `fk_shop_info_users1_idx` (`created_by`),
+	KEY `fk_shop_info_users2_idx` (`modified_by`)
+)ENGINE=MyISAM DEFAULT CHARSET=latin1;
+ALTER TABLE `shop_info`
+  ADD CONSTRAINT `fk_shop_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_shop_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `web_inventory`
---
-CREATE DATABASE IF NOT EXISTS `web_inventory` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `web_inventory`;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `groups`
@@ -33,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(20) NOT NULL,
   `description` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `groups`
@@ -41,9 +36,10 @@ CREATE TABLE IF NOT EXISTS `groups` (
 
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (1, 'admin', 'Administrator'),
-(2, 'members', 'General User'),
-(4, 'customer', 'Customer'),
-(5, 'salesman', 'salesman');
+(2, 'manager', 'Manager'),
+(3, 'salesman', 'Salesman'),
+(4, 'supplier', 'Supplier'),
+(5, 'customer', 'Customer');
 
 -- --------------------------------------------------------
 
@@ -59,7 +55,17 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `account_status` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;   
+INSERT INTO `account_status` (`id`, `description`) VALUES
+(1, 'Active'),
+(2, 'Inactive'),
+(3, 'Suspended'),
+(4, 'Deactivated'),
+(5, 'Blocked');
 
 --
 -- Table structure for table `users`
@@ -78,22 +84,29 @@ CREATE TABLE IF NOT EXISTS `users` (
   `remember_code` varchar(40) DEFAULT NULL,
   `created_on` int(11) unsigned NOT NULL,
   `last_login` int(11) unsigned DEFAULT NULL,
-  `active` tinyint(1) unsigned DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `account_status_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_users_laccount_status1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1268889823, 1, 'Admin', 'istrator', 'ADMIN', '0'),
-(2, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', 'alamgir kabir', '83277bd8892634f6955c69af883aa9ff07a0e12a', NULL, 'salesman@salesman.com', NULL, 'a5894c2c0d653aa837b5321e4b5e65a318b18c6f', 1381250365, NULL, 1381245791, 1381254929, 1, 'alamgir', 'kabir', 'com', '012222'),
-(3, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', 'alamgir kabir1', '74003ca9f1919ec477891fe272603f3ad097dc10', NULL, 'customer@customer.com', NULL, NULL, NULL, NULL, 1381246104, 1381252781, 1, 'alamgir1', 'kabir', 'com', '012222');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
+(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', 'ADMIN', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
+(2, '\0\0', 'manager', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'manager@manager.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Manager', 'Manager', 'Manager', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
+(3, '\0\0', 'salesman', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'salesman@salesman.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Salesman', 'Salesman', 'Salesman', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
+(4, '\0\0', 'supplier', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'supplier@supplier.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Supplier', 'Supplier', 'Supplier', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
+(5, '\0\0', 'customer', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'customer@customer.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Customer', 'Customer', 'Customer', '0');
 
 -- --------------------------------------------------------
 
@@ -109,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
   UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
   KEY `fk_users_groups_users1_idx` (`user_id`),
   KEY `fk_users_groups_groups1_idx` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `users_groups`
@@ -118,8 +131,10 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
 (2, 1, 2),
-(3, 2, 5),
-(5, 3, 4);
+(3, 2, 2),
+(4, 3, 3),
+(5, 4, 4),
+(6, 5, 5);
 
 --
 -- Constraints for dumped tables
@@ -131,7 +146,3 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -29,6 +29,7 @@ if (!defined('BASEPATH'))
  */
 class Ion_auth_model extends CI_Model {
 
+    public $account_status_list = array();
     /**
      * Holds an array of tables used
      *
@@ -171,6 +172,7 @@ class Ion_auth_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->account_status_list = $this->config->item('account_status', 'ion_auth');
         $this->load->database();
         $this->load->config('ion_auth', TRUE);
         $this->load->helper('cookie');
@@ -798,7 +800,7 @@ class Ion_auth_model extends CI_Model {
 
         $this->trigger_events('extra_where');
 
-        $query = $this->db->select($this->identity_column . ', username, email, id, password, active, last_login')
+        $query = $this->db->select($this->identity_column . ', username, email, id, password, account_status_id, last_login')
                 ->where($this->identity_column, $this->db->escape_str($identity))
                 ->limit(1)
                 ->get($this->tables['users']);
@@ -819,11 +821,12 @@ class Ion_auth_model extends CI_Model {
             $password = $this->hash_password_db($user->id, $password);
 
             if ($password === TRUE) {
-                if ($user->active == 0) {
-                    $this->trigger_events('post_login_unsuccessful');
-                    $this->set_error('login_unsuccessful_not_active');
+                if ($user->account_status_id !== $this->account_status_list['active_id'])
+                {
+                        $this->trigger_events('post_login_unsuccessful');
+                        $this->set_error('login_unsuccessful_not_active');
 
-                    return FALSE;
+                        return FALSE;
                 }
                 return $user;
             }

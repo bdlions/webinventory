@@ -9,7 +9,7 @@ class NonMember extends CI_Controller {
     }
     
     public function index(){
-        $this->template->load('nonmember/templates/main', 'nonmember/home');
+        $this->template->load(NON_MEMBER_TEMPLATE, 'nonmember/home');
     }
 }
 ?>
