@@ -22,7 +22,7 @@ if (!defined('BASEPATH'))
  * Requirements: PHP5 or above
  *
  */
-class Product_library {
+class Sale_library {
 
     /**
      * account status ('not_activated', etc ...)
@@ -56,7 +56,7 @@ class Product_library {
         $this->load->library('email');
         $this->lang->load('ion_auth');
         $this->load->helper('cookie');
-        $this->load->model('org/product/product_model');
+        $this->load->model('org/sale/sale_model');
 
         // Load the session, CI2 as a library, CI3 uses it as a driver
         if (substr(CI_VERSION, 0, 1) == '2') {
@@ -77,7 +77,7 @@ class Product_library {
             $this->email->initialize($email_config);
         }
 
-        $this->product_model->trigger_events('library_constructor');
+        $this->sale_model->trigger_events('library_constructor');
     }
 
     /**
@@ -87,11 +87,11 @@ class Product_library {
      *
      * */
     public function __call($method, $arguments) {
-        if (!method_exists($this->product_model, $method)) {
-            throw new Exception('Undefined method Product_library::' . $method . '() called');
+        if (!method_exists($this->sale_model, $method)) {
+            throw new Exception('Undefined method Sale_library::' . $method . '() called');
         }
 
-        return call_user_func_array(array($this->product_model, $method), $arguments);
+        return call_user_func_array(array($this->sale_model, $method), $arguments);
     }
 
     /**

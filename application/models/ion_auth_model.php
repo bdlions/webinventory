@@ -1869,5 +1869,68 @@ class Ion_auth_model extends CI_Model {
             return inet_pton($ip_address);
         }
     }
-
+    
+    //--------------------------------------------Customer related queries-----------------------------------------
+    public function add_customer()
+    {
+        
+    }
+    public function update_customer()
+    {
+        
+    }
+    public function get_customer()
+    {
+        
+    }
+    public function get_all_customers()
+    {
+        
+    }
+    public function search_customer()
+    {
+        
+    }
+    //--------------------------------------------Supplier related queries-----------------------------------------
+    public function add_supplier()
+    {
+        
+    }
+    public function update_supplier()
+    {
+        
+    }
+    public function get_supplier()
+    {
+        
+    }
+    public function get_all_suppliers()
+    {
+        
+    }
+    public function search_supplier()
+    {
+        
+    }
+    //--------------------------------------------salesman related queries-----------------------------------------
+    public function add_salesman()
+    {
+        
+    }
+    public function update_salesman()
+    {
+        
+    }
+    public function get_salesman()
+    {
+        
+    }
+    public function get_all_salesmen()
+    {
+        
+    }
+    public function search_salesman()
+    {
+        
+    }
 }
