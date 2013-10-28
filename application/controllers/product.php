@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Shop extends CI_Controller {
+class Product extends CI_Controller {
     /*
      * Holds account status list
      * 
@@ -12,7 +12,7 @@ class Shop extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
-        $this->load->library('org/shop/shop_library');
+        $this->load->library('org/product/product_library');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -31,32 +31,32 @@ class Shop extends CI_Controller {
         
     }
     
-    public function create_shop()
+    public function create_product()
     {
         
     }
     
-    public function update_shop()
+    public function update_product()
     {
         
     }
     
-    public function delete_shop()
+    public function delete_product()
     {
         
     }
     
-    public function get_shop()
+    public function get_product()
     {
         
     }
     
-    public function get_all_shops()
+    public function get_all_products()
     {
         
     }
     
-    public function search_shop()
+    public function search_product()
     {
         
     }

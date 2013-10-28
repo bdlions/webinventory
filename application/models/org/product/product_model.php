@@ -27,7 +27,7 @@ if (!defined('BASEPATH'))
  * Requirements: PHP5 or above
  *
  */
-class Shop_model extends CI_Model {
+class Product_model extends CI_Model {
 
     public $account_status_list = array();
     /**
@@ -579,33 +579,33 @@ class Shop_model extends CI_Model {
         }
     }
     
-    //---------------------------------------------- Shop related queries -------------------------------------------
-    public function create_shop()
+    //---------------------------------------------- Product related queries -------------------------------------------
+    public function create_product()
     {
         
     }
     
-    public function update_shop()
+    public function update_product()
     {
         
     }
     
-    public function delete_shop()
+    public function delete_product()
     {
         
     }
     
-    public function get_shop()
+    public function get_product()
     {
         
     }
     
-    public function get_all_shops()
+    public function get_all_products()
     {
         
     }
     
-    public function search_shop()
+    public function search_product()
     {
         
     }
