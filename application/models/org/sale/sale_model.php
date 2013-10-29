@@ -580,8 +580,30 @@ class Sale_model extends CI_Model {
     }
     
     //---------------------------------------------- Sale related queries -------------------------------------------
-    public function add_sale()
+    public function add_sale_order()
+    {
+        print_r(' add_sale_order is called');
+    }
+    public function update_sale_order()
     {
         
     }
+    public function get_all_sale_orders()
+    {
+        
+    }
+    
+    public function add_product_sale_order()
+    {
+        print_r(' add_product_sale_order is called');
+    }
+    public function update_product_sale_order()
+    {
+        
+    }
+    public function get_all_products_sale_order()
+    {
+        
+    }
+    
 }

@@ -1879,39 +1879,23 @@ class Ion_auth_model extends CI_Model {
     {
         
     }
-    public function get_customer()
+    public function get_customers()
+    {
+        print_r(' get_customers called');
+    }
+    //--------------------------------------------Vendor related queries-----------------------------------------
+    public function add_vendor()
     {
         
     }
-    public function get_all_customers()
+    public function update_vendor()
     {
         
     }
-    public function search_customer()
+    public function get_vendors()
     {
-        
-    }
-    //--------------------------------------------Supplier related queries-----------------------------------------
-    public function add_supplier()
-    {
-        
-    }
-    public function update_supplier()
-    {
-        
-    }
-    public function get_supplier()
-    {
-        
-    }
-    public function get_all_suppliers()
-    {
-        
-    }
-    public function search_supplier()
-    {
-        
-    }
+        print_r(' get_vendors called');
+    }    
     //--------------------------------------------salesman related queries-----------------------------------------
     public function add_salesman()
     {
@@ -1921,16 +1905,8 @@ class Ion_auth_model extends CI_Model {
     {
         
     }
-    public function get_salesman()
+    public function get_salesmen()
     {
         
-    }
-    public function get_all_salesmen()
-    {
-        
-    }
-    public function search_salesman()
-    {
-        
-    }
+    }    
 }

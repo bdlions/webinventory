@@ -27,7 +27,7 @@ if (!defined('BASEPATH'))
  * Requirements: PHP5 or above
  *
  */
-class Product_model extends CI_Model {
+class Purchase_model extends CI_Model {
 
     public $account_status_list = array();
     /**
@@ -579,19 +579,43 @@ class Product_model extends CI_Model {
         }
     }
     
-    //---------------------------------------------- Product related queries -------------------------------------------
-    public function create_product()
+    //---------------------------------------------- Purchase related queries -------------------------------------------
+    public function add_purchase_order_status()
+    {
+        
+    }
+    public function update_purchase_order_status()
+    {
+        
+    }
+    public function get_purchase_order_status()
+    {
+        print_r(' get_purchase_order_status is called');
+    }
+    
+    public function add_purchase_order()
+    {
+        print_r(' add_purchase_order is called');
+    }
+    public function update_purchase_order()
+    {
+        
+    }
+    public function get_all_purchase_orders()
     {
         
     }
     
-    public function update_product()
+    public function add_product_purchase_order()
+    {
+        print_r(' add_product_purchase_order is called');
+    }
+    public function update_product_purchase_order()
     {
         
     }
-    
-    public function get_products()
+    public function get_all_products_purchase_order()
     {
-        print_r(' get_products is called');
+        
     }
 }

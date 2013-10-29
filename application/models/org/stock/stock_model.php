@@ -27,7 +27,7 @@ if (!defined('BASEPATH'))
  * Requirements: PHP5 or above
  *
  */
-class Product_model extends CI_Model {
+class Stock_model extends CI_Model {
 
     public $account_status_list = array();
     /**
@@ -579,19 +579,17 @@ class Product_model extends CI_Model {
         }
     }
     
-    //---------------------------------------------- Product related queries -------------------------------------------
-    public function create_product()
+    //---------------------------------------------- Stock related queries -------------------------------------------
+    public function add_stock()
     {
-        
+        print_r(' add_stock is called');
     }
-    
-    public function update_product()
+    public function update_stock()
     {
-        
+        print_r(' update_stock is called');
     }
-    
-    public function get_products()
+    public function get_all_stocks()
     {
-        print_r(' get_products is called');
+        print_r(' get_all_stocks is called');
     }
 }
