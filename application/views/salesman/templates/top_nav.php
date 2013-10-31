@@ -21,16 +21,16 @@
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Sales <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a href="#">New Sales Quote</a></li>
-                    <li><a href="./sales_order.php">New Sales Order</a></li>
+                    <li><a href="<?php echo base_url("./Sales/newSalesOrder");?>">New Sales Order</a></li>
                     <li><a href="#">Sales Order List</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Recent Orders</a></li>
                     <li><a href="#">Open Orders</a></li>
                     <li><a href="#">Invoiced Orders</a></li>
-                    <li><a href="#">Paid Orders</a></li>
+                    <li><a href="<?php echo base_url("./Sales/paidOrders");?>">Paid Orders</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">New Customer</a></li>
-                    <li><a href="#">Customer List</a></li>
+                    <li><a href="<?php echo base_url("./Sales/newCustomer");?>">New Customer</a></li>
+                    <li><a href="<?php echo base_url("./Sales/customerList");?>">Customer List</a></li>
                 </ul>
             </div> <!-- .btn-group -->
             <div class="btn-group purchasing">
@@ -44,48 +44,48 @@
                     <li><a href="#">Received Orders</a></li>
                     <li><a href="#">Paid Orders</a></li>
                     <li class="divider"></li>
-                    <li><a href="./new_vendor.php">New Vendor</a></li>
+                    <li><a href="<?php echo base_url("./Purchasing/newVendor");?>">New Vendor</a></li>
                     <li><a href="#">Vendor List</a></li>
                 </ul>
             </div> <!-- .btn-group -->
             <div class="btn-group inventory">
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Inventory <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="./create_product.php">New Product</a></li>
-                    <li><a href="./product_list.php">Product List</a></li>
-                    <li><a href="#">Product Categories</a></li>
-                    <li><a href="./product_pricing.php">Product Pricing</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/newProduct");?>">New Product</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/productList");?>">Product List</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/productCategories");?>">Product Categories</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/productPricing");?>">Product Pricing</a></li>
                     <li class="divider"></li>
-                    <li><a href="./current_stock.php">Current Stock</a></li>
-                    <li><a href="./movement_history.php">Movement History</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/currentStock");?>">Current Stock</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/movementHistory");?>">Movement History</a></li>
                     <li class="divider"></li>
-                    <li><a href="./adjust_stock.php">Adjust Stock</a></li>
-                    <li><a href="#">Count Sheet</a></li>
-                    <li><a href="#">Transfer Stock</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/adjustStock");?>">Adjust Stock</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/countSheet");?>">Count Sheet</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/transferStock");?>">Transfer Stock</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Reorder Stock</a></li>
-                    <li><a href="#">Work Order</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/reorderStock");?>">Reorder Stock</a></li>
+                    <li><a href="<?php echo base_url("./Inventory/workOrder");?>">Work Order</a></li>
                 </ul>
             </div> <!-- .btn-group -->
             <div class="btn-group">
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Invoice <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="./new_invoice.php">New Invoice..</a></li>
-                    <li><a href="./apply_payment.php">Apply Payment..</a></li>
-                    <li><a href="#">Open Invoices List</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/newInvoice");?>">New Invoice..</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/applyPayment");?>">Apply Payment..</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/openInvoiceList");?>">Open Invoices List</a></li>
                     <li class="divider"></li>
-                    <li><a href="./new_quote.php">New Quote..</a></li>
-                    <li><a href="./open_quote_list.php">Open Quotes List</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/newQuote");?>">New Quote..</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/openQuotesList");?>">Open Quotes List</a></li>
                     <li><a href="#">New Order..</a></li>
                     <li><a href="#">Open Orders List</a></li>
                     <li><a href="#">New Credit Note..</a></li>
                     <li><a href="#">Open Credit Notes List</a></li>
                     <li class="divider"></li>
-                    <li><a href="./new_customer.php">Add New Customer..</a></li>
-                    <li><a href="./open_customers_list.php">Open Customers List</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/addNewCustomer");?>">Add New Customer..</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/openCustomersList");?>">Open Customers List</a></li>
                     <li><a href="#">Add New Item..</a></li>
                     <li><a href="#">Open Items List</a></li>
-                    <li><a href="./new_cash_transaction.php">New Cash Transaction</a></li>
+                    <li><a href="<?php echo base_url("./Invoice/newCashTransaction");?>">New Cash Transaction</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Close</a></li>
                 </ul>
@@ -94,17 +94,17 @@
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Reports <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a href="#">unpaid Accounts</a></li>
-                    <li><a href="./reports-invoice.php">Invoices</a></li>
-                    <li><a href="./reports-quote.php">Quotes</a></li>
-                    <li><a href="./reports-orders.php">Orders</a></li>
-                    <li><a href="./reports-payment.php">payments</a></li>
-                    <li><a href="./reports-salesperson.php">Salesperson</a></li>
-                    <li><a href="./reports-item-sales.php">Item Sales</a></li>
-                    <li><a href="./reports-item-per-customer-report.php">Items Per Customer</a></li>
-                    <li><a href="./reports-inventory.php">Inventory</a></li>
-                    <li><a href="./reports-customer.php">Customers</a></li>
-                    <li><a href="./reports-customer-sales-report.php">Customer Sales</a></li>
-                    <li><a href="./reports-aging.php">Aging Report</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportInvoice");?>">Invoices</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportQuotes");?>">Quotes</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportOrders");?>">Orders</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportPayments");?>">payments</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportSalesperson");?>">Salesperson</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportItemSales");?>">Item Sales</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportItemsPerCustomer");?>">Items Per Customer</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportInventory");?>">Inventory</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportCustomers");?>">Customers</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportCustomerSales");?>">Customer Sales</a></li>
+                    <li><a href="<?php echo base_url("./Reports/reportAging");?>">Aging Report</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Financial Reports
                             <ul class="sub-menu center">
@@ -217,11 +217,13 @@
             <div class="btn-group">
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Tools <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="./supplier.php">Supplier</a></li>
-                    <li><a href="./create_shop.php">Create Shop</a></li>
-                    <li><a href="./create_product.php">Create Product</a></li>
-                    <li><a href="./create_user.php">Create User</a></li>
-                    <li><a href="./login_user.php">login</a></li>
+                    <li><a href="<?php echo base_url("./Tools/supplierView");?>">Supplier</a></li>
+                    <li><a href="<?php echo base_url("./Tools/createShop");?>">Create Shop</a></li>
+                    <li><a href="<?php echo base_url("./Tools/createProduct");?>">Create Product</a></li>
+                    <li><a href="<?php echo base_url("./Tools/createUser");?>">Create User</a></li>
+                    <li><a href="<?php echo base_url("./Tools/loginDetails");?>">login details</a></li>
+                    <li><a href="<?php echo base_url("./Tools/signUp");?>">sign up</a></li>			
+                    <li><a href="<?php echo base_url("./Tools/home");?>">Home Page</a></li>
                 </ul>
             </div> <!-- .btn-group -->        
         </div>
