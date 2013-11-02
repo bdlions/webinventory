@@ -658,5 +658,79 @@ class User extends CI_Controller {
             return FALSE;
         }
     }
+    
+    public function create_supplier()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
+        $this->form_validation->set_rules('user_name', 'User Name', 'xss_clean|required');
+        $this->form_validation->set_rules('password', 'Password', 'xss_clean|required');
+        $this->form_validation->set_rules('email', 'Email', 'xss_clean|required');
+        $this->form_validation->set_rules('company_name', 'Supplier Name', 'xss_clean|required');
+        if ($this->input->post('submit_create_supplier')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $user_name = $this->input->post('user_name');
+                $password =$this->input->post('password');
+                $email = $this->input->post('email');
+                $additional_data = array(
+                    'account_status_id' => 1,
+                    'created_date' => date('Y-m-d H:i:s')
+                );
+                $groups = array(
+                    'id' => 4
+                );
+                $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+                $supplier_data = array(
+                    'user_id' => $user_id,
+                    'company' => $this->input->post('company_name')
+                );
+                $this->ion_auth->create_supplier($supplier_data);
+                //redirect('','refresh');
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        $this->data['user_name'] = array(
+            'name' => 'user_name',
+            'id' => 'user_name',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('user_name'),
+        );
+        $this->data['password'] = array(
+            'name' => 'password',
+            'id' => 'password',
+            'type' => 'password',
+            'value' => '',
+        );
+        $this->data['email'] = array(
+            'name' => 'email',
+            'id' => 'email',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('email'),
+        );
+        $this->data['company_name'] = array(
+            'name' => 'company_name',
+            'id' => 'company_name',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('company_name'),
+        );
+        $this->data['submit_create_supplier'] = array(
+            'name' => 'submit_create_supplier',
+            'id' => 'submit_create_supplier',
+            'type' => 'submit',
+            'value' => 'Add',
+        );
+        
+        $this->template->load(null, 'supplier/create_supplier', $this->data);
+    }
+    
+    public function create_customer()
+    {
+        $this->template->load(null, 'customer/create_customer');
+    }
 
 }

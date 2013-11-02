@@ -748,8 +748,7 @@ class Ion_auth_model extends CI_Model {
             'email' => $email,
             'ip_address' => $ip_address,
             'created_on' => time(),
-            'last_login' => time(),
-            'active' => ($manual_activation === false ? 1 : 0)
+            'last_login' => time()
         );
 
         if ($this->store_salt) {
@@ -1884,15 +1883,26 @@ class Ion_auth_model extends CI_Model {
         print_r(' get_customers called');
     }
     //--------------------------------------------Vendor related queries-----------------------------------------
-    public function add_vendor()
+    public function create_supplier($additional_data)
+    {
+        $this->trigger_events('pre_create_supplier');
+            
+        //filter out any data passed that doesnt have a matching column in the users table
+        $additional_data = $this->_filter_data($this->tables['suppliers'], $additional_data);
+
+        $this->db->insert($this->tables['suppliers'], $additional_data);
+
+        $id = $this->db->insert_id();
+
+        $this->trigger_events('post_create_supplier');
+
+        return (isset($id)) ? $id : FALSE;
+    }
+    public function update_supplier()
     {
         
     }
-    public function update_vendor()
-    {
-        
-    }
-    public function get_vendors()
+    public function get_suppliers()
     {
         print_r(' get_vendors called');
     }    

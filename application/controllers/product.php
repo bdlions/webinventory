@@ -36,7 +36,7 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/create_product');
     }
     
-    public function update_product($product_id)
+    public function update_product()
     {
         $this->template->load(null, 'product/update_product');
     }

@@ -82,9 +82,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_login` int(11) unsigned DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
-  `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `account_status_id` int NOT NULL,
+  `created_date` timestamp,
+  `modified_date` timestamp,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;
 ALTER TABLE `users`
@@ -93,16 +94,16 @@ ALTER TABLE `users`
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', 'ADMIN', '0');
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(2, '\0\0', 'manager', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'manager@manager.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Manager', 'Manager', 'Manager', '0');
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(3, '\0\0', 'salesman', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'salesman@salesman.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Salesman', 'Salesman', 'Salesman', '0');
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(4, '\0\0', 'supplier', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'supplier@supplier.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Supplier', 'Supplier', 'Supplier', '0');
-INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(5, '\0\0', 'customer', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'customer@customer.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Customer', 'Customer', 'Customer', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
+(1, '\0\0', 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Admin', 'istrator', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
+(2, '\0\0', 'manager', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'manager@manager.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Manager', 'Manager', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
+(3, '\0\0', 'salesman', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'salesman@salesman.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Salesman', 'Salesman', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
+(4, '\0\0', 'supplier', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'supplier@supplier.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Supplier', 'Supplier', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
+(5, '\0\0', 'customer', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'customer@customer.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Customer', 'Customer', '0');
 
 -- --------------------------------------------------------
 
@@ -132,18 +133,21 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (6, 5, 5);
 
 
- CREATE TABLE IF NOT EXISTS `vendors` (
+ CREATE TABLE IF NOT EXISTS `suppliers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `company` varchar(200) DEFAULT NULL,  
   PRIMARY KEY (`id`),
-  KEY `fk_vendors_users1_idx` (`user_id`)
+  KEY `fk_suppliers_users1_idx` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-ALTER TABLE `vendors`
-  ADD CONSTRAINT `fk_vendors_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `suppliers`
+  ADD CONSTRAINT `fk_suppliers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
  CREATE TABLE IF NOT EXISTS `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `profession` varchar(200) DEFAULT NULL, 
+  `institution` varchar(200) DEFAULT NULL,    
   PRIMARY KEY (`id`),
   KEY `fk_customers_users1_idx` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -160,7 +164,7 @@ ALTER TABLE `customers`
 	`unit_price` double,
 	`brand_name` varchar(200),
 	`remarks` varchar(1000),
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int,
@@ -175,9 +179,8 @@ ALTER TABLE `product_info`
  CREATE TABLE `product_image_info` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,
-	`product_size` varchar(200),
 	`image_path` varchar(500),
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int,
@@ -196,7 +199,7 @@ ALTER TABLE `product_image_info`
 	`shop_id` int NOT NULL,
 	`product_id` int NOT NULL,
 	`stock_amount` double,
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int,
@@ -228,14 +231,14 @@ CREATE TABLE `purchase_order` (
 	`id` int NOT NULL auto_increment,
 	`purchase_order_no` varchar(200),
 	`shop_id` int NOT NULL,
-	`vendor_id` int NOT NULL,
+	`supplier_id` int NOT NULL,
 	`purchase_order_status_id` int NOT NULL,
 	`order_date` timestamp,
 	`requested_ship_date` timestamp,	
 	`discount` varchar(200),
 	`total` double,
 	`paid` double,
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int default 0,
@@ -243,14 +246,14 @@ CREATE TABLE `purchase_order` (
 	PRIMARY KEY  (`id`),
 	KEY `fk_purchase_order_shop_info1_idx` (`shop_id`),
 	KEY `fk_purchase_order_purchase_order_status1_idx` (`purchase_order_status_id`),
-	KEY `fk_purchase_order_vendors1_idx` (`vendor_id`),
+	KEY `fk_purchase_order_suppliers1_idx` (`supplier_id`),
 	KEY `fk_purchase_order_users1_idx` (`created_by`),
 	KEY `fk_purchase_order_users2_idx` (`modified_by`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `purchase_order`
   ADD CONSTRAINT `fk_purchase_order_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_purchase_order_purchase_order_status1` FOREIGN KEY (`purchase_order_status_id`) REFERENCES `purchase_order_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_purchase_order_vendors1` FOREIGN KEY (`vendor_id`) REFERENCES `vendors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_purchase_order_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_purchase_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_purchase_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
@@ -262,7 +265,7 @@ CREATE TABLE `product_purchase_order` (
 	`unit_price` double,
 	`discount` varchar(200),
 	`sub_total` double,
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int default 0,
@@ -299,7 +302,7 @@ CREATE TABLE `sale_order` (
 	`discount` varchar(200),
 	`total` double,
 	`paid` double,
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int default 0,
@@ -314,7 +317,7 @@ CREATE TABLE `sale_order` (
 ALTER TABLE `sale_order`
   ADD CONSTRAINT `fk_sale_order_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_order_sale_order_status1` FOREIGN KEY (`sale_order_status_id`) REFERENCES `sale_order_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_sale_order_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customrts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sale_order_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
@@ -326,7 +329,7 @@ CREATE TABLE `product_sale_order` (
 	`unit_price` double,
 	`discount` varchar(200),
 	`sub_total` double,
-	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int default 0,
