@@ -588,7 +588,19 @@ class Sale_model extends CI_Model {
     {
         
     }
+    public function get_sale_order()
+    {
+        
+    }
+    public function get_sale_orders()
+    {
+        
+    }
     public function get_all_sale_orders()
+    {
+        
+    }
+    public function delete_sale_order()
     {
         
     }
@@ -601,7 +613,19 @@ class Sale_model extends CI_Model {
     {
         
     }
-    public function get_all_products_sale_order()
+    public function get_products_sale_order()
+    {
+        
+    }
+    public function get_products_sale_orders()
+    {
+        
+    }
+    public function get_all_products_sale_orders()
+    {
+        
+    }
+    public function delete_product_sale_order()
     {
         
     }

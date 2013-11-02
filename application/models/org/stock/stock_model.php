@@ -588,8 +588,20 @@ class Stock_model extends CI_Model {
     {
         print_r(' update_stock is called');
     }
+    public function get_stock()
+    {
+        
+    }
+    public function get_stocks()
+    {
+        
+    }
     public function get_all_stocks()
     {
         print_r(' get_all_stocks is called');
+    }
+    public function delete_stock()
+    {
+        
     }
 }

@@ -47,5 +47,6 @@ class Sale extends CI_Controller {
 
             $this->stock_library->update_stock();
         }
+        $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'sales/sales_order');
     }
 }

@@ -590,8 +590,23 @@ class Product_model extends CI_Model {
         
     }
     
+    public function get_product()
+    {
+        
+    }
+    
     public function get_products()
     {
         print_r(' get_products is called');
+    }
+    
+    public function get_all_products()
+    {
+        
+    }
+    
+    public function delete_product()
+    {
+        
     }
 }

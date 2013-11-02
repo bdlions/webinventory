@@ -33,31 +33,16 @@ class Product extends CI_Controller {
     
     public function create_product()
     {
-        
+        $this->template->load(null, 'product/create_product');
     }
     
-    public function update_product()
+    public function update_product($product_id)
     {
-        
+        $this->template->load(null, 'product/update_product');
     }
     
-    public function delete_product()
+    public function show_all_products()
     {
-        
-    }
-    
-    public function get_product()
-    {
-        
-    }
-    
-    public function get_all_products()
-    {
-        
-    }
-    
-    public function search_product()
-    {
-        
+        $this->template->load(null, 'product/show_all_products');
     }
 }

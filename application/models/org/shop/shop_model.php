@@ -580,12 +580,44 @@ class Shop_model extends CI_Model {
     }
     
     //---------------------------------------------- Shop related queries -------------------------------------------
-    public function create_shop()
+    /*
+     * This method will add a new shop into database
+     */
+    public function create_shop($additional_data)
     {
-        
+        $this->trigger_events('pre_create_shop');
+            
+        //filter out any data passed that doesnt have a matching column in the users table
+        $additional_data = $this->_filter_data($this->tables['shop_info'], $additional_data);
+
+        $this->db->insert($this->tables['shop_info'], $additional_data);
+
+        $id = $this->db->insert_id();
+
+        $this->trigger_events('post_create_shop');
+
+        return (isset($id)) ? $id : FALSE;
     }
     
-    public function update_shop()
+    public function update_shop($shop_id, $data)
+    {
+        $this->db->update($this->tables['shop_info'], $data, array('id' => $shop_id));
+    }
+    
+    public function get_shop($shop_id)
+    {
+        $this->db->where('id', $shop_id);
+        $this->response = $this->db->get($this->tables['shop_info']);
+        return $this;
+    }
+    
+    public function get_all_shops()
+    {
+        $this->response = $this->db->get($this->tables['shop_info']);
+        return $this;
+    }
+    
+    public function get_shops()
     {
         
     }
@@ -594,20 +626,4 @@ class Shop_model extends CI_Model {
     {
         
     }
-    
-    public function get_shop()
-    {
-        
-    }
-    
-    public function get_all_shops()
-    {
-        
-    }
-    
-    public function search_shop()
-    {
-        
-    }
-
 }

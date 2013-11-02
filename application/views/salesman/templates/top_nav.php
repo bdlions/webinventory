@@ -21,7 +21,7 @@
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Sales <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a href="#">New Sales Quote</a></li>
-                    <li><a href="<?php echo base_url("./Sales/newSalesOrder");?>">New Sales Order</a></li>
+                    <li><a href="<?php echo base_url("sale/add_sale");?>">New Sales Order</a></li>
                     <li><a href="#">Sales Order List</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Recent Orders</a></li>
@@ -218,8 +218,10 @@
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Tools <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a href="<?php echo base_url("./Tools/supplierView");?>">Supplier</a></li>
-                    <li><a href="<?php echo base_url("./Tools/createShop");?>">Create Shop</a></li>
-                    <li><a href="<?php echo base_url("./Tools/createProduct");?>">Create Product</a></li>
+                    <li><a href="<?php echo base_url("./shop/create_shop");?>">Create Shop</a></li>
+                    <li><a href="<?php echo base_url("./shop/show_all_shops");?>">Shop List</a></li>
+                    <li><a href="<?php echo base_url("./product/create_product");?>">Create Product</a></li>
+                    <li><a href="<?php echo base_url("./product/show_all_products");?>">Product List</a></li>
                     <li><a href="<?php echo base_url("./Tools/createUser");?>">Create User</a></li>
                     <li><a href="<?php echo base_url("./Tools/loginDetails");?>">login details</a></li>
                     <li><a href="<?php echo base_url("./Tools/signUp");?>">sign up</a></li>			

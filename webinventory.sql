@@ -1,3 +1,6 @@
+-- drop database web_inventory;
+-- create database web_inventory;
+
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE `shop_info` (
@@ -5,19 +8,12 @@ CREATE TABLE `shop_info` (
 	`shop_no` varchar(200) NOT NULL default '',	
 	`name` varchar(200) NOT NULL default '',
 	`address` varchar(500) NOT NULL default '',
+	`shop_phone` varchar(200) NOT NULL default '',	
     `picture` varchar(500) default '',
 	`created_date` timestamp,
-    `created_by` int default 0,
-    `modified_date` timestamp,
-    `modified_by` int default 0, 
-	PRIMARY KEY  (`id`),
-	KEY `fk_shop_info_users1_idx` (`created_by`),
-	KEY `fk_shop_info_users2_idx` (`modified_by`)
+	`modified_date` timestamp,
+	PRIMARY KEY  (`id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-ALTER TABLE `shop_info`
-  ADD CONSTRAINT `fk_shop_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_shop_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 --
 -- Table structure for table `groups`
@@ -56,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `account_status` (
-  `id` NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `description` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;   
@@ -140,19 +136,19 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_vendors_users1_idx` (`user_id`),
+  KEY `fk_vendors_users1_idx` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `vendors`
-  ADD CONSTRAINT `fk_vendors_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_vendors_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
  CREATE TABLE IF NOT EXISTS `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_customers_users1_idx` (`user_id`),
+  KEY `fk_customers_users1_idx` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `customers`
-  ADD CONSTRAINT `fk_customers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_customers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
  CREATE TABLE `product_info` (
 	`id` int NOT NULL auto_increment,
@@ -163,6 +159,7 @@ ALTER TABLE `customers`
 	`product_quality` varchar(200),
 	`unit_price` double,
 	`brand_name` varchar(200),
+	`remarks` varchar(1000),
 	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
     `created_by` int,
     `modified_date` timestamp,
@@ -174,6 +171,25 @@ ALTER TABLE `customers`
 ALTER TABLE `product_info`
   ADD CONSTRAINT `fk_product_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ 
+ CREATE TABLE `product_image_info` (
+	`id` int NOT NULL auto_increment,
+	`product_id` int NOT NULL,
+	`product_size` varchar(200),
+	`image_path` varchar(500),
+	`created_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+    `created_by` int,
+    `modified_date` timestamp,
+    `modified_by` int,
+	PRIMARY KEY  (`id`),
+	KEY `fk_product_image_info_product_info1_idx` (`product_id`),
+	KEY `fk_product_image_info_users1_idx` (`created_by`),
+	KEY `fk_product_image_info_users2_idx` (`modified_by`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `product_image_info`
+  ADD CONSTRAINT `fk_product_image_info_product_info1` FOREIGN KEY (`product_id`) REFERENCES `product_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_image_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_image_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
  
  CREATE TABLE `stock_info` (
 	`id` int NOT NULL auto_increment,
