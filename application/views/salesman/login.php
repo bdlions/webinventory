@@ -3,7 +3,7 @@
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open("salespeople");?>
+<?php echo form_open(SALESMAN_LOGIN_SUCCESS_URI);?>
 
   <p>
     <?php echo lang('login_identity_label', 'identity');?>

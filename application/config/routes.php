@@ -46,8 +46,8 @@ $route["edit_user/:num"] = 'admin/edit_user/$1';
 $route["xyz"] = 'admin/xyz'; 
 $route["login"] = 'admin/login';
 $route["logout"] = 'admin/logout';
-$route['salespeople'] = 'user/salesman_login';
-$route['customer'] = 'user/customer_login';
+//$route['salespeople'] = 'user/salesman_login';
+//$route['customer'] = 'user/customer_login';
 
 //customize error page
 $route['404_override'] = 'error/error_404';

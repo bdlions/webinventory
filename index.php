@@ -6,8 +6,8 @@ define('SALESMAN', 'salesman');
 define('MANAGER', 'manager');
 define('ADMIN', 'admin');
 
-define('SALESMAN_LOGIN_URI', 'salespeople');
-define('SALESMAN_LOGIN_SUCCESS_URI', 'salespeople');
+define('SALESMAN_LOGIN_URI', 'user/salesman_login');
+define('SALESMAN_LOGIN_SUCCESS_URI', 'user/salesman_login');
 define('SALESMAN_LOGIN_TEMPLATE', 'salesman/templates/login');
 define('SALESMAN_LOGIN_SUCCESS_TEMPLATE', 'salesman/templates/main');
 define('SALESMAN_LOGIN_VIEW', 'salesman/login');
