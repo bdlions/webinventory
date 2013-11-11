@@ -161,7 +161,7 @@ ALTER TABLE `customers`
 	`product_weight` varchar(200),
 	`product_warranty` varchar(200),
 	`product_quality` varchar(200),
-	`unit_price` double,
+	`unit_price` double default 0,
 	`brand_name` varchar(200),
 	`remarks` varchar(1000),
 	`created_date` timestamp,

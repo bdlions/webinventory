@@ -580,29 +580,43 @@ class Product_model extends CI_Model {
     }
     
     //---------------------------------------------- Product related queries -------------------------------------------
-    public function create_product()
+    public function create_product($additional_data)
     {
-        
+        $this->trigger_events('pre_create_product');
+            
+        //filter out any data passed that doesnt have a matching column in the users table
+        $additional_data = $this->_filter_data($this->tables['product_info'], $additional_data);
+
+        $this->db->insert($this->tables['product_info'], $additional_data);
+
+        $id = $this->db->insert_id();
+
+        $this->trigger_events('post_create_product');
+
+        return (isset($id)) ? $id : FALSE;
     }
     
-    public function update_product()
+    public function update_product($product_id, $data)
     {
-        
+        $this->db->update($this->tables['product_info'], $data, array('id' => $product_id));
     }
     
-    public function get_product()
+    public function get_product($product_id)
     {
-        
+        $this->db->where('id', $product_id);
+        $this->response = $this->db->get($this->tables['product_info']);
+        return $this;
     }
     
     public function get_products()
     {
-        print_r(' get_products is called');
+        
     }
     
     public function get_all_products()
     {
-        
+        $this->response = $this->db->get($this->tables['product_info']);
+        return $this;
     }
     
     public function delete_product()

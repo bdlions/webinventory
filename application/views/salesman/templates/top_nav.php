@@ -227,6 +227,7 @@
                     <li><a href="<?php echo base_url("./Tools/loginDetails");?>">login details</a></li>
                     <li><a href="<?php echo base_url("./Tools/signUp");?>">sign up</a></li>			
                     <li><a href="<?php echo base_url("./Tools/home");?>">Home Page</a></li>
+                    <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>
                 </ul>
             </div> <!-- .btn-group -->        
         </div>

@@ -105,16 +105,7 @@ class Shop extends CI_Controller {
     
     public function update_shop($shop_id)
     {
-        $shop_info = array();
-        $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
-        if( count($shop_info_array) > 0 )
-        {
-            $shop_info = $shop_info_array[0];
-        }
-        else
-        {
-            //go to a page to display that the given shop id is invalid
-        }
+        //check whether shop id valid or not
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
@@ -139,6 +130,12 @@ class Shop extends CI_Controller {
             {
                 $this->data['message'] = validation_errors();
             }
+        }
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
+        if( count($shop_info_array) > 0 )
+        {
+            $shop_info = $shop_info_array[0];
         }
         $this->data['shop_info'] = $shop_info;
         $this->data['shop_no'] = array(
