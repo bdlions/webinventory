@@ -1870,19 +1870,42 @@ class Ion_auth_model extends CI_Model {
     }
     
     //--------------------------------------------Customer related queries-----------------------------------------
-    public function add_customer()
+    public function create_customer($additional_data)
+    {
+        $this->trigger_events('pre_create_customer');
+            
+        //filter out any data passed that doesnt have a matching column in the users table
+        $additional_data = $this->_filter_data($this->tables['customers'], $additional_data);
+
+        $this->db->insert($this->tables['customers'], $additional_data);
+
+        $id = $this->db->insert_id();
+
+        $this->trigger_events('post_create_customer');
+
+        return (isset($id)) ? $id : FALSE;
+    }
+    public function update_customer($user_id, $data)
     {
         
     }
-    public function update_customer()
+    public function get_all_customers()
     {
+        return $this->db->select($this->tables['users'].'.id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->get();  
+    }
+    public function get_customer($user_id)
+    {
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select($this->tables['users'].'.id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->get(); 
         
     }
-    public function get_customers()
-    {
-        print_r(' get_customers called');
-    }
-    //--------------------------------------------Vendor related queries-----------------------------------------
+    //--------------------------------------------Supplier related queries-----------------------------------------
     public function create_supplier($additional_data)
     {
         $this->trigger_events('pre_create_supplier');
@@ -1898,25 +1921,35 @@ class Ion_auth_model extends CI_Model {
 
         return (isset($id)) ? $id : FALSE;
     }
-    public function update_supplier()
+    public function update_supplier($user_id, $data)
     {
         
     }
-    public function get_suppliers()
+    public function get_all_suppliers()
     {
-        print_r(' get_vendors called');
-    }    
+        
+    }
+    
+    public function get_supplier($user_id)
+    {
+        
+    }
     //--------------------------------------------salesman related queries-----------------------------------------
-    public function add_salesman()
+    public function create_salesman($additional_data)
     {
         
     }
-    public function update_salesman()
+    public function update_salesman($user_id, $data)
     {
         
     }
-    public function get_salesmen()
+    public function get_all_salesmen()
     {
         
-    }    
+    }
+    
+    public function get_salesman($user_id)
+    {
+        
+    }  
 }

@@ -608,19 +608,9 @@ class Product_model extends CI_Model {
         return $this;
     }
     
-    public function get_products()
-    {
-        
-    }
-    
     public function get_all_products()
     {
         $this->response = $this->db->get($this->tables['product_info']);
         return $this;
-    }
-    
-    public function delete_product()
-    {
-        
-    }
+    }    
 }

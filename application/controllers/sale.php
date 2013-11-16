@@ -36,17 +36,27 @@ class Sale extends CI_Controller {
     
     function add_sale()
     {
-        $this->ion_auth->get_customers();
-        $this->product_library->get_products();
-        $this->stock_library->get_all_stocks();
+        $this->data['customer_list_array'] = array();
+        $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+        if( count($customer_list_array) > 0)
+        {
+            $this->data['customer_list_array'] = $customer_list_array;
+        }  
+        $this->data['product_list_array'] = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        if( count($product_list_array) > 0)
+        {
+            $this->data['product_list_array'] = $product_list_array;
+        }
+        //$this->stock_library->get_all_stocks();
         
         //if form is posted
         {
-            $this->sale_library->add_sale_order();
-            $this->sale_library->add_product_sale_order();
+            //$this->sale_library->add_sale_order();
+            //$this->sale_library->add_product_sale_order();
 
-            $this->stock_library->update_stock();
+            //$this->stock_library->update_stock();
         }
-        $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'sales/sales_order');
+        $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'sales/sales_order',$this->data);
     }
 }

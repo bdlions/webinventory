@@ -39,6 +39,7 @@ $config['tables']['login_attempts']  = 'login_attempts';
 $config['tables']['shop_info']       = 'shop_info';
 $config['tables']['product_info']    = 'product_info';
 $config['tables']['suppliers']       = 'suppliers';
+$config['tables']['customers']       = 'customers';
 
 /*
  | Users table column and Group table column you want to join WITH.
@@ -54,6 +55,12 @@ $config['account_status']['inactive_id']    = '2';
 $config['account_status']['suspended_id']   = '3';
 $config['account_status']['deactivated_id'] = '4';
 $config['account_status']['blocked_id']     = '5';
+
+$config['user_group']['admin_id']           = '1';
+$config['user_group']['manager_id']         = '2';
+$config['user_group']['salesman_id']        = '3';
+$config['user_group']['supplier_id']        = '4';
+$config['user_group']['customer_id']        = '5';
 
 /*
  | -------------------------------------------------------------------------
@@ -97,7 +104,7 @@ $config['default_group']              = 'members';           // Default group, u
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['customer_group']             = 'customer';             // Default administrators group, use name
 $config['salesman_group']             = 'salesman';             // Default administrators group, use name
-$config['identity']                   = 'email';             // A database column which is used to login with
+$config['identity']                   = 'username';             // A database column which is used to login with
 $config['min_password_length']        = 8;                   // Minimum Required Length of Password
 $config['max_password_length']        = 20;                  // Maximum Allowed Length of Password
 $config['email_activation']           = FALSE;               // Email Activation for registration

@@ -8,7 +8,8 @@ class User extends CI_Controller {
      * 
      * $var array
      */
-
+    protected $user_group;
+    protected $account_status_list;
     public $user_type;
     public $login_uri;
     public $login_success_uri;
@@ -31,6 +32,8 @@ class User extends CI_Controller {
         $this->load->helper('language');
 
         $this->user_type = CUSTOMER;
+        $this->user_group = $this->config->item('user_group', 'ion_auth');
+        $this->account_status_list = $this->config->item('account_status', 'ion_auth');
     }
 
     function salesman_login() {
@@ -731,6 +734,58 @@ class User extends CI_Controller {
     public function create_customer()
     {
         $this->template->load(null, 'customer/create_customer');
+    }
+    
+    public function create_customer_sale_order()
+    {
+        $response = array();
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $phone_no = $_POST['phone_no'];
+        $card_no = $_POST['card_no'];;
+        $user_name = $_POST['phone_no'];
+        $password = "password";
+        $email = "dummy@dummy.com";
+        $additional_data = array(
+            'account_status_id' => $this->account_status_list['active_id'],
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'phone' => $phone_no,
+            'created_date' => date('Y-m-d H:i:s')
+        );
+        $groups = array('id' => $this->user_group['customer_id']);
+        $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+        if( $user_id >= 0 )
+        {
+            $additional_data = array(
+                'user_id' => $user_id,
+                'card_no' => $card_no
+            );
+            $id = $this->ion_auth->create_customer($additional_data);
+            $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
+            $customer_info = array();
+            if( count($customer_info_array) > 0 )
+            {
+                $customer_info = $customer_info_array[0];
+            }
+            $response['status'] = '1';
+            $response['customer_info'] = $customer_info;
+        } 
+        else
+        {
+            $response['status'] = '0';
+        }
+        echo json_encode($response);
+    }
+    public function show_customer($user_id)
+    {
+        $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
+        $customer_info = array();
+        if( count($customer_info_array) > 0 )
+        {
+            $customer_info = $customer_info_array[0];
+            print_r($customer_info_array[0]);
+        }
     }
 
 }

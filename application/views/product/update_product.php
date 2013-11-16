@@ -22,6 +22,12 @@
                                         </span>			
                                     </div>
                                     <div class="clr span10">
+                                        <span class="fl">Product Code</span>
+                                        <span class="fr">
+                                            <?php echo form_input($product_code); ?>
+                                        </span>			
+                                    </div>
+                                    <div class="clr span10">
                                         <span class="fl">Product Size</span>
                                         <span class="fr">
                                             <input type="text" class="span2" value="" />

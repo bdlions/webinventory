@@ -36,6 +36,7 @@ class Product extends CI_Controller {
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('product_name', 'Product Name', 'xss_clean|required');
+        $this->form_validation->set_rules('product_code', 'Product Code', 'xss_clean|required');
         $this->form_validation->set_rules('product_size', 'Product Size', 'xss_clean');
         $this->form_validation->set_rules('product_weight', 'Product Weight', 'xss_clean');
         $this->form_validation->set_rules('product_warranty', 'Product Warranty', 'xss_clean');
@@ -47,7 +48,8 @@ class Product extends CI_Controller {
             if ($this->form_validation->run() == true) 
             {
                 $additional_data = array(
-                    'product_name' => $this->input->post('product_name'),
+                    'name' => $this->input->post('product_name'),
+                    'code' => $this->input->post('product_code'),
                     'unit_price' => $this->input->post('unit_price'),
                     'created_date' => date('Y-m-d H:i:s')
                 );
@@ -65,6 +67,12 @@ class Product extends CI_Controller {
             'id' => 'product_name',
             'type' => 'text',
             'value' => $this->form_validation->set_value('product_name'),
+        );
+        $this->data['product_code'] = array(
+            'name' => 'product_code',
+            'id' => 'product_code',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('product_code'),
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
@@ -87,12 +95,14 @@ class Product extends CI_Controller {
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('product_name', 'Product Name', 'xss_clean|required');
+        $this->form_validation->set_rules('product_code', 'Product Code', 'xss_clean|required');
         if ($this->input->post('submit_update_product')) 
         {
             if ($this->form_validation->run() == true) 
             {
                 $data = array(
-                    'product_name' => $this->input->post('product_name'),
+                    'name' => $this->input->post('product_name'),
+                    'code' => $this->input->post('product_code'),
                     'unit_price' => $this->input->post('unit_price'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
@@ -115,7 +125,13 @@ class Product extends CI_Controller {
             'name' => 'product_name',
             'id' => 'product_name',
             'type' => 'text',
-            'value' => $product_info['product_name'],
+            'value' => $product_info['name'],
+        );
+        $this->data['product_code'] = array(
+            'name' => 'product_code',
+            'id' => 'product_code',
+            'type' => 'text',
+            'value' => $product_info['code'],
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
@@ -132,6 +148,17 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/update_product', $this->data);
     }
     
+    public function show_product($product_id)
+    {
+        $product_info = array();
+        $product_info_array = $this->product_library->get_product($product_id)->result_array();
+        if(count($product_info_array))
+        {
+            $product_info = $product_info_array[0];
+        }
+        print_r($product_info);
+    }
+    
     public function show_all_products()
     {
         $this->data['product_list'] = array();
@@ -141,5 +168,36 @@ class Product extends CI_Controller {
             $this->data['product_list'] = $product_list;
         }
         $this->template->load(null, 'product/show_all_products', $this->data);
+    }
+    
+    public function create_product_sale_order()
+    {
+        $response = array();
+        $product_name = $_POST['product_name'];
+        $product_code = $_POST['product_code'];
+        $unit_price = $_POST['unit_price'];
+        $additional_data = array(
+            'name' => $product_name,
+            'code' => $product_code,
+            'unit_price' => $unit_price,
+            'created_date' => date('Y-m-d H:i:s')
+        );
+        $product_id = $this->product_library->create_product($additional_data);
+        if( $product_id >= 0 )
+        {
+            $product_info_array = $this->product_library->get_product($product_id)->result_array();
+            $product_info = array();
+            if( count($product_info_array) > 0 )
+            {
+                $product_info = $product_info_array[0];
+            }
+            $response['status'] = '1';
+            $response['product_info'] = $product_info;            
+        }  
+        else
+        {
+           $response['status'] = '0';
+        }
+        echo json_encode($response);
     }
 }

@@ -36,7 +36,17 @@
                                     <?php foreach($product_list as $key => $prodduct_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['product_name']?></div>
+                                    <div class="wh_100"><?php echo $prodduct_info['name']?></div>
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
+                                <div class="span1">
+                                    <h3>Product Code</h3>
+                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    {
+                                    ?>
+                                    <div class="wh_100"><?php echo $prodduct_info['code']?></div>
                                     <?php
                                     }
                                     ?>

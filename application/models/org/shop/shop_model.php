@@ -615,15 +615,5 @@ class Shop_model extends CI_Model {
     {
         $this->response = $this->db->get($this->tables['shop_info']);
         return $this;
-    }
-    
-    public function get_shops()
-    {
-        
-    }
-    
-    public function delete_shop()
-    {
-        
-    }
+    }    
 }
