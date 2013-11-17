@@ -1,9 +1,45 @@
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var customer_data  = '<?php echo json_encode($customer_list_array) ?>';
+        set_customer_list(JSON.parse(customer_data));
+        
+        var product_data = '<?php echo json_encode($product_list_array) ?>';
+        set_product_list(JSON.parse(product_data))
+        
+    });
+</script>
 
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css" ></link>
 <script type="text/javascript">
     $(function() {
+        $("#input_date_add_sale").datepicker();
+        $("input").on("click", function(){
+            console.log($(this).val());
+            $("#input_add_sale_customer").val($(this).val());
+        });
+        $("#button_search_customer").on("click", function() {
+            if($("#dropdown_search_customer")[0].selectedIndex == 0)
+            {
+                alert("Please select search criteria.");
+                return false;
+            }
+            else if( $("#input_search_customer").val().length == 0 )
+            {
+                alert("Please assign value of search criteria");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "search/search_customer_sale_order",
+                data: {
+                    search_category_name: $("#dropdown_search_customer").val(),
+                    search_category_value: $("#input_search_customer").val()
+                },
+                success: function(data) {
+                    var cust_list = JSON.parse(data);
+                }
+
+            });
+        });
         $("#button_add_customer").on("click", function() {
             if( $("#input_first_name").val().length == 0 )
             {
@@ -36,9 +72,13 @@
 
                 },
                 success: function(data) {
+                    console.log(get_customer_list());
                     var response = JSON.parse(data);
                     if (response['status'] === '1')
                     {
+                        var c_list = get_customer_list();
+                        c_list[c_list.length] = response['customer_info'];
+                        set_customer_list(c_list);
                         alert('New customer is added successfully.');
                         var customer_info = response['customer_info'];
                         var current_temp_html = $("#phone_customer_list").html();
@@ -52,7 +92,10 @@
                         current_temp_html = $("#detail_customer_list").html();
                         current_temp_html = current_temp_html + '<div class="span10 view sales_view"><a target="_blank" class="view" href="<?php echo base_url();?>user/show_customer/'+customer_info['id']+'">view</a></div>';
                         $("#detail_customer_list").html(current_temp_html);
+                        
+                        $("#input_add_sale_customer").val(customer_info['phone']);
                     }
+                    $('div[class="clr dropdown open"]').removeClass('open');
                 }
 
             });
@@ -86,6 +129,9 @@
                     var response = JSON.parse(data);
                     if (response['status'] === '1')
                     {
+                        var p_list = get_product_list();
+                        p_list[p_list.length] = response['product_info'];
+                        set_product_list(p_list);
                         alert('New product is added successfully.');
                         var product_info = response['product_info'];
                         var current_temp_html = $("#name_product_list").html();
@@ -192,7 +238,9 @@
                 <div class="clr dropdown">                     
                     <div style ="width:250px;"class="dropdown-toggle" data-toggle="dropdown">
                         <span class="fl">Customer</span>
-                        <span class="fr" style="margin-left:6px;"><input style="width:96% !important;" type="text" /></span>
+                        <span class="fr" style="margin-left:6px;">
+                            <input id="input_add_sale_customer" style="width:96% !important;" type="text" />
+                        </span>
                     </div>
                     <div class="dropdown-menu cust_popup" style="width: 255%; padding: 15px; padding-bottom: 15px;">
                         <div class="clr search_details">
@@ -244,78 +292,19 @@
                                     <div class="thirty_percnt customer1 san3">
                                         <h3>Search</h3>
                                     </div>
-                                    <div class="thirty_percnt customer2 span3">                               
-                                        <?php echo form_open(); ?>
+                                    <div class="thirty_percnt customer2 span3">
                                         <div class="clr">
-                                            <div class="clr show_all">Show All</div>
                                             <div class="clr">
                                                 <span class="fr">
-                                                    <select>
-                                                        <option>Name</option>
-                                                        <option>Contact</option>
-                                                        <option>Phone</option>
-                                                        <option>Email</option>
-                                                        <option>Website</option>
-                                                        <option>Address1</option>
-                                                        <option>Address2</option>
-                                                        <option>City</option>
-                                                        <option>State</option>
-                                                        <option>Zip/Postal Code</option>
-                                                        <option>Country</option>
-                                                    </select>
+                                                    <?php echo form_dropdown('dropdown_search_customer',$customer_search_category,'0','id="dropdown_search_customer"');?>                                                    
                                                 </span>
-                                            </div>
-                                            <div class="clr">
-                                                <span class="fr">
-                                                    <select>
-                                                        <option>Naame</option>
-                                                        <option>Contact</option>
-                                                        <option>Phone</option>
-                                                        <option>Email</option>
-                                                        <option>Website</option>
-                                                        <option>Address1</option>
-                                                        <option>Address2</option>
-                                                        <option>City</option>
-                                                        <option>State</option>
-                                                        <option>Zip/Postal Code</option>
-                                                        <option>Country</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                            <div class="clr">
-                                                <span class="fr">
-                                                    <select>
-                                                        <option>Name</option>
-                                                        <option>Contact</option>
-                                                        <option>Phone</option>
-                                                        <option>Email</option>
-                                                        <option>Website</option>
-                                                        <option>Address1</option>
-                                                        <option>Address2</option>
-                                                        <option>City</option>
-                                                        <option>State</option>
-                                                        <option>Zip/Postal Code</option>
-                                                        <option>Country</option>
-                                                    </select>
-                                                </span>
-                                            </div>
+                                            </div>                                                                                      
                                             <p class="clr">&nbsp;</p>
                                         </div>
-
-                                        <?php echo form_close(); ?>
                                     </div>
-                                    <div class="thirty_percnt customer1 san3 refresh">
-                                        <div class="clr">
-                                            <select>
-                                                <option>Active</option>
-                                                <option>Inactive</option>
-                                                <option>Show All</option>
-                                            </select>
-                                        </div>
-                                        <input class="clr" type="text" />
-                                        <input class="clr" type="text" />
-                                        <input class="clr" type="text" />
-                                        <button class="btn btn-success fr">Refresh </button>
+                                    <div class="thirty_percnt customer1 san3 refresh">                                        
+                                        <input id="input_search_customer" name="input_search_customer" class="clr" type="text" />
+                                        <button id="button_search_customer" name="button_search_customer" class="btn btn-success fr">Search </button>
                                     </div>
                                 </div>
                                 <div class="clr customer_search">
@@ -391,12 +380,7 @@
             <div class="clr">
                <span class="fl">Date</span>
                <span class="fr">
-                  <select>
-                     <option>All</option>
-                     <option>test</option>
-                     <option>test</option>
-                     <option>test</option>
-                  </select>
+                   <input id="input_date_add_sale"/>
                </span>
             </div>
             <div class="clr">
@@ -574,38 +558,26 @@
             </div>
                </div>
             </div>
-            <input type="text" value="0000047"/>
-            <input type="text" value="0000047"/>
          </div>
          <div>
             <h3>Description</h3>
-            <input type="text" value="Acer"/>
-            <input class="snd_raw" type="text" value="dell"/>
-            <input type="text" value="asus"/>
+            <input type="text" value=""/>
          </div>
          <div>
             <h3>Quantity</h3>
-            <input type="text" value="Acer"/>
-            <input class="snd_raw" type="text" value="dell"/>
-            <input type="text" value="asus"/>
+            <input type="text" value=""/>
          </div>
          <div>
             <h3>Unit Price</h3>
-            <input type="text" value="Acer"/>
-            <input class="snd_raw" type="text" value="dell"/>
-            <input type="text" value="asus"/>
+            <input type="text" value=""/>
          </div>
          <div>
             <h3>Discount</h3>
-            <input type="text" value="Acer"/>
-            <input class="snd_raw" type="text" value="dell"/>
-            <input type="text" value="asus"/>
+            <input type="text" value=""/>
          </div>
          <div>
             <h3>Sub-Total</h3>
-            <input type="text" value="Acer"/>
-            <input class="snd_raw" type="text" value="dell"/>
-            <input type="text" value="asus"/>
+            <input type="text" value=""/>
          </div>
 		 <p style="clr:both;">&nbsp;</p>
       </div>

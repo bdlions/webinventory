@@ -48,6 +48,10 @@ class Sale extends CI_Controller {
         {
             $this->data['product_list_array'] = $product_list_array;
         }
+        $this->data['customer_search_category'] = array();
+        $this->data['customer_search_category'][0] = "Select an item";
+        $this->data['customer_search_category']['phone'] = "Phone";
+        $this->data['customer_search_category']['card_no'] = "Card No";
         //$this->stock_library->get_all_stocks();
         
         //if form is posted

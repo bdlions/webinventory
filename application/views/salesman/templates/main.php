@@ -18,7 +18,7 @@
             }
             ?>
         </title>
-
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/styles.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css" />
@@ -29,8 +29,8 @@
         <link href='http://fonts.googleapis.com/css?family=Dosis:200' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
         <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
-
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
         <!--************************************************************ Drop Down Menu  ****************************************-->
@@ -38,7 +38,8 @@
         <script src="<?php echo base_url(); ?>assets/js/jquery-latest.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/twitter-bootstrap-hover-dropdown.js"></script>
-
+        
+        
         <!--***************************************************************************************************-->
         <script>
             $('.carousel').carousel({
@@ -336,6 +337,8 @@
                 });
             });
         </script>
+        <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/sale/common.js"></script>
     </head>
     <body screen_capture_injected="true" cz-shortcut-listen="true">
         <div class="top_nav container">

@@ -1905,6 +1905,14 @@ class Ion_auth_model extends CI_Model {
                     ->get(); 
         
     }
+    public function search_customer($key, $value)
+    {
+        $this->db->like($key, $value); 
+        return $this->db->select($this->tables['users'].'.id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->get();  
+    }
     //--------------------------------------------Supplier related queries-----------------------------------------
     public function create_supplier($additional_data)
     {
