@@ -21,7 +21,7 @@
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Sales <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a href="#">New Sales Quote</a></li>
-                    <li><a href="<?php echo base_url("sale/add_sale");?>">New Sales Order</a></li>
+                    <li><a href="<?php echo base_url("sale/sale_order");?>">New Sales Order</a></li>
                     <li><a href="#">Sales Order List</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Recent Orders</a></li>
@@ -36,7 +36,7 @@
             <div class="btn-group purchasing">
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Purchasing <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">New Purchase Order</a></li>
+                    <li><a href="<?php echo base_url("purchase/purchase_order");?>">New Purchase Order</a></li>
                     <li><a href="#">Purchase Order List</a></li>
                     <li class="divider"></li>
                     <li><a href="#">Recent Orders</a></li>
@@ -56,7 +56,7 @@
                     <li><a href="<?php echo base_url("./Inventory/productCategories");?>">Product Categories</a></li>
                     <li><a href="<?php echo base_url("./Inventory/productPricing");?>">Product Pricing</a></li>
                     <li class="divider"></li>
-                    <li><a href="<?php echo base_url("./Inventory/currentStock");?>">Current Stock</a></li>
+                    <li><a href="<?php echo base_url("stock/show_all_stocks");?>">Current Stock</a></li>
                     <li><a href="<?php echo base_url("./Inventory/movementHistory");?>">Movement History</a></li>
                     <li class="divider"></li>
                     <li><a href="<?php echo base_url("./Inventory/adjustStock");?>">Adjust Stock</a></li>

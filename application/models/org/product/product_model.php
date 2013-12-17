@@ -29,6 +29,8 @@ if (!defined('BASEPATH'))
  */
 class Product_model extends CI_Model {
 
+    protected $product_identity;
+    
     public $account_status_list = array();
     /**
      * Holds an array of tables used
@@ -183,7 +185,7 @@ class Product_model extends CI_Model {
         $this->tables = $this->config->item('tables', 'ion_auth');
 
         //initialize data
-        $this->identity_column = $this->config->item('identity', 'ion_auth');
+        $this->product_identity = $this->config->item('product_identity', 'ion_auth');
         $this->store_salt = $this->config->item('store_salt', 'ion_auth');
         $this->salt_length = $this->config->item('salt_length', 'ion_auth');
         $this->join = $this->config->item('join', 'ion_auth');
@@ -350,34 +352,6 @@ class Product_model extends CI_Model {
         return TRUE;
     }
 
-    /**
-     * set_session
-     *
-     * @return bool
-     * @author jrmadsen67
-     * */
-    public function set_session($user) {
-
-        $this->trigger_events('pre_set_session');
-
-        $session_data = array(
-            'identity' => $user->{$this->identity_column},
-            'username' => $user->username,
-            'email' => $user->email,
-            'user_id' => $user->id, //everyone likes to overwrite id so we'll use user_id
-            'old_last_login' => $user->last_login,
-            'user_type' => $user->user_type     
-        );
-
-        $this->session->set_userdata($session_data);
-
-        $this->trigger_events('post_set_session');
-
-        return TRUE;
-    }
-
-    
-
     public function set_hook($event, $name, $class, $method, $arguments) {
         $this->_ion_hooks->{$event}[$name] = new stdClass;
         $this->_ion_hooks->{$event}[$name]->class = $class;
@@ -535,6 +509,24 @@ class Product_model extends CI_Model {
 
         return $_output;
     }
+    
+    /**
+     * errors
+     *
+     * Get the error message to be used in pop up alert
+     *
+     * @return void
+     * @author Nazmul
+     * */
+    public function errors_alert() {
+        $_output = '';
+        foreach ($this->errors as $error) {
+            $errorLang = $this->lang->line($error) ? $this->lang->line($error) : '##' . $error . '##';
+            $_output .= $errorLang; 
+        }
+
+        return $_output;
+    }
 
     /**
      * errors as array
@@ -580,13 +572,72 @@ class Product_model extends CI_Model {
     }
     
     //---------------------------------------------- Product related queries -------------------------------------------
-    public function create_product($additional_data)
+    /**
+     * Checks product name
+     *
+     * @return bool
+     * @author Nazmul
+     * */
+    public function product_name_check($product_name = '') {
+        $this->trigger_events('product_name_check');
+
+        if (empty($product_name)) {
+            return FALSE;
+        }
+
+        $this->trigger_events('extra_where');
+
+        return $this->db->where('name', $product_name)
+                        ->count_all_results($this->tables['product_info']) > 0;
+    }
+    
+    /**
+     * Checks product code
+     *
+     * @return bool
+     * @author Nazmul
+     * */
+    public function product_code_check($product_code = '') {
+        $this->trigger_events('product_code_check');
+
+        if (empty($product_code)) {
+            return FALSE;
+        }
+
+        $this->trigger_events('extra_where');
+
+        return $this->db->where('code', $product_code)
+                        ->count_all_results($this->tables['product_info']) > 0;
+    }
+    
+    /**
+     * Creating a new product
+     *
+     * @return bool if there is any error, otherwise newly created product id
+     * @author Nazmul
+     * */
+    public function create_product($product_name, $product_code, $additional_data)
     {
         $this->trigger_events('pre_create_product');
-            
+        if ($this->product_identity == 'name' && $this->product_name_check($product_name)) 
+        {
+            $this->set_error('product_creation_duplicate_product_name');
+            return FALSE;
+        } 
+        elseif ($this->product_identity == 'code' && $this->product_code_check($product_code)) 
+        {
+            $this->set_error('product_creation_duplicate_product_code');
+            return FALSE;
+        }    
+        $data = array(
+            'name' => $product_name,
+            'code' => $product_code,
+            'created_date' => date('Y-m-d H:i:s')
+        );
         //filter out any data passed that doesnt have a matching column in the users table
-        $additional_data = $this->_filter_data($this->tables['product_info'], $additional_data);
-
+        //and merge the product data and the additional data
+        $additional_data = array_merge($this->_filter_data($this->tables['product_info'], $additional_data), $data);
+        
         $this->db->insert($this->tables['product_info'], $additional_data);
 
         $id = $this->db->insert_id();
@@ -612,5 +663,10 @@ class Product_model extends CI_Model {
     {
         $this->response = $this->db->get($this->tables['product_info']);
         return $this;
-    }    
+    }   
+    public function search_product($key, $value)
+    {
+        $this->db->like($key, $value); 
+        return $this->db->get($this->tables['product_info']); 
+    }
 }

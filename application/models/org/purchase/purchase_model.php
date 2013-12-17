@@ -535,6 +535,23 @@ class Purchase_model extends CI_Model {
 
         return $_output;
     }
+    /**
+     * errors
+     *
+     * Get the error message to be rendered as a popup
+     *
+     * @return void
+     * @author Ben Edmunds
+     * */
+    public function errors_alert() {
+        $_output = '';
+        foreach ($this->errors as $error) {
+            $errorLang = $this->lang->line($error) ? $this->lang->line($error) : '##' . $error . '##';
+            $_output .= $errorLang;
+        }
+
+        return $_output;
+    }
 
     /**
      * errors as array
@@ -580,42 +597,77 @@ class Purchase_model extends CI_Model {
     }
     
     //---------------------------------------------- Purchase related queries -------------------------------------------
-    public function add_purchase_order_status()
-    {
-        
+    public function purchase_order_no_check($purchase_order_no = '') {
+        $this->trigger_events('purchase_order_no_check');
+
+        if (empty($purchase_order_no)) {
+            return FALSE;
+        }
+
+        $this->trigger_events('extra_where');
+
+        return $this->db->where('purchase_order_no', $purchase_order_no)
+                        ->count_all_results($this->tables['purchase_order']) > 0;
     }
-    public function update_purchase_order_status()
+    public function add_purchase_order($additional_data, $pre_purchased_product_list, $add_stock_list, $update_stock_list)
     {
-        
+        $this->trigger_events('pre_add_purchase_order');
+        if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
+            $this->set_error('add_purchase_order_duplicate_purchase_order_no');
+            return FALSE;
+        }
+        $this->db->trans_begin();
+        //filter out any data passed that doesnt have a matching column in the users table
+        $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
+
+        $this->db->insert($this->tables['purchase_order'], $purchase_data);
+
+        $id = $this->db->insert_id();
+        if($id > 0)
+        {
+            $purchased_product_list = array();
+            foreach($pre_purchased_product_list as $key => $product_info)
+            {
+                $product_info['purchase_order_id'] = $id;
+                $purchased_product_list[] = $product_info;
+            }
+            $this->db->insert_batch($this->tables['product_purchase_order'], $purchased_product_list);
+            if( count($add_stock_list) > 0)
+            {
+                $this->db->insert_batch($this->tables['stock_info'], $add_stock_list);            
+            }
+            foreach($update_stock_list as $key => $update_stock_info)
+            {
+                $this->db->update($this->tables['stock_info'], $update_stock_info, array('product_id' => $update_stock_info['product_id']));
+            }
+        }
+
+        $this->trigger_events('post_add_purchase_order');
+        $this->db->trans_commit();
+        return (isset($id)) ? $id : FALSE;
     }
-    public function get_purchase_order_status()
+    public function get_purchase_order_info($purchase_id)
     {
-        print_r(' get_purchase_order_status is called');
+        $this->db->where($this->tables['purchase_order'].'.id', $purchase_id);
+        return $this->db->select('*')
+                    ->from($this->tables['purchase_order'])
+                    ->get(); 
+    }
+    public function get_purchase_order_list($shop_id)
+    {
+        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);
+        return $this->db->select('*')
+                    ->from($this->tables['purchase_order'])
+                    ->get(); 
     }
     
-    public function add_purchase_order()
+    public function get_purchase_order_no_product_list($purchase_order_no_list, $shop_id)
     {
-        print_r(' add_purchase_order is called');
-    }
-    public function update_purchase_order()
-    {
-        
-    }
-    public function get_all_purchase_orders()
-    {
-        
-    }
-    
-    public function add_product_purchase_order()
-    {
-        print_r(' add_product_purchase_order is called');
-    }
-    public function update_product_purchase_order()
-    {
-        
-    }
-    public function get_all_products_purchase_order()
-    {
-        
+        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);
+        $this->db->where_in($this->tables['purchase_order'].'.purchase_order_no', $purchase_order_no_list);
+        return $this->db->select($this->tables['purchase_order'].'.id as purchase_order_id,'.$this->tables['product_purchase_order'].'.id as product_purchase_order_id,'.$this->tables['purchase_order'].'.purchase_order_no as purchase_order_no,'. $this->tables['product_purchase_order'].'.product_id,'. $this->tables['product_purchase_order'].'.available_quantity')
+                    ->from($this->tables['purchase_order'])
+                    ->join($this->tables['product_purchase_order'], $this->tables['purchase_order'].'.id='.$this->tables['product_purchase_order'].'.purchase_order_id')
+                    ->get();  
     }
 }

@@ -338,7 +338,10 @@
             });
         </script>
         <script src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/sale/common.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/order/common.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/order/product.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/order/purchase.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/order/sale.js"></script>
     </head>
     <body screen_capture_injected="true" cz-shortcut-listen="true">
         <div class="top_nav container">

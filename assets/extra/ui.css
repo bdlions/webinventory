@@ -1,0 +1,49 @@
+#realtime-notification-popup-container { position: fixed; display: none; bottom: 20px; top: auto;  width:430px; right:10px; opacity:0.95; cursor:pointer; z-index:1000 }
+    #realtime-notification-popup-container .pattern {background:url(/static/../img/realtime/popup-pattern.png?v=cda9e11b078da90b564032df1a40a4b0&amp;m=2) repeat; -moz-border-radius:8px; -webkit-border-radius:8px; border-radius:8px; }
+
+#realtime-notification-popup-container .ui-notify-message h1 { font-size:14px; margin:0; padding:0 }
+#realtime-notification-popup-container .ui-notify-message p {line-height: 14px; padding: 0 0; font-size: 14px; margin: 0px 0px 0px 30px; width: 300px;}
+    #realtime-notification-popup-container .ui-notify-message-style p .resize_text_parent {margin-bottom:10px; display:block}
+    #realtime-notification-popup-container .ui-notify-message-style p .jobs_list {color:#CCCCCC; font-size:11px;}
+#realtime-notification-popup-container .ui-notify-message:last-child { margin-bottom:0 }
+#realtime-notification-popup-container .resize_desc_text_parent .resize_desc_text { font-size: 11px; color: #FFF;}
+
+*+html #realtime-notification-popup-container .ui-notify-message-style {background: #424242 !important;}
+
+#realtime-notification-popup-container .pattern-wrap {background: #424242; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(/static/css/data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQyNDI0MiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyZjJmMmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #424242 0%, #2f2f2f 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#424242), color-stop(100%,#2f2f2f)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #424242 0%,#2f2f2f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #424242 0%,#2f2f2f 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #424242 0%,#2f2f2f 100%); /* IE10+ */
+background: linear-gradient(top,  #424242 0%,#2f2f2f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#424242', endColorstr='#2f2f2f',GradientType=0 ); /* IE6-8 */
+-moz-box-shadow: 3px 3px 4px 1px #b4b4b4, inset 0px 1px #666666; -webkit-box-shadow: 3px 3px 4px 1px #b4b4b4,inset 0px 1px #666666; box-shadow: 3px 3px 4px 1px #b4b4b4,inset 0px 1px #666666; border:1px solid #000000; padding:4px 9px; margin-bottom:15px; -moz-border-radius:8px; -webkit-border-radius:8px; border-radius:8px }
+
+#realtime-notification-popup-container .ui-notify-message-style h1 { color:#fff; font-weight:bold }
+#realtime-notification-popup-container .ui-notify-message-style p { color:#fff }
+#realtime-notification-popup-container .ui-notify-close { color:#fff !important; text-decoration:underline }
+#realtime-notification-popup-container .ui-notify-click { cursor:pointer }
+#realtime-notification-popup-container .ui-notify-cross { margin-top:4px; color:#949494 !important; float:right; cursor:pointer; text-decoration:none; font-family:'Arial Black', arial, helvetica; font-size:13px; font-weight:bold; text-shadow: 0px 1px #B8B8B9, 0px -1px #000; padding:0 2px 8px 0;}
+    #realtime-notification-popup-container .ui-notify-cross:hover {color:#bcbcbc !important}
+#realtime-notification-popup-container .ui-notify-cross:hover { color:#ffffab; text-decoration: none !important }
+#realtime-notification-popup-container .ui-notify-cross:active { position:relative; top:1px;  }
+#realtime-notification-popup-container.ui-notify .pad{ padding: 10px 20px 10px 55px; }
+#realtime-notification-popup-container.ui-notify .img-wrap{ float: left;  width: 65px;  height: 65px;  overflow: hidden;  margin-left: -50px; margin-right:15px; margin-bottom:8px;}
+#realtime-notification-popup-container.ui-notify .img-wrap img {-moz-box-shadow: inset -5px -5px 5px #888; -webkit-box-shadow: inset -5px -5px 5px #888; box-shadow: inset -5px -5px 5px #888;}
+#realtime-notification-popup-container.ui-notify .img-wrap img, #realtime-notification-popup-container.ui-notify .img-wrap span{  display: block;  visibility: visible; border: 1px solid #242424;  width: 65px;  height: 65px;  image-rendering: optimizeQuality;  -ms-interpolation-mode: bicubic; padding-bottom:0 !important}
+#realtime-notification-popup-container a { color: #199ADC !important; }
+#realtime-notification-popup-container .ui-notify-message .link {color:#7bc0e8}
+
+    /* Gamification Level Up */
+    #realtime-notification-popup-container .ui-notify-message-style .popup p {color:#333 !important; width:auto !important; line-height:normal !important; }
+        #realtime-notification-popup-container .ui-notify-message-style .popup p.level {color:#008BCB !important; font-size:20px !important;}
+    /* Badge Awarded */
+    #realtime-notification-popup-container .ui-notify-message-style .popup p.badge-name {font-size:20px !important; line-height:18px !important; margin-bottom:5px;}
+    /* Credit and XP */
+    #realtime-notification-popup-container.ui-notify .bubble-xp.big .pad, #realtime-notification-popup-container.ui-notify .bubble-credit.big .pad {padding-left:20px !important;}
+
+    /*Contest invite notification*/
+    #realtime-notification-popup-container .ui-notify-message strong.contestTrophyLogo {display:inline-block; width:17px; height:16px; background:url(/static/css/images/sprite-global.png?v=283366e185926b3134764dda4208dc3b&amp;m=2) 0 -1050px no-repeat; text-indent:1px; line-height:15px;}

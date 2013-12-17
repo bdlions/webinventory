@@ -19,6 +19,7 @@ class User extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('sms_library');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -747,6 +748,7 @@ class User extends CI_Controller {
         $password = "password";
         $email = "dummy@dummy.com";
         $additional_data = array(
+            'card_no' => $card_no,
             'account_status_id' => $this->account_status_list['active_id'],
             'first_name' => $first_name,
             'last_name' => $last_name,
@@ -755,13 +757,8 @@ class User extends CI_Controller {
         );
         $groups = array('id' => $this->user_group['customer_id']);
         $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
-        if( $user_id >= 0 )
+        if( $user_id !== FALSE )
         {
-            $additional_data = array(
-                'user_id' => $user_id,
-                'card_no' => $card_no
-            );
-            $id = $this->ion_auth->create_customer($additional_data);
             $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
             $customer_info = array();
             if( count($customer_info_array) > 0 )
@@ -774,6 +771,7 @@ class User extends CI_Controller {
         else
         {
             $response['status'] = '0';
+            $response['message'] = $this->ion_auth->errors_alert();
         }
         echo json_encode($response);
     }
@@ -786,6 +784,59 @@ class User extends CI_Controller {
             $customer_info = $customer_info_array[0];
             print_r($customer_info_array[0]);
         }
+    }
+    public function create_supplier_purchase_order()
+    {
+        $response = array();
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $phone_no = $_POST['phone_no'];
+        $company = $_POST['company'];;
+        $user_name = $_POST['phone_no'];
+        $password = "password";
+        $email = "dummy@dummy.com";
+        $additional_data = array(
+            'company' => $company,
+            'account_status_id' => $this->account_status_list['active_id'],
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'phone' => $phone_no,
+            'created_date' => date('Y-m-d H:i:s')
+        );
+        $groups = array('id' => $this->user_group['supplier_id']);
+        $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+        if( $user_id !== FALSE )
+        {
+            $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+            $supplier_info = array();
+            if( count($supplier_info_array) > 0 )
+            {
+                $supplier_info = $supplier_info_array[0];
+            }
+            $response['status'] = '1';
+            $response['supplier_info'] = $supplier_info;
+            //$this->sms_library->send_sms($phone_no,'Congratulation for registration');
+        } 
+        else
+        {
+            $response['status'] = '0';
+            $response['message'] = $this->ion_auth->errors_alert();
+        }
+        echo json_encode($response);
+    }
+    public function show_supplier($user_id)
+    {
+        $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+        $supplier_info = array();
+        if( count($supplier_info_array) > 0 )
+        {
+            $supplier_info = $supplier_info_array[0];
+            print_r($supplier_info_array[0]);
+        }
+    }
+    public function test()
+    {
+        $this->sms_library->send_sms('12345','hello');
     }
 
 }

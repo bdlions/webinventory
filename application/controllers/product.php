@@ -33,7 +33,7 @@ class Product extends CI_Controller {
     
     public function create_product()
     {
-        $this->data['message'] = '';
+        $message_data = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('product_name', 'Product Name', 'xss_clean|required');
         $this->form_validation->set_rules('product_code', 'Product Code', 'xss_clean|required');
@@ -43,25 +43,36 @@ class Product extends CI_Controller {
         $this->form_validation->set_rules('brand_name', 'Brand Name', 'xss_clean');
         $this->form_validation->set_rules('unit_price', 'Unit Price', 'xss_clean|required');
         
-        if ($this->input->post('submit_create_product')) 
-        {
-            if ($this->form_validation->run() == true) 
+        if ($this->input->post('submit_create_product') && $this->form_validation->run() == true ) 
+        {            
+            $additional_data = array(
+                'unit_price' => $this->input->post('unit_price')
+            );
+            $product_name = $this->input->post('product_name');
+            $product_code = $this->input->post('product_code');
+            $product_id = $this->product_library->create_product($product_name, $product_code, $additional_data);
+            if( $product_id !== FALSE )
             {
-                $additional_data = array(
-                    'name' => $this->input->post('product_name'),
-                    'code' => $this->input->post('product_code'),
-                    'unit_price' => $this->input->post('unit_price'),
-                    'created_date' => date('Y-m-d H:i:s')
-                );
-                $this->product_library->create_product($additional_data);
-                redirect('product/show_all_products','refresh');
+                $this->session->set_flashdata('message', $this->product_library->messages());
+                redirect('product/create_product','refresh');
             }
             else
             {
-                $this->data['message'] = validation_errors();
+                $message_data = $this->product_library->errors();
             }
         }
-        
+        if(validation_errors() != false) 
+        { 
+            $this->data['message'] = validation_errors();
+        }
+        else if( $message_data != '')
+        {
+           $this->data['message'] = $message_data;
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
         $this->data['product_name'] = array(
             'name' => 'product_name',
             'id' => 'product_name',
@@ -169,7 +180,13 @@ class Product extends CI_Controller {
         }
         $this->template->load(null, 'product/show_all_products', $this->data);
     }
-    
+    /*
+     * This method will create a new product into the system
+     * @return status, 0 for error and 1 for success
+     * @return message, if there is any error
+     * @return product_info, newly created product
+     * @author Nazmul
+     */
     public function create_product_sale_order()
     {
         $response = array();
@@ -177,13 +194,10 @@ class Product extends CI_Controller {
         $product_code = $_POST['product_code'];
         $unit_price = $_POST['unit_price'];
         $additional_data = array(
-            'name' => $product_name,
-            'code' => $product_code,
-            'unit_price' => $unit_price,
-            'created_date' => date('Y-m-d H:i:s')
+            'unit_price' => $unit_price
         );
-        $product_id = $this->product_library->create_product($additional_data);
-        if( $product_id >= 0 )
+        $product_id = $this->product_library->create_product($product_name, $product_code, $additional_data);
+        if( $product_id !== FALSE )
         {
             $product_info_array = $this->product_library->get_product($product_id)->result_array();
             $product_info = array();
@@ -197,6 +211,7 @@ class Product extends CI_Controller {
         else
         {
            $response['status'] = '0';
+           $response['message'] = $this->product_library->errors_alert();
         }
         echo json_encode($response);
     }

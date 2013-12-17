@@ -29,6 +29,8 @@ if (!defined('BASEPATH'))
  */
 class Ion_auth_model extends CI_Model {
 
+    protected $user_group_list = array();
+    protected $customer_identity;
     public $account_status_list = array();
     /**
      * Holds an array of tables used
@@ -172,6 +174,7 @@ class Ion_auth_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->user_group_list = $this->config->item('user_group', 'ion_auth');
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
         $this->load->database();
         $this->load->config('ion_auth', TRUE);
@@ -184,6 +187,7 @@ class Ion_auth_model extends CI_Model {
 
         //initialize data
         $this->identity_column = $this->config->item('identity', 'ion_auth');
+        $this->customer_identity = $this->config->item('customer_identity', 'ion_auth');
         $this->store_salt = $this->config->item('store_salt', 'ion_auth');
         $this->salt_length = $this->config->item('salt_length', 'ion_auth');
         $this->join = $this->config->item('join', 'ion_auth');
@@ -715,7 +719,7 @@ class Ion_auth_model extends CI_Model {
      * */
     public function register($username, $password, $email, $additional_data = array(), $groups = array()) {
         $this->trigger_events('pre_register');
-
+        $this->db->trans_begin();
         $manual_activation = $this->config->item('manual_activation', 'ion_auth');
 
         if ($this->identity_column == 'email' && $this->email_check($email)) {
@@ -767,7 +771,26 @@ class Ion_auth_model extends CI_Model {
 
         if (!empty($groups)) {
             //add to groups
-            foreach ($groups as $group) {
+            foreach ($groups as $group) 
+            {
+                if( $group === $this->user_group_list['customer_id'] && array_key_exists('card_no', $additional_data) )
+                {
+                    $additional_data['user_id'] = $id;
+                    if( $this->create_customer($additional_data) === FALSE)
+                    {
+                        $this->db->trans_rollback();
+                        return FALSE;
+                    }
+                }
+                else if( $group === $this->user_group_list['supplier_id'] && array_key_exists('company', $additional_data) )
+                {
+                    $additional_data['user_id'] = $id;
+                    if( $this->create_supplier($additional_data) === FALSE)
+                    {
+                        $this->db->trans_rollback();
+                        return FALSE;
+                    }
+                }
                 $this->add_to_group($group, $id);
             }
         }
@@ -777,9 +800,8 @@ class Ion_auth_model extends CI_Model {
         if ((isset($default_group->id) && !isset($groups)) || (empty($groups) && !in_array($default_group->id, $groups))) {
             $this->add_to_group($default_group->id, $id);
         }
-
-        $this->trigger_events('post_register');
-
+        $this->db->trans_commit();
+        $this->trigger_events('post_register');        
         return (isset($id)) ? $id : FALSE;
     }
 
@@ -1825,6 +1847,23 @@ class Ion_auth_model extends CI_Model {
 
         return $_output;
     }
+    /**
+     * errors
+     *
+     * Get the error message to be rendered as a popup
+     *
+     * @return void
+     * @author Ben Edmunds
+     * */
+    public function errors_alert() {
+        $_output = '';
+        foreach ($this->errors as $error) {
+            $errorLang = $this->lang->line($error) ? $this->lang->line($error) : '##' . $error . '##';
+            $_output .= $errorLang;
+        }
+
+        return $_output;
+    }
 
     /**
      * errors as array
@@ -1870,14 +1909,35 @@ class Ion_auth_model extends CI_Model {
     }
     
     //--------------------------------------------Customer related queries-----------------------------------------
+    /**
+     * Checks customer identity
+     *
+     * @return bool
+     * @author Nazmul
+     * */
+    public function customer_identity_check($name = '' , $value = '') {
+        $this->trigger_events('customer_identity_check');
+
+        if (empty($name) || empty($value)) {
+            return FALSE;
+        }
+
+        $this->trigger_events('extra_where');
+
+        return $this->db->where($name, $value)
+                        ->count_all_results($this->tables['customers']) > 0;
+    }
     public function create_customer($additional_data)
     {
         $this->trigger_events('pre_create_customer');
-            
+        if ($this->customer_identity == 'card_no' && $this->customer_identity_check('card_no', $additional_data['card_no'])) {
+            $this->set_error('customer_creation_duplicate_card_no');
+            return FALSE;
+        }    
         //filter out any data passed that doesnt have a matching column in the users table
-        $additional_data = $this->_filter_data($this->tables['customers'], $additional_data);
+        $customer_data = $this->_filter_data($this->tables['customers'], $additional_data);
 
-        $this->db->insert($this->tables['customers'], $additional_data);
+        $this->db->insert($this->tables['customers'], $customer_data);
 
         $id = $this->db->insert_id();
 
@@ -1885,13 +1945,10 @@ class Ion_auth_model extends CI_Model {
 
         return (isset($id)) ? $id : FALSE;
     }
-    public function update_customer($user_id, $data)
-    {
-        
-    }
+    
     public function get_all_customers()
     {
-        return $this->db->select($this->tables['users'].'.id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                     ->get();  
@@ -1899,7 +1956,7 @@ class Ion_auth_model extends CI_Model {
     public function get_customer($user_id)
     {
         $this->db->where($this->tables['users'].'.id', $user_id);
-        return $this->db->select($this->tables['users'].'.id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                     ->get(); 
@@ -1908,7 +1965,7 @@ class Ion_auth_model extends CI_Model {
     public function search_customer($key, $value)
     {
         $this->db->like($key, $value); 
-        return $this->db->select($this->tables['users'].'.id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                     ->get();  
@@ -1917,11 +1974,10 @@ class Ion_auth_model extends CI_Model {
     public function create_supplier($additional_data)
     {
         $this->trigger_events('pre_create_supplier');
-            
         //filter out any data passed that doesnt have a matching column in the users table
-        $additional_data = $this->_filter_data($this->tables['suppliers'], $additional_data);
+        $customer_data = $this->_filter_data($this->tables['suppliers'], $additional_data);
 
-        $this->db->insert($this->tables['suppliers'], $additional_data);
+        $this->db->insert($this->tables['suppliers'], $customer_data);
 
         $id = $this->db->insert_id();
 
@@ -1929,35 +1985,31 @@ class Ion_auth_model extends CI_Model {
 
         return (isset($id)) ? $id : FALSE;
     }
-    public function update_supplier($user_id, $data)
-    {
-        
-    }
+    
     public function get_all_suppliers()
     {
-        
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone , '.$this->tables['suppliers'].'.company')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->get();  
     }
     
     public function get_supplier($user_id)
     {
-        
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->get(); 
+    }
+    public function search_supplier($key, $value)
+    {
+        $this->db->like($key, $value); 
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->get();  
     }
     //--------------------------------------------salesman related queries-----------------------------------------
-    public function create_salesman($additional_data)
-    {
-        
-    }
-    public function update_salesman($user_id, $data)
-    {
-        
-    }
-    public function get_all_salesmen()
-    {
-        
-    }
-    
-    public function get_salesman($user_id)
-    {
-        
-    }  
+     
 }

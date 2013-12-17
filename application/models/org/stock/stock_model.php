@@ -580,28 +580,13 @@ class Stock_model extends CI_Model {
     }
     
     //---------------------------------------------- Stock related queries -------------------------------------------
-    public function add_stock()
+    public function get_all_stocks($shop_id)
     {
-        print_r(' add_stock is called');
-    }
-    public function update_stock()
-    {
-        print_r(' update_stock is called');
-    }
-    public function get_stock()
-    {
-        
-    }
-    public function get_stocks()
-    {
-        
-    }
-    public function get_all_stocks()
-    {
-        print_r(' get_all_stocks is called');
-    }
-    public function delete_stock()
-    {
-        
+        $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
+        return $this->db->select($this->tables['stock_info'].'.id as stock_id,'. $this->tables['stock_info'].'.shop_id,'. $this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.stock_amount, '.$this->tables['shop_info'].'.name as shop_name,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['product_info'].'.code as product_code')
+                    ->from($this->tables['stock_info'])
+                    ->join($this->tables['shop_info'], $this->tables['stock_info'].'.shop_id='.$this->tables['shop_info'].'.id')
+                    ->join($this->tables['product_info'], $this->tables['stock_info'].'.product_id='.$this->tables['product_info'].'.id')
+                    ->get(); 
     }
 }

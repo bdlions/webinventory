@@ -31,15 +31,20 @@ $config['collections']['login_attempts'] = 'login_attempts';
 | -------------------------------------------------------------------------
 | Database table names.
 */
-$config['tables']['users']           = 'users';
-$config['tables']['groups']          = 'groups';
-$config['tables']['users_groups']    = 'users_groups';
-$config['tables']['login_attempts']  = 'login_attempts';
+$config['tables']['users']                          = 'users';
+$config['tables']['groups']                         = 'groups';
+$config['tables']['users_groups']                   = 'users_groups';
+$config['tables']['login_attempts']                 = 'login_attempts';
 
-$config['tables']['shop_info']       = 'shop_info';
-$config['tables']['product_info']    = 'product_info';
-$config['tables']['suppliers']       = 'suppliers';
-$config['tables']['customers']       = 'customers';
+$config['tables']['shop_info']                      = 'shop_info';
+$config['tables']['product_info']                   = 'product_info';
+$config['tables']['suppliers']                      = 'suppliers';
+$config['tables']['customers']                      = 'customers';
+$config['tables']['purchase_order']                 = 'purchase_order';
+$config['tables']['product_purchase_order']         = 'product_purchase_order';
+$config['tables']['stock_info']                     = 'stock_info';
+$config['tables']['sale_order']                     = 'sale_order';
+$config['tables']['product_sale_order']             = 'product_sale_order';
 
 /*
  | Users table column and Group table column you want to join WITH.
@@ -61,6 +66,9 @@ $config['user_group']['manager_id']         = '2';
 $config['user_group']['salesman_id']        = '3';
 $config['user_group']['supplier_id']        = '4';
 $config['user_group']['customer_id']        = '5';
+
+$config['product_identity']                 = 'name';
+$config['customer_identity']                = 'card_no';
 
 /*
  | -------------------------------------------------------------------------
@@ -116,7 +124,7 @@ $config['track_login_attempts']       = FALSE;               // Track the number
 $config['maximum_login_attempts']     = 3;                   // The maximum number of failed login attempts.
 $config['lockout_time']               = 600;                 // The number of seconds to lockout an account due to exceeded attempts
 $config['forgot_password_expiration'] = 0;                   // The number of miliseconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire.
-
+$config['sms_sender_server_url']      = "http://dev2-64.xpressfiler.com/SendMSG";       
 
 /*
  | -------------------------------------------------------------------------
@@ -183,10 +191,10 @@ $config['store_salt']  = FALSE;
  | Message Delimiters.
  | -------------------------------------------------------------------------
  */
-$config['message_start_delimiter'] = '<p>'; 	// Message start delimiter
-$config['message_end_delimiter']   = '</p>'; 	// Message end delimiter
-$config['error_start_delimiter']   = '<p>';		// Error mesage start delimiter
-$config['error_end_delimiter']     = '</p>';	// Error mesage end delimiter
+$config['message_start_delimiter'] = '<div style="color:blue">'; 	// Message start delimiter
+$config['message_end_delimiter']   = '</div>'; 	// Message end delimiter
+$config['error_start_delimiter']   = '<div style="color:red">';		// Error mesage start delimiter
+$config['error_end_delimiter']     = '</div>';	// Error mesage end delimiter
 
 /* End of file ion_auth.php */
 /* Location: ./application/config/ion_auth.php */

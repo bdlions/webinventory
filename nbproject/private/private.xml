@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>application/views/purchase/purchase_order.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>157</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/webinventory/application/views/purchase/purchase_order.php</file>
+            <file>file:/C:/xampp/htdocs/webinventory/application/controllers/user.php</file>
+            <file>file:/C:/xampp/htdocs/webinventory/application/libraries/Ion_auth.php</file>
+            <file>file:/C:/xampp/htdocs/webinventory/application/views/salesman/templates/main.php</file>
+            <file>file:/C:/xampp/htdocs/webinventory/application/config/ion_auth.php</file>
+            <file>file:/C:/xampp/htdocs/webinventory/application/libraries/sms_library.php</file>
+            <file>file:/C:/xampp/htdocs/webinventory/assets/js/order/purchase.js</file>
+            <file>file:/C:/xampp/htdocs/webinventory/application/libraries/org/product/product_library.php</file>
+        </group>
+    </open-files>
 </project-private>

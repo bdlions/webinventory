@@ -580,54 +580,42 @@ class Sale_model extends CI_Model {
     }
     
     //---------------------------------------------- Sale related queries -------------------------------------------
-    public function add_sale_order()
+    public function add_sale_order($additional_data, $pre_sale_product_list, $update_stock_list, $update_product_purchase_order_list)
     {
-        print_r(' add_sale_order is called');
+        $this->trigger_events('pre_add_sale_order');
+        //filter out any data passed that doesnt have a matching column in the users table
+        $sale_data = $this->_filter_data($this->tables['sale_order'], $additional_data);
+        $this->db->trans_begin();
+        $this->db->insert($this->tables['sale_order'], $sale_data);
+
+        $id = $this->db->insert_id();
+        if($id > 0)
+        {
+            $sale_product_list = array();
+            foreach($pre_sale_product_list as $key => $product_info)
+            {
+                $product_info['sale_order_id'] = $id;
+                $sale_product_list[] = $product_info;
+            }
+            $this->db->insert_batch($this->tables['product_sale_order'], $sale_product_list);
+            foreach($update_stock_list as $key => $update_stock_info)
+            {
+                $this->db->update($this->tables['stock_info'], $update_stock_info, array('product_id' => $update_stock_info['product_id']));
+            }
+            foreach($update_product_purchase_order_list as $key => $update_product_purchase_order)
+            {
+                $this->db->update($this->tables['product_purchase_order'], $update_product_purchase_order, array('id' => $update_product_purchase_order['id']));
+            }
+        }
+        $this->db->trans_commit();
+        $this->trigger_events('post_add_sale_order');
+        return (isset($id)) ? $id : FALSE;
     }
-    public function update_sale_order()
+    public function get_sale_order_info($sale_id)
     {
-        
+        $this->db->where($this->tables['sale_order'].'.id', $sale_id);
+        return $this->db->select('*')
+                    ->from($this->tables['sale_order'])
+                    ->get(); 
     }
-    public function get_sale_order()
-    {
-        
-    }
-    public function get_sale_orders()
-    {
-        
-    }
-    public function get_all_sale_orders()
-    {
-        
-    }
-    public function delete_sale_order()
-    {
-        
-    }
-    
-    public function add_product_sale_order()
-    {
-        print_r(' add_product_sale_order is called');
-    }
-    public function update_product_sale_order()
-    {
-        
-    }
-    public function get_products_sale_order()
-    {
-        
-    }
-    public function get_products_sale_orders()
-    {
-        
-    }
-    public function get_all_products_sale_orders()
-    {
-        
-    }
-    public function delete_product_sale_order()
-    {
-        
-    }
-    
 }
