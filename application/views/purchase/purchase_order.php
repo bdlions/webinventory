@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#input_date_add_purchase").datepicker();
+        //$("#input_date_add_purchase").datepicker();
         $("#div_supplier_list").on("click", "input", function() {
             if( $(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_supplier_list" )
             {
@@ -424,10 +424,13 @@
 <script type="text/javascript">
     $(function() {
         $('.dropdown-toggle').dropdown();
-        $('.dropdown').click(function(e) {
+        $(".dropdown-menu").on("click", function(e){
             e.stopPropagation();
         });
-
+        $(".btn-default").on("click", function(e){
+            $('#myModal').modal('hide');
+            e.stopPropagation();
+        });
     });
 </script>
 
@@ -683,7 +686,8 @@
                                             </span>
                                         </div>
                                         <div class="clr fr">
-                                            <button id="button_add_product" name="button_add_product" class="btn btn-success">Submit </button>
+                                            <!--<button id="button_add_product" name="button_add_product" class="btn btn-success">Submit </button>-->
+                                            <button id="custom_abc" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Modal Alert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -780,3 +784,30 @@
    </div>
    <p class="clr">&nbsp;</p>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    $(function(){
+        $("#custom_abc").on("click", function(){
+            $('#myModal').modal('show')
+        });
+    });
+</script>
