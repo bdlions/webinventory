@@ -19,11 +19,8 @@
             ?>
         </title>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/styles.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-responsive.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" >
         <link href='http://fonts.googleapis.com/css?family=Dosis:200' rel='stylesheet' type='text/css'>
@@ -31,11 +28,8 @@
         <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet">
         
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
         <!--************************************************************ Drop Down Menu  ****************************************-->
         <script src="<?php echo base_url(); ?>assets/js/ga.js"></script>
-        <script src="<?php echo base_url(); ?>assets/js/jquery-latest.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/twitter-bootstrap-hover-dropdown.js"></script>
         
@@ -65,27 +59,14 @@
         </style>
         <!--************************************************************ Drop Down Menu  ****************************************-->
 
-        <!-- Example plugin: Prettify -->
-        <script src="<?php echo base_url(); ?>assets/js/prettify.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-datepicker.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/widgets.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-transition.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-alert.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-modal.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-dropdown.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-scrollspy.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-tab.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-tooltip.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-popover.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-button.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-collapse.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-carousel.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-typeahead.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-affix.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/holder/holder.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/google-code-prettify/prettify.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/application.js"></script>
         
         <!-- Initialize Scripts -->
