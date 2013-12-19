@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
     $(function() {
-        //$("#input_date_add_purchase").datepicker();
+        $("#input_date_add_purchase").datepicker();
         $("#div_supplier_list").on("click", "input", function() {
             if( $(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_supplier_list" )
             {
