@@ -169,28 +169,106 @@
                 }
             });
         });
-        $("#button_add_supplier").on("click", function() {
-            if ($("#input_first_name").val().length == 0)
+        
+//        $("#button_add_supplier").on("click", function() {
+//            if ($("#input_first_name").val().length == 0)
+//            {
+//                alert("First Name is required.");
+//                return;
+//            }
+//            else if ($("#input_last_name").val().length == 0)
+//            {
+//                alert("Last Name is required.");
+//                return;
+//            }
+//            else if ($("#input_phone_no").val().length == 0)
+//            {
+//                alert("Phone is required.");
+//                return;
+//            }
+//            else if ($("#input_company").val().length == 0)
+//            {
+//                alert("Company is required.");
+//                return;
+//            }
+//            $.ajax({
+//                type: "POST",
+//                url: '<?php //echo base_url(); ?>' + "user/create_supplier_purchase_order",
+//                data: {
+//                    first_name: $("#input_first_name").val(),
+//                    last_name: $("#input_last_name").val(),
+//                    phone_no: $("#input_phone_no").val(),
+//                    company: $("#input_company").val()
+//
+//                },
+//                success: function(data) {
+//                    var response = JSON.parse(data);
+//                    if (response['status'] === '1')
+//                    {
+//                        var s_list = get_supplier_list();
+//                        s_list[s_list.length] = response['supplier_info'];
+//                        set_supplier_list(s_list);
+//                        alert('New supplier is added successfully.');
+//                        var supplier_info = response['supplier_info'];
+//                        
+//                        var current_temp_html_supplier = $("#div_supplier_list").html();                        
+//                        current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
+//                        $("#div_supplier_list").html(current_temp_html_supplier);                        
+//                        update_fields_selected_supplier(supplier_info);
+//                        $('div[class="clr dropdown open"]').removeClass('open');
+//                    }
+//                }
+//
+//            });
+//        });
+
+        $("#button_confirm").on("click", function() {
+            if ($("#input_product_name").val().length != 0)
             {
-                alert("First Name is required.");
-                return;
-            }
-            else if ($("#input_last_name").val().length == 0)
+                $.ajax({
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
+                data: {
+                    product_name: $("#input_product_name").val(),
+                    product_code: $("#input_product_code").val(),
+                    unit_price: $("#input_unit_price").val()
+                },
+                success: function(data) {
+                    var response = JSON.parse(data);
+                    if (response['status'] === '1')
+                    {
+                        var p_list = get_product_list();
+                        p_list[p_list.length] = response['product_info'];
+                        set_product_list(p_list);
+                        alert('New product is added successfully.');
+                        var product_info = response['product_info'];
+                        
+                        var current_temp_html_product = $("#div_product_list").html();                        
+                        current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
+                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
+                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['code'] + '"/>';
+                        current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
+                        current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
+                        current_temp_html_product = current_temp_html_product + '</span>';
+                        current_temp_html_product = current_temp_html_product + '</span>';
+                        $("#div_product_list").html(current_temp_html_product);
+                        append_selected_product(product_info);
+                        $('div[class="clr dropdown open"]').removeClass('open');
+                    }
+                }
+
+            });
+            
+           }
+            if ($("#input_first_name").val().length != 0)
             {
-                alert("Last Name is required.");
-                return;
-            }
-            else if ($("#input_phone_no").val().length == 0)
-            {
-                alert("Phone is required.");
-                return;
-            }
-            else if ($("#input_company").val().length == 0)
-            {
-                alert("Company is required.");
-                return;
-            }
-            $.ajax({
+                $.ajax({
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "user/create_supplier_purchase_order",
                 data: {
@@ -225,58 +303,40 @@
                 }
 
             });
+            }
+//            else if ($("#input_product_code").val().length == 0)
+//            {
+//                alert("Product Code is required.");
+//                return;
+//            }
+//            else if ($("#input_unit_price").val().length == 0)
+//            {
+//                alert("Unit Price is required.");
+//                return;
+//            }
+            
+            $('#myModal').modal('hide');
         });
-
-        $("#button_add_product").on("click", function() {
-            if ($("#input_product_name").val().length == 0)
-            {
-                alert("Product Name is required.");
-                return;
-            }
-            else if ($("#input_product_code").val().length == 0)
-            {
-                alert("Product Code is required.");
-                return;
-            }
-            else if ($("#input_unit_price").val().length == 0)
-            {
-                alert("Unit Price is required.");
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
-                data: {
-                    product_name: $("#input_product_name").val(),
-                    product_code: $("#input_product_code").val(),
-                    unit_price: $("#input_unit_price").val()
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    if (response['status'] === '1')
-                    {
-                        var p_list = get_product_list();
-                        p_list[p_list.length] = response['product_info'];
-                        set_product_list(p_list);
-                        alert('New product is added successfully.');
-                        var product_info = response['product_info'];
-                        
-                        var current_temp_html_product = $("#div_product_list").html();                        
-                        current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['code'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
-                        current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
-                        current_temp_html_product = current_temp_html_product + '</span>';
-                        current_temp_html_product = current_temp_html_product + '</span>';
-                        $("#div_product_list").html(current_temp_html_product);
-                        append_selected_product(product_info);
-                        $('div[class="clr dropdown open"]').removeClass('open');
-                    }
-                }
-
-            });
-        });
+        
+//        $("#button_add_product_confirm").on("click", function() {
+////            if ($("#input_product_name").val().length == 0)
+////            {
+////                alert("Product Name is required.");
+////                return;
+////            }
+////            else if ($("#input_product_code").val().length == 0)
+////            {
+////                alert("Product Code is required.");
+////                return;
+////            }
+////            else if ($("#input_unit_price").val().length == 0)
+////            {
+////                alert("Unit Price is required.");
+////                return;
+////            }
+//            
+//        });
+        
         $("#div_selected_product_list").on("change", "input", function() {
             var product_id = '';
             var product_quantity = 1;
@@ -686,8 +746,8 @@
                                             </span>
                                         </div>
                                         <div class="clr fr">
-                                            <!--<button id="button_add_product" name="button_add_product" class="btn btn-success">Submit </button>-->
-                                            <button id="custom_abc" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Modal Alert</button>
+                                            <button id="button_add_product" name="button_add_product" class="btn btn-success">Submit </button>
+                                            <!--<button id="custom_abc" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Modal Alert</button>-->
                                         </div>
                                     </div>
                                 </div>
@@ -791,14 +851,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
       </div>
       <div class="modal-body">
-        ...
+       Do You want to proceed?
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer">          
+        <button type="button" id ="button_confirm" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -806,8 +866,46 @@
 
 <script type="text/javascript">
     $(function(){
-        $("#custom_abc").on("click", function(){
-            $('#myModal').modal('show')
+        $("#button_add_product").on("click", function(){
+            if ($("#input_product_name").val().length == 0)
+            {
+                alert("Product Name is required.");
+                return;
+            }
+            else if ($("#input_product_code").val().length == 0)
+            {
+                alert("Product Code is required.");
+                return;
+            }
+            else if ($("#input_unit_price").val().length == 0)
+            {
+                alert("Unit Price is required.");
+                return;
+            }
+            $('#myModal').modal('show');
+        });
+        $("#button_add_supplier").on("click", function(){
+            if ($("#input_first_name").val().length == 0)
+            {
+                alert("First Name is required.");
+                return;
+            }
+            else if ($("#input_last_name").val().length == 0)
+            {
+                alert("Last Name is required.");
+                return;
+            }
+            else if ($("#input_phone_no").val().length == 0)
+            {
+                alert("Phone is required.");
+                return;
+            }
+            else if ($("#input_company").val().length == 0)
+            {
+                alert("Company is required.");
+                return;
+            }
+            $('#myModal').modal('show');
         });
     });
 </script>
