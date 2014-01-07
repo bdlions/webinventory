@@ -37,6 +37,7 @@ $config['tables']['users_groups']                   = 'users_groups';
 $config['tables']['login_attempts']                 = 'login_attempts';
 
 $config['tables']['shop_info']                      = 'shop_info';
+$config['tables']['users_shop_info']                = 'users_shop_info';
 $config['tables']['product_info']                   = 'product_info';
 $config['tables']['suppliers']                      = 'suppliers';
 $config['tables']['customers']                      = 'customers';
@@ -45,6 +46,8 @@ $config['tables']['product_purchase_order']         = 'product_purchase_order';
 $config['tables']['stock_info']                     = 'stock_info';
 $config['tables']['sale_order']                     = 'sale_order';
 $config['tables']['product_sale_order']             = 'product_sale_order';
+$config['tables']['expense_type']                   = 'expense_type';
+$config['tables']['expense_info']                   = 'expense_info';
 
 /*
  | Users table column and Group table column you want to join WITH.
@@ -69,6 +72,11 @@ $config['user_group']['customer_id']        = '5';
 
 $config['product_identity']                 = 'name';
 $config['customer_identity']                = 'card_no';
+
+$config['expense_type']['shop']             = '1';
+$config['expense_type']['supplier']         = '2';
+$config['expense_type']['user']             = '3';
+$config['expense_type']['other']            = '4';
 
 /*
  | -------------------------------------------------------------------------

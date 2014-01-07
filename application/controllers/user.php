@@ -767,6 +767,7 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['customer_info'] = $customer_info;
+            $this->sms_library->send_sms($phone_no,'Hello World');
         } 
         else
         {
@@ -815,7 +816,7 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['supplier_info'] = $supplier_info;
-            //$this->sms_library->send_sms($phone_no,'Congratulation for registration');
+            $this->sms_library->send_sms($phone_no,'Congratulation for registration');
         } 
         else
         {

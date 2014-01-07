@@ -800,6 +800,16 @@ class Ion_auth_model extends CI_Model {
         if ((isset($default_group->id) && !isset($groups)) || (empty($groups) && !in_array($default_group->id, $groups))) {
             $this->add_to_group($default_group->id, $id);
         }
+        
+        //add to shop
+        
+        if( !$this->add_to_shop($id) )
+        {
+            $this->set_error('account_creation_shop_assignment_error');
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+        
         $this->db->trans_commit();
         $this->trigger_events('post_register');        
         return (isset($id)) ? $id : FALSE;
@@ -848,7 +858,7 @@ class Ion_auth_model extends CI_Model {
                         $this->set_error('login_unsuccessful_not_active');
 
                         return FALSE;
-                }
+                }                
                 return $user;
             }
         }
@@ -862,6 +872,13 @@ class Ion_auth_model extends CI_Model {
         $this->set_error('login_unsuccessful');
 
         return FALSE;
+    }
+    
+    public function get_user_shop_info($user_id)
+    {
+        $this->db->where('user_id', $user_id);
+        $this->response = $this->db->get($this->tables['users_shop_info']);
+        return $this;
     }
 
     /**
@@ -1223,6 +1240,22 @@ class Ion_auth_model extends CI_Model {
         }
         return $return;
     }
+    
+    public function add_to_shop($user_id, $shop_id = '') {
+        $this->trigger_events('add_to_shop');
+
+        if(empty($shop_id))
+        {
+            //get shop id of currently logged in user
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $data = array(
+            'user_id' => $user_id,
+            'shop_id' => $shop_id
+        );
+        $id = $this->db->insert($this->tables['users_shop_info'],$data);
+        return (isset($id)) ? $id : FALSE;
+    }
 
     /**
      * remove_from_group
@@ -1472,7 +1505,12 @@ class Ion_auth_model extends CI_Model {
             'old_last_login' => $user->last_login,
             'user_type' => $user->user_type     
         );
-
+        //storing shop id into session
+        $user_shop_info_array = $this->get_user_shop_info($user->id)->result_array();
+        if(count($user_shop_info_array) > 0)
+        {
+            $session_data['shop_id'] = $user_shop_info_array[0]['shop_id'];
+        }
         $this->session->set_userdata($session_data);
 
         $this->trigger_events('post_set_session');
@@ -1986,11 +2024,17 @@ class Ion_auth_model extends CI_Model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_all_suppliers()
+    public function get_all_suppliers($shop_id = '')
     {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone , '.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])
                     ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
     }
     
@@ -2011,5 +2055,18 @@ class Ion_auth_model extends CI_Model {
                     ->get();  
     }
     //--------------------------------------------salesman related queries-----------------------------------------
-     
+    public function get_all_shop_employees($shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where_in($this->tables['users_groups'].'.group_id',array($this->user_group_list['manager_id'], $this->user_group_list['salesman_id']))
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();  
+    } 
 }

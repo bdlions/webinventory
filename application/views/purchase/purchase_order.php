@@ -570,7 +570,7 @@
                         <span class="fl">Supplier</span>
                         <span class="fr" style="margin-left:6px;">
                             <input id="input_add_purchase_supplier_id" name="input_add_purchase_supplier_id" type="hidden" />
-                            <input id="input_add_purchase_supplier" style="width:96% !important;" type="text" />
+                            <input class="span2" id="input_add_purchase_supplier" style="width:96% !important;" type="text" />
                         </span>
                     </div>
                     <div class="dropdown-menu cust_popup" style="width:300%; padding: 15px; padding-bottom: 15px;">
@@ -613,7 +613,7 @@
                                         </div>
                                     </div>
                                     <div class="thirty_percnt customer1 san3 refresh" style="width:auto;">                                        
-                                        <input id="input_search_supplier" name="input_search_supplier" style="width:auto;" class="clr" type="text" />
+                                        <input class="span2" id="input_search_supplier" name="input_search_supplier" style="width:auto;" type="text" />
                                         <button id="button_search_supplier" name="button_search_supplier" class="btn btn-success fr">Search </button>
                                     </div>
                                 </div>
@@ -625,25 +625,25 @@
                                         <div class="clr">
                                             <span class="fl">First Name</span>
                                             <span class="fr">
-                                                <input id="input_first_name" name="input_first_name" type="text" />
+                                                <input class="span2" id="input_first_name" name="input_first_name" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr">
                                             <span class="fl">Last Name</span>
                                             <span class="fr">
-                                                <input id="input_last_name" name="input_last_name" type="text" />
+                                                <input class="span2" id="input_last_name" name="input_last_name" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr">
                                             <span class="fl">Phone No</span>
                                             <span class="fr">
-                                                <input id="input_phone_no" name="input_phone_no" type="text" />
+                                                <input class="span2" id="input_phone_no" name="input_phone_no" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr">
                                             <span class="fl">Company</span>
                                             <span class="fr">
-                                                <input id="input_company" name="input_company" type="text" />
+                                                <input class="span2" id="input_company" name="input_company" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr fr">
@@ -659,16 +659,16 @@
 
                 <div class="clr">
                     <span class="fl">Phone</span>
-                    <span class="fr"><input id="input_add_purchase_phone" name="input_add_purchase_phone" type="text" /></span>
+                    <span class="fr"><input class="span2" id="input_add_purchase_phone" name="input_add_purchase_phone" type="text" /></span>
                 </div>
                 <div class="clr">
                     <span class="fl">Company</span>
-                    <span class="fr"><input id="input_add_purchase_company" name="input_add_purchase_company" type="text" /></span>
+                    <span class="fr"><input class="span2" id="input_add_purchase_company" name="input_add_purchase_company" type="text" /></span>
                 </div>
                 <div class="clr">
                     <span class="fl">Address</span>
                     <span class="fr">
-                        <Textarea id="textarea_add_sale_address" name="textarea_add_purchase_address"></textarea>
+                        <Textarea class="span2" id="textarea_add_sale_address" name="textarea_add_purchase_address"></textarea>
                     </span>
                 </div>
                 <p class="clr">&nbsp;</p>
@@ -676,7 +676,7 @@
                     <div style ="width:250px;"class="dropdown-toggle" data-toggle="dropdown">
                         <span class="fl">Product</span>
                         <span class="fr" style="margin-left:6px;">
-                            <input id="input_add_purchase_supplier" style="width:96% !important;" type="text" />
+                            <input class="span2" id="input_add_purchase_supplier" style="width:96% !important;" type="text" />
                         </span>
                     </div>
                     <div class="dropdown-menu cust_popup" style="width:300%; padding: 15px; padding-bottom: 15px;">
@@ -718,7 +718,7 @@
                                         </div>
                                     </div>
                                     <div class="thirty_percnt customer1 san3 refresh" style="width:auto;">                                        
-                                        <input id="input_search_product" name="input_search_product" style="width:auto;" class="clr" type="text" />
+                                        <input class="span2" id="input_search_product" name="input_search_product" style="width:auto;" type="text" />
                                         <button id="button_search_product" name="button_search_product" class="btn btn-success fr">Search </button>
                                     </div>
                                 </div>
@@ -730,19 +730,19 @@
                                         <div class="clr">
                                             <span class="fl">Product Name</span>
                                             <span class="fr">
-                                                <input id="input_product_name" name="input_product_name" type="text" />
+                                                <input class="span2" id="input_product_name" name="input_product_name" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr">
                                             <span class="fl">Product Code</span>
                                             <span class="fr">
-                                                <input id="input_product_code" name="input_product_code" type="text" />
+                                                <input class="span2" id="input_product_code" name="input_product_code" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr">
                                             <span class="fl">Unit Price</span>
                                             <span class="fr">
-                                                <input id="input_unit_price" name="input_unit_price" type="text" />
+                                                <input class="span2" id="input_unit_price" name="input_unit_price" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr fr">
@@ -771,18 +771,18 @@
             <div class="clr">
                <span class="fl">Order #</span>
                <span class="fr">
-                   <input id="purchase_order_no" name="purchase_order_no" type="text" />
+                   <input class="span2" id="purchase_order_no" name="purchase_order_no" type="text" />
                </span>
             </div>
             <div class="clr">
                <span class="fl">Date</span>
                <span class="fr">
-                   <input id="input_date_add_purchase"/>
+                   <input class="span2" id="input_date_add_purchase"/>
                </span>
             </div>
             <div class="clr">
                <span class="fl">Status</span>
-               <span class="fr"><input type="text" value="open" /></span>
+               <span class="fr"><input class="span2" type="text" value="open" /></span>
             </div>
          </div>
       </div>

@@ -55,6 +55,9 @@ $lang['group_delete_successful']    = 'Group deleted';
 $lang['group_delete_unsuccessful'] 	= 'Unable to delete group';
 $lang['group_name_required'] 		= 'Group name is a required field';
 
+// Shop
+$lang['account_creation_shop_assignment_error']  = 'Error while storing shop info of a user';
+
 // Email Subjects
 $lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';
 $lang['email_new_password_subject']          = 'New Password';
@@ -71,3 +74,8 @@ $lang['customer_creation_duplicate_card_no']       = 'Card No Already Used or In
 
 //purchase
 $lang['add_purchase_order_duplicate_purchase_order_no']       = 'Order # already used or invalid.';
+
+//Expense
+$lang['add_expense_invalid_shop']       = 'Shop Id is invalid.';
+$lang['add_expense_invalid_user']       = 'User Id is invalid.';
+$lang['add_expense_success']       = 'Expense is added successfully.';

@@ -217,6 +217,8 @@
             <div class="btn-group">
                 <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Tools <span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                    <li><a href="<?php echo base_url("./expense/add_expense");?>">Add Expenses</a></li>
+                    <li><a href="<?php echo base_url("./expense/show_expense");?>">Show Expenses</a></li>
                     <li><a href="<?php echo base_url("./user/create_supplier");?>">Create Supplier</a></li>
                     <li><a href="<?php echo base_url("./user/create_customer");?>">Create Customer</a></li>
                     <li><a href="<?php echo base_url("./shop/create_shop");?>">Create Shop</a></li>

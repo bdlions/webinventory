@@ -604,8 +604,12 @@ class Shop_model extends CI_Model {
         $this->db->update($this->tables['shop_info'], $data, array('id' => $shop_id));
     }
     
-    public function get_shop($shop_id)
+    public function get_shop($shop_id = '')
     {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->where('id', $shop_id);
         $this->response = $this->db->get($this->tables['shop_info']);
         return $this;
