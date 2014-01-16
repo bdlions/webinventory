@@ -1,21 +1,21 @@
- <h2>Create Supplier</h2>
+<h2>Create Customer</h2>
 <div class="clr search_details">
     <div class="clr span12">
         <div class="span12">
             <div class="row-fluid">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Supplier Info</a></li>								
+                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Customer Info</a></li>								
                     </ul>
                     <div class="tab-content">
-                        <?php echo form_open("user/create_supplier", array('id' => 'form_create_supplier')); ?>
+                        <?php echo form_open("user/update_customer/".$customer_info['user_id'], array('id' => 'form_update_customer')); ?>
                         <div class="tab-pane active" id="tabs1-pane1">
                             <?php echo $message;?>
                             <p class="clr">										
                             <div class="clr">
-                                <div class="fifty fl span6">
+                                <div class="fifty fl span6">                                   
                                     <fieldset>
-                                        <legend>General Information</legend>
+                                        <legend>General Information</legend>                                            
                                         <div class="clr span10">
                                             <span class="fl">Phone</span>
                                             <span class="fr">
@@ -39,61 +39,51 @@
                                             <span class="fr">
                                                 <?php echo form_input($address); ?>
                                             </span>			
-                                        </div>                                          
+                                        </div>                                                                                      
                                     </fieldset>
                                 </div>
-                                <div class="fifty fr span6">
-                                    <form>
-                                        <fieldset>
-                                            <legend>Picture</legend>
-											<p>Upload a photo for your profile picture.</p>
-											<div class="span7 offset2">	
-												<div class="pictureBox">
-													<img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRzqaxb6ifkzZ0zi5iDxamjKiS7OAsz8sbPUoQPukI28DZTO-ClK24pXBen" alt="">
-												</div>
-											</div>
-                                            <div class="clr span6">
-                                                <span class="">
-                                                    <input type="file" class="span2" value="Browse" />
-                                                </span>			
-												<span class="">
-                                                    <button class="btn btn-success fr">Upload </button>
-                                                </span>			
-                                            </div>
-											<div class="clr span9" style="margin:10px;">
-												<form action="#" method="post" accept-charset="utf-8" class="form-horizontal"> 
-												<div class="control-group">
-													<div class="controls pull-right">
-														<button class="btn btn-success fl" style="margin-right:5px">cancel </button>
-														<button class="btn btn-success fr">Save </button>
-													</div>
-												</div>
-												</form>
-											</div>	
-                                        </fieldset>
-                                    </form>		
+                                <div class="fifty fr span6">                                    
+                                    <fieldset>
+                                        <legend>Picture</legend>
+                                        <div class="clr span10">
+                                            <span class="clr">
+                                                <input type="file" class="span2" value="Browse" />
+                                            </span>			
+                                        </div> 															
+                                    </fieldset>                                    	
                                 </div>
                             </div>
                             <div class="clr">
-                                <div class="fifty fl span6">
+                                <div class="fifty fl span6">                                    
                                     <fieldset>
-                                        <legend>Supplier Information</legend>
+                                        <legend>Customer Information</legend>
                                         <div class="clr span10">
-                                            <span class="fl">Company</span>
+                                            <span class="fl">Card No</span>
                                             <span class="fr">
-                                                <?php echo form_input($company); ?>
+                                                <?php echo form_input($card_no); ?>
                                             </span>			
                                         </div>
                                         <div class="clr span10">
-                                            <span class="fl">
-                                                <?php echo form_submit($submit_create_supplier); ?>
+                                            <span class="fl">Institution</span>
+                                            <span class="fr">
+                                                <?php echo form_dropdown('institution_list', $institution_list, $selected_institution); ?> 
+                                            </span>			
+                                        </div>
+                                        <div class="clr span10">
+                                            <span class="fl">Profession</span>
+                                            <span class="fr">
+                                                <?php echo form_dropdown('profession_list', $profession_list, $selected_profession); ?> 
                                             </span>			
                                         </div> 
-                                    </fieldset>	
-                                </div>
+                                        <div class="clr span10">
+                                            <span class="fl">
+                                                <?php echo form_input($submit_update_customer); ?>
+                                            </span>			
+                                        </div>
+                                    </fieldset>                                    		
+                                </div>                                
                             </div>	
                             </p>
-
                         </div>
                         <?php echo form_close(); ?>
                     </div>

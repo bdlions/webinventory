@@ -33,9 +33,8 @@ class Stock extends CI_Controller {
     
     function show_all_stocks()
     {
-        $shop_id = 1;
         $this->data['stock_list'] = array();
-        $stock_list_array = $this->stock_library->get_all_stocks($shop_id)->result_array();
+        $stock_list_array = $this->stock_library->get_all_stocks()->result_array();
         if( count($stock_list_array) > 0)
         {
             $this->data['stock_list'] = $stock_list_array;

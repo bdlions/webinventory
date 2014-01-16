@@ -1,14 +1,14 @@
- <h2>Create Supplier</h2>
+ <h2>Create Manager</h2>
 <div class="clr search_details">
     <div class="clr span12">
         <div class="span12">
             <div class="row-fluid">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Supplier Info</a></li>								
+                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Manager Info</a></li>								
                     </ul>
                     <div class="tab-content">
-                        <?php echo form_open("user/create_supplier", array('id' => 'form_create_supplier')); ?>
+                        <?php echo form_open("user/create_manager", array('id' => 'form_create_manager')); ?>
                         <div class="tab-pane active" id="tabs1-pane1">
                             <?php echo $message;?>
                             <p class="clr">										
@@ -39,7 +39,12 @@
                                             <span class="fr">
                                                 <?php echo form_input($address); ?>
                                             </span>			
-                                        </div>                                          
+                                        </div> 
+                                        <div class="clr span10">
+                                            <span class="fl">
+                                                <?php echo form_submit($submit_create_manager); ?>
+                                            </span>			
+                                        </div>
                                     </fieldset>
                                 </div>
                                 <div class="fifty fr span6">
@@ -73,25 +78,7 @@
                                         </fieldset>
                                     </form>		
                                 </div>
-                            </div>
-                            <div class="clr">
-                                <div class="fifty fl span6">
-                                    <fieldset>
-                                        <legend>Supplier Information</legend>
-                                        <div class="clr span10">
-                                            <span class="fl">Company</span>
-                                            <span class="fr">
-                                                <?php echo form_input($company); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">
-                                                <?php echo form_submit($submit_create_supplier); ?>
-                                            </span>			
-                                        </div> 
-                                    </fieldset>	
-                                </div>
-                            </div>	
+                            </div>                            	
                             </p>
 
                         </div>

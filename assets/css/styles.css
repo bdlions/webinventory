@@ -230,7 +230,7 @@ h2.head_task{
     background-size: 28px 31px;
     background-position: 0px -1px;
     border: 0px solid #ccc;
-    width: 96%;
+    width: 78%;
     height: 31px;
     margin: 5px auto;
     border-radius: 5px;
@@ -544,7 +544,7 @@ div.fifty .span12{
     margin-bottom:20px;
 }
 .btn .caret{
-    margin-top: 2px !important;
+    margin-top: 10px !important;
     margin-left: 6px !important;
 }
 .select_div{
@@ -1019,6 +1019,14 @@ div.copyright ul li a:hover{
 }
 div.copyright ul li a:hover{
 	color: maroon;
+}
+div.col-12 div.btn-toolbar div.btn-group:nth-child(4),
+div.col-12 div.btn-toolbar div.btn-group:nth-child(5),
+div.col-12 div.btn-toolbar div.btn-group:nth-child(6),
+div.col-12 div.btn-toolbar div.btn-group:nth-child(7),
+div.col-12 div.btn-toolbar div.btn-group:nth-child(8){
+     position: relative;
+     z-index: 999999;
 }
 /***********************************************************************************************/
 @media (min-width: 1200px){

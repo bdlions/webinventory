@@ -580,8 +580,12 @@ class Stock_model extends CI_Model {
     }
     
     //---------------------------------------------- Stock related queries -------------------------------------------
-    public function get_all_stocks($shop_id)
+    public function get_all_stocks($shop_id = '')
     {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
         return $this->db->select($this->tables['stock_info'].'.id as stock_id,'. $this->tables['stock_info'].'.shop_id,'. $this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.stock_amount, '.$this->tables['shop_info'].'.name as shop_name,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['product_info'].'.code as product_code')
                     ->from($this->tables['stock_info'])

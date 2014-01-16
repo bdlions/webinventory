@@ -170,4 +170,32 @@ class Shop extends CI_Controller {
         );
         $this->template->load(null, 'shop/update_shop',$this->data);
     }
+    
+    public function set_shop()
+    {
+        $this->data['message'] = '';
+        $shop_list_array = $this->shop_library->get_all_shops()->result_array();
+        $this->data['shop_list'] = array();
+        if( !empty($shop_list_array) )
+        {
+            foreach ($shop_list_array as $key => $shop_info) {
+                $this->data['shop_list'][$shop_info['id']] = $shop_info['name'];
+            }
+        }
+        if ($this->input->post('submit_set_shop')) 
+        {
+            $shop_id = $this->input->post('shop_list');
+            $session_data['shop_id'] = $shop_id;
+            $this->session->set_userdata($session_data);
+            redirect("shop/set_shop","refresh");
+        }
+        $this->data['submit_set_shop'] = array(
+            'name' => 'submit_set_shop',
+            'id' => 'submit_set_shop',
+            'type' => 'submit',
+            'value' => 'Update',
+        );
+        $this->data['select_shop_id'] = $this->session->userdata('shop_id');
+        $this->template->load(null, 'shop/set_shop', $this->data);
+    }
 }

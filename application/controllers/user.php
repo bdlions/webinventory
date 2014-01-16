@@ -663,78 +663,324 @@ class User extends CI_Controller {
         }
     }
     
-    public function create_supplier()
+    /*
+     * ---------------------------------- Customer Module -----------------------------------------------
+     */
+    public function create_customer()
     {
         $this->data['message'] = '';
-        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('user_name', 'User Name', 'xss_clean|required');
-        $this->form_validation->set_rules('password', 'Password', 'xss_clean|required');
-        $this->form_validation->set_rules('email', 'Email', 'xss_clean|required');
-        $this->form_validation->set_rules('company_name', 'Supplier Name', 'xss_clean|required');
-        if ($this->input->post('submit_create_supplier')) 
+        $this->form_validation->set_rules('card_no', 'Card No', 'xss_clean|required');
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        
+        if ($this->input->post('submit_create_customer')) 
         {
             if ($this->form_validation->run() == true) 
             {
-                $user_name = $this->input->post('user_name');
-                $password =$this->input->post('password');
-                $email = $this->input->post('email');
+                $user_name = $this->input->post('phone');
+                $password = "password";
+                $email = "dummy@dummy.com";
                 $additional_data = array(
-                    'account_status_id' => 1,
+                    'card_no' => $this->input->post('card_no'),
+                    'account_status_id' => $this->account_status_list['active_id'],
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'institution_id' => $this->input->post('institution_list'),
+                    'profession_id' => $this->input->post('profession_list'),
                     'created_date' => date('Y-m-d H:i:s')
                 );
-                $groups = array(
-                    'id' => 4
-                );
+                $groups = array('id' => $this->user_group['customer_id']);
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
-                $supplier_data = array(
-                    'user_id' => $user_id,
-                    'company' => $this->input->post('company_name')
-                );
-                $this->ion_auth->create_supplier($supplier_data);
-                //redirect('','refresh');
+                if( $user_id !== FALSE )
+                {
+                    $this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/create_customer","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
             }
             else
             {
                 $this->data['message'] = validation_errors();
             }
         }
-        $this->data['user_name'] = array(
-            'name' => 'user_name',
-            'id' => 'user_name',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('user_name'),
-        );
-        $this->data['password'] = array(
-            'name' => 'password',
-            'id' => 'password',
-            'type' => 'password',
-            'value' => '',
-        );
-        $this->data['email'] = array(
-            'name' => 'email',
-            'id' => 'email',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('email'),
-        );
-        $this->data['company_name'] = array(
-            'name' => 'company_name',
-            'id' => 'company_name',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('company_name'),
-        );
-        $this->data['submit_create_supplier'] = array(
-            'name' => 'submit_create_supplier',
-            'id' => 'submit_create_supplier',
-            'type' => 'submit',
-            'value' => 'Add',
-        );
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
         
-        $this->template->load(null, 'supplier/create_supplier', $this->data);
+        $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
+        $this->data['institution_list'] = array();
+        if( !empty($institution_list_array) )
+        {
+            foreach ($institution_list_array as $key => $institution) {
+                $this->data['institution_list'][$institution['id']] = $institution['description'];
+            }
+        }
+        $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
+        $this->data['profession_list'] = array();
+        if( !empty($profession_list_array) )
+        {
+            foreach ($profession_list_array as $key => $profession) {
+                $this->data['profession_list'][$profession['id']] = $profession['description'];
+            }
+        }
+        $this->data['card_no'] = array(
+            'name' => 'card_no',
+            'id' => 'card_no',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('card_no'),
+        );
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('first_name'),
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('last_name'),
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $this->form_validation->set_value('address'),
+        );
+        $this->data['submit_create_customer'] = array(
+            'name' => 'submit_create_customer',
+            'id' => 'submit_create_customer',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'customer/create_customer',$this->data);
     }
     
-    public function create_customer()
+    public function show_all_customers()
     {
-        $this->template->load(null, 'customer/create_customer');
+        $this->data['customer_list'] = array();
+        $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+        if( !empty($customer_list_array) )
+        {
+            $this->data['customer_list'] = $customer_list_array;
+        } 
+        $this->template->load(null, 'customer/show_all_customers', $this->data);
+    }
+    
+    public function update_customer($user_id = '')
+    {
+        if(empty($user_id))
+        {
+            redirect("user/show_all_customers","refresh");
+        }
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('card_no', 'Card No', 'xss_clean|required');
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        
+        $customer_info = array();
+        $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
+        if(empty($customer_info_array))
+        {
+            redirect("user/show_all_customers","refresh");
+        }
+        else
+        {
+            $customer_info = $customer_info_array[0];
+        }
+        $this->data['customer_info'] = $customer_info;
+        if ($this->input->post('submit_update_customer')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $additional_data = array(
+                    'user_group_id' => $this->user_group['customer_id'],
+                    'card_no' => $this->input->post('card_no'),
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'institution_id' => $this->input->post('institution_list'),
+                    'profession_id' => $this->input->post('profession_list'),
+                    'modified_date' => date('Y-m-d H:i:s')
+                );
+                if( $this->ion_auth->update($user_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/update_customer/".$customer_info['user_id'],"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
+        $this->data['institution_list'] = array();
+        if( !empty($institution_list_array) )
+        {
+            foreach ($institution_list_array as $key => $institution) {
+                $this->data['institution_list'][$institution['id']] = $institution['description'];
+            }
+        }
+        $this->data['selected_institution'] = $customer_info['institution_id'];
+        $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
+        $this->data['profession_list'] = array();
+        if( !empty($profession_list_array) )
+        {
+            foreach ($profession_list_array as $key => $profession) {
+                $this->data['profession_list'][$profession['id']] = $profession['description'];
+            }
+        }
+        $this->data['selected_profession'] = $customer_info['profession_id'];
+        $this->data['card_no'] = array(
+            'name' => 'card_no',
+            'id' => 'card_no',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['card_no'],
+        );
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['phone'],
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['first_name'],
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['last_name'],
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $customer_info['address'],
+        );
+        $this->data['submit_update_customer'] = array(
+            'name' => 'submit_update_customer',
+            'id' => 'submit_update_customer',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'customer/update_customer',$this->data);
+    }
+    
+    public function show_customer($user_id)
+    {
+        if(empty($user_id))
+        {
+            redirect("user/show_all_customers","refresh");
+        }
+        $this->data['message'] = '';       
+        
+        $customer_info = array();
+        $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
+        if(empty($customer_info_array))
+        {
+            redirect("user/show_all_customers","refresh");
+        }
+        else
+        {
+            $customer_info = $customer_info_array[0];
+        }
+        $this->data['customer_info'] = $customer_info;
+        
+        $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
+        $this->data['institution_list'] = array();
+        if( !empty($institution_list_array) )
+        {
+            foreach ($institution_list_array as $key => $institution) {
+                $this->data['institution_list'][$institution['id']] = $institution['description'];
+            }
+        }
+        $this->data['selected_institution'] = $customer_info['institution_id'];
+        $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
+        $this->data['profession_list'] = array();
+        if( !empty($profession_list_array) )
+        {
+            foreach ($profession_list_array as $key => $profession) {
+                $this->data['profession_list'][$profession['id']] = $profession['description'];
+            }
+        }
+        $this->data['selected_profession'] = $customer_info['profession_id'];
+        $this->data['card_no'] = array(
+            'name' => 'card_no',
+            'id' => 'card_no',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['card_no'],
+        );
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['phone'],
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['first_name'],
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $customer_info['last_name'],
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $customer_info['address'],
+        );
+        $this->template->load(null, 'customer/show_customer',$this->data);
     }
     
     public function create_customer_sale_order()
@@ -767,7 +1013,7 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['customer_info'] = $customer_info;
-            $this->sms_library->send_sms($phone_no,'Hello World');
+            $this->sms_library->send_sms($phone_no,'Congratulation for registration');
         } 
         else
         {
@@ -776,15 +1022,269 @@ class User extends CI_Controller {
         }
         echo json_encode($response);
     }
-    public function show_customer($user_id)
+    
+    /*
+     * ---------------------------------------- Supplier Module -----------------------------------------
+     */
+    public function create_supplier()
     {
-        $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
-        $customer_info = array();
-        if( count($customer_info_array) > 0 )
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        $this->form_validation->set_rules('company', 'Company', 'xss_clean');
+        
+        if ($this->input->post('submit_create_supplier')) 
         {
-            $customer_info = $customer_info_array[0];
-            print_r($customer_info_array[0]);
+            if ($this->form_validation->run() == true) 
+            {
+                $user_name = $this->input->post('phone');
+                $password = "password";
+                $email = "dummy@dummy.com";
+                $additional_data = array(
+                    'account_status_id' => $this->account_status_list['active_id'],
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'company' => $this->input->post('company'),
+                    'created_date' => date('Y-m-d H:i:s')
+                );
+                $groups = array('id' => $this->user_group['supplier_id']);
+                $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+                if( $user_id !== FALSE )
+                {
+                    $this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/create_supplier","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
         }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('first_name'),
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('last_name'),
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $this->form_validation->set_value('address'),
+        );
+        $this->data['company'] = array(
+            'name' => 'company',
+            'id' => 'company',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('company'),
+        );
+        $this->data['submit_create_supplier'] = array(
+            'name' => 'submit_create_supplier',
+            'id' => 'submit_create_supplier',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'supplier/create_supplier',$this->data);
+    }
+    
+    public function show_all_suppliers()
+    {
+        $this->data['supplier_list'] = array();
+        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+        if( !empty($supplier_list_array) )
+        {
+            $this->data['supplier_list'] = $supplier_list_array;
+        } 
+        $this->template->load(null, 'supplier/show_all_suppliers', $this->data);
+    }
+    
+    public function update_supplier($user_id = '')
+    {
+        if(empty($user_id))
+        {
+            redirect("user/show_all_supplierss","refresh");
+        }
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        $this->form_validation->set_rules('company', 'Company', 'xss_clean');
+        
+        $supplier_info = array();
+        $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+        if(empty($supplier_info_array))
+        {
+            redirect("user/show_all_suppliers","refresh");
+        }
+        else
+        {
+            $supplier_info = $supplier_info_array[0];
+        }
+        $this->data['supplier_info'] = $supplier_info;
+        if ($this->input->post('submit_update_supplier')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $additional_data = array(
+                    'user_group_id' => $this->user_group['supplier_id'],
+                    'company' => $this->input->post('company'),
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'modified_date' => date('Y-m-d H:i:s')
+                );
+                if( $this->ion_auth->update($user_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/update_supplier/".$supplier_info['user_id'],"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $this->data['company'] = array(
+            'name' => 'company',
+            'id' => 'company',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['company'],
+        );
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['phone'],
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['first_name'],
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['last_name'],
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $supplier_info['address'],
+        );
+        $this->data['submit_update_supplier'] = array(
+            'name' => 'submit_update_supplier',
+            'id' => 'submit_update_supplier',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'supplier/update_supplier',$this->data);
+    }
+    
+    public function show_supplier($user_id)
+    {
+        if(empty($user_id))
+        {
+            redirect("user/show_all_suppliers","refresh");
+        }
+        $this->data['message'] = '';       
+        
+        $supplier_info = array();
+        $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+        if(empty($supplier_info_array))
+        {
+            redirect("user/show_all_suppliers","refresh");
+        }
+        else
+        {
+            $supplier_info = $supplier_info_array[0];
+        }
+        $this->data['supplier_info'] = $supplier_info;
+        
+        $this->data['company'] = array(
+            'name' => 'company',
+            'id' => 'company',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['company'],
+        );
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['phone'],
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['first_name'],
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $supplier_info['last_name'],
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $supplier_info['address'],
+        );
+        $this->template->load(null, 'supplier/show_supplier',$this->data);
     }
     public function create_supplier_purchase_order()
     {
@@ -825,16 +1325,381 @@ class User extends CI_Controller {
         }
         echo json_encode($response);
     }
-    public function show_supplier($user_id)
+    
+    //------------------------------------------- Salesman Module -------------------------------------    
+    public function create_salesman()
     {
-        $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
-        $supplier_info = array();
-        if( count($supplier_info_array) > 0 )
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        
+        if ($this->input->post('submit_create_salesman')) 
         {
-            $supplier_info = $supplier_info_array[0];
-            print_r($supplier_info_array[0]);
+            if ($this->form_validation->run() == true) 
+            {
+                $user_name = $this->input->post('phone');
+                $password = "password";
+                $email = "dummy@dummy.com";
+                $additional_data = array(
+                    'account_status_id' => $this->account_status_list['active_id'],
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'created_date' => date('Y-m-d H:i:s')
+                );
+                $groups = array('id' => $this->user_group['salesman_id']);
+                $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+                if( $user_id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/create_salesman","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
         }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('first_name'),
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('last_name'),
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $this->form_validation->set_value('address'),
+        );
+        $this->data['submit_create_salesman'] = array(
+            'name' => 'submit_create_salesman',
+            'id' => 'submit_create_salesman',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'salesman/create_salesman',$this->data);
     }
+    
+    public function show_all_salesman()
+    {
+        $this->data['salesman_list'] = array();
+        $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
+        if( !empty($salesman_list_array) )
+        {
+            $this->data['salesman_list'] = $salesman_list_array;
+        } 
+        $this->template->load(null, 'salesman/show_all_salesman', $this->data);
+    }
+    
+    
+    public function update_salesman($user_id = '')
+    {
+        if(empty($user_id))
+        {
+            redirect("user/show_all_salesman","refresh");
+        }
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        
+        $salesman_info = array();
+        $salesman_info_array = $this->ion_auth->get_salesman($user_id)->result_array();
+        if(empty($salesman_info_array))
+        {
+            redirect("user/show_all_salesman","refresh");
+        }
+        else
+        {
+            $salesman_info = $salesman_info_array[0];
+        }
+        $this->data['salesman_info'] = $salesman_info;
+        if ($this->input->post('submit_update_salesman')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $additional_data = array(
+                    'user_group_id' => $this->user_group['salesman_id'],
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'modified_date' => date('Y-m-d H:i:s')
+                );
+                if( $this->ion_auth->update($user_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/update_salesman/".$salesman_info['id'],"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $salesman_info['phone'],
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $salesman_info['first_name'],
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $salesman_info['last_name'],
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $salesman_info['address'],
+        );
+        $this->data['submit_update_salesman'] = array(
+            'name' => 'submit_update_salesman',
+            'id' => 'submit_update_salesman',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'salesman/update_salesman',$this->data);
+    }
+    
+    // ----------------------------------- Manager Module -------------------------------------------
+    public function create_manager()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        
+        if ($this->input->post('submit_create_manager')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $user_name = $this->input->post('phone');
+                $password = "password";
+                $email = "dummy@dummy.com";
+                $additional_data = array(
+                    'account_status_id' => $this->account_status_list['active_id'],
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'created_date' => date('Y-m-d H:i:s')
+                );
+                $groups = array('id' => $this->user_group['manager_id']);
+                $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+                if( $user_id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/create_manager","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('first_name'),
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('last_name'),
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $this->form_validation->set_value('address'),
+        );
+        $this->data['submit_create_manager'] = array(
+            'name' => 'submit_create_manager',
+            'id' => 'submit_create_manager',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'manager/create_manager',$this->data);
+    }
+    
+    public function show_all_managers()
+    {
+        $this->data['manager_list'] = array();
+        $manager_list_array = $this->ion_auth->get_all_managers()->result_array();
+        if( !empty($manager_list_array) )
+        {
+            $this->data['manager_list'] = $manager_list_array;
+        } 
+        $this->template->load(null, 'manager/show_all_managers', $this->data);
+    }
+    
+    
+    public function update_manager($user_id = '')
+    {
+        if(empty($user_id))
+        {
+            redirect("user/show_all_managers","refresh");
+        }
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        
+        $manager_info = array();
+        $manager_info_array = $this->ion_auth->get_manager($user_id)->result_array();
+        if(empty($manager_info_array))
+        {
+            redirect("user/show_all_managers","refresh");
+        }
+        else
+        {
+            $manager_info = $manager_info_array[0];
+        }
+        $this->data['manager_info'] = $manager_info;
+        if ($this->input->post('submit_update_manager')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $additional_data = array(
+                    'user_group_id' => $this->user_group['manager_id'],
+                    'first_name' => $this->input->post('first_name'),
+                    'last_name' => $this->input->post('last_name'),
+                    'phone' => $this->input->post('phone'),
+                    'address' => $this->input->post('address'),
+                    'modified_date' => date('Y-m-d H:i:s')
+                );
+                if( $this->ion_auth->update($user_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/update_manager/".$manager_info['id'],"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $manager_info['phone'],
+        );
+        $this->data['first_name'] = array(
+            'name' => 'first_name',
+            'id' => 'first_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $manager_info['first_name'],
+        );
+        $this->data['last_name'] = array(
+            'name' => 'last_name',
+            'id' => 'last_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $manager_info['last_name'],
+        );
+        $this->data['address'] = array(
+            'name' => 'address',
+            'id' => 'address',
+            'type' => 'textarea',
+            'value' => $manager_info['address'],
+        );
+        $this->data['submit_update_manager'] = array(
+            'name' => 'submit_update_manager',
+            'id' => 'submit_update_manager',
+            'type' => 'submit',
+            'class' => '',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'manager/update_manager',$this->data);
+    }
+    
     public function test()
     {
         $this->sms_library->send_sms('12345','hello');

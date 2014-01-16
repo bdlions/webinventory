@@ -799,6 +799,9 @@ div.shortcut_menu ul li a:hover{
     color:#ffffff !important;
 }
 /***********************************************************************************************/
+.span12.sales_view_block{
+	width:100% !important;
+}
 .sales_view_block{
     margin-left: 2px !important;
     border:0px !important;
@@ -806,6 +809,9 @@ div.shortcut_menu ul li a:hover{
 }
 .dropdown.cust_popup_product_block div.dropdown-menu.cust_popup_product div.search_details .hundrd .product_details .sales_view_block{
     width: 24% !important;
+}
+.dropdown.cust_popup_product_block div.dropdown-menu.cust_popup_product div.search_details .hundrd .product_details .sales_view_block.sales_view_block11{
+	width:100% !important;
 }
 .sales_view_block1{
     margin-left: -5px !important;
@@ -895,7 +901,7 @@ div.customer_search .span3{
 }
 /**************************************************************/
 div.customer_search{
-    height: 100px;
+    height: auto;
     padding: 22px 0 0;
 }
 .show_all{
@@ -942,6 +948,77 @@ div.cust_popup_product_block .extra_customer .thirty_percnt.refresh input {
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
     margin-bottom: 0;
+}
+div.product_details12 div.sales_view_block span.sales_view_block input.fl{
+	margin: 3px 12px 3px 0px;
+	width: 31.5% !important;
+}
+div.product_details13 div.sales_view_block span.sales_view_block input.fl{
+	margin: 3px 12px 3px 0px;
+	width: 14.5% !important;
+}
+.sales_view_block span.view{
+	width: 32% !important;
+	float: right;
+	position: relative;
+	margin-top: -31px !important;
+	border-radius:4px;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+}
+div.search_box input,
+div.search_box select{
+	width:144px !important;
+}
+div.search_box span.fr{
+	height:30px;
+}
+div.search_box{
+	height:auto;
+	padding-top:15px;
+	margin-bottom:10px;
+}
+/***********************************************************************************************/
+.signup-portion{
+	float:right !important;
+	text-align:right !important;
+}
+.logo-portion img{
+	width:300px;
+	height:100px;
+}
+div.copyright{
+	float:right !important;
+	text-align:right !important;
+}
+div.copyright ul{
+	float:right;
+}
+div.copyright ul li{
+	float:left;
+	margin:0 5px;
+}
+div.footer-portion{
+	margin-left: 0px !important;
+	padding: 13px 13px 8px 13px;
+	position: fixed;
+	margin-top: 280px;
+	background: #f2f2f2;
+	z-index: 999999;
+	width: 86.7% !important;
+}
+div.footer-portion a,
+div.copyright ul li a{
+	text-transform: capitalize;
+	text-decoration:none;
+	color:#555555;
+}
+div.footer-portion a:hover,
+div.copyright ul li a:hover{
+	color:#000000;
+}
+div.copyright ul li a:hover{
+	color: maroon;
 }
 /***********************************************************************************************/
 @media (min-width: 1200px){

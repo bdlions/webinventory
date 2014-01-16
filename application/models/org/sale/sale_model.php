@@ -611,6 +611,22 @@ class Sale_model extends CI_Model {
         $this->trigger_events('post_add_sale_order');
         return (isset($id)) ? $id : FALSE;
     }
+    
+    public function get_all_sales($shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        return $this->db->select($this->tables['product_info'].'.name,'. $this->tables['product_sale_order'].'.quantity,'. $this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_sale_order'].'.sub_total,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['product_sale_order'].'.sub_total as total_sale_price,'.$this->tables['product_sale_order'].'.discount')
+                    ->from($this->tables['product_sale_order'])
+                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_id='.$this->tables['product_sale_order'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['sale_order'], $this->tables['sale_order'].'.id='.$this->tables['product_sale_order'].'.sale_order_id')
+                    ->where($this->tables['sale_order'].'.shop_id',$shop_id)
+                    ->get();  
+    }
+    
     public function get_sale_order_info($sale_id)
     {
         $this->db->where($this->tables['sale_order'].'.id', $sale_id);

@@ -628,10 +628,12 @@ class Product_model extends CI_Model {
         {
             $this->set_error('product_creation_duplicate_product_code');
             return FALSE;
-        }    
+        }
+        $shop_id = $this->session->userdata('shop_id');
         $data = array(
             'name' => $product_name,
             'code' => $product_code,
+            'shop_id' => $shop_id,
             'created_date' => date('Y-m-d H:i:s')
         );
         //filter out any data passed that doesnt have a matching column in the users table
@@ -650,6 +652,8 @@ class Product_model extends CI_Model {
     public function update_product($product_id, $data)
     {
         $this->db->update($this->tables['product_info'], $data, array('id' => $product_id));
+        $this->set_message('product_update_successful');
+        return true;
     }
     
     public function get_product($product_id)
@@ -659,13 +663,20 @@ class Product_model extends CI_Model {
         return $this;
     }
     
-    public function get_all_products()
+    public function get_all_products($shop_id = '')
     {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['product_info'].'.shop_id', $shop_id);
         $this->response = $this->db->get($this->tables['product_info']);
         return $this;
     }   
     public function search_product($key, $value)
     {
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where($this->tables['product_info'].'.shop_id', $shop_id);
         $this->db->like($key, $value); 
         return $this->db->get($this->tables['product_info']); 
     }

@@ -1,11 +1,11 @@
-<h2>Product Details</h2>
+<h2>Sale Details</h2>
 <div class="clr search_details">
     <div class="clr span12">
         <div class="span12">
             <div class="row-fluid">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Product List</a></li>								
+                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Sale List</a></li>								
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs1-pane1">
@@ -13,7 +13,7 @@
                             <div class="clr product_details sales_order_details specific span10">
                                 <div style="width:3%;" class="blank_div span0">
                                     <h3 class="" style="background-image:none;">&nbsp;</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
                                     <div class="wh_100"><p class="wh_100">&nbsp;</p></div>
@@ -23,105 +23,84 @@
                                 </div>
                                 <div class="span1">
                                     <h3>Product Name</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['name']?></div>
+                                    <div class="wh_100"><?php echo $sale_info['name']?></div>
                                     <?php
                                     }
                                     ?>
                                 </div>
                                 <div class="span1">
-                                    <h3>Product Code</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <h3>Quantity</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['code']?></div>
+                                    <div class="wh_100"><?php echo $sale_info['quantity']?></div>
                                     <?php
                                     }
                                     ?>
                                 </div>
                                 <div class="span1">
-                                    <h3>Product Size</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <h3>Purchase Unit Price</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['size']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div> 
-                                <div class="span1">
-                                    <h3>Product Weight</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['weight']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div> 
-                                <div class="span1">
-                                    <h3>Product Warranty</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['warranty']?></div>
+                                    <div class="wh_100"><?php echo $sale_info['purchase_unit_price']?></div>
                                     <?php
                                     }
                                     ?>
                                 </div>
                                 <div class="span1">
-                                    <h3>Product Quality</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <h3>Sale Unit Price</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['quality']?></div>
+                                    <div class="wh_100"><?php echo $sale_info['sale_unit_price']?></div>
                                     <?php
                                     }
                                     ?>
                                 </div>
                                 <div class="span1">
-                                    <h3>Unit Price</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <h3>Total Purchase Price</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['unit_price']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div> 
-                                <div class="span1">
-                                    <h3>Brand Name</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['brand_name']?></div>
+                                    <div class="wh_100"><?php echo $sale_info['quantity']*$sale_info['purchase_unit_price'] ?></div>
                                     <?php
                                     }
                                     ?>
                                 </div>
                                 <div class="span1">
-                                    <h3>Remarks</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <h3>Total Sale Price</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['remarks']?></div>
+                                    <div class="wh_100"><?php echo $sale_info['total_sale_price']?></div>
                                     <?php
                                     }
                                     ?>
                                 </div>
                                 <div class="span1">
-                                    <h3>Manage</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
+                                    <h3>Discount</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
                                     {
                                     ?>
-                                    <div class="wh_100"><a href="<?php echo base_url("./product/update_product/".$prodduct_info['id']);?>">Update</a></div>
+                                    <div class="wh_100"><?php echo $sale_info['discount']?></div>
                                     <?php
                                     }
                                     ?>
-                                </div>												
-                                <p class="clr">&nbsp;</p>
+                                </div>
+                                <div class="span1">
+                                    <h3>Net Profit</h3>
+                                    <?php foreach($sale_list as $key => $sale_info)
+                                    {
+                                    ?>
+                                    <div class="wh_100"><?php echo ($sale_info['total_sale_price'] - ($sale_info['quantity']*$sale_info['purchase_unit_price']) - $sale_info['discount']) ?></div>
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
                             </div>
                             </p>
                         </div>

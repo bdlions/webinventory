@@ -18,43 +18,43 @@
                                     <div class="clr span10">
                                         <span class="fl">Product Name</span>
                                         <span class="fr">
-                                            <?php echo form_input($product_name); ?>
+                                            <?php echo form_input($name); ?>
                                         </span>			
                                     </div>
                                     <div class="clr span10">
                                         <span class="fl">Product Code</span>
                                         <span class="fr">
-                                            <?php echo form_input($product_code); ?>
+                                            <?php echo form_input($code); ?>
                                         </span>			
                                     </div>
                                     <div class="clr span10">
                                         <span class="fl">Product Size</span>
                                         <span class="fr">
-                                            <input type="text" class="span2" value="" />
+                                            <?php echo form_input($size); ?>
                                         </span>			
                                     </div>
                                     <div class="clr span10">
                                         <span class="fl">Product Weight</span>
                                         <span class="fr">
-                                            <input type="text" class="span2" value="" />
+                                            <?php echo form_input($weight); ?>
                                         </span>			
                                     </div>
                                     <div class="clr span10">
                                         <span class="fl">Product Warranty</span>
                                         <span class="fr">
-                                            <input type="text" class="span2" value="" />
+                                            <?php echo form_input($warranty); ?>
                                         </span>			
                                     </div>	
                                     <div class="clr span10">
                                         <span class="fl">Product Quality</span>
                                         <span class="fr">
-                                            <input type="text" class="span2" value="" />
+                                            <?php echo form_input($quality); ?>
                                         </span>			
                                     </div>	
                                     <div class="clr span10">
                                         <span class="fl">Brand Name</span>
                                         <span class="fr">
-                                            <input type="text" class="span2" value="" />
+                                            <?php echo form_input($brand_name); ?>
                                         </span>			
                                     </div>	
                                 </fieldset>                                		
@@ -95,7 +95,7 @@
                                     <div class="clr span10">
                                         <span class="fl">Remarks</span>
                                         <span class="fr">
-                                            <input type="text" class="span2" value="" />
+                                            <?php echo form_input($remarks); ?>
                                         </span>			
                                     </div>                                        	
                                 </fieldset>                                	

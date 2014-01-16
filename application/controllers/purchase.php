@@ -36,22 +36,6 @@ class Purchase extends CI_Controller {
     
     function purchase_order()
     {
-        /*$this->ion_auth->get_vendors();
-        $this->product_library->get_products();
-        $this->purchase_library->get_purchase_order_status();
-        
-        //if form is posted
-        {
-            $this->purchase_library->add_purchase_order();
-            $this->purchase_library->add_product_purchase_order();
-
-            //check whether stock exists or not
-            $this->stock_library->get_all_stocks();
-            //if stock doesn't exist
-            $this->stock_library->add_stock();
-            //else
-            $this->stock_library->update_stock();
-        }*/
         $this->data['supplier_list_array'] = array();
         $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
         if( count($supplier_list_array) > 0)
@@ -80,8 +64,7 @@ class Purchase extends CI_Controller {
     function add_purchase()
     {
         $user_id = $this->session->userdata('user_id');
-        //$shop_id = $this->session->userdata('shop_id');
-        $shop_id = '1';
+        $shop_id = $this->session->userdata('shop_id');
         $selected_product_list = $_POST['product_list'];
         $purchased_product_list = array();
         $add_stock_list = array();
@@ -126,7 +109,7 @@ class Purchase extends CI_Controller {
         }
         $additional_data = array(
             'purchase_order_no' => $purchase_info['order_no'],
-            'shop_id' => 1,
+            'shop_id' => $shop_id,
             'supplier_id' => $purchase_info['supplier_id'],
             'purchase_order_status_id' => 1,
             'remarks' => $purchase_info['remarks'],

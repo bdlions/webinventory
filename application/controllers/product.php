@@ -35,61 +35,114 @@ class Product extends CI_Controller {
     {
         $message_data = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('product_name', 'Product Name', 'xss_clean|required');
-        $this->form_validation->set_rules('product_code', 'Product Code', 'xss_clean|required');
-        $this->form_validation->set_rules('product_size', 'Product Size', 'xss_clean');
-        $this->form_validation->set_rules('product_weight', 'Product Weight', 'xss_clean');
-        $this->form_validation->set_rules('product_warranty', 'Product Warranty', 'xss_clean');
+        $this->form_validation->set_rules('name', 'Product Name', 'xss_clean|required');
+        $this->form_validation->set_rules('code', 'Product Code', 'xss_clean|required');
+        $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
+        $this->form_validation->set_rules('weight', 'Product Weight', 'xss_clean');
+        $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
+        $this->form_validation->set_rules('quality', 'Product Quality', 'xss_clean');
         $this->form_validation->set_rules('brand_name', 'Brand Name', 'xss_clean');
         $this->form_validation->set_rules('unit_price', 'Unit Price', 'xss_clean|required');
+        $this->form_validation->set_rules('remarks', 'Remarks', 'xss_clean');
         
-        if ($this->input->post('submit_create_product') && $this->form_validation->run() == true ) 
+        if ($this->input->post('submit_create_product')) 
         {            
-            $additional_data = array(
-                'unit_price' => $this->input->post('unit_price')
-            );
-            $product_name = $this->input->post('product_name');
-            $product_code = $this->input->post('product_code');
-            $product_id = $this->product_library->create_product($product_name, $product_code, $additional_data);
-            if( $product_id !== FALSE )
+            if($this->form_validation->run() == true)
             {
-                $this->session->set_flashdata('message', $this->product_library->messages());
-                redirect('product/create_product','refresh');
+                $additional_data = array(
+                    'size' => $this->input->post('size'),
+                    'weight' => $this->input->post('weight'),
+                    'warranty' => $this->input->post('warranty'),
+                    'quality' => $this->input->post('quality'),
+                    'brand_name' => $this->input->post('brand_name'),
+                    'remarks' => $this->input->post('remarks'),
+                    'unit_price' => $this->input->post('unit_price')
+                );
+                $product_name = $this->input->post('name');
+                $product_code = $this->input->post('code');
+                $product_id = $this->product_library->create_product($product_name, $product_code, $additional_data);
+                if( $product_id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->product_library->messages());
+                    redirect('product/create_product','refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->product_library->errors();
+                }
             }
-            else
-            {
-                $message_data = $this->product_library->errors();
-            }
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
+            else 
+            { 
+                $this->data['message'] = validation_errors();
+            }            
         }
         else
         {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
-        $this->data['product_name'] = array(
-            'name' => 'product_name',
-            'id' => 'product_name',
+        
+        $this->data['name'] = array(
+            'name' => 'name',
+            'id' => 'name',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('product_name'),
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('name'),
         );
-        $this->data['product_code'] = array(
-            'name' => 'product_code',
-            'id' => 'product_code',
+        $this->data['code'] = array(
+            'name' => 'code',
+            'id' => 'code',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('product_code'),
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('code'),
+        );
+        $this->data['size'] = array(
+            'name' => 'size',
+            'id' => 'size',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('size'),
+        );
+        $this->data['weight'] = array(
+            'name' => 'weight',
+            'id' => 'weight',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('weight'),
+        );
+        $this->data['warranty'] = array(
+            'name' => 'warranty',
+            'id' => 'warranty',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('warranty'),
+        );
+        $this->data['quality'] = array(
+            'name' => 'quality',
+            'id' => 'quality',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('quality'),
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
             'id' => 'unit_price',
             'type' => 'text',
+            'class' => 'span2',
             'value' => $this->form_validation->set_value('unit_price'),
+        );
+        $this->data['brand_name'] = array(
+            'name' => 'brand_name',
+            'id' => 'brand_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('brand_name'),
+        );
+        $this->data['remarks'] = array(
+            'name' => 'remarks',
+            'id' => 'remarks',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $this->form_validation->set_value('remarks'),
         );
         $this->data['submit_create_product'] = array(
             'name' => 'submit_create_product',
@@ -100,55 +153,125 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/create_product', $this->data);
     }
     
-    public function update_product($product_id)
+    public function show_all_products()
     {
-        //check whether product id valid or not
+        $this->data['product_list'] = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        if( !empty($product_list_array) )
+        {
+            $this->data['product_list'] = $product_list_array;
+        }
+        $this->template->load(null, 'product/show_all_products', $this->data);
+    }
+    
+    public function update_product($product_id = '')
+    {
+        if(empty($product_id))
+        {
+            redirect("product/show_all_products","refresh");
+        }
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('product_name', 'Product Name', 'xss_clean|required');
-        $this->form_validation->set_rules('product_code', 'Product Code', 'xss_clean|required');
-        if ($this->input->post('submit_update_product')) 
-        {
-            if ($this->form_validation->run() == true) 
-            {
-                $data = array(
-                    'name' => $this->input->post('product_name'),
-                    'code' => $this->input->post('product_code'),
-                    'unit_price' => $this->input->post('unit_price'),
-                    'modified_date' => date('Y-m-d H:i:s')
-                );
-                $this->product_library->update_product($product_id, $data);
-                $this->data['message'] = 'Product is updated successsfully.';
-            }
-            else
-            {
-                $this->data['message'] = validation_errors();
-            }
-        }
+        $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
+        $this->form_validation->set_rules('weight', 'Product Weight', 'xss_clean');
+        $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
+        $this->form_validation->set_rules('quality', 'Product Quality', 'xss_clean');
+        $this->form_validation->set_rules('brand_name', 'Brand Name', 'xss_clean');
+        $this->form_validation->set_rules('unit_price', 'Unit Price', 'xss_clean|required');
+        $this->form_validation->set_rules('remarks', 'Remarks', 'xss_clean');
+        
         $product_info = array();
         $product_info_array = $this->product_library->get_product($product_id)->result_array();
-        if( count($product_info_array) > 0 )
+        if(empty($product_info_array))
+        {
+            redirect("product/show_all_products","refresh");
+        }
+        else
         {
             $product_info = $product_info_array[0];
         }
         $this->data['product_info'] = $product_info;
-        $this->data['product_name'] = array(
-            'name' => 'product_name',
-            'id' => 'product_name',
+        if ($this->input->post('submit_update_product')) 
+        {            
+            if($this->form_validation->run() == true)
+            {
+                $additional_data = array(
+                    'size' => $this->input->post('size'),
+                    'weight' => $this->input->post('weight'),
+                    'warranty' => $this->input->post('warranty'),
+                    'quality' => $this->input->post('quality'),
+                    'brand_name' => $this->input->post('brand_name'),
+                    'remarks' => $this->input->post('remarks'),
+                    'unit_price' => $this->input->post('unit_price')
+                );
+                if( $this->product_library->update_product($product_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->product_library->messages());
+                    redirect('product/update_product/'.$product_info['id'],'refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->product_library->errors();
+                }
+            }
+            else 
+            { 
+                $this->data['message'] = validation_errors();
+            }            
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $this->data['size'] = array(
+            'name' => 'size',
+            'id' => 'size',
             'type' => 'text',
-            'value' => $product_info['name'],
+            'class' => 'span2',
+            'value' => $product_info['size']
         );
-        $this->data['product_code'] = array(
-            'name' => 'product_code',
-            'id' => 'product_code',
+        $this->data['weight'] = array(
+            'name' => 'weight',
+            'id' => 'weight',
             'type' => 'text',
-            'value' => $product_info['code'],
+            'class' => 'span2',
+            'value' => $product_info['weight']
+        );
+        $this->data['warranty'] = array(
+            'name' => 'warranty',
+            'id' => 'warranty',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $product_info['warranty']
+        );
+        $this->data['quality'] = array(
+            'name' => 'quality',
+            'id' => 'quality',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $product_info['quality']
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
             'id' => 'unit_price',
             'type' => 'text',
-            'value' => $product_info['unit_price'],
+            'class' => 'span2',
+            'value' => $product_info['unit_price']
+        );
+        $this->data['brand_name'] = array(
+            'name' => 'brand_name',
+            'id' => 'brand_name',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $product_info['brand_name']
+        );
+        $this->data['remarks'] = array(
+            'name' => 'remarks',
+            'id' => 'remarks',
+            'type' => 'text',
+            'class' => 'span2',
+            'value' => $product_info['remarks']
         );
         $this->data['submit_update_product'] = array(
             'name' => 'submit_update_product',
@@ -168,18 +291,8 @@ class Product extends CI_Controller {
             $product_info = $product_info_array[0];
         }
         print_r($product_info);
-    }
+    }    
     
-    public function show_all_products()
-    {
-        $this->data['product_list'] = array();
-        $product_list = $this->product_library->get_all_products()->result_array();
-        if( count($product_list) > 0)
-        {
-            $this->data['product_list'] = $product_list;
-        }
-        $this->template->load(null, 'product/show_all_products', $this->data);
-    }
     /*
      * This method will create a new product into the system
      * @return status, 0 for error and 1 for success

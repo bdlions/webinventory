@@ -48,6 +48,9 @@ $config['tables']['sale_order']                     = 'sale_order';
 $config['tables']['product_sale_order']             = 'product_sale_order';
 $config['tables']['expense_type']                   = 'expense_type';
 $config['tables']['expense_info']                   = 'expense_info';
+$config['tables']['users_shop_info']                = 'users_shop_info';
+$config['tables']['institution']                    = 'institution';
+$config['tables']['profession']                     = 'profession';
 
 /*
  | Users table column and Group table column you want to join WITH.
@@ -70,7 +73,7 @@ $config['user_group']['salesman_id']        = '3';
 $config['user_group']['supplier_id']        = '4';
 $config['user_group']['customer_id']        = '5';
 
-$config['product_identity']                 = 'name';
+$config['product_identity']                 = 'code';
 $config['customer_identity']                = 'card_no';
 
 $config['expense_type']['shop']             = '1';

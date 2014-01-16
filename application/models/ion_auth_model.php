@@ -1373,6 +1373,22 @@ class Ion_auth_model extends CI_Model {
 
             return FALSE;
         }
+        
+        //update customer info
+        if($data['user_group_id'] === $this->user_group_list['customer_id'])
+        {
+            $this->update_customer($id, $data);
+        }
+        else if($data['user_group_id'] === $this->user_group_list['supplier_id'])
+        {
+            $this->update_supplier($id, $data);
+        }
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->trigger_events(array('post_update_user', 'post_update_user_unsuccessful'));
+            $this->set_error('update_unsuccessful');
+            return FALSE;
+        }
 
         // Filter the data passed
         $data = $this->_filter_data($this->tables['users'], $data);
@@ -1398,7 +1414,7 @@ class Ion_auth_model extends CI_Model {
             $this->set_error('update_unsuccessful');
             return FALSE;
         }
-
+        
         $this->db->trans_commit();
 
         $this->trigger_events(array('post_update_user', 'post_update_user_successful'));
@@ -1984,29 +2000,61 @@ class Ion_auth_model extends CI_Model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_all_customers()
+    public function get_all_customers($shop_id = '')
     {
-        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
     }
     public function get_customer($user_id)
     {
         $this->db->where($this->tables['users'].'.id', $user_id);
-        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address,'.$this->tables['customers'].'.institution_id,'.$this->tables['customers'].'.profession_id')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                     ->get(); 
         
     }
-    public function search_customer($key, $value)
+    public function search_customer($key, $value, $shop_id = '')
     {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->like($key, $value); 
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
+    }
+    
+    public function update_customer($user_id, $data)
+    {
+        // Filter the data passed
+        $data = $this->_filter_data($this->tables['customers'], $data);
+        $this->db->update($this->tables['customers'], $data, array('user_id' => $user_id));
+        return true;
+    }
+    
+    public function get_all_institutions()
+    {
+        $this->response = $this->db->get($this->tables['institution']);
+        return $this;
+    }
+    
+    public function get_all_professions()
+    {
+        $this->response = $this->db->get($this->tables['profession']);
+        return $this;
     }
     //--------------------------------------------Supplier related queries-----------------------------------------
     public function create_supplier($additional_data)
@@ -2030,7 +2078,7 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone , '.$this->tables['suppliers'].'.company')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address , '.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])
                     ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
@@ -2041,20 +2089,55 @@ class Ion_auth_model extends CI_Model {
     public function get_supplier($user_id)
     {
         $this->db->where($this->tables['users'].'.id', $user_id);
-        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['users'].'.address ,'.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])
                     ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->get(); 
     }
-    public function search_supplier($key, $value)
+    public function search_supplier($key, $value, $shop_id = '')
     {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->like($key, $value); 
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])
                     ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
     }
+    public function update_supplier($user_id, $data)
+    {
+        // Filter the data passed
+        $data = $this->_filter_data($this->tables['suppliers'], $data);
+        $this->db->update($this->tables['suppliers'], $data, array('user_id' => $user_id));
+        return true;
+    }
     //--------------------------------------------salesman related queries-----------------------------------------
+    public function get_all_salesman($shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_groups'].'.group_id',$this->user_group_list['salesman_id'])
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();  
+    }
+    public function get_salesman($user_id)
+    {
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select("*")
+                    ->from($this->tables['users'])
+                    ->get(); 
+    }
+    
     public function get_all_shop_employees($shop_id = '')
     {
         if(empty($shop_id))
@@ -2069,4 +2152,27 @@ class Ion_auth_model extends CI_Model {
                     ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
     } 
+    
+    //---------------------------------- Manager Module ---------------------------------------
+    public function get_all_managers($shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_groups'].'.group_id',$this->user_group_list['manager_id'])
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();  
+    }
+    public function get_manager($user_id)
+    {
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select("*")
+                    ->from($this->tables['users'])
+                    ->get(); 
+    }
 }

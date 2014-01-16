@@ -18,6 +18,37 @@ CREATE TABLE `shop_info` (
 INSERT INTO `shop_info` (`id`, `shop_no`, `name`) VALUES
 (1, 1, 'Apurbo');
 
+CREATE TABLE `profession` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200) NOT NULL default '',
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `profession` (`id`, `description`) VALUES
+(1, 'Business'),
+(2, 'Doctor'),
+(3, 'Engineer'),
+(4, 'Lawyear'),
+(5, 'Service'),
+(6, 'Student'),
+(7, 'Other');
+
+CREATE TABLE `institution` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200) NOT NULL default '',
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `institution` (`id`, `description`) VALUES
+(1, 'BUET'),
+(2, 'Dhaka College'),
+(3, 'Dhaka City College'),
+(4, 'Dhaka Medical College'),
+(5, 'Dhaka University'),
+(6, 'Jagonnath University'),
+(7, 'Jahangirnagar University'),
+(8, 'Mirpur Bangla College');
+
+
+
 --
 -- Table structure for table `groups`
 --
@@ -86,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `address` varchar(500) DEFAULT '',
   `account_status_id` int NOT NULL,
   `created_date` timestamp,
   `modified_date` timestamp,
@@ -129,11 +161,10 @@ ALTER TABLE `users_groups`
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
-(2, 1, 2),
-(3, 2, 2),
-(4, 3, 3),
-(5, 4, 4),
-(6, 5, 5);
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5);
 
 CREATE TABLE IF NOT EXISTS `users_shop_info` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -168,13 +199,17 @@ ALTER TABLE `suppliers`
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `card_no` varchar(200) DEFAULT NULL, 
-  `profession` varchar(200) DEFAULT NULL, 
-  `institution` varchar(200) DEFAULT NULL,    
+  `institution_id` int DEFAULT NULL,
+  `profession_id` int DEFAULT NULL, 
   PRIMARY KEY (`id`),
-  KEY `fk_customers_users1_idx` (`user_id`)
+  KEY `fk_customers_users1_idx` (`user_id`),
+  KEY `fk_customers_institution1_idx` (`institution_id`),
+  KEY `fk_customers_profession1_idx` (`profession_id`)  
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `customers`
-  ADD CONSTRAINT `fk_customers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_customers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customers_institution1` FOREIGN KEY (`institution_id`) REFERENCES `institution` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customers_profession1` FOREIGN KEY (`profession_id`) REFERENCES `profession` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
  CREATE TABLE `product_info` (
 	`id` int NOT NULL auto_increment,
@@ -187,15 +222,18 @@ ALTER TABLE `customers`
 	`unit_price` double default 0,
 	`brand_name` varchar(200) DEFAULT '',
 	`remarks` varchar(1000) DEFAULT '',
+	`shop_id` int DEFAULT NULL,
 	`created_date` timestamp,
     `created_by` int,
     `modified_date` timestamp,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
+	KEY `fk_product_info_shop_info1_idx` (`modified_by`),
 	KEY `fk_product_info_users1_idx` (`created_by`),
 	KEY `fk_product_info_users2_idx` (`modified_by`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `product_info`
+  ADD CONSTRAINT `fk_product_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
  

@@ -58,21 +58,13 @@ class Sale extends CI_Controller {
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
         $this->data['product_search_category']['code'] = "Product Code";
-        //$this->stock_library->get_all_stocks();
         
-        //if form is posted
-        {
-            //$this->sale_library->add_sale_order();
-            //$this->sale_library->add_product_sale_order();
-
-            //$this->stock_library->update_stock();
-        }
         $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'sales/sales_order',$this->data);
     }
     
     function add_sale()
     {
-        $shop_id = '1';
+        $shop_id = $this->session->userdata('shop_id');
         $selected_product_list = $_POST['product_list'];
         $sale_product_list = array();
         $sale_info = $_POST['sale_info'];
@@ -165,7 +157,7 @@ class Sale extends CI_Controller {
         }
         $additional_data = array(
             'sale_order_no' => $sale_info['sale_order_no'],
-            'shop_id' => 1,
+            'shop_id' => $shop_id,
             'customer_id' => $sale_info['customer_id'],
             'sale_order_status_id' => 1,
             'remarks' => $sale_info['remarks']
@@ -190,5 +182,16 @@ class Sale extends CI_Controller {
             $response['message'] = $this->ion_auth->errors_alert();
         }
         echo json_encode($response);
+    }
+    
+    public function show_all_sales()
+    {
+        $this->data['sale_list'] = array();
+        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
+        if( !empty($sale_list_array) )
+        {
+            $this->data['sale_list'] = $sale_list_array;
+        } 
+        $this->template->load(null, 'sales/show_all_sales', $this->data);
     }
 }
