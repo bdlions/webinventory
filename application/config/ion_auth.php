@@ -76,6 +76,7 @@ $config['user_group']['customer_id']        = '5';
 $config['product_identity']                 = 'code';
 $config['customer_identity']                = 'card_no';
 
+$config['expense_type']['all']              = '0';
 $config['expense_type']['shop']             = '1';
 $config['expense_type']['supplier']         = '2';
 $config['expense_type']['user']             = '3';

@@ -69,64 +69,11 @@ class Sale extends CI_Controller {
         $sale_product_list = array();
         $sale_info = $_POST['sale_info'];
         
-        //getting all purchase orders of this shop
-        /*$shop_purchase_order_no_list = array();
-        $purchase_order_list_array = $this->purchase_library->get_purchase_order_list($shop_id)->result_array();
-        foreach($purchase_order_list_array as $key => $purchase_order)
-        {
-           $shop_purchase_order_no_list[] =  $purchase_order['purchase_order_no'];
-        }
-        //checking whether given purchase order no of each product exists or not
-        foreach($selected_product_list as $key => $prod_info)
-        {
-            if ( !in_array($prod_info['purchase_order_no'], $shop_purchase_order_no_list)) {
-                $response['status'] = '0';
-                $response['message'] = 'Invalid purchase order no for the product '.$prod_info['product_code'];
-                echo json_encode($response);
-                return;
-            }
-        }
-        //getting purchase order and product purchase order info for given purchase order no of this sale info
-        $purchase_order_no_sale_list = array();
-        foreach($selected_product_list as $key => $prod_info)
-        {
-            if ( !in_array($prod_info['purchase_order_no'], $purchase_order_no_sale_list)) {
-                $purchase_order_no_sale_list[] = $prod_info['purchase_order_no'];
-            }
-        }
-        //checking available quantity of product of purchase order no
-        $purchase_order_no_product_id_map = array();
-        $purchase_order_no_product_list_array = $this->purchase_library->get_purchase_order_no_product_list($purchase_order_no_sale_list, $shop_id)->result_array();
-        foreach($purchase_order_no_product_list_array as $key => $purchase_order_product_purchase_order)
-        {
-            $purchase_order_no_product_id_map[ $purchase_order_product_purchase_order['purchase_order_no'] ][$purchase_order_product_purchase_order['product_id']] = $purchase_order_product_purchase_order;            
-        }
-        foreach($selected_product_list as $key => $prod_info)
-        {
-            if ( array_key_exists($prod_info['purchase_order_no'], $purchase_order_no_product_id_map) && array_key_exists($prod_info['product_id'], $purchase_order_no_product_id_map[$prod_info['purchase_order_no']]) && $purchase_order_no_product_id_map[$prod_info['purchase_order_no']][$prod_info['product_id']]['available_quantity'] < $prod_info['quantity'] ) {
-                $response['status'] = '0';
-                $response['message'] = ' Insufficient stock for purchase order # of the product '.$prod_info['product_code'];
-                echo json_encode($response);
-                return;
-            }
-        }
-        
-        $update_product_purchase_order_list = array();
-        foreach($selected_product_list as $key => $prod_info)
-        {
-            $product_purchase_order_update = array(
-                'id' => $purchase_order_no_product_id_map[$prod_info['purchase_order_no']][$prod_info['product_id']]['product_purchase_order_id'],
-                'available_quantity' => ($purchase_order_no_product_id_map[$prod_info['purchase_order_no']][$prod_info['product_id']]['available_quantity'] - $prod_info['quantity'])
-            );
-            $update_product_purchase_order_list[] = $product_purchase_order_update;
-        }*/
-        $update_product_purchase_order_list = array();
-        
         $product_quantity_map = array();        
         $stock_list_array = $this->stock_library->get_all_stocks($shop_id)->result_array();
         foreach($stock_list_array as $key => $stock_info)
         {
-            $product_quantity_map[$stock_info['product_id']] = $stock_info['stock_amount'];
+            $product_quantity_map[$stock_info['product_id'].'_'.$stock_info['purchase_order_no']] = $stock_info['stock_amount'];
         }
         foreach($selected_product_list as $key => $prod_info)
         {
@@ -139,18 +86,19 @@ class Sale extends CI_Controller {
                 'sub_total' => $prod_info['sub_total']
             );
             $sale_product_list[] = $product_info;
-            if ( array_key_exists($prod_info['product_id'], $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id']] >= $prod_info['quantity'] ) ) {
+            if ( array_key_exists($product_info['product_id'].'_'.$product_info['purchase_order_no'], $product_quantity_map) && ( $product_quantity_map[$stock_info['product_id'].'_'.$stock_info['purchase_order_no']] >= $prod_info['quantity'] ) ) {
                 $update_stock_info = array(
                     'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
                     'shop_id' => $shop_id,
-                    'stock_amount' => ( $product_quantity_map[$prod_info['product_id']] - $prod_info['quantity'] )
+                    'stock_amount' => ( $product_quantity_map[$stock_info['product_id'].'_'.$stock_info['purchase_order_no']] - $prod_info['quantity'] )
                 );
                 $update_stock_list[] = $update_stock_info;
             }
             else
             {
                 $response['status'] = '0';
-                $response['message'] = 'Insufficient stock for the product '.$prod_info['product_code'];
+                $response['message'] = 'Insufficient stock for the product : '.$prod_info['product_code'].' and lot no : '.$prod_info['purchase_order_no'];
                 echo json_encode($response);
                 return;
             }
@@ -162,7 +110,7 @@ class Sale extends CI_Controller {
             'sale_order_status_id' => 1,
             'remarks' => $sale_info['remarks']
         );        
-        $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $update_stock_list, $update_product_purchase_order_list);
+        $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $update_stock_list);
         if( $sale_id !== FALSE )
         {
             $sale_info_array = $this->sale_library->get_sale_order_info($sale_id)->result_array();

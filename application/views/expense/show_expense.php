@@ -1,5 +1,7 @@
 <script type="text/javascript">
     $(function() {
+        $("#div_expense_description").html("");  
+        $("#div_expense_amount").html("");  
         $("#show_expense_start_date").datepicker();
         $("#show_expense_end_date").datepicker();
         $("#expense_categories").on("change", function() {            
@@ -48,7 +50,33 @@
                     {
                         $("#item_list").html("");
                     }
-                    
+                    $("#div_expense_description").html("");  
+                    $("#div_expense_amount").html("");  
+                }
+            });
+        });
+        
+        $("#button_search_expense").on("click", function() { 
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "expense/get_expense",
+                data: {
+                    expense_type_id: $("#expense_categories").val()
+                },
+                success: function(data) {
+                    var result = JSON.parse(data);
+                    var expense_list = result['expense_list'];
+                    //var div_expense_amount = $("#div_selected_product_list").html();
+                    var div_expense_description = "<h3>Description</h3>";
+                    var div_expense_amount = "<h3>Amount</h3>";
+                    for (var counter = 0; counter < expense_list.length; counter++)
+                    {
+                        var expense_info = expense_list[counter];
+                        div_expense_description = div_expense_description + "<div class='wh_100'>"+expense_info['description']+"</div>";
+                        div_expense_amount = div_expense_amount + "<div class='wh_100'>"+expense_info['expense_amount']+"</div>";
+                    }
+                    $("#div_expense_description").html(div_expense_description);  
+                    $("#div_expense_amount").html(div_expense_amount);  
                 }
             });
         });
@@ -64,7 +92,6 @@
                         <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Expense Info</a></li>
                     </ul>
                     <div class="tab-content">
-                        <?php echo form_open("expense/show_expense", array('id' => 'form_show_expense')); ?>
                         <div class="tab-pane active" id="tabs1-pane1">
                             <?php echo $message;?>
                             <p class="clr">										
@@ -79,7 +106,7 @@
                                     <div class="clr span10">
                                         <span class="fl">Select Type</span>
                                         <span class="fr">
-                                            <?php echo form_dropdown('expense_categories', $expense_categories, '','id="expense_categories"'); ?>
+                                            <?php echo form_dropdown('expense_categories', $expense_categories+array('0' => 'All'), '','id="expense_categories"'); ?>
                                         </span>			
                                     </div>
                                     <div class="clr span10">
@@ -94,22 +121,23 @@
                                             <input id="show_expense_start_date"/>
                                         </span>			
                                     </div>
+                                    <p class="clr">
                                     <div class="clr span10">
                                         <span class="fl">End Date</span>
                                         <span class="fr">
                                             <input id="show_expense_end_date"/>
                                         </span>			
-                                    </div>  
+                                    </div> 
+                                    <p class="clr">
                                     <div class="clr span10">
                                         <span class="fl"></span>
                                         <span class="fr">
-                                            <?php echo form_submit($submit_show_expense); ?>
+                                            <button id="button_search_expense" name="button_search_expense" class="btn btn-success fr">Search </button>
                                         </span>			
                                     </div>                                      
                                 </fieldset>                                		
                             </div>                     
-                        </div> 
-                        <?php echo form_close(); ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -117,4 +145,19 @@
         </div>
     </div>				
     <p class="clr">&nbsp;</p>
+    <div class="clr product_details sales_order_details specific span10">
+        <div style="width:3%;" class="blank_div span0">
+            <h3 class="" style="background-image:none;">&nbsp;</h3>
+            
+            <div class="wh_100"><p class="wh_100">&nbsp;</p></div>
+            
+        </div>
+        <div id="div_expense_description" class="span1">
+                       
+        </div>
+        <div id="div_expense_amount" class="span1">
+                       
+        </div>
+                                              
+    </div>
 </div>

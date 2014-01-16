@@ -428,6 +428,7 @@
                     {
                         product_info.setProductId($(this).attr("id"));
                         product_info.setQuantity($(this).attr("value"));
+                        product_info.setPurchaseOrderNo($("#purchase_order_no").val());
                     }
                     if ($(this).attr("name") === "price" )
                     {

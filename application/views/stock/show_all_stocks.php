@@ -52,6 +52,16 @@
                                     ?>
                                 </div>
                                 <div class="span1">
+                                    <h3>Lot No</h3>
+                                    <?php foreach($stock_list as $key => $stock_info)
+                                    {
+                                    ?>
+                                    <div class="wh_100"><?php echo $stock_info['purchase_order_no']?></div>
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
+                                <div class="span1">
                                     <h3>Quantity</h3>
                                     <?php foreach($stock_list as $key => $stock_info)
                                     {

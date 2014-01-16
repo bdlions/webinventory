@@ -609,7 +609,7 @@ class Purchase_model extends CI_Model {
         return $this->db->where('purchase_order_no', $purchase_order_no)
                         ->count_all_results($this->tables['purchase_order']) > 0;
     }
-    public function add_purchase_order($additional_data, $pre_purchased_product_list, $add_stock_list, $update_stock_list)
+    public function add_purchase_order($additional_data, $purchased_product_list, $add_stock_list)
     {
         $this->trigger_events('pre_add_purchase_order');
         if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
@@ -625,21 +625,11 @@ class Purchase_model extends CI_Model {
         $id = $this->db->insert_id();
         if($id > 0)
         {
-            $purchased_product_list = array();
-            foreach($pre_purchased_product_list as $key => $product_info)
-            {
-                $product_info['purchase_order_id'] = $id;
-                $purchased_product_list[] = $product_info;
-            }
             $this->db->insert_batch($this->tables['product_purchase_order'], $purchased_product_list);
             if( count($add_stock_list) > 0)
             {
                 $this->db->insert_batch($this->tables['stock_info'], $add_stock_list);            
-            }
-            foreach($update_stock_list as $key => $update_stock_info)
-            {
-                $this->db->update($this->tables['stock_info'], $update_stock_info, array('product_id' => $update_stock_info['product_id']));
-            }
+            }            
         }
 
         $this->trigger_events('post_add_purchase_order');

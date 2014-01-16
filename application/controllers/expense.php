@@ -62,36 +62,36 @@ class Expense extends CI_Controller {
         $this->form_validation->set_rules('expense_amount', 'Expense Amount', 'xss_clean|required');
         $this->form_validation->set_rules('expense_description', 'Expense Description', 'xss_clean');
         
-        if ($this->input->post('submit_add_expense') && $this->form_validation->run() == true ) 
+        if ($this->input->post('submit_add_expense')) 
         {            
-            $additional_data = array(
-                'expense_type_id' => $this->input->post('expense_categories'),
-                'description' => $this->input->post('expense_description'),
-                'expense_amount' => $this->input->post('expense_amount')
-            );
-            if( $this->input->post('expense_categories') != $this->expense_type_list['other'])
+            if($this->form_validation->run() == true)
             {
-                $additional_data['reference_id'] = $this->input->post('item_list');
-            }
-            $expense_id = $this->expenses->add_expense($additional_data);
-            if( $expense_id !== FALSE )
-            {
-                $this->session->set_flashdata('message', $this->expenses->messages());
-                redirect('expense/add_expense','refresh');
+                $additional_data = array(
+                    'expense_type_id' => $this->input->post('expense_categories'),
+                    'description' => $this->input->post('expense_description'),
+                    'expense_amount' => $this->input->post('expense_amount')
+                );
+                if( $this->input->post('expense_categories') != $this->expense_type_list['other'])
+                {
+                    $additional_data['reference_id'] = $this->input->post('item_list');
+                }
+                $expense_id = $this->expenses->add_expense($additional_data);
+                if( $expense_id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->expenses->messages());
+                    redirect('expense/add_expense','refresh');
+                }
+                else
+                {
+                    $message_data = $this->expenses->errors();
+                }
             }
             else
             {
-                $message_data = $this->expenses->errors();
+                $this->data['message'] = validation_errors();
             }
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
-        }
+            
+        }        
         else
         {
             $this->data['message'] = $this->session->flashdata('message'); 
@@ -125,6 +125,7 @@ class Expense extends CI_Controller {
     
     public function show_expense()
     {
+        $this->data['message'] = "";
         $this->data['expense_type_list'] = $this->expense_type_list;
         
         $expense_types_array = $this->expenses->get_all_expense_types()->result_array();
@@ -145,50 +146,6 @@ class Expense extends CI_Controller {
             }            
         }
         $this->data['item_list'] = $shop_list;
-        
-        $message_data = '';
-        
-        if ($this->input->post('submit_show_expense') ) 
-        {            
-            /*$additional_data = array(
-                'expense_type_id' => $this->input->post('expense_categories'),
-                'description' => $this->input->post('expense_description'),
-                'expense_amount' => $this->input->post('expense_amount')
-            );
-            if( $this->input->post('expense_categories') != $this->expense_type_list['other'])
-            {
-                $additional_data['reference_id'] = $this->input->post('item_list');
-            }
-            $expense_id = $this->expenses->add_expense($additional_data);
-            if( $expense_id !== FALSE )
-            {
-                $this->session->set_flashdata('message', $this->expenses->messages());
-                redirect('expense/add_expense','refresh');
-            }
-            else
-            {
-                $message_data = $this->expenses->errors();
-            }*/
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
-        }
-        else
-        {
-            $this->data['message'] = $this->session->flashdata('message'); 
-        }
-        
-        $this->data['submit_show_expense'] = array(
-            'name' => 'submit_show_expense',
-            'id' => 'submit_show_expense',
-            'type' => 'submit',
-            'value' => 'Show',
-        );
         
         $this->template->load(null, 'expense/show_expense', $this->data);
     }
@@ -240,7 +197,22 @@ class Expense extends CI_Controller {
         echo json_encode($result_array);
     }
     
-    function add_shop_expense()
+    public function get_expense()
+    {
+        $expense_type_id = $_POST['expense_type_id'];
+        if($expense_type_id > 0)
+        {
+            $expense_list_array = $this->expenses->get_expenses($expense_type_id)->result_array();
+        }
+        else
+        {
+            $expense_list_array = $this->expenses->get_all_expenses()->result_array();
+        }
+        $result_array['expense_list'] = $expense_list_array;    
+        echo json_encode($result_array);
+    }
+    
+    /*function add_shop_expense()
     {
         $message_data = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
@@ -513,5 +485,5 @@ class Expense extends CI_Controller {
         );
         
         $this->template->load(null, 'expense/add_other_expense', $this->data);
-    }
+    }*/
 }
