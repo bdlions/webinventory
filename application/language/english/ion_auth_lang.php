@@ -67,6 +67,7 @@ $lang['email_activation_subject']            = 'Account Activation';
 $lang['product_creation_successful'] 	  	   = 'Product Successfully Created.';
 $lang['product_creation_unsuccessful'] 	 	   = 'Unable to Create Product.';
 $lang['product_creation_duplicate_product_name']   = 'Product Name Already Used or Invalid.';
+$lang['product_update_duplicate_product_name']     = 'Product Name Already Used or Invalid.';
 $lang['product_creation_duplicate_product_code']   = 'Product Code Already Used or Invalid.';
 $lang['product_update_successful'] 	  	   = 'Product is Updated Successfully.';
 

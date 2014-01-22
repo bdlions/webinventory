@@ -57,7 +57,6 @@ class Sale extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
-        $this->data['product_search_category']['code'] = "Product Code";
         
         $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'sales/sales_order',$this->data);
     }

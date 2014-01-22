@@ -73,7 +73,7 @@ $config['user_group']['salesman_id']        = '3';
 $config['user_group']['supplier_id']        = '4';
 $config['user_group']['customer_id']        = '5';
 
-$config['product_identity']                 = 'code';
+$config['product_identity_column']          = 'name';
 $config['customer_identity']                = 'card_no';
 
 $config['expense_type']['all']              = '0';

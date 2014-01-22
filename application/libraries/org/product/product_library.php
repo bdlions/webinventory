@@ -94,9 +94,9 @@ class Product_library {
         return call_user_func_array(array($this->product_model, $method), $arguments);
     }
     
-    public function create_product($product_name, $product_code, $additional_data)
+    public function create_product($product_name, $additional_data)
     {
-        $id = $this->product_model->create_product($product_name, $product_code, $additional_data);
+        $id = $this->product_model->create_product($product_name, $additional_data);
         if ($id !== FALSE) {
             $this->set_message('product_creation_successful');
             return $id;

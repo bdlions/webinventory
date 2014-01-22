@@ -1,4 +1,4 @@
-<h2>Update Product</h2>
+<h2>Show Product</h2>
 <div class="clr search_details">
     <div class="clr span12">
         <div class="span12">
@@ -8,19 +8,17 @@
                         <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Product Info</a></li>
                     </ul>
                     <div class="tab-content">
-                        <?php echo form_open("product/update_product/".$product_info['id'], array('id' => 'form_update_product')); ?>
                         <div class="tab-pane active" id="tabs1-pane1">
-                            <?php echo $message;?>
                             <p class="clr">										
                             <div class="span5">
                                 <fieldset>
-                                    <legend>Basic</legend>                                    
+                                    <legend>Basic</legend>
                                     <div class="clr span10">
                                         <span class="fl">Product Name</span>
                                         <span class="fr">
                                             <?php echo form_input($name); ?>
                                         </span>			
-                                    </div>
+                                    </div>                                    
                                     <div class="clr span10">
                                         <span class="fl">Product Size</span>
                                         <span class="fr">
@@ -74,13 +72,7 @@
                                         <span class="fr">
                                             <?php echo form_input($unit_price); ?>
                                         </span>			
-                                    </div> 
-                                    <div class="clr span10">
-                                        <span class="fl"></span>
-                                        <span class="fr">
-                                            <?php echo form_submit($submit_update_product); ?>
-                                        </span>			
-                                    </div>                                        
+                                    </div>                                                                           
                                 </fieldset>                               	
                             </div>
                             <div class="span5">
@@ -93,8 +85,7 @@
                                     </div>                                        	
                                 </fieldset>                                	
                             </div>
-                        </div> 
-                        <?php echo form_close(); ?>
+                        </div>
                     </div>
                 </div>
             </div>

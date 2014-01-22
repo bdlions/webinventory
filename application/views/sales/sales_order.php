@@ -170,7 +170,6 @@
                         var prod_info = prod_list[counter];
                         current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
                         current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['name'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['code'] + '"/>';
                         current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
                         current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + prod_info['id'] + '">view</a>';
                         current_temp_html_product = current_temp_html_product + '</span>';
@@ -244,23 +243,11 @@
                 alert("Product Name is required.");
                 return;
             }
-            else if ($("#input_product_code").val().length == 0)
-            {
-                alert("Product Code is required.");
-                return;
-            }
-            else if ($("#input_unit_price").val().length == 0)
-            {
-                alert("Unit Price is required.");
-                return;
-            }
             $.ajax({
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
                 data: {
-                    product_name: $("#input_product_name").val(),
-                    product_code: $("#input_product_code").val(),
-                    unit_price: $("#input_unit_price").val()
+                    product_name: $("#input_product_name").val()
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
@@ -650,7 +637,6 @@
                                 <div style="width:auto;" class="clr product_details product_details12">
                                     <div class="clr span12 sales_view_block">
                                         <div class="span4 fl"><h3>Product Name</h3></div>
-                                        <div class="span4 fl"><h3>Product Code</h3></div>
                                         <div class="span4 fl"><h3>Details</h3></div>
                                     </div>
                                     <div id="div_product_list" class="clr span12 sales_view_block">										
@@ -659,7 +645,6 @@
                                             ?>
                                             <span id="span_product_info" class="span12 sales_view_block" style="">
                                                 <input id="<?php echo $product['id']; ?>" class="fl" type="text" value="<?php echo $product['name']; ?>"/>
-                                                <input id="<?php echo $product['id']; ?>" class="snd_raw fl" type="text" value="<?php echo $product['code']; ?>"/>
                                                 <span class="span10 view sales_view fl" style=""><a target="_blank" class="view" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a></span>
                                             </span>	
                                             <?php																					
@@ -696,18 +681,6 @@
                                             <span class="fl">Product Name</span>
                                             <span class="fr">
                                                 <input class="span2" id="input_product_name" name="input_product_name" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr">
-                                            <span class="fl">Product Code</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_product_code" name="input_product_code" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr">
-                                            <span class="fl">Unit Price</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_unit_price" name="input_unit_price" type="text" />
                                             </span>
                                         </div>
                                         <div class="clr fr">

@@ -57,7 +57,6 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
-        $this->data['product_search_category']['code'] = "Product Code";
         $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'purchase/purchase_order',$this->data);
     }
     
@@ -68,16 +67,7 @@ class Purchase extends CI_Controller {
         $selected_product_list = $_POST['product_list'];
         $purchased_product_list = array();
         $add_stock_list = array();
-        $update_stock_list = array();
         $purchase_info = $_POST['purchase_info'];
-        
-        /*$product_quantity_map = array();
-        
-        $stock_list_array = $this->stock_library->get_all_stocks($shop_id)->result_array();
-        foreach($stock_list_array as $key => $stock_info)
-        {
-            $product_quantity_map[$stock_info['product_id']] = $stock_info['stock_amount'];
-        }*/
         
         foreach($selected_product_list as $key => $prod_info)
         {
@@ -85,28 +75,11 @@ class Purchase extends CI_Controller {
                 'product_id' => $prod_info['product_id'],
                 'quantity' => $prod_info['quantity'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'shop_id' => $shop_id,
                 'unit_price' => $prod_info['unit_price'],
                 'sub_total' => $prod_info['sub_total']
             );
             $purchased_product_list[] = $product_info;
-            /*if (array_key_exists($prod_info['product_id'], $product_quantity_map)) {
-                $update_stock_info = array(
-                    'product_id' => $prod_info['product_id'],
-                    'shop_id' => $shop_id,
-                    'stock_amount' => $prod_info['quantity'] + $product_quantity_map[$prod_info['product_id']]
-                );
-                $update_stock_list[] = $update_stock_info;
-            }
-            else
-            {
-                $add_stock_info = array(
-                    'product_id' => $prod_info['product_id'],
-                    'purchase_order_id' => $prod_info['purchase_order_id'],
-                    'shop_id' => $shop_id,
-                    'stock_amount' => $prod_info['quantity']
-                );
-                $add_stock_list[] = $add_stock_info;
-            }*/
             $add_stock_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],

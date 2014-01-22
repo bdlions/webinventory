@@ -20,13 +20,7 @@
                                         <span class="fr">
                                             <?php echo form_input($name); ?>
                                         </span>			
-                                    </div>
-                                    <div class="clr span10">
-                                        <span class="fl">Product Code</span>
-                                        <span class="fr">
-                                            <?php echo form_input($code); ?>
-                                        </span>			
-                                    </div>
+                                    </div>                                    
                                     <div class="clr span10">
                                         <span class="fl">Product Size</span>
                                         <span class="fr">
@@ -64,7 +58,7 @@
                                     <legend>Picture</legend>
                                     <div class="clr span10">
                                         <span class="clr">
-                                            <input type="file" class="span2" value="Browse" />
+                                            
                                         </span>			
                                     </div>                                        
                                 </fieldset>                                	
@@ -93,9 +87,8 @@
                                 <fieldset>
                                     <legend>Others</legend>
                                     <div class="clr span10">
-                                        <span class="fl">Remarks</span>
                                         <span class="fr">
-                                            <?php echo form_input($remarks); ?>
+                                            
                                         </span>			
                                     </div>                                        	
                                 </fieldset>                                	
