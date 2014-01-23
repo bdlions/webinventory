@@ -10,32 +10,14 @@
 <script>
     function append_selected_product(prod_info)
     {
-        var is_product_previously_selected = false;
-        $("span", "#div_selected_product_list").each(function(){
-            $("input", $(this)).each(function(){
-                if ($(this).attr("name") === "quantity" )
-                {
-                    if( $(this).attr("id") === prod_info['id'])
-                    {
-                        is_product_previously_selected = true;
-                    }
-                }
-            });
-        });
-        if(is_product_previously_selected === true)
-        {
-            alert('The product is already selected. Please update product quantity.');
-            return;            
-        }
-        
         var current_temp_product_html = $("#div_selected_product_list").html();
         current_temp_product_html = current_temp_product_html + '<span class="span12 sales_view_block" style="">';
         current_temp_product_html = current_temp_product_html + '<input id="'+prod_info['id']+'" name="purchase_order_no" class="fl" type="text" value="1"/>';
-        current_temp_product_html = current_temp_product_html + '<input name="product_code" readonly="true" class="fl" type="text" value="'+prod_info['code']+'"/>';
+        current_temp_product_html = current_temp_product_html + '<input name="product_code" readonly="true" class="fl" type="text" value="'+prod_info['name']+'"/>';
         current_temp_product_html = current_temp_product_html + '<input id="'+prod_info['id']+'" name="quantity" class="fl" type="text" value="1"/>';
-        current_temp_product_html = current_temp_product_html + '<input readonly="true" id="'+prod_info['id']+'" class="fl" type="text" name="unit_price" value="'+prod_info['unit_price']+'"/>';
+        current_temp_product_html = current_temp_product_html + '<input id="'+prod_info['id']+'" class="fl" type="text" name="unit_price" value="0"/>';
         current_temp_product_html = current_temp_product_html + '<input id="'+prod_info['id']+'" name="discount" class="fl" type="text" value="0"/>';
-        current_temp_product_html = current_temp_product_html + '<input name="product_sale_price" readonly="true" class="fl" type="text" value="'+prod_info['unit_price']+'"/>';
+        current_temp_product_html = current_temp_product_html + '<input name="product_sale_price" readonly="true" class="fl" type="text" value="0"/>';
         current_temp_product_html = current_temp_product_html + '</span>';
         $("#div_selected_product_list").html(current_temp_product_html);  
         
@@ -52,7 +34,7 @@
     function update_fields_selected_customer(cust_info)
     {
         $("#input_add_sale_customer_id").val(cust_info['customer_id']);
-        $("#input_add_sale_customer").val(cust_info['username']);
+        $("#input_add_sale_customer").val(cust_info['first_name']+' '+cust_info['last_name']);
         $("#input_add_sale_card_no").val(cust_info['card_no']);
         $("#input_add_sale_phone").val(cust_info['phone']);
         
@@ -73,7 +55,220 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#input_date_add_sale").datepicker();
+        $("#button_add_product").on("click", function() {
+            if ($("#input_product_name").val().length == 0)
+            {
+                alert("Product Name is required.");
+                return;
+            }
+            set_modal_confirmation_category_id(get_modal_confirmation_add_product_category_id());
+            $('#myModal').modal('show');            
+        });
+        $("#button_add_customer").on("click", function() {
+            if ($("#input_first_name").val().length == 0)
+            {
+                alert("First Name is required.");
+                return;
+            }
+            else if ($("#input_last_name").val().length == 0)
+            {
+                alert("Last Name is required.");
+                return;
+            }
+            else if ($("#input_phone_no").val().length == 0)
+            {
+                alert("Phone is required.");
+                return;
+            }
+            else if ($("#input_card_no").val().length == 0)
+            {
+                alert("Card No is required.");
+                return;
+            }
+            set_modal_confirmation_category_id( get_modal_confirmation_add_customer_category_id() );
+            $('#myModal').modal('show');  
+        });
+        $("#button_save_sale_order").on("click", function() {
+            //validation checking of sale order
+            //checking whether customer is selected or not
+            if( $("#input_add_sale_customer_id").val().length === 0 || $("#input_add_sale_customer_id").val() < 0)
+            {
+                alert('Please select a customer');
+                return;
+            }
+            //checking whether sale order no is empty or not
+            if( $("#sale_order_no").val().length === 0)
+            {
+                alert('Incorrect Order #');
+                return;
+            }
+            //checking whether at least one product is selected or not
+            var selected_product_counter = 0;
+            $("span", "#div_selected_product_list").each(function(){
+                $("input", $(this)).each(function(){
+                    if ($(this).attr("name") === "quantity" )
+                    {
+                        selected_product_counter++;
+                    }
+                });
+            });
+            if(selected_product_counter <= 0)
+            {
+                alert('Please select at least one product.');
+                return;
+            }
+            set_modal_confirmation_category_id( get_modal_confirmation_save_sale_order_category_id() );
+            $('#myModal').modal('show');  
+        });
+        $("#modal_button_confirm").on("click", function() {
+            if (get_modal_confirmation_category_id() === get_modal_confirmation_add_product_category_id())
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
+                    data: {
+                        product_name: $("#input_product_name").val()
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '1')
+                        {
+                            var p_list = get_product_list();
+                            p_list[p_list.length] = response['product_info'];
+                            set_product_list(p_list);
+                            alert('New product is added successfully.');
+                            var product_info = response['product_info'];
+
+                            var current_temp_html_product = $("#div_product_list").html();                        
+                            current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
+                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
+                            current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
+                            current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
+                            current_temp_html_product = current_temp_html_product + '</span>';
+                            current_temp_html_product = current_temp_html_product + '</span>';
+                            $("#div_product_list").html(current_temp_html_product);
+                            append_selected_product(product_info);
+                            $('div[class="clr dropdown open"]').removeClass('open');
+                        }
+                    }
+
+                });
+            }  
+            else if ( get_modal_confirmation_category_id() === get_modal_confirmation_add_customer_category_id() )
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "user/create_customer_sale_order",
+                    data: {
+                        first_name: $("#input_first_name").val(),
+                        last_name: $("#input_last_name").val(),
+                        phone_no: $("#input_phone_no").val(),
+                        card_no: $("#input_card_no").val()
+
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '1')
+                        {
+                            var c_list = get_customer_list();
+                            c_list[c_list.length] = response['customer_info'];
+                            set_customer_list(c_list);
+                            alert('New customer is added successfully.');
+                            var customer_info = response['customer_info'];
+
+                            var current_temp_html_customer = $("#div_customer_list").html();                        
+                            current_temp_html_customer = current_temp_html_customer + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
+                            current_temp_html_customer = current_temp_html_customer + '<input id="' + customer_info['customer_id'] + '" class="fl" type="text" value="' + customer_info['phone'] + '"/>';
+                            current_temp_html_customer = current_temp_html_customer + '<input id="' + customer_info['customer_id'] + '" class="fl" type="text" value="' + customer_info['card_no'] + '"/>';
+                            current_temp_html_customer = current_temp_html_customer + '<span class="span10 view sales_view fl" style="">';
+                            current_temp_html_customer = current_temp_html_customer + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + customer_info['customer_id'] + '">view</a>';
+                            current_temp_html_customer = current_temp_html_customer + '</span>';
+                            current_temp_html_customer = current_temp_html_customer + '</span>';
+                            $("#div_customer_list").html(current_temp_html_customer);                        
+                            update_fields_selected_customer(customer_info);
+                            $('div[class="clr dropdown open"]').removeClass('open');
+                        }
+                    }
+
+                });
+            }
+            else if ( get_modal_confirmation_category_id() === get_modal_confirmation_save_sale_order_category_id() )
+            {
+                //creating a list based on selected products
+                var product_list = new Array();
+                var product_list_counter = 0;
+                $("span", "#div_selected_product_list").each(function(){
+                    var product_info = new Product();
+                    $("input", $(this)).each(function(){
+                        if ($(this).attr("name") === "quantity" )
+                        {
+                            product_info.setProductId($(this).attr("id"));
+                            product_info.setQuantity($(this).attr("value"));
+                        }
+                        if ($(this).attr("name") === "purchase_order_no" )
+                        {
+                            product_info.setPurchaseOrderNo($(this).attr("value"));
+                        }
+                        if ($(this).attr("name") === "unit_price" )
+                        {
+                            product_info.setUnitPrice($(this).attr("value"));
+                        }
+                        if ($(this).attr("name") === "discount" )
+                        {
+                            product_info.setDiscount($(this).attr("value"));
+                        }
+                        if ($(this).attr("name") === "product_sale_price" )
+                        {
+                            product_info.setSubTotal($(this).attr("value"));
+                        }
+                        if ($(this).attr("name") === "product_code" )
+                        {
+                            product_info.setProductCode($(this).attr("value"));
+                        }
+                    });
+                    product_list[product_list_counter++] = product_info;
+                });
+                var sale_info = new Sale();
+                sale_info.setOrderNo( $("#sale_order_no").val() );
+                sale_info.setCustomerId( $("#input_add_sale_customer_id").val() );
+                sale_info.setRemarks( $("#sale_remarks").val() );
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "sale/add_sale",
+                    data: {
+                        product_list: product_list,
+                        sale_info: sale_info
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        console.log(response);
+                        if (response['status'] === '1')
+                        {
+                            alert('Sale order is executed successfully.');
+                            $("#div_selected_product_list").html('');
+                            $("#input_add_sale_customer_id").val('');
+                            $("#input_add_sale_customer").val('');
+                            $("#input_add_sale_company").val('');
+                            $("#input_add_sale_phone").val('');
+                            $("#input_add_sale_card_no").val('');
+                            $("#sale_order_no").val('');
+                            $("#sale_remarks").val('');
+                            $("#total_sale_price").val('');
+                        }
+                        else if (response['status'] === '0')
+                        {
+                            alert(response['message']);
+                        }
+                    }
+                });
+            }
+            $('#myModal').modal('hide');
+        });
+        
+        $('#input_date_add_sale').datepicker().on('changeDate', function(ev){
+            $('#input_date_add_sale').text($('#input_date_add_sale').data('date'));
+            $('#input_date_add_sale').datepicker('hide');
+        });
         $("#div_customer_list").on("click", "input", function() {
             if( $(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_customer_list" )
             {
@@ -106,6 +301,74 @@
                 }
             }
         });
+        
+        $("#div_selected_product_list").on("change", "input", function() {
+            var product_quantity = '';
+            var product_discount = '';
+            var product_unit_price = '';
+            var total_product_price = '';
+            $("input", $(this).parent()).each(function(){
+                if ($(this).attr("name") === "purchase_order_no" )
+                {
+                    if ( $(this).val() === '' )
+                    {
+                        $(this).val('1');
+                        alert("Invalid Lot No.");
+                        return false;
+                    }
+                    $(this).attr('value', $(this).val());
+                }
+                if ($(this).attr("name") === "quantity" )
+                {
+                    if ( $(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()) )
+                    {
+                        $(this).val('1');
+                        alert("Invalid quantity.");
+                        return false;
+                    }
+                    $(this).attr('value', $(this).val());
+                    product_quantity = $(this).val();
+                }
+                if ($(this).attr("name") === "unit_price" )
+                {
+                    if ( $(this).val() === '' || $(this).val() < 0 || !isNumber($(this).val()) )
+                    {
+                        $(this).val('0');
+                        alert("Invalid unit price.");
+                        return false;
+                    }
+                    $(this).attr('value', $(this).val());
+                    product_unit_price = $(this).val();
+                }
+                if ($(this).attr("name") === "discount" )
+                {
+                    if ( $(this).val() === '' || !isNumber($(this).val()) || +$(this).val() < 0 || +$(this).val() > 100 )
+                    {
+                        $(this).val('0');
+                        alert("Invalid discount.");
+                        return false;
+                    }
+                    $(this).attr('value', $(this).val());
+                    product_discount = $(this).val();
+                }
+                if ($(this).attr("name") === "product_sale_price" )
+                {
+                    total_product_price = (product_quantity*product_unit_price) - (product_quantity*product_unit_price*product_discount/100);
+                    $(this).attr('value', total_product_price );
+                    $(this).val( total_product_price );                    
+                }
+            });
+            
+            var total_sale_price = 0;
+            $("input", "#div_selected_product_list").each(function(){
+                if ($(this).attr("name") === "product_sale_price" )
+                {
+                    total_sale_price = +total_sale_price + +$(this).val(); 
+                }
+            });
+            $("#total_sale_price").val( total_sale_price );             
+        });        
+        //-------------------------------Search Module----------------------------------------//
         $("#button_search_customer").on("click", function() {
             if ($("#dropdown_search_customer")[0].selectedIndex == 0)
             {
@@ -176,260 +439,6 @@
                         current_temp_html_product = current_temp_html_product + '</span>';                        
                     }
                     $("#div_product_list").html(current_temp_html_product);
-                }
-            });
-        });
-        $("#button_add_customer").on("click", function() {
-            if ($("#input_first_name").val().length == 0)
-            {
-                alert("First Name is required.");
-                return;
-            }
-            else if ($("#input_last_name").val().length == 0)
-            {
-                alert("Last Name is required.");
-                return;
-            }
-            else if ($("#input_phone_no").val().length == 0)
-            {
-                alert("Phone is required.");
-                return;
-            }
-            else if ($("#input_card_no").val().length == 0)
-            {
-                alert("Card No is required.");
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "user/create_customer_sale_order",
-                data: {
-                    first_name: $("#input_first_name").val(),
-                    last_name: $("#input_last_name").val(),
-                    phone_no: $("#input_phone_no").val(),
-                    card_no: $("#input_card_no").val()
-
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    if (response['status'] === '1')
-                    {
-                        var c_list = get_customer_list();
-                        c_list[c_list.length] = response['customer_info'];
-                        set_customer_list(c_list);
-                        alert('New customer is added successfully.');
-                        var customer_info = response['customer_info'];
-                        
-                        var current_temp_html_customer = $("#div_customer_list").html();                        
-                        current_temp_html_customer = current_temp_html_customer + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
-                        current_temp_html_customer = current_temp_html_customer + '<input id="' + customer_info['customer_id'] + '" class="fl" type="text" value="' + customer_info['phone'] + '"/>';
-                        current_temp_html_customer = current_temp_html_customer + '<input id="' + customer_info['customer_id'] + '" class="fl" type="text" value="' + customer_info['card_no'] + '"/>';
-                        current_temp_html_customer = current_temp_html_customer + '<span class="span10 view sales_view fl" style="">';
-                        current_temp_html_customer = current_temp_html_customer + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + customer_info['customer_id'] + '">view</a>';
-                        current_temp_html_customer = current_temp_html_customer + '</span>';
-                        current_temp_html_customer = current_temp_html_customer + '</span>';
-                        $("#div_customer_list").html(current_temp_html_customer);                        
-                        update_fields_selected_customer(customer_info);
-                        $('div[class="clr dropdown open"]').removeClass('open');
-                    }
-                }
-
-            });
-        });
-
-        $("#button_add_product").on("click", function() {
-            if ($("#input_product_name").val().length == 0)
-            {
-                alert("Product Name is required.");
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
-                data: {
-                    product_name: $("#input_product_name").val()
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    if (response['status'] === '1')
-                    {
-                        var p_list = get_product_list();
-                        p_list[p_list.length] = response['product_info'];
-                        set_product_list(p_list);
-                        alert('New product is added successfully.');
-                        var product_info = response['product_info'];
-                        
-                        var current_temp_html_product = $("#div_product_list").html();                        
-                        current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['code'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
-                        current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
-                        current_temp_html_product = current_temp_html_product + '</span>';
-                        current_temp_html_product = current_temp_html_product + '</span>';
-                        $("#div_product_list").html(current_temp_html_product);
-                        append_selected_product(product_info);
-                        $('div[class="clr dropdown open"]').removeClass('open');
-                    }
-                }
-
-            });
-        });
-        $("#div_selected_product_list").on("change", "input", function() {
-            var product_quantity = '';
-            var product_discount = '';
-            var product_unit_price = '';
-            var total_product_price = '';
-            $("input", $(this).parent()).each(function(){
-                if ($(this).attr("name") === "purchase_order_no" )
-                {
-                    if ( $(this).val() === '' )
-                    {
-                        $(this).val('1');
-                        alert("Invalid Lot No.");
-                        return false;
-                    }
-                    $(this).attr('value', $(this).val());
-                }
-                if ($(this).attr("name") === "quantity" )
-                {
-                    if ( $(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()) )
-                    {
-                        $(this).val('1');
-                        alert("Invalid quantity.");
-                        return false;
-                    }
-                    $(this).attr('value', $(this).val());
-                    product_quantity = $(this).val();
-                }
-                if ($(this).attr("name") === "unit_price" )
-                {
-                    product_unit_price = $(this).val();
-                }
-                if ($(this).attr("name") === "discount" )
-                {
-                    if ( $(this).val() === '' || !isNumber($(this).val()) || +$(this).val() < 0 || +$(this).val() > 100 )
-                    {
-                        $(this).val('0');
-                        alert("Invalid discount.");
-                        return false;
-                    }
-                    $(this).attr('value', $(this).val());
-                    product_discount = $(this).val();
-                }
-                if ($(this).attr("name") === "product_sale_price" )
-                {
-                    total_product_price = (product_quantity*product_unit_price) - (product_quantity*product_unit_price*product_discount/100);
-                    $(this).attr('value', total_product_price );
-                    $(this).val( total_product_price );                    
-                }
-            });
-            
-            var total_sale_price = 0;
-            $("input", "#div_selected_product_list").each(function(){
-                if ($(this).attr("name") === "product_sale_price" )
-                {
-                    total_sale_price = +total_sale_price + +$(this).val(); 
-                }
-            });
-            $("#total_sale_price").val( total_sale_price );             
-        });
-        $("#save_sale_order").on("click", function() {
-            //validation checking of sale order
-            //checking whether customer is selected or not
-            if( $("#input_add_sale_customer_id").val().length === 0 || $("#input_add_sale_customer_id").val() < 0)
-            {
-                alert('Please select a customer');
-                return;
-            }
-            //checking whether sale order no is empty or not
-            if( $("#sale_order_no").val().length === 0)
-            {
-                alert('Incorrect Order #');
-                return;
-            }
-            //checking whether at least one product is selected or not
-            var selected_product_counter = 0;
-            $("span", "#div_selected_product_list").each(function(){
-                $("input", $(this)).each(function(){
-                    if ($(this).attr("name") === "quantity" )
-                    {
-                        selected_product_counter++;
-                    }
-                });
-            });
-            if(selected_product_counter <= 0)
-            {
-                alert('Please select at least one product.');
-                return;
-            }
-            //creating a list based on selected products
-            var product_list = new Array();
-            var product_list_counter = 0;
-            $("span", "#div_selected_product_list").each(function(){
-                var product_info = new Product();
-                $("input", $(this)).each(function(){
-                    if ($(this).attr("name") === "quantity" )
-                    {
-                        product_info.setProductId($(this).attr("id"));
-                        product_info.setQuantity($(this).attr("value"));
-                    }
-                    if ($(this).attr("name") === "purchase_order_no" )
-                    {
-                        product_info.setPurchaseOrderNo($(this).attr("value"));
-                    }
-                    if ($(this).attr("name") === "unit_price" )
-                    {
-                        product_info.setUnitPrice($(this).attr("value"));
-                    }
-                    if ($(this).attr("name") === "discount" )
-                    {
-                        product_info.setDiscount($(this).attr("value"));
-                    }
-                    if ($(this).attr("name") === "product_sale_price" )
-                    {
-                        product_info.setSubTotal($(this).attr("value"));
-                    }
-                    if ($(this).attr("name") === "product_code" )
-                    {
-                        product_info.setProductCode($(this).attr("value"));
-                    }
-                });
-                product_list[product_list_counter++] = product_info;
-            });
-            var sale_info = new Sale();
-            sale_info.setOrderNo( $("#sale_order_no").val() );
-            sale_info.setCustomerId( $("#input_add_sale_customer_id").val() );
-            sale_info.setRemarks( $("#sale_remarks").val() );
-            console.log(product_list);
-            console.log(sale_info);
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "sale/add_sale",
-                data: {
-                    product_list: product_list,
-                    sale_info: sale_info
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    console.log(response);
-                    if (response['status'] === '1')
-                    {
-                        alert('Sale order is executed successfully.');
-                        $("#div_selected_product_list").html('');
-                        $("#input_add_sale_customer_id").val('');
-                        $("#input_add_sale_customer").val('');
-                        $("#input_add_sale_company").val('');
-                        $("#input_add_sale_phone").val('');
-                        $("#input_add_sale_card_no").val('');
-                        $("#sale_order_no").val('');
-                        $("#sale_remarks").val('');
-                        $("#total_sale_price").val('');
-                    }
-                    else if (response['status'] === '0')
-                    {
-                        alert(response['message']);
-                    }
                 }
             });
         });
@@ -716,11 +725,7 @@
                <span class="fr">
                    <input class="span2" id="input_date_add_sale"/>
                </span>
-            </div>
-            <div class="clr">
-               <span class="fl">Status</span>
-               <span class="fr"><input class="span2" type="text" value="open" /></span>
-            </div>
+            </div>            
          </div>
       </div>
 	  <p style="height:10px;">&nbsp;</p>
@@ -729,7 +734,7 @@
             <h3>Lot No</h3>
          </div>
          <div id="div_selected_product_code_list">
-            <h3>Product Code</h3>
+            <h3>Product Name</h3>
          </div>
          <div id="div_selected_product_quantity_list">
             <h3>Quantity</h3>
@@ -774,7 +779,7 @@
                <div class="clr ">
                   <span class="fl">&nbsp;</span>
                   <span class="fr">
-                  <input id="save_sale_order" name="save_sale_order" type="submit" value="Save"></input>
+                    <button id="button_save_sale_order" name="button_save_sale_order" class="btn btn-success">Submit </button>
                   </span>										
                </div>
             </div>
@@ -783,3 +788,22 @@
    </div>
    <p class="clr">&nbsp;</p>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
+      </div>
+      <div class="modal-body">
+       Do You want to proceed?
+      </div>
+      <div class="modal-footer">          
+        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

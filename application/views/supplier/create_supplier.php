@@ -46,30 +46,7 @@
                                     <form>
                                         <fieldset>
                                             <legend>Picture</legend>
-											<p>Upload a photo for your profile picture.</p>
-											<div class="span7 offset2">	
-												<div class="pictureBox">
-													<img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRzqaxb6ifkzZ0zi5iDxamjKiS7OAsz8sbPUoQPukI28DZTO-ClK24pXBen" alt="">
-												</div>
-											</div>
-                                            <div class="clr span6">
-                                                <span class="">
-                                                    <input type="file" class="span2" value="Browse" />
-                                                </span>			
-												<span class="">
-                                                    <button class="btn btn-success fr">Upload </button>
-                                                </span>			
-                                            </div>
-											<div class="clr span9" style="margin:10px;">
-												<form action="#" method="post" accept-charset="utf-8" class="form-horizontal"> 
-												<div class="control-group">
-													<div class="controls pull-right">
-														<button class="btn btn-success fl" style="margin-right:5px">cancel </button>
-														<button class="btn btn-success fr">Save </button>
-													</div>
-												</div>
-												</form>
-											</div>	
+                                            <p>&nbsp;</p>	
                                         </fieldset>
                                     </form>		
                                 </div>
@@ -81,12 +58,12 @@
                                         <div class="clr span10">
                                             <span class="fl">Company</span>
                                             <span class="fr">
-                                                <?php echo form_input($company); ?>
+                                                <?php echo form_input($company+array('class'=>'span2')); ?>
                                             </span>			
                                         </div>
                                         <div class="clr span10">
                                             <span class="fl">
-                                                <?php echo form_submit($submit_create_supplier); ?>
+                                                <?php echo form_submit($submit_create_supplier+array('class'=>'btn btn-success pull-right') ); ?>
                                             </span>			
                                         </div> 
                                     </fieldset>	

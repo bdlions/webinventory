@@ -28,7 +28,7 @@ class Shop extends CI_Controller {
     
     function index()
     {
-        
+        redirect("shop/show_all_shops","refresh");
     }
     
     public function create_shop()
@@ -50,13 +50,24 @@ class Shop extends CI_Controller {
                     'shop_phone' => $this->input->post('shop_phone'),
                     'created_date' => date('Y-m-d H:i:s')
                 );
-                $this->shop_library->create_shop($additional_data);
-                redirect('shop/show_all_shops','refresh');
+                if( $this->shop_library->create_shop($additional_data) !== FALSE)
+                {
+                    $this->session->set_flashdata('message', $this->shop_library->messages());
+                    redirect('shop/create_shop','refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->shop_library->errors();
+                }
             }
             else
             {
                 $this->data['message'] = validation_errors();
             }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
         }
         
         $this->data['shop_no'] = array(
@@ -87,7 +98,7 @@ class Shop extends CI_Controller {
             'name' => 'submit_create_shop',
             'id' => 'submit_create_shop',
             'type' => 'submit',
-            'value' => 'Add',
+            'value' => 'Create',
         );
         $this->template->load(null, 'shop/create_shop',$this->data);
     }
@@ -96,7 +107,7 @@ class Shop extends CI_Controller {
     {
         $this->data['shop_list'] = array();
         $shop_list = $this->shop_library->get_all_shops()->result_array();
-        if( count($shop_list) > 0)
+        if( !empty($shop_list) )
         {
             $this->data['shop_list'] = $shop_list;
         }
@@ -123,17 +134,29 @@ class Shop extends CI_Controller {
                     'shop_phone' => $this->input->post('shop_phone'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
-                $this->shop_library->update_shop($shop_id, $data);
-                $this->data['message'] = 'Shop is updated successsfully.';
+                if( $this->shop_library->update_shop($shop_id, $data) !== FALSE)
+                {
+                    $this->session->set_flashdata('message', $this->shop_library->messages());
+                    redirect("shop/update_shop/".$shop_id,"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->shop_library->errors();
+                }
+                
             }
             else
             {
                 $this->data['message'] = validation_errors();
             }
         }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
-        if( count($shop_info_array) > 0 )
+        if( !empty($shop_info_array) )
         {
             $shop_info = $shop_info_array[0];
         }
@@ -170,7 +193,10 @@ class Shop extends CI_Controller {
         );
         $this->template->load(null, 'shop/update_shop',$this->data);
     }
-    
+    /*
+     * This method will update currently logged in shop of a user
+     * @author Nazmul on 23rd January 2014
+     */
     public function set_shop()
     {
         $this->data['message'] = '';
@@ -187,7 +213,12 @@ class Shop extends CI_Controller {
             $shop_id = $this->input->post('shop_list');
             $session_data['shop_id'] = $shop_id;
             $this->session->set_userdata($session_data);
+            $this->session->set_flashdata('message', 'You have logged into the shop named '.$this->data['shop_list'][$shop_id]);
             redirect("shop/set_shop","refresh");
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
         }
         $this->data['submit_set_shop'] = array(
             'name' => 'submit_set_shop',

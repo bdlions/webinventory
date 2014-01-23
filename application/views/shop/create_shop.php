@@ -18,31 +18,31 @@
                                         <div class="clr span10">
                                             <span class="fl">Shop No</span>
                                             <span class="fr">
-                                                <?php echo form_input($shop_no); ?>
+                                                <?php echo form_input($shop_no+array('class'=>'span2')); ?>
                                             </span>			
                                         </div>
                                         <div class="clr span10">
                                             <span class="fl">Shop Name *</span>
                                             <span class="fr">
-                                                <?php echo form_input($shop_name); ?>
+                                                <?php echo form_input($shop_name+array('class'=>'span2')); ?>
                                             </span>			
                                         </div> 
                                         <div class="clr span10">
                                             <span class="fl">Shop Phone</span>
                                             <span class="fr">
-                                                <?php echo form_input($shop_phone); ?>
+                                                <?php echo form_input($shop_phone+array('class'=>'span2')); ?>
                                             </span>			
                                         </div>
                                         <div class="clr span10">
                                             <span class="fl">Shop Address *</span>
                                             <span class="fr">
-                                                <?php echo form_input($shop_address); ?>
+                                                <?php echo form_input($shop_address+array('class'=>'span2')); ?>
                                             </span>			
                                         </div> 
                                         <div class="clr span10">
                                             <span class="fl"></span>
                                             <span class="fr">
-                                                <?php echo form_submit($submit_create_shop); ?>
+                                                <?php echo form_submit($submit_create_shop+array('class'=>'btn btn-success pull-right')); ?>
                                             </span>			
                                         </div> 
                                     </fieldset>
@@ -53,7 +53,7 @@
                                     <legend>Picture</legend>
                                     <div class="clr span10">
                                         <span class="clr">
-                                            <input type="file" class="span2" value="Browse" />
+                                            
                                         </span>			
                                     </div>                                        
                                 </fieldset>                                	

@@ -175,7 +175,7 @@ class Expense extends CI_Controller {
             {
                 $supplier_list[] = array(
                     'id' => $supplier_info['user_id'],
-                    'value' => $supplier_info['username']
+                    'value' => $supplier_info['first_name'].' '.$supplier_info['last_name']
                 );
             }
             $result_array['supplier_list'] = $supplier_list;            
@@ -189,7 +189,7 @@ class Expense extends CI_Controller {
             {
                 $user_list[] = array(
                     'id' => $user_info['user_id'],
-                    'value' => $user_info['username']
+                    'value' => $user_info['first_name'].' '.$user_info['last_name']
                 );
             }
             $result_array['user_list'] = $user_list;
@@ -200,290 +200,25 @@ class Expense extends CI_Controller {
     public function get_expense()
     {
         $expense_type_id = $_POST['expense_type_id'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
         if($expense_type_id > 0)
         {
-            $expense_list_array = $this->expenses->get_expenses($expense_type_id)->result_array();
+            $expense_list_array = $this->expenses->get_expenses($expense_type_id, $start_date, $end_date)->result_array();
         }
         else
         {
-            $expense_list_array = $this->expenses->get_all_expenses()->result_array();
+            $expense_list_array = $this->expenses->get_all_expenses($start_date, $end_date)->result_array();
         }
         $result_array['expense_list'] = $expense_list_array;    
         echo json_encode($result_array);
     }
     
-    /*function add_shop_expense()
+    public function test()
     {
-        $message_data = '';
-        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('expense_amount', 'Expense Amount', 'xss_clean|required');
-        $this->form_validation->set_rules('expense_description', 'Expense Description', 'xss_clean');
-        
-        if ($this->input->post('submit_add_shop_expense') && $this->form_validation->run() == true ) 
-        {            
-            $additional_data = array(
-                'expense_type_id' => $this->expense_type_list['shop'],
-                'description' => $this->input->post('expense_description'),
-                'expense_amount' => $this->input->post('expense_amount'),
-                'reference_id' => $this->input->post('shop_list')
-            );
-            $expense_id = $this->expenses->add_expense($additional_data);
-            if( $expense_id !== FALSE )
-            {
-                $this->session->set_flashdata('message', $this->expenses->messages());
-                redirect('expense/add_shop_expense','refresh');
-            }
-            else
-            {
-                $message_data = $this->expenses->errors();
-            }
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
-        }
-        else
-        {
-            $this->data['message'] = $this->session->flashdata('message'); 
-        }
-        
-        $shop_list_array = $this->shop_library->get_all_shops()->result_array();
-        $shop_list = array();
-        foreach($shop_list_array as $key => $shop_info)
-        {
-            $shop_list[$shop_info['id']] = $shop_info['name'];
-        }
-        $this->data['shop_list'] = $shop_list;
-        
-        $this->data['expense_description'] = array(
-            'name' => 'expense_description',
-            'id' => 'expense_description',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_description'),
-        );
-        $this->data['expense_amount'] = array(
-            'name' => 'expense_amount',
-            'id' => 'expense_amount',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_amount'),
-        );
-        $this->data['submit_add_shop_expense'] = array(
-            'name' => 'submit_add_shop_expense',
-            'id' => 'submit_add_shop_expense',
-            'type' => 'submit',
-            'value' => 'Add',
-        );
-        
-        $this->template->load(null, 'expense/add_shop_expense', $this->data);
+        $start_date = '2014-01-22';
+        $end_date = '2014-01-23';
+        $expense_list_array = $this->expenses->get_all_expenses($start_date, $end_date)->result_array();
+        print_r($expense_list_array);
     }
-    
-    function add_supplier_expense()
-    {
-        $message_data = '';
-        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('expense_amount', 'Expense Amount', 'xss_clean|required');
-        $this->form_validation->set_rules('expense_description', 'Expense Description', 'xss_clean');
-        
-        if ($this->input->post('submit_add_supplier_expense') && $this->form_validation->run() == true ) 
-        {            
-            $additional_data = array(
-                'expense_type_id' => $this->expense_type_list['supplier'],
-                'description' => $this->input->post('expense_description'),
-                'expense_amount' => $this->input->post('expense_amount'),
-                'reference_id' => $this->input->post('supplier_list')
-            );
-            $expense_id = $this->expenses->add_expense($additional_data);
-            if( $expense_id !== FALSE )
-            {
-                $this->session->set_flashdata('message', $this->expenses->messages());
-                redirect('expense/add_supplier_expense','refresh');
-            }
-            else
-            {
-                $message_data = $this->expenses->errors();
-            }
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
-        }
-        else
-        {
-            $this->data['message'] = $this->session->flashdata('message'); 
-        }
-        
-        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
-        $supplier_list = array();
-        foreach($supplier_list_array as $key => $supplier_info)
-        {
-            $supplier_list[$supplier_info['user_id']] = $supplier_info['username'];
-        }
-        $this->data['supplier_list'] = $supplier_list;
-        
-        $this->data['expense_description'] = array(
-            'name' => 'expense_description',
-            'id' => 'expense_description',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_description'),
-        );
-        $this->data['expense_amount'] = array(
-            'name' => 'expense_amount',
-            'id' => 'expense_amount',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_amount'),
-        );
-        $this->data['submit_add_supplier_expense'] = array(
-            'name' => 'submit_add_supplier_expense',
-            'id' => 'submit_add_supplier_expense',
-            'type' => 'submit',
-            'value' => 'Add',
-        );
-        
-        $this->template->load(null, 'expense/add_supplier_expense', $this->data);
-    }
-    
-    function add_user_expense()
-    {
-        $message_data = '';
-        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('expense_amount', 'Expense Amount', 'xss_clean|required');
-        $this->form_validation->set_rules('expense_description', 'Expense Description', 'xss_clean');
-        
-        if ($this->input->post('submit_add_user_expense') && $this->form_validation->run() == true ) 
-        {            
-            $additional_data = array(
-                'expense_type_id' => $this->expense_type_list['user'],
-                'description' => $this->input->post('expense_description'),
-                'expense_amount' => $this->input->post('expense_amount'),
-                'reference_id' => $this->input->post('user_list')
-            );
-            $expense_id = $this->expenses->add_expense($additional_data);
-            if( $expense_id !== FALSE )
-            {
-                $this->session->set_flashdata('message', $this->expenses->messages());
-                redirect('expense/add_user_expense','refresh');
-            }
-            else
-            {
-                $message_data = $this->expenses->errors();
-            }
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
-        }
-        else
-        {
-            $this->data['message'] = $this->session->flashdata('message'); 
-        }
-        
-        $user_list_array = $this->ion_auth->get_all_shop_employees()->result_array();
-        $user_list = array();
-        //filter administrator from this list
-        foreach($user_list_array as $key => $user_info)
-        {
-            $user_list[$user_info['user_id']] = $user_info['username'];
-        }
-        $this->data['user_list'] = $user_list;
-        
-        $this->data['expense_description'] = array(
-            'name' => 'expense_description',
-            'id' => 'expense_description',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_description'),
-        );
-        $this->data['expense_amount'] = array(
-            'name' => 'expense_amount',
-            'id' => 'expense_amount',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_amount'),
-        );
-        $this->data['submit_add_user_expense'] = array(
-            'name' => 'submit_add_user_expense',
-            'id' => 'submit_add_user_expense',
-            'type' => 'submit',
-            'value' => 'Add',
-        );
-        
-        $this->template->load(null, 'expense/add_user_expense', $this->data);
-    }
-    function add_other_expense()
-    {
-        $message_data = '';
-        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('expense_amount', 'Expense Amount', 'xss_clean|required');
-        $this->form_validation->set_rules('expense_description', 'Expense Description', 'xss_clean');
-        
-        if ($this->input->post('submit_add_other_expense') && $this->form_validation->run() == true ) 
-        {            
-            $additional_data = array(
-                'expense_type_id' => $this->expense_type_list['other'],
-                'description' => $this->input->post('expense_description'),
-                'expense_amount' => $this->input->post('expense_amount')
-            );
-            $expense_id = $this->expenses->add_expense($additional_data);
-            if( $expense_id !== FALSE )
-            {
-                $this->session->set_flashdata('message', $this->expenses->messages());
-                redirect('expense/add_other_expense','refresh');
-            }
-            else
-            {
-                $message_data = $this->expenses->errors();
-            }
-        }
-        if(validation_errors() != false) 
-        { 
-            $this->data['message'] = validation_errors();
-        }
-        else if( $message_data != '')
-        {
-           $this->data['message'] = $message_data;
-        }
-        else
-        {
-            $this->data['message'] = $this->session->flashdata('message'); 
-        }
-        
-        $this->data['expense_description'] = array(
-            'name' => 'expense_description',
-            'id' => 'expense_description',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_description'),
-        );
-        $this->data['expense_amount'] = array(
-            'name' => 'expense_amount',
-            'id' => 'expense_amount',
-            'class' => 'span2',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('expense_amount'),
-        );
-        $this->data['submit_add_other_expense'] = array(
-            'name' => 'submit_add_other_expense',
-            'id' => 'submit_add_other_expense',
-            'type' => 'submit',
-            'value' => 'Add',
-        );
-        
-        $this->template->load(null, 'expense/add_other_expense', $this->data);
-    }*/
 }

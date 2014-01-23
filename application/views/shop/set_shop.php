@@ -24,7 +24,7 @@
                                         <div class="clr span10">
                                             <span class="fl"></span>
                                             <span class="fr">
-                                                <?php echo form_submit($submit_set_shop); ?>
+                                                <?php echo form_submit($submit_set_shop+array('class'=>'btn btn-success pull-right')); ?>
                                             </span>			
                                         </div> 
                                     </fieldset>

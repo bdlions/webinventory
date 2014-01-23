@@ -56,7 +56,11 @@ $lang['group_delete_unsuccessful'] 	= 'Unable to delete group';
 $lang['group_name_required'] 		= 'Group name is a required field';
 
 // Shop
-$lang['account_creation_shop_assignment_error']  = 'Error while storing shop info of a user';
+$lang['shop_create_successful']                     = 'Shop created successfully.';
+$lang['account_creation_shop_assignment_error']     = 'Error while storing shop info of a user';
+$lang['shop_creation_duplicate_shop']               = 'Shop Already Used or Invalid.';
+$lang['shop_update_duplicate_shop']                 = 'Shop Already Used or Invalid.';
+$lang['shop_update_successful']                     = 'Shop is updated successfully.';
 
 // Email Subjects
 $lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';

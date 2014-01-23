@@ -265,7 +265,13 @@
             $('#myModal').modal('hide');
         });
         
-        $("#input_date_add_purchase").datepicker();
+        $('#input_date_add_purchase').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-3d'
+        }).on('changeDate', function(ev){
+            $('#input_date_add_purchase').text($('#input_date_add_purchase').data('date'));
+            $('#input_date_add_purchase').datepicker('hide');
+        });
         $("#div_supplier_list").on("click", "input", function() {
             if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_supplier_list")
             {

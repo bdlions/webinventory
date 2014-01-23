@@ -31,9 +31,13 @@ class Purchase extends CI_Controller {
     
     function index()
     {
-        
+        redirect("purchase/purchase_order","refresh");
     }
     
+    /*
+     * This method will display purchase page after retrieving relevant data
+     * @author Nazmul on 23rd January 2014 
+     */
     function purchase_order()
     {
         $this->data['supplier_list_array'] = array();
@@ -59,7 +63,15 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category']['name'] = "Product Name";
         $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'purchase/purchase_order',$this->data);
     }
-    
+    /*
+     * Ajax Call
+     * This method will store purchase info into the system
+     * @return status, 0 for error and 1 for success
+     * @return message, if there is any error
+     * @retrun purchase_info, purchase info
+     * @return inserted_product_list, product list of that purchase
+     * @author Nazmul on 23rd January 2014
+     */
     function add_purchase()
     {
         $user_id = $this->session->userdata('user_id');

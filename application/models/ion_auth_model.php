@@ -30,7 +30,7 @@ if (!defined('BASEPATH'))
 class Ion_auth_model extends CI_Model {
 
     protected $user_group_list = array();
-    protected $customer_identity;
+    protected $customer_identity_column;
     public $account_status_list = array();
     /**
      * Holds an array of tables used
@@ -187,7 +187,7 @@ class Ion_auth_model extends CI_Model {
 
         //initialize data
         $this->identity_column = $this->config->item('identity', 'ion_auth');
-        $this->customer_identity = $this->config->item('customer_identity', 'ion_auth');
+        $this->customer_identity_column = $this->config->item('customer_identity_column', 'ion_auth');
         $this->store_salt = $this->config->item('store_salt', 'ion_auth');
         $this->salt_length = $this->config->item('salt_length', 'ion_auth');
         $this->join = $this->config->item('join', 'ion_auth');
@@ -1969,28 +1969,31 @@ class Ion_auth_model extends CI_Model {
      * @return bool
      * @author Nazmul
      * */
-    public function customer_identity_check($name = '' , $value = '') {
+    public function customer_identity_check($value = '') {
         $this->trigger_events('customer_identity_check');
 
-        if (empty($name) || empty($value)) {
+        if (empty($value)) {
             return FALSE;
         }
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where($this->customer_identity_column, $value);
 
-        $this->trigger_events('extra_where');
-
-        return $this->db->where($name, $value)
-                        ->count_all_results($this->tables['customers']) > 0;
+        return $this->db->count_all_results($this->tables['customers']) > 0;
     }
     public function create_customer($additional_data)
     {
         $this->trigger_events('pre_create_customer');
-        if ($this->customer_identity == 'card_no' && $this->customer_identity_check('card_no', $additional_data['card_no'])) {
+        if ($this->customer_identity_column == 'card_no' && $this->customer_identity_check($additional_data['card_no'])) {
             $this->set_error('customer_creation_duplicate_card_no');
             return FALSE;
-        }    
+        }   
+        $data = array(
+            'shop_id' => $this->session->userdata('shop_id')
+        );
         //filter out any data passed that doesnt have a matching column in the users table
-        $customer_data = $this->_filter_data($this->tables['customers'], $additional_data);
-
+        $customer_data = array_merge($this->_filter_data($this->tables['customers'], $additional_data), $data);
+        
         $this->db->insert($this->tables['customers'], $customer_data);
 
         $id = $this->db->insert_id();

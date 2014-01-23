@@ -101,15 +101,21 @@ class Expense_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_expenses($expense_type_id)
+    public function get_expenses($expense_type_id, $start_date, $end_date)
     {
+        $end_date = date('Y-m-d', strtotime('+1 day', strtotime($end_date)));
+        $this->db->where('created_date >=', $start_date);
+        $this->db->where('created_date <=', $end_date);
         $this->db->where('expense_type_id', $expense_type_id);
         $this->response = $this->db->get($this->tables['expense_info']);
         return $this;
     }
     
-    public function get_all_expenses()
+    public function get_all_expenses($start_date, $end_date)
     {
+        $end_date = date('Y-m-d', strtotime('+1 day', strtotime($end_date)));
+        $this->db->where('created_date >=', $start_date);
+        $this->db->where('created_date <=', $end_date);
         $this->response = $this->db->get($this->tables['expense_info']);
         return $this;
     }

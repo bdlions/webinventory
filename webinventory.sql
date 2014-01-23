@@ -198,16 +198,20 @@ ALTER TABLE `suppliers`
  CREATE TABLE IF NOT EXISTS `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `shop_id` int NOT NULL,
   `card_no` varchar(200) DEFAULT NULL, 
   `institution_id` int DEFAULT NULL,
   `profession_id` int DEFAULT NULL, 
   PRIMARY KEY (`id`),
+  UNIQUE KEY (`shop_id`, `card_no`),
   KEY `fk_customers_users1_idx` (`user_id`),
+  KEY `fk_customers_shop_info1_idx` (`shop_id`),
   KEY `fk_customers_institution1_idx` (`institution_id`),
   KEY `fk_customers_profession1_idx` (`profession_id`)  
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `customers`
   ADD CONSTRAINT `fk_customers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customers_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_customers_institution1` FOREIGN KEY (`institution_id`) REFERENCES `institution` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_customers_profession1` FOREIGN KEY (`profession_id`) REFERENCES `profession` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   

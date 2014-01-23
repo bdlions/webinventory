@@ -81,6 +81,8 @@ class Sale extends CI_Controller {
                 'quantity' => $prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'shop_id' => $shop_id,
+                'sale_order_no' => $sale_info['sale_order_no'],
                 'discount' => $prod_info['discount'],
                 'sub_total' => $prod_info['sub_total']
             );

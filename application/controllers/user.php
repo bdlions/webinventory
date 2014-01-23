@@ -697,7 +697,7 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
+                    //$this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/create_customer","refresh");
                 }
@@ -1013,7 +1013,7 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['customer_info'] = $customer_info;
-            $this->sms_library->send_sms($phone_no,'Congratulation for registration');
+            //$this->sms_library->send_sms($phone_no,'Congratulation for registration');
         } 
         else
         {
@@ -1055,7 +1055,7 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
+                    //$this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/create_supplier","refresh");
                 }
@@ -1105,14 +1105,12 @@ class User extends CI_Controller {
             'name' => 'company',
             'id' => 'company',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('company'),
         );
         $this->data['submit_create_supplier'] = array(
             'name' => 'submit_create_supplier',
             'id' => 'submit_create_supplier',
             'type' => 'submit',
-            'class' => '',
             'value' => 'Create',
         );
         $this->template->load(null, 'supplier/create_supplier',$this->data);
@@ -1316,7 +1314,7 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['supplier_info'] = $supplier_info;
-            $this->sms_library->send_sms($phone_no,'Congratulation for registration');
+            //$this->sms_library->send_sms($phone_no,'Congratulation for registration');
         } 
         else
         {

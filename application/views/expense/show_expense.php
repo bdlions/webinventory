@@ -2,8 +2,21 @@
     $(function() {
         $("#div_expense_description").html("");  
         $("#div_expense_amount").html("");  
-        $("#show_expense_start_date").datepicker();
-        $("#show_expense_end_date").datepicker();
+        
+        $('#show_expense_start_date').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-3d'
+        }).on('changeDate', function(ev){
+            $('#show_expense_start_date').text($('#show_expense_start_date').data('date'));
+            $('#show_expense_start_date').datepicker('hide');
+        });
+        $('#show_expense_end_date').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-3d'
+        }).on('changeDate', function(ev){
+            $('#show_expense_end_date').text($('#show_expense_end_date').data('date'));
+            $('#show_expense_end_date').datepicker('hide');
+        });
         $("#expense_categories").on("change", function() {            
             $.ajax({
                 type: "POST",
@@ -61,7 +74,9 @@
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "expense/get_expense",
                 data: {
-                    expense_type_id: $("#expense_categories").val()
+                    expense_type_id: $("#expense_categories").val(),
+                    start_date: $("#show_expense_start_date").val(),
+                    end_date: $("#show_expense_end_date").val()
                 },
                 success: function(data) {
                     var result = JSON.parse(data);
