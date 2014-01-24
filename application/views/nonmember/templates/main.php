@@ -92,8 +92,7 @@
                                 <div class="container">
                                     <header>
                                         <section class="login-prompt" style="padding: 24px 0;">
-                                            <a href="#login" class="login-btn section-toggle login-bt">Login</a>
-                                            <a href="#signup" class="signup-btn section-toggle signup-bt">Signup</a>
+                                            <a href="<?php echo base_url();?>user/salesman_login" class="login-btn section-toggle login-bt">Login</a>
                                         </section>
                                         <div class="row">
                                             <div class="logo" style="background-size: 90%;margin: 10px 0;height: 46px;"><a href="#objective" class="section-toggle" id="logo-back-bt"></a></div>
@@ -106,14 +105,14 @@
                                     <section style="opacity: 1; display: block;" id="login" class="login visible">
                                         <div class="row">
                                             <div class="span12" id="login-form-div">
-                                                <h1 style="color:#000 !important;">login Block</h1>
+                                                <h1 style="color:#000 !important;">&nbsp;</h1>
                                             </div>
                                         </div>
                                     </section>
                                     <section id="signup" class="signup hidden">
                                         <div class="row">
                                             <div class="span12">
-                                                <h1 style="color:#000 !important;">Sign up Block</h1>
+                                                <h1 style="color:#000 !important;">&nbsp;</h1>
                                             </div>
                                         </div>
                                     </section>
