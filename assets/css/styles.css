@@ -6,7 +6,7 @@
 /* Headings */
 
 h1,h2,h3,
-h4,h5,h6      { margin:0 0 5px; line-height:1.35; color:#0a263c; }
+h4,h5,h6      { margin:0 0 5px; line-height:1.35;  }
 h1            { font-size:20px; font-weight:normal; }
 h2            { font-size:18px; font-weight:normal; }
 h3            { font-size:16px; font-weight:bold; }
@@ -68,7 +68,6 @@ body{
 h1, h2, h3, h4, h5, h6{
     font-family: 'Dosis',sans-serif !important;
     font-size: 22px !important;
-    color:#ffffff !important;
 }
 .search_details h1, 
 .search_details h2, 
@@ -76,7 +75,7 @@ h1, h2, h3, h4, h5, h6{
 .search_details h4, 
 .search_details h5, 
 .search_details h6{
-    color:#8ab367 !important;
+    
 }
 a:hover {
     color: #f60 !important;
@@ -88,7 +87,6 @@ a:hover {
     clear:both;
 }
 .hundrd{
-    width: 95%;
     margin: auto;
     padding: 0;
     background: transparent;
@@ -203,7 +201,6 @@ h2.head_task{
 }
 .details_nav{
     position: relative;
-    margin: 5px;
     height: 25px;
 }
 .more_link .fl{
@@ -212,7 +209,6 @@ h2.head_task{
 }
 .details_nav ul li a{
     padding-left:21px;
-    color:#ffffff !important;
 }
 .details_nav ul li:nth-child(1){background-image:url(../images/new.png);}
 .details_nav ul li:nth-child(2){background-image:url(../images/save.png);}
@@ -230,7 +226,7 @@ h2.head_task{
     background-size: 28px 31px;
     background-position: 0px -1px;
     border: 0px solid #ccc;
-    width: 78%;
+    width: 96%;
     height: 31px;
     margin: 5px auto;
     border-radius: 5px;
@@ -383,7 +379,6 @@ div.home a:hover
 }
 .search{
     width:20%;
-    background:;
     float:left;
 }
 .search_details{
@@ -394,7 +389,7 @@ div.home a:hover
     padding:5px;
 }
 .search_box{
-    width: 91%;
+    width: 100%;
     margin: auto;
     border: 1px solid #8ab367;
     border-radius: 5px;
@@ -485,8 +480,6 @@ div.blank_div p{
 }
 select, 
 input{
-    width: 200px !important;
-    height: 28px !important;
 }
 .details input, 
 .details select{
@@ -544,7 +537,7 @@ div.fifty .span12{
     margin-bottom:20px;
 }
 .btn .caret{
-    margin-top: 10px !important;
+    margin-top: 2px !important;
     margin-left: 6px !important;
 }
 .select_div{
@@ -577,8 +570,6 @@ ol.carousel-indicators{
 .product_details .wh_100{
     height:50px;
     width:100%;
-    background:;
-    border-top:1px solid #ccc;
     border-bottom:1px solid #ccc;
     text-align:center;
 }
@@ -624,7 +615,6 @@ div.inventory_summary{
     background-image:url('../images/inflow_banner.png');
     background-repeat:no-repeat;
     background-size:863px 492px;
-    background-position:;
     width:100%;
     height:492px;
     position:relative;
@@ -687,7 +677,6 @@ div.inventory_summary ul li a span:hover{
     clear:both;
     font-size:13px !important;
     margin:10px 0;
-    float:;
     color:#555555;
 }
 div.inventory_summary .btn-toolbar,
@@ -783,10 +772,10 @@ div.shortcut_menu ul li a{
 div.shortcut_menu ul li a:hover{
     color:#51a351 !important;
 }
-.product_pricing #tabs1-pane1 select, input {
+/*.product_pricing #tabs1-pane1 select, input {
     width: 144px !important;
     height: 28px !important;
-}
+}*/
 .prod_prc_btn{
     position: relative;
     margin: -18px 37px;
@@ -1020,14 +1009,6 @@ div.copyright ul li a:hover{
 div.copyright ul li a:hover{
 	color: maroon;
 }
-div.col-12 div.btn-toolbar div.btn-group:nth-child(4),
-div.col-12 div.btn-toolbar div.btn-group:nth-child(5),
-div.col-12 div.btn-toolbar div.btn-group:nth-child(6),
-div.col-12 div.btn-toolbar div.btn-group:nth-child(7),
-div.col-12 div.btn-toolbar div.btn-group:nth-child(8){
-     position: relative;
-     z-index: 999999;
-}
 /***********************************************************************************************/
 @media (min-width: 1200px){
     .row-fluid .clr.product_details.sales_order_details.specific.span10{
@@ -1047,3 +1028,18 @@ div.col-12 div.btn-toolbar div.btn-group:nth-child(8){
         width: 11.1%;
     }
 }
+
+
+
+.boxshad{
+                /*opacity: .4;*/
+                /*background-color: darkgrey;*/
+                /*background-color: rgba(154, 154, 154, 0.49);*/
+                margin: 25px 0px 0px 0px;
+                box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.6);
+                -moz-box-shadow: 2px 2px 2px 2px blueviolet;
+                -webkit-box-shadow: 2px 2px 2px 2px blueviolet;    
+                border-radius: 10px;
+                -moz-border-radius: 10px;
+                -webkit-border-radius: 10px;}
+

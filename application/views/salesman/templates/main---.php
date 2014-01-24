@@ -47,8 +47,7 @@
     </head>
 
     <body screen_capture_injected="true" cz-shortcut-listen="true">
-        <div class ="container">
-            <div class="top_nav">
+        <div class="top_nav">
                 <?php $this->load->view("salesman/templates/top_nav"); ?>
             </div>
             <div class="row">
@@ -64,6 +63,5 @@
                     <?php $this->load->view("salesman/templates/footer"); ?>
                 </div>
             </div>
-        </div>
     </body>
 </html>

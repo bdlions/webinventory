@@ -11,7 +11,7 @@
     function append_selected_product(prod_info)
     {
         var is_product_previously_selected = false;
-        $("span", "#div_selected_product_list").each(function() {
+        $("#div_selected_product_list").each(function() {
             $("input", $(this)).each(function() {
                 if ($(this).attr("name") === "quantity")
                 {
@@ -28,12 +28,13 @@
             return;
         }
         var current_temp_product_html = $("#div_selected_product_list").html();
-        current_temp_product_html = current_temp_product_html + '<span class="span12 sales_view_block" style="">';
-        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="fl" type="text" value="' + prod_info['name'] + '"/>';
-        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="quantity" class="fl" type="text" value="1"/>';
-        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="price" class="fl" type="text" value="100"/>';
-        current_temp_product_html = current_temp_product_html + '<input name="product_buy_price" readonly="true" class="fl" type="text" value="100"/>';
-        current_temp_product_html = current_temp_product_html + '</span>';
+        current_temp_product_html = current_temp_product_html + '<div class ="row"><div class ="col-md-2">';
+        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="form-control" type="text" value="' + prod_info['name'] + '"/></div><div class ="col-md-2">';
+        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="form-control" type="text" value="' + prod_info['code'] + '"/></div><div class ="col-md-2">';
+        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="quantity" class="form-control" type="text" value="1"/></div><div class ="col-md-2">';
+        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="price" class="form-control" type="text" value="100"/></div><div class ="col-md-2">';
+        current_temp_product_html = current_temp_product_html + '<input name="product_buy_price" readonly="true" class="form-control" type="text" value="100"/>';
+        current_temp_product_html = current_temp_product_html + '</div></div>';
         $("#div_selected_product_list").html(current_temp_product_html);
 
         var total_purchase_price = 0;
@@ -49,7 +50,7 @@
     function update_fields_selected_supplier(sup_info)
     {
         $("#input_add_purchase_supplier_id").val(sup_info['supplier_id']);
-        $("#input_add_purchase_supplier").val(sup_info['first_name']+' '+sup_info['last_name']);
+        $("#input_add_purchase_supplier").val(sup_info['username']);
         $("#input_add_purchase_company").val(sup_info['company']);
         $("#input_add_purchase_phone").val(sup_info['phone']);
     }
@@ -61,217 +62,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#button_add_product").on("click", function() {
-            if ($("#input_product_name").val().length == 0)
-            {
-                alert("Product Name is required.");
-                return;
-            }
-            set_modal_confirmation_category_id(get_modal_confirmation_add_product_category_id());
-            $('#myModal').modal('show');
-        });
-        $("#button_add_supplier").on("click", function() {
-            if ($("#input_first_name").val().length == 0)
-            {
-                alert("First Name is required.");
-                return;
-            }
-            else if ($("#input_last_name").val().length == 0)
-            {
-                alert("Last Name is required.");
-                return;
-            }
-            else if ($("#input_phone_no").val().length == 0)
-            {
-                alert("Phone is required.");
-                return;
-            }
-            else if ($("#input_company").val().length == 0)
-            {
-                alert("Company is required.");
-                return;
-            }
-            set_modal_confirmation_category_id(get_modal_confirmation_add_supplier_category_id());
-            $('#myModal').modal('show');
-        });
-        $("#button_save_purchase_order").on("click", function() {
-            //validation checking of purchase order
-            //checking whether supplier is selected or not
-            if ($("#input_add_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
-            {
-                alert('Please select a supplier');
-                return;
-            }
-            //checking whether purchase order no is assigned or not
-            if ($("#purchase_order_no").val().length === 0)
-            {
-                alert('Please assign Lot #');
-                return;
-            }
-            //checking whether at least one product is selected or not
-            var selected_product_counter = 0;
-            $("span", "#div_selected_product_list").each(function() {
-                $("input", $(this)).each(function() {
-                    if ($(this).attr("name") === "quantity")
-                    {
-                        selected_product_counter++;
-                    }
-                });
-            });
-            if (selected_product_counter <= 0)
-            {
-                alert('Please select at least one product.');
-                return;
-            }
-            set_modal_confirmation_category_id(get_modal_confirmation_save_purchase_order_category_id());
-            $('#myModal').modal('show');
-        });
-        $("#modal_button_confirm").on("click", function() {
-            if (get_modal_confirmation_category_id() === get_modal_confirmation_add_product_category_id())
-            {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "product/create_product_purchase_order",
-                    data: {
-                        product_name: $("#input_product_name").val()
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
-                        {
-                            var p_list = get_product_list();
-                            p_list[p_list.length] = response['product_info'];
-                            set_product_list(p_list);
-                            alert('New product is added successfully.');
-                            var product_info = response['product_info'];
-
-                            var current_temp_html_product = $("#div_product_list").html();
-                            current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
-                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
-                            current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
-                            current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
-                            current_temp_html_product = current_temp_html_product + '</span>';
-                            current_temp_html_product = current_temp_html_product + '</span>';
-                            $("#div_product_list").html(current_temp_html_product);
-                            append_selected_product(product_info);
-                            $('div[class="clr dropdown open"]').removeClass('open');
-                        }
-                    }
-
-                });
-            }
-            else if (get_modal_confirmation_category_id() === get_modal_confirmation_add_supplier_category_id())
-            {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "user/create_supplier_purchase_order",
-                    data: {
-                        first_name: $("#input_first_name").val(),
-                        last_name: $("#input_last_name").val(),
-                        phone_no: $("#input_phone_no").val(),
-                        company: $("#input_company").val()
-
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
-                        {
-                            var s_list = get_supplier_list();
-                            s_list[s_list.length] = response['supplier_info'];
-                            set_supplier_list(s_list);
-                            alert('New supplier is added successfully.');
-                            var supplier_info = response['supplier_info'];
-
-                            var current_temp_html_supplier = $("#div_supplier_list").html();
-                            current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
-                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
-                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
-                            current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
-                            current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
-                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
-                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
-                            $("#div_supplier_list").html(current_temp_html_supplier);
-                            update_fields_selected_supplier(supplier_info);
-                            $('div[class="clr dropdown open"]').removeClass('open');
-                        }
-                    }
-
-                });
-            }
-            else if( get_modal_confirmation_category_id() === get_modal_confirmation_save_purchase_order_category_id() )
-            {
-                var total_purchase_price = 0;
-                var product_list = new Array();
-                var product_list_counter = 0;
-                $("span", "#div_selected_product_list").each(function() {
-                    var product_info = new Product();
-                    $("input", $(this)).each(function() {
-                        if ($(this).attr("name") === "quantity")
-                        {
-                            product_info.setProductId($(this).attr("id"));
-                            product_info.setQuantity($(this).attr("value"));
-                            product_info.setPurchaseOrderNo($("#purchase_order_no").val());
-                        }
-                        if ($(this).attr("name") === "price")
-                        {
-                            product_info.setUnitPrice($(this).attr("value"));
-                        }
-                        if ($(this).attr("name") === "product_buy_price")
-                        {
-                            product_info.setSubTotal($(this).attr("value"));
-                            total_purchase_price = +total_purchase_price + +$(this).attr("value");
-                        }
-                    });
-                    product_list[product_list_counter++] = product_info;
-                });
-                if (total_purchase_price !== +$("#total_purchase_price").val())
-                {
-                    alert('Calculation error. Please try again.');
-                    return;
-                }
-                var purchase_info = new Purchase();
-                purchase_info.setOrderNo($("#purchase_order_no").val());
-                purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
-                purchase_info.setRemarks($("#purchase_remarks").val());
-                purchase_info.setTotal($("#total_purchase_price").val());
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
-                    data: {
-                        product_list: product_list,
-                        purchase_info: purchase_info
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '0')
-                        {
-                            alert(response['message']);
-                        }
-                        else if (response['status'] === '1')
-                        {
-                            alert('Purchase order is executed successfully.');
-                            $("#div_selected_product_list").html('');
-                            $("#input_add_purchase_supplier_id").val('');
-                            $("#input_add_purchase_supplier").val('');
-                            $("#input_add_purchase_company").val('');
-                            $("#input_add_purchase_phone").val('');
-                            $("#purchase_order_no").val('');
-                            $("#purchase_remarks").val('');
-                            $("#total_purchase_price").val('');
-                        }
-                    }
-                });
-            }
-            $('#myModal').modal('hide');
-        });
-        
-        $('#input_date_add_purchase').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-3d'
-        }).on('changeDate', function(ev){
-            $('#input_date_add_purchase').text($('#input_date_add_purchase').data('date'));
-            $('#input_date_add_purchase').datepicker('hide');
-        });
+        $("#input_date_add_purchase").datepicker();
         $("#div_supplier_list").on("click", "input", function() {
             if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_supplier_list")
             {
@@ -368,6 +159,7 @@
                         var prod_info = prod_list[counter];
                         current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
                         current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['name'] + '"/>';
+                        current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['code'] + '"/>';
                         current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
                         current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + prod_info['id'] + '">view</a>';
                         current_temp_html_product = current_temp_html_product + '</span>';
@@ -378,11 +170,178 @@
             });
         });
 
+//        $("#button_add_supplier").on("click", function() {
+//            if ($("#input_first_name").val().length == 0)
+//            {
+//                alert("First Name is required.");
+//                return;
+//            }
+//            else if ($("#input_last_name").val().length == 0)
+//            {
+//                alert("Last Name is required.");
+//                return;
+//            }
+//            else if ($("#input_phone_no").val().length == 0)
+//            {
+//                alert("Phone is required.");
+//                return;
+//            }
+//            else if ($("#input_company").val().length == 0)
+//            {
+//                alert("Company is required.");
+//                return;
+//            }
+//            $.ajax({
+//                type: "POST",
+//                url: '<?php //echo base_url();  ?>' + "user/create_supplier_purchase_order",
+//                data: {
+//                    first_name: $("#input_first_name").val(),
+//                    last_name: $("#input_last_name").val(),
+//                    phone_no: $("#input_phone_no").val(),
+//                    company: $("#input_company").val()
+//
+//                },
+//                success: function(data) {
+//                    var response = JSON.parse(data);
+//                    if (response['status'] === '1')
+//                    {
+//                        var s_list = get_supplier_list();
+//                        s_list[s_list.length] = response['supplier_info'];
+//                        set_supplier_list(s_list);
+//                        alert('New supplier is added successfully.');
+//                        var supplier_info = response['supplier_info'];
+//                        
+//                        var current_temp_html_supplier = $("#div_supplier_list").html();                        
+//                        current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
+//                        current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
+//                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
+//                        $("#div_supplier_list").html(current_temp_html_supplier);                        
+//                        update_fields_selected_supplier(supplier_info);
+//                        $('div[class="clr dropdown open"]').removeClass('open');
+//                    }
+//                }
+//
+//            });
+//        });
+
+        $("#button_confirm").on("click", function() {
+            if ($("#input_product_name").val().length != 0)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
+                    data: {
+                        product_name: $("#input_product_name").val(),
+                        product_code: $("#input_product_code").val(),
+                        unit_price: $("#input_unit_price").val()
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '1')
+                        {
+                            var p_list = get_product_list();
+                            p_list[p_list.length] = response['product_info'];
+                            set_product_list(p_list);
+                            alert('New product is added successfully.');
+                            var product_info = response['product_info'];
+
+                            var current_temp_html_product = $("#div_product_list").html();
+                            current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
+                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
+                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['code'] + '"/>';
+                            current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
+                            current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
+                            current_temp_html_product = current_temp_html_product + '</span>';
+                            current_temp_html_product = current_temp_html_product + '</span>';
+                            $("#div_product_list").html(current_temp_html_product);
+                            append_selected_product(product_info);
+                            $('div[class="clr dropdown open"]').removeClass('open');
+                        }
+                    }
+
+                });
+
+            }
+            if ($("#input_first_name").val().length != 0)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "user/create_supplier_purchase_order",
+                    data: {
+                        first_name: $("#input_first_name").val(),
+                        last_name: $("#input_last_name").val(),
+                        phone_no: $("#input_phone_no").val(),
+                        company: $("#input_company").val()
+
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '1')
+                        {
+                            var s_list = get_supplier_list();
+                            s_list[s_list.length] = response['supplier_info'];
+                            set_supplier_list(s_list);
+                            alert('New supplier is added successfully.');
+                            var supplier_info = response['supplier_info'];
+
+                            var current_temp_html_supplier = $("#div_supplier_list").html();
+                            current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
+                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
+                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
+                            current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
+                            current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
+                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
+                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
+                            $("#div_supplier_list").html(current_temp_html_supplier);
+                            update_fields_selected_supplier(supplier_info);
+                            $('div[class="clr dropdown open"]').removeClass('open');
+                        }
+                    }
+
+                });
+            }
+//            else if ($("#input_product_code").val().length == 0)
+//            {
+//                alert("Product Code is required.");
+//                return;
+//            }
+//            else if ($("#input_unit_price").val().length == 0)
+//            {
+//                alert("Unit Price is required.");
+//                return;
+//            }
+
+            $('#myModal').modal('hide');
+        });
+
+//        $("#button_add_product_confirm").on("click", function() {
+////            if ($("#input_product_name").val().length == 0)
+////            {
+////                alert("Product Name is required.");
+////                return;
+////            }
+////            else if ($("#input_product_code").val().length == 0)
+////            {
+////                alert("Product Code is required.");
+////                return;
+////            }
+////            else if ($("#input_unit_price").val().length == 0)
+////            {
+////                alert("Unit Price is required.");
+////                return;
+////            }
+//            
+//        });
+
         $("#div_selected_product_list").on("change", "input", function() {
             var product_id = '';
             var product_quantity = 1;
             var product_buy_price = 100;
-            $("input", $(this).parent()).each(function() {
+            $("input", $(this).parent().parent()).each(function() {
                 if ($(this).attr("name") === "quantity")
                 {
                     if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
@@ -429,6 +388,98 @@
             $("#total_purchase_price").val(total_purchase_price);
 
         });
+
+        $("#save_purchase_order").on("click", function() {
+            //validation checking of purchase order
+            //checking whether supplier is selected or not
+            if ($("#input_add_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
+            {
+                alert('Please select a supplier');
+                return;
+            }
+            //checking whether purchase order no is assigned or not
+            if ($("#purchase_order_no").val().length === 0)
+            {
+                alert('Please assign Order #');
+                return;
+            }
+            //checking whether at least one product is selected or not
+            var selected_product_counter = 0;
+            $("span", "#div_selected_product_list").each(function() {
+                $("input", $(this)).each(function() {
+                    if ($(this).attr("name") === "quantity")
+                    {
+                        selected_product_counter++;
+                    }
+                });
+            });
+            if (selected_product_counter <= 0)
+            {
+                alert('Please select at least one product.');
+                return;
+            }
+            var total_purchase_price = 0;
+            var product_list = new Array();
+            var product_list_counter = 0;
+            $("span", "#div_selected_product_list").each(function() {
+                var product_info = new Product();
+                $("input", $(this)).each(function() {
+                    if ($(this).attr("name") === "quantity")
+                    {
+                        product_info.setProductId($(this).attr("id"));
+                        product_info.setQuantity($(this).attr("value"));
+                        product_info.setPurchaseOrderNo($("#purchase_order_no").val());
+                    }
+                    if ($(this).attr("name") === "price")
+                    {
+                        product_info.setUnitPrice($(this).attr("value"));
+                    }
+                    if ($(this).attr("name") === "product_buy_price")
+                    {
+                        product_info.setSubTotal($(this).attr("value"));
+                        total_purchase_price = +total_purchase_price + +$(this).attr("value");
+                    }
+                });
+                product_list[product_list_counter++] = product_info;
+            });
+            if (total_purchase_price !== +$("#total_purchase_price").val())
+            {
+                alert('Calculation error. Please try again.');
+                return;
+            }
+            var purchase_info = new Purchase();
+            purchase_info.setOrderNo($("#purchase_order_no").val());
+            purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
+            purchase_info.setRemarks($("#purchase_remarks").val());
+            purchase_info.setTotal($("#total_purchase_price").val());
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
+                data: {
+                    product_list: product_list,
+                    purchase_info: purchase_info
+                },
+                success: function(data) {
+                    var response = JSON.parse(data);
+                    if (response['status'] === '0')
+                    {
+                        alert(response['message']);
+                    }
+                    else if (response['status'] === '1')
+                    {
+                        alert('Purchase order is executed successfully.');
+                        $("#div_selected_product_list").html('');
+                        $("#input_add_purchase_supplier_id").val('');
+                        $("#input_add_purchase_supplier").val('');
+                        $("#input_add_purchase_company").val('');
+                        $("#input_add_purchase_phone").val('');
+                        $("#purchase_order_no").val('');
+                        $("#purchase_remarks").val('');
+                        $("#total_purchase_price").val('');
+                    }
+                }
+            });
+        });
     });
 </script>
 <script type="text/javascript">
@@ -444,63 +495,9 @@
     });
 </script>
 
-<h2>Purchase Order</h2>
-<div class="clr search_details">
-    <div class="search span3">
-        <h6>Search</h6>
-        <div class="clr">
-            <div class="clr search_box">
-                <div class="clr">
-                    <span class="fl">Order#</span>
-                    <span class="fr"><input type="text" /></span>
-                </div>
-                <div class="clr">
-                    <span class="fl">Status</span>
-                    <span class="fr">
-                        <select>
-                            <option>All</option>
-                            <option>test</option>
-                            <option>test</option>
-                            <option>test</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="clr">
-                    <span class="fl">Customer</span>
-                    <span class="fr">
-                        <select class="">
-                            <option>Rahim</option>
-                            <option>Karim</option>
-                            <option>billal</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="clr more_link">
-                    <span class="fr">
-                        <button>Search</button>
-                    </span>
-                </div>
-                <p class="clr">&nbsp;</p>
-            </div>			
-            <div class="clr search_box order-status hndrd">			
-                <div class="clr">
-                    <span class="fl"><h3>Order#</h3></span>
-                    <span class="fr"><h3>Status</h3></span>
-                </div>
-
-                <div class="clr"> 
-                    <span class="fl">1</span>
-                    <span class="fr">2</span>                    
-                </div>
-                <div class="clr"> 
-                    <span class="fl">3</span>
-                    <span class="fr">4</span>                    
-                </div>
-                <p class="clr">&nbsp;</p>
-            </div>			
-        </div>
-    </div>
-    <div class="details_nav hundrd span8">
+<h6>Purchase Order</h6>
+<div class ="row">    
+    <div class ="col-md-11 details_nav hundrd">
         <ul>
             <li><a href="#">New</a></li>
             <li><a href="#">Save</a></li>
@@ -511,284 +508,203 @@
             <li><a href="#">Close</a></li>
         </ul>
     </div>
-    <div class="details hundrd span9">
-        <div class="clr">
-            <div class="thirty_percnt customer1 san3">
+</div>
+<div class ="row margin-top-bottom">
+    <div class ="col-md-3 form-horizontal boxshad">
+        <h6>Search</h6>
+        <div class="form-group">
+            <label for="order_no" class="col-md-3 control-label requiredField">
+                Order#
+            </label>
+            <div class ="col-md-8">
+                <?php echo form_input(array('name' => 'order_no', 'id' => 'order_no', 'class' => 'form-control')); ?>
+            </div> 
+        </div>
+        <div class="form-group">
+            <label for="status" class="col-md-3 control-label requiredField">
+                Status
+            </label>
+            <div class ="col-md-8">
+                <?php echo form_dropdown('status', (array('all' => 'all', '1' => '1', '2' => '2', '3' => '3')), 3, "class='form-control'"); ?>
+            </div> 
+        </div>
+        <div class="form-group">
+            <label for="customer_search" class="col-md-3 control-label requiredField">
+                Supplier
+            </label>
+            <div class ="col-md-8">
+                <?php echo form_dropdown('customer_search', (array('all' => 'all', '1' => '1', '2' => '2', '3' => '3')), 3, "class='form-control'"); ?>
+            </div> 
+        </div>
+        <div class="form-group">
+            <label for="customer_search" class="col-md-3 control-label requiredField">
 
-                <div class="clr dropdown">                     
-                    <div style ="width:250px;"class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="fl">Supplier</span>
-                        <span class="fr" style="margin-left:6px;">
-                            <input id="input_add_purchase_supplier_id" name="input_add_purchase_supplier_id" type="hidden" />
-                            <input class="span2" id="input_add_purchase_supplier" style="width:96% !important;" type="text" />
-                        </span>
-                    </div>
-                    <div class="dropdown-menu cust_popup" style="width:300%; padding: 15px; padding-bottom: 15px;">
-                        <div class="clr search_details" style="width:auto;">
-                            <div style="width:100%;" class="details hundrd span9">
-                                <div style="width:auto;" class="clr product_details product_details12">
-                                    <div class="clr span12 sales_view_block">
-                                        <div class="span4 fl"><h3>Phone</h3></div>
-                                        <div class="span4 fl"><h3>Company</h3></div>
-                                        <div class="span4 fl"><h3>Details</h3></div>
-                                    </div>
-                                    <div id="div_supplier_list" class="clr span12 sales_view_block">										
-                                        <?php
-                                        foreach ($supplier_list_array as $key => $supplier) {
-                                            ?>
-                                            <span id="span_customer_info" class="span12 sales_view_block" style="">
-                                                <input id="<?php echo $supplier['supplier_id']; ?>" class="fl" type="text" value="<?php echo $supplier['phone']; ?>"/>
-                                                <input id="<?php echo $supplier['supplier_id']; ?>" class="snd_raw fl" type="text" value="<?php echo $supplier['company']; ?>"/>
-                                                <span class="span10 view sales_view fl" style=""><a target="_blank" class="view" href="<?php echo base_url() . "user/show_supplier/" . $supplier['supplier_id']; ?>">view</a></span>
-                                            </span>	
-                                            <?php
-                                        }
-                                        ?>  										
+            </label>
+            <div class ="col-md-8">
+                <?php echo form_button(array('name' => 'customer_search', 'id' => 'customer_search', 'content' => 'Search')); ?>
+            </div> 
+        </div> 
+        <div class="row">			
+            <div class="col-md-6">
+                <div class ="row"><div class ="col-md-offset-2 col-md-11"><h3><u>Order#</u></h3></div></div>
+                <?php
+                foreach ($supplier_list_array as $key => $supplier) {
+                    ?>
+                    <div class ="row"><div class ="col-md-offset-2 col-md-11">
+                            <?php echo $supplier['phone']; ?>
+                        </div></div>
 
-                                    </div>                                                                       
-                                </div>
-                                <p class="clr">&nbsp;</p>
-                                <div class="clr extra_customer" style="width:auto;">
-                                    <div class="thirty_percnt customer1 san3">
-                                        <h3>Search</h3>
-                                    </div>
-                                    <div class="thirty_percnt customer2 span3">
-                                        <div class="clr">
-                                            <div class="clr">
-                                                <span class="fr">
-                                                    <?php echo form_dropdown('dropdown_search_supplier', $supplier_search_category, '0', 'id="dropdown_search_supplier"'); ?>                                                    
-                                                </span>
-                                            </div>                                                                                      
-                                            <p class="clr">&nbsp;</p>
-                                        </div>
-                                    </div>
-                                    <div class="thirty_percnt customer1 san3 refresh" style="width:auto;">                                        
-                                        <input class="span2" id="input_search_supplier" name="input_search_supplier" style="width:auto;" type="text" />
-                                        <button id="button_search_supplier" name="button_search_supplier" class="btn btn-success fr">Search </button>
-                                    </div>
-                                </div>
-                                <div class="clr customer_search">
-                                    <div class="thirty_percnt customer1 san3">
-                                        <h3>Add New</h3>
-                                    </div>
-                                    <div class="thirty_percnt customer2 span3">
-                                        <div class="clr">
-                                            <span class="fl">First Name</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_first_name" name="input_first_name" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr">
-                                            <span class="fl">Last Name</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_last_name" name="input_last_name" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr">
-                                            <span class="fl">Phone No</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_phone_no" name="input_phone_no" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr">
-                                            <span class="fl">Company</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_company" name="input_company" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr fr">
-                                            <button id="button_add_supplier" name="button_add_supplier" class="btn btn-success">Submit </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="clr">&nbsp;</p>
-                        </div>
-                    </div>
-                </div>
+                    <?php
+                }
+                ?>
+            </div>
+            <div class="col-md-6">
+                <div class ="row"><div class ="col-md-offset-2 col-md-11"><h3><u>Status</u></h3></div></div>
+                <?php
+                foreach ($supplier_list_array as $key => $supplier) {
+                    ?>             
+                    <div class ="row"><div class ="col-md-offset-2 col-md-11">
+                            <?php echo $supplier['company']; ?>   
+                        </div></div>
+                    <?php
+                }
+                ?>
+            </div>
 
-                <div class="clr">
-                    <span class="fl">Phone</span>
-                    <span class="fr"><input class="span2" id="input_add_purchase_phone" name="input_add_purchase_phone" type="text" /></span>
+
+        </div>
+    </div>
+    <div class ="col-md-8 form-horizontal boxshad">
+        <div class="row">
+            <div class ="col-md-7 form-horizontal margin-top-bottom">
+                <div class="form-group" >
+                    <label for="input_add_purchase_supplier" class="col-md-3 control-label requiredField">
+                        Supplier
+                    </label> 
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_add_supplier')); ?>
+                    </div> 
                 </div>
-                <div class="clr">
-                    <span class="fl">Company</span>
-                    <span class="fr"><input class="span2" id="input_add_purchase_company" name="input_add_purchase_company" type="text" /></span>
+                <div class="form-group">
+                    <label for="input_add_purchase_phone" class="col-md-3 control-label requiredField">
+                        Phone No.
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'input_add_purchase_phone', 'id' => 'input_add_purchase_phone', 'class' => 'form-control')); ?>
+                    </div> 
                 </div>
-                <div class="clr">
-                    <span class="fl">Address</span>
-                    <span class="fr">
-                        <Textarea class="span2" id="textarea_add_sale_address" name="textarea_add_purchase_address"></textarea>
-                    </span>
+                <div class="form-group">
+                    <label for="input_add_purchase_company" class="col-md-3 control-label requiredField">
+                        Company
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'input_add_purchase_company', 'id' => 'input_add_purchase_company', 'class' => 'form-control')); ?>
+                    </div> 
                 </div>
-                <p class="clr">&nbsp;</p>
-                <div class="clr dropdown">                     
-                    <div style ="width:250px;"class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="fl">Product</span>
-                        <span class="fr" style="margin-left:6px;">
-                            <input class="span2" id="input_add_purchase_supplier" style="width:96% !important;" type="text" />
-                        </span>
+                <div class="form-group">
+                    <label for="textarea_add_sale_address" class="col-md-3 control-label requiredField">
+                        Address
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_textarea(array('name' => 'textarea_add_sale_address', 'id' => 'textarea_add_sale_address', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="product" class="col-md-3 control-label requiredField">
+                        Product
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_add_product')); ?>
+                    </div> 
+                </div>
+            </div>
+            <div class ="col-md-5 form-horizontal margin-top-bottom">
+                <div class="form-group">
+                    <label for="purchase_order_no" class="col-md-4 control-label requiredField">
+                        Order No.
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="input_date_add_purchase" class="col-md-4 control-label requiredField">
+                        Date
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'input_date_add_purchase', 'id' => 'input_date_add_purchase', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="status" class="col-md-4 control-label requiredField">
+                        Status
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'status', 'id' => 'status', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+        <div class ="row boxshad">
+            <div class ="row">
+                <div class="col-md-12">
+                    <div class ="col-md-2">
+                        Product Name
                     </div>
-                    <div class="dropdown-menu cust_popup" style="width:300%; padding: 15px; padding-bottom: 15px;">
-                        <div class="clr search_details" style="width:auto;">
-                            <div style="width:100%;" class="details hundrd span9">
-                                <div style="width:auto;" class="clr product_details product_details12">
-                                    <div class="clr span12 sales_view_block">
-                                        <div class="span4 fl"><h3>Product Name</h3></div>
-                                        <div class="span4 fl"><h3>Details</h3></div>
-                                    </div>
-                                    <div id="div_product_list" class="clr span12 sales_view_block">										
-                                        <?php
-                                        foreach ($product_list_array as $key => $product) {
-                                            ?>
-                                                <span id="span_product_info" class="span12 sales_view_block" style="">
-                                                    <input id="<?php echo $product['id']; ?>" class="fl" type="text" value="<?php echo $product['name']; ?>"/>
-                                                    <span class="span10 view sales_view fl" style=""><a target="_blank" class="view" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a></span>
-                                                </span>	
-                                            <?php
-                                        }
-                                        ?> 
-                                    </div>
-                                </div>
-                                <p class="clr">&nbsp;</p>
-                                <div class="clr extra_customer" style="width:auto;">
-                                    <div class="thirty_percnt customer1 san3">
-                                        <h3>Search</h3>
-                                    </div>
-                                    <div class="thirty_percnt customer2 span3">
-                                        <div class="clr">
-                                            <div class="clr">
-                                                <span class="fr">
-                                                    <?php echo form_dropdown('dropdown_search_product', $product_search_category, '0', 'id="dropdown_search_product"'); ?>                                                    
-                                                </span>
-                                            </div>                                                                                      
-                                            <p class="clr">&nbsp;</p>
-                                        </div>
-                                    </div>
-                                    <div class="thirty_percnt customer1 san3 refresh" style="width:auto;">                                        
-                                        <input class="span2" id="input_search_product" name="input_search_product" style="width:auto;" type="text" />
-                                        <button id="button_search_product" name="button_search_product" class="btn btn-success fr">Search </button>
-                                    </div>
-                                </div>
-                                <div class="clr customer_search">
-                                    <div class="thirty_percnt customer1 san3">
-                                        <h3>Add New</h3>
-                                    </div>
-                                    <div class="thirty_percnt customer2 span3">
-                                        <div class="clr">
-                                            <span class="fl">Product Name</span>
-                                            <span class="fr">
-                                                <input class="span2" id="input_product_name" name="input_product_name" type="text" />
-                                            </span>
-                                        </div>
-                                        <div class="clr fr">
-                                            <button id="button_add_product" name="button_add_product" class="btn btn-success">Submit </button>
-                                            <!--<button id="custom_abc" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Modal Alert</button>-->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="clr">&nbsp;</p>
-                        </div>
+                    <div class ="col-md-2">
+                        Product Code
+                    </div>
+                    <div class ="col-md-2">
+                        Quantity
+                    </div>
+                    <div class ="col-md-2">
+                        Unit Price
+                    </div>
+                    <div class ="col-md-2">
+                        Sub-Total
                     </div>
                 </div>
-            </div>          
-            <div class="thirty_percnt customer2 span3">
-                <div class="clr">
+            </div>
+            <div class="row">
+                <div id="div_selected_product_list" class="col-md-12">										
 
+                </div>  
+            </div>
+        </div>
 
+        <div class="row margin-top-bottom">
+            <div class ="col-md-12 form-horizontal">
+                <div class="form-group">
+                    <label for="remarks" class="col-md-2 control-label requiredField">
+                        Remarks
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
+
+                    </div> 
                 </div>
-                <div class="clr">
-
-
+                <div class="form-group">
+                    <label for="total_purchase_price" class="col-md-2 control-label requiredField">
+                        Total
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control')); ?>
+                    </div> 
                 </div>
-             </div>
-            <div class="thirty_percnt customer3 span3">
-            <div class="clr">
-               <span class="fl">Lot #</span>
-               <span class="fr">
-                   <input class="span2" id="purchase_order_no" name="purchase_order_no" type="text" />
-               </span>
+                <div class="form-group">
+                    <label for="save" class="col-md-2 control-label requiredField">
+
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_button(array('name' => 'save', 'id' => 'save', 'content' => 'Save')); ?>
+                    </div> 
+                </div>
             </div>
-            <div class="clr">
-               <span class="fl">Date</span>
-               <span class="fr">
-                   <input class="span2" id="input_date_add_purchase"/>
-               </span>
-            </div>
-         </div>
-      </div>
-	  <p style="height:10px;">&nbsp;</p>
-      <div class="clr product_details">
-         <div id="div_selected_product_name_list">
-            <h3>Product Name</h3>
-         </div>
-         <div id="div_selected_product_quantity_list">
-            <h3>Quantity</h3>
-         </div>
-         <div id="div_selected_product_unit_price_list">
-            <h3>Unit Price</h3>
-         </div>
-         <div id="div_selected_product_sub_total_list">
-            <h3>Sub-Total</h3>
-         </div>
-         <p style="clr:both;">&nbsp;</p>
-      </div>
-      <div class="clr product_details product_details13">
-        <div id="div_selected_product_list" class="clr span12 sales_view_block">										
-            
-        </div>         
-        <p style="clr:both;">&nbsp;</p>
-      </div>
-       <p class="clr">&nbsp;</p>
-       <div class="clr payment_info">
-            <div class="block block2">
-               <div class="clr ">
-                  <span class="fl">Remarks</span>
-                  <span class="fr">
-                  <textarea id="purchase_remarks" name="purchase_remarks"></textarea>
-                  </span>										
-               </div>
-            </div>
-            <p class="clr">&nbsp;</p>
-            <div class="block block3">
-               <div class="clr ">
-                  <span class="fl">Total</span>
-                  <span class="fr">
-                      <input readonly="true" id="total_purchase_price" name="total_purchase_price"></input>
-                  </span>										
-               </div>
-            </div>
-            <p class="clr">&nbsp;</p>
-            <div class="block block2">
-               <div class="clr ">
-                  <span class="fl">&nbsp;</span>
-                  <span class="fr">
-                      <button id="button_save_purchase_order" name="button_save_purchase_order" class="btn btn-success">Submit </button>
-                  </span>										
-               </div>
-            </div>
-         </div>
-         <p class="clr">&nbsp;</p>
-   </div>
-   <p class="clr">&nbsp;</p>
+        </div>
+
+    </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
-      </div>
-      <div class="modal-body">
-       Do You want to proceed?
-      </div>
-      <div class="modal-footer">          
-        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<?php $this->load->view("purchase/modal_add_supplier"); ?>
+<?php $this->load->view("purchase/modal_add_product"); ?>

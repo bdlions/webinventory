@@ -1,96 +1,111 @@
 <h2>Create Customer</h2>
-<div class="clr search_details">
-    <div class="clr span12">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Customer Info</a></li>								
-                    </ul>
-                    <div class="tab-content">
-                        <?php echo form_open("user/create_customer", array('id' => 'form_create_customer')); ?>
-                        <div class="tab-pane active" id="tabs1-pane1">
-                            <?php echo $message;?>
-                            <p class="clr">										
-                            <div class="clr">
-                                <div class="fifty fl span6">                                   
-                                    <fieldset>
-                                        <legend>General Information</legend>                                            
-                                        <div class="clr span10">
-                                            <span class="fl">Phone</span>
-                                            <span class="fr">
-                                                <?php echo form_input($phone); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">First Name</span>
-                                            <span class="fr">
-                                                <?php echo form_input($first_name); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">Last Name</span>
-                                            <span class="fr">
-                                                <?php echo form_input($last_name); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">Address</span>
-                                            <span class="fr">
-                                                <?php echo form_input($address); ?>
-                                            </span>			
-                                        </div>                                                                                      
-                                    </fieldset>
-                                </div>
-                                <div class="fifty fr span6">                                    
-                                    <fieldset>
-                                        <legend>Picture</legend>
-                                        <div class="clr span10">
-                                            <span class="clr">
-                                                <input type="file" class="span2" value="Browse" />
-                                            </span>			
-                                        </div> 															
-                                    </fieldset>                                    	
-                                </div>
-                            </div>
-                            <div class="clr">
-                                <div class="fifty fl span6">                                    
-                                    <fieldset>
-                                        <legend>Customer Information</legend>
-                                        <div class="clr span10">
-                                            <span class="fl">Card No</span>
-                                            <span class="fr">
-                                                <?php echo form_input($card_no); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">Institution</span>
-                                            <span class="fr">
-                                                <?php echo form_dropdown('institution_list', $institution_list); ?> 
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">Profession</span>
-                                            <span class="fr">
-                                                <?php echo form_dropdown('profession_list', $profession_list); ?> 
-                                            </span>			
-                                        </div> 
-                                        <div class="clr span10">
-                                            <span class="fl">
-                                                <?php echo form_input($submit_create_customer); ?>
-                                            </span>			
-                                        </div>
-                                    </fieldset>                                    		
-                                </div>                                
-                            </div>	
-                            </p>
+<div class ="row">
+    <div class ="col-md-12">
+        <div class ="row">
+            <ul>
+                <li ><a href="#tabs1-pane1" data-toggle="tab">Customer Info</a></li>								
+            </ul>
+        </div>
+        <div class ="row boxshad">
+            <div class ="col-md-12 form-horizontal">
+                <div class ="row">
+                    <?php echo form_open("user/create_customer", array('id' => 'form_create_customer', 'class' => 'form-horizontal')); ?>
+                </div>
+                <div class ="row">
+                    <?php echo $message; ?>
+                </div>
+                <div class="row">
+                    <div class ="col-md-4">
+                        <?php echo form_fieldset('General Information'); ?>
+                        <div class="form-group">
+                            <label for="phone" class="col-md-3 control-label requiredField">
+                                Phone No.
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_input($phone); ?>
+                            </div> 
                         </div>
-                        <?php echo form_close(); ?>
+                        <div class="form-group">
+                            <label for="first_name" class="col-md-3 control-label requiredField">
+                                First Name
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_input($first_name); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="col-md-3 control-label requiredField">
+                                Last Name
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_input($last_name); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-3 control-label requiredField">
+                                Address
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_input($address); ?>
+                            </div> 
+                        </div>
+                        <?php echo form_fieldset_close(); ?>
+                    </div>
+                    <div class ="col-md-4">
+                        <?php echo form_fieldset('Picture'); ?>
+                        <div class="form-group">
+                            <label for="picture" class="col-md-4 control-label requiredField">
+                                Upload Picture
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input(array('name' => 'picture', 'type' => 'file', 'id' => 'customer-picture')); ?>
+                            </div> 
+                        </div>														
+                        <?php echo form_fieldset_close(); ?>
+                    </div>
+
+                </div>
+                <div class ="row">
+                    <div class ="col-md-4">
+                        <?php echo form_fieldset('Customer Information'); ?>
+                        <div class="form-group">
+                            <label for="card_no" class="col-md-3 control-label requiredField">
+                                Card No.
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_input($card_no); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="col-md-3 control-label requiredField">
+                                Institution
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_dropdown('institution_list', $institution_list, array(' "class" => "form-control"')); ?> 
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-3 control-label requiredField">
+                                Profession
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_dropdown('profession_list', $profession_list); ?> 
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-3 control-label requiredField">
+
+                            </label>
+                            <div class ="col-md-8">
+                                <?php echo form_input($submit_create_customer); ?>
+                            </div> 
+                        </div>
+
+                        <?php echo form_fieldset_close(); ?>    
                     </div>
                 </div>
+                <?php echo form_close(); ?>
             </div>
-            <hr>
         </div>
-    </div>				
-    <p class="clr">&nbsp;</p>
+    </div>    
 </div>

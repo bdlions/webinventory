@@ -9,10 +9,32 @@
         <meta name="og:title" content="buy and sales" />
         <meta name="og:description" content="easy for sales, invetory and product disyplay" />	
         <meta name="keywords" content=""/>
+        <style>
+
+            .error-message{
+                text-align: center;
+                color: red;
+                border: 1px solid #600;
+                margin-bottom: 7px;
+                margin-top: 7px;
+            }
+            .login-subheading{
+                text-align: left;
+                margin-bottom: 8px;
+                margin-top: 5px;
+            }
+        </style>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/bootstrap3/js/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/bootstrap3/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_error.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/bootstrap3/css/home.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/bootstrap3/css/bootstrap.css">        
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/styles.css">
         <title>"Enjoy Shopping!!!"</title>
     </head>
     <body screen_capture_injected="true" cz-shortcut-listen="true">
-        salespeople login template
         <?php echo $contents; ?>
     </body>
 </html>

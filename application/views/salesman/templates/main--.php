@@ -23,20 +23,16 @@
             }
             ?>
         </title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/bootstrap3/css/home.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/bootstrap3/css/bootstrap.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
-        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/docs.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-responsive.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" >
         <link href='http://fonts.googleapis.com/css?family=Dosis:200' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>        
-        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.validate.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
-        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_error.js"></script>
+        <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-carousel.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/application.js"></script>
@@ -46,24 +42,24 @@
         <script src="<?php echo base_url(); ?>assets/js/order/sale.js"></script>
     </head>
 
+    <body>
+
+
+
     <body screen_capture_injected="true" cz-shortcut-listen="true">
-        <div class ="container">
-            <div class="top_nav">
-                <?php $this->load->view("salesman/templates/top_nav"); ?>
-            </div>
-            <div class="row">
-                <div class="col-md-1">
-                    <?php $this->load->view("salesman/templates/left"); ?>
-                </div>
-                <div class="col-md-11">
-                    <?php echo $contents ?>
-                </div>
-            </div>
-            <div class ="row">
-                <div class ="col-md-4 col-md-offset-1">
-                    <?php $this->load->view("salesman/templates/footer"); ?>
+        <div class="top_nav container">
+            <?php $this->load->view("salesman/templates/top_nav"); ?>
+        </div>
+        <div class="clr hundrd container">
+            <div class="row-fluid">
+                <?php $this->load->view("salesman/templates/left"); ?>
+                <div class="ninetypercnt fr right_div span11">
+                    <?php echo $contents?>
                 </div>
             </div>
         </div>
+        <?php $this->load->view("salesman/templates/footer"); ?>	
     </body>
+
+</body>
 </html>

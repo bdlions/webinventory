@@ -736,33 +736,34 @@ class User extends CI_Controller {
             'name' => 'card_no',
             'id' => 'card_no',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('card_no'),
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
             'name' => 'address',
             'id' => 'address',
+            'class' => 'form-control',
             'type' => 'textarea',
             'value' => $this->form_validation->set_value('address'),
         );
@@ -770,7 +771,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_customer',
             'id' => 'submit_create_customer',
             'type' => 'submit',
-            'class' => '',
+            'class' => 'form-control',
             'value' => 'Create',
         );
         $this->template->load(null, 'customer/create_customer',$this->data);
@@ -868,28 +869,28 @@ class User extends CI_Controller {
             'name' => 'card_no',
             'id' => 'card_no',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['card_no'],
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['last_name'],
         );
         $this->data['address'] = array(
@@ -950,28 +951,28 @@ class User extends CI_Controller {
             'name' => 'card_no',
             'id' => 'card_no',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['card_no'],
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $customer_info['last_name'],
         );
         $this->data['address'] = array(
@@ -1078,21 +1079,21 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
@@ -1188,28 +1189,28 @@ class User extends CI_Controller {
             'name' => 'company',
             'id' => 'company',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['company'],
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['last_name'],
         );
         $this->data['address'] = array(
@@ -1252,28 +1253,28 @@ class User extends CI_Controller {
             'name' => 'company',
             'id' => 'company',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['company'],
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $supplier_info['last_name'],
         );
         $this->data['address'] = array(
@@ -1374,21 +1375,21 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
@@ -1478,21 +1479,21 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $salesman_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $salesman_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $salesman_info['last_name'],
         );
         $this->data['address'] = array(
@@ -1561,21 +1562,21 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
@@ -1665,21 +1666,21 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $manager_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $manager_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'span2',
+            'class' => 'form-control',
             'value' => $manager_info['last_name'],
         );
         $this->data['address'] = array(
