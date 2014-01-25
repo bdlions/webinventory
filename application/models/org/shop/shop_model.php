@@ -48,7 +48,11 @@ class Shop_model extends Ion_auth_model {
                 ->count_all_results($this->tables['shop_info']) > 0;
     }
     /*
-     * This method will add a new shop into database
+     * Create a new shop
+     * @return newly created shop id
+     * 
+     * @author Nazmul on 23rd January 2014
+     * 
      */
     public function create_shop($additional_data)
     {

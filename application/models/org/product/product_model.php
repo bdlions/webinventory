@@ -36,7 +36,7 @@ class Product_model extends Ion_auth_model
     }
     /**
      * Product Identity check
-     *
+     * Product name will be unique under a single shop
      * @return bool
      * @author Nazmul on 22nd November 2014
      * */

@@ -84,4 +84,17 @@ class Search extends CI_Controller {
         }
         echo json_encode($result_array);
     }
+    
+    public function search_customer_profession()
+    {
+        $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
+        $this->data['profession_list'] = array();
+        if( !empty($profession_list_array) )
+        {
+            foreach ($profession_list_array as $key => $profession) {
+                $this->data['profession_list'][$profession['id']] = $profession['description'];
+            }
+        }
+        $this->template->load(null, 'search/customer_profession',$this->data);
+    }
 }
