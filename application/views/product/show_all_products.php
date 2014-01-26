@@ -1,136 +1,66 @@
-<h2>Product Details</h2>
-<div class="clr search_details">
-    <div class="clr span12">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Product List</a></li>								
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tabs1-pane1">
-                            <p class="clr">
-                            <div class="clr product_details sales_order_details specific span10">
-                                <div style="width:3%;" class="blank_div span0">
-                                    <h3 class="" style="background-image:none;">&nbsp;</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><p class="wh_100">&nbsp;</p></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Product Name</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['name']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Product Code</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['code']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Product Size</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['size']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div> 
-                                <div class="span1">
-                                    <h3>Product Weight</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['weight']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div> 
-                                <div class="span1">
-                                    <h3>Product Warranty</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['warranty']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Product Quality</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['quality']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Unit Price</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['unit_price']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div> 
-                                <div class="span1">
-                                    <h3>Brand Name</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['brand_name']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Remarks</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $prodduct_info['remarks']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Manage</h3>
-                                    <?php foreach($product_list as $key => $prodduct_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><a href="<?php echo base_url("./product/update_product/".$prodduct_info['id']);?>">Update</a></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>												
-                                <p class="clr">&nbsp;</p>
-                            </div>
-                            </p>
-                        </div>
-                        
+<div class ="row form-background">
+    <div class ="row">
+        <div class="col-md-10">
+            <div class ="col-md-1">
+                Product Name
+            </div>
+            <div class ="col-md-1">
+                Product Size
+            </div>
+            <div class ="col-md-1">
+                Product Weight
+            </div>
+            <div class ="col-md-1">
+                Product Warranty
+            </div>
+            <div class ="col-md-1">
+                Product Quality 
+            </div>
+            <div class ="col-md-1">
+                Brand Name
+            </div>
+            <div class ="col-md-1">
+                Unit Price
+            </div>
+            <div class ="col-md-1">
+                Manage
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <?php
+        foreach ($product_list as $key => $prodduct_info) {
+            ?>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['name'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['size'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['weight'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['warranty'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['quality'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['brand_name'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $prodduct_info['unit_price'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <a href="<?php echo base_url("./product/update_product/" . $prodduct_info['id']); ?>">Update</a>
                     </div>
                 </div>
             </div>
-            <hr>
-        </div>
-    </div>				
-    <p class="clr">&nbsp;</p>
+            <?php
+        }
+        ?>
+    </div>
 </div>

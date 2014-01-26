@@ -43,6 +43,18 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Payment<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./product/create_product");?>">Add Purchase payment</a></li>
+        <li><a href="<?php echo base_url("./product/create_product");?>">Show Purchase payment</a></li>
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("./product/create_product");?>">Add Sale payment</a></li>
+        <li><a href="<?php echo base_url("./product/create_product");?>">Show Sale payment</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Expnese<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -59,8 +71,9 @@
         <li><a href="<?php echo base_url("");?>">Search Sales</a></li>
         <li><a href="<?php echo base_url("");?>">Search User Sales</a></li>
         <li><a href="<?php echo base_url("");?>">Search Customer Sales By Card</a></li>
+        <li class="divider"></li>
         <li><a href="<?php echo base_url("search/search_customer_profession");?>">Search Customer by Profession</a></li>
-        <li><a href="<?php echo base_url("");?>">Search Customer by Institution</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_institution");?>">Search Customer by Institution</a></li>
         <li><a href="<?php echo base_url("");?>">Search Customer by Card No</a></li>
         <li><a href="<?php echo base_url("");?>">Search Customer by Mobile No</a></li>
         <li><a href="<?php echo base_url("");?>">Search Customer by Total Purchased</a></li>

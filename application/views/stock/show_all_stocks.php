@@ -1,75 +1,42 @@
-<h2>Stock Details</h2>
-<div class="clr search_details">
-    <div class="clr span12">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Stock List</a></li>								
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tabs1-pane1">
-                            <p class="clr">
-                            <div class="clr product_details sales_order_details specific span10">
-                                <div style="width:3%;" class="blank_div span0">
-                                    <h3 class="" style="background-image:none;">&nbsp;</h3>
-                                    <?php foreach($stock_list as $key => $stock_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><p class="wh_100">&nbsp;</p></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Shop Name</h3>
-                                    <?php foreach($stock_list as $key => $stock_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $stock_info['shop_name']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Product Name</h3>
-                                    <?php foreach($stock_list as $key => $stock_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $stock_info['product_name']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Lot No</h3>
-                                    <?php foreach($stock_list as $key => $stock_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $stock_info['purchase_order_no']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <div class="span1">
-                                    <h3>Quantity</h3>
-                                    <?php foreach($stock_list as $key => $stock_info)
-                                    {
-                                    ?>
-                                    <div class="wh_100"><?php echo $stock_info['stock_amount']?></div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>                                                               
-                            </div>
-                            </p>
-                        </div>
-                        
+<div class ="row form-background">
+    <div class ="row">
+        <div class="col-md-10">
+            <div class ="col-md-1">
+                Shop Name
+            </div>
+            <div class ="col-md-1">
+                Product Name
+            </div>
+            <div class ="col-md-1">
+                Lot No
+            </div>
+            <div class ="col-md-1">
+                Quantity
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <?php
+        foreach ($stock_list as $key => $stock_info) {
+            ?>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class ="col-md-1">
+                        <?php echo $stock_info['shop_name'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $stock_info['product_name'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $stock_info['purchase_order_no'] ?>
+                    </div>
+                    <div class ="col-md-1">
+                        <?php echo $stock_info['stock_amount'] ?>
                     </div>
                 </div>
             </div>
-            <hr>
-        </div>
-    </div>				
-    <p class="clr">&nbsp;</p>
+            <?php
+        }
+        ?>
+    </div>
 </div>

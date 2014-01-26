@@ -52,67 +52,65 @@
         });
     });
 </script>
-<h2>Add Expense</h2>
-<div class="clr search_details">
-    <div class="clr span12">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Expense Info</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <?php echo form_open("expense/add_expense", array('id' => 'form_add_expense')); ?>
-                        <div class="tab-pane active" id="tabs1-pane1">
-                            <?php echo $message;?>
-                            <p class="clr">										
-                            <div class="span5">
-                                <fieldset>
-                                    <div class="clr span10">
-                                        <span class="fl">&nbsp;</span>
-                                        <span class="fr">
-                                            &nbsp;
-                                        </span>			
-                                    </div>
-                                    <div class="clr span10">
-                                        <span class="fl">Select Type</span>
-                                        <span class="fr">
-                                            <?php echo form_dropdown('expense_categories', $expense_categories, '','id="expense_categories"'); ?>
-                                        </span>			
-                                    </div>
-                                    <div class="clr span10">
-                                        <span class="fl">Select Item</span>
-                                        <span class="fr">
-                                            <?php echo form_dropdown('item_list', $item_list, '','id="item_list"'); ?>
-                                        </span>			
-                                    </div>
-                                    <div class="clr span10">
-                                        <span class="fl">Expense Description</span>
-                                        <span class="fr">
-                                            <?php echo form_input($expense_description); ?>
-                                        </span>			
-                                    </div>
-                                    <div class="clr span10">
-                                        <span class="fl">Expense Amount</span>
-                                        <span class="fr">
-                                            <?php echo form_input($expense_amount); ?>
-                                        </span>			
-                                    </div>  
-                                    <div class="clr span10">
-                                        <span class="fl"></span>
-                                        <span class="fr">
-                                            <?php echo form_submit($submit_add_expense); ?>
-                                        </span>			
-                                    </div>                                      
-                                </fieldset>                                		
-                            </div>                     
-                        </div> 
-                        <?php echo form_close(); ?>
+
+
+<div class ="row">
+    <div class ="col-md-12">
+        <div class ="row">
+            <div class ="col-md-12 form-horizontal form-background">
+                <?php echo form_open("expense/add_expense", array('id' => 'form_add_expense', 'class' => 'form-horizontal')); ?>
+                <div class="row">
+                    <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
+                        <div class ="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-8"><?php echo $message; ?></div>
+                        </div>
+                        <?php echo form_fieldset('General Information'); ?>
+                        <div class="form-group">
+                            <label for="expense_categories" class="col-md-6 control-label requiredField">
+                                Select Type
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_dropdown('expense_categories', $expense_categories, '','class="form-control" id="expense_categories"'); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="item_list" class="col-md-6 control-label requiredField">
+                                Select Item
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name" class="col-md-6 control-label requiredField">
+                                Expense Amount
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($expense_amount+array('class'=>'form-control')); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="col-md-6 control-label requiredField">
+                                Expense Description
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($expense_description+array('class'=>'form-control')); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-6 control-label requiredField">
+
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($submit_add_expense+array('class'=>'form-control btn-success')); ?>
+                            </div> 
+                        </div>
+                        <?php echo form_fieldset_close(); ?>
                     </div>
                 </div>
+                <?php echo form_close(); ?>
             </div>
-            <hr>
         </div>
-    </div>				
-    <p class="clr">&nbsp;</p>
+    </div>    
 </div>

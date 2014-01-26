@@ -496,21 +496,8 @@
 </script>
 
 <h6>Purchase Order</h6>
-<div class ="row">    
-    <div class ="col-md-11 details_nav hundrd">
-        <ul>
-            <li><a href="#">New</a></li>
-            <li><a href="#">Save</a></li>
-            <li><a href="#">Print</a></li>
-            <li><a href="#">Duplicate</a></li>
-            <li><a href="#">Versions</a></li>
-            <li><a href="#">Add Sticky</a></li>
-            <li><a href="#">Close</a></li>
-        </ul>
-    </div>
-</div>
-<div class ="row margin-top-bottom">
-    <div class ="col-md-3 form-horizontal boxshad">
+<div class ="row margin-top-bottom form-background">
+    <div class ="col-md-3 form-horizontal">
         <h6>Search</h6>
         <div class="form-group">
             <label for="order_no" class="col-md-3 control-label requiredField">
@@ -574,7 +561,7 @@
 
         </div>
     </div>
-    <div class ="col-md-8 form-horizontal boxshad">
+    <div class ="col-md-8 form-horizontal">
         <div class="row">
             <div class ="col-md-7 form-horizontal margin-top-bottom">
                 <div class="form-group" >

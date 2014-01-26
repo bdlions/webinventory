@@ -736,34 +736,29 @@ class User extends CI_Controller {
             'name' => 'card_no',
             'id' => 'card_no',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('card_no'),
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
             'name' => 'address',
             'id' => 'address',
-            'class' => 'form-control',
             'type' => 'textarea',
             'value' => $this->form_validation->set_value('address'),
         );
@@ -771,7 +766,6 @@ class User extends CI_Controller {
             'name' => 'submit_create_customer',
             'id' => 'submit_create_customer',
             'type' => 'submit',
-            'class' => 'form-control',
             'value' => 'Create',
         );
         $this->template->load(null, 'customer/create_customer',$this->data);
@@ -869,28 +863,24 @@ class User extends CI_Controller {
             'name' => 'card_no',
             'id' => 'card_no',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $customer_info['card_no'],
         );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $customer_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $customer_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $customer_info['last_name'],
         );
         $this->data['address'] = array(
@@ -903,7 +893,6 @@ class User extends CI_Controller {
             'name' => 'submit_update_customer',
             'id' => 'submit_update_customer',
             'type' => 'submit',
-            'class' => '',
             'value' => 'Update',
         );
         $this->template->load(null, 'customer/update_customer',$this->data);
@@ -1375,21 +1364,18 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
@@ -1402,7 +1388,6 @@ class User extends CI_Controller {
             'name' => 'submit_create_salesman',
             'id' => 'submit_create_salesman',
             'type' => 'submit',
-            'class' => '',
             'value' => 'Create',
         );
         $this->template->load(null, 'salesman/create_salesman',$this->data);
@@ -1486,14 +1471,12 @@ class User extends CI_Controller {
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $salesman_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $salesman_info['last_name'],
         );
         $this->data['address'] = array(
@@ -1506,7 +1489,6 @@ class User extends CI_Controller {
             'name' => 'submit_update_salesman',
             'id' => 'submit_update_salesman',
             'type' => 'submit',
-            'class' => '',
             'value' => 'Update',
         );
         $this->template->load(null, 'salesman/update_salesman',$this->data);
@@ -1562,21 +1544,18 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('phone'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('first_name'),
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $this->form_validation->set_value('last_name'),
         );
         $this->data['address'] = array(
@@ -1589,7 +1568,6 @@ class User extends CI_Controller {
             'name' => 'submit_create_manager',
             'id' => 'submit_create_manager',
             'type' => 'submit',
-            'class' => '',
             'value' => 'Create',
         );
         $this->template->load(null, 'manager/create_manager',$this->data);
@@ -1666,21 +1644,18 @@ class User extends CI_Controller {
             'name' => 'phone',
             'id' => 'phone',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $manager_info['phone'],
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
             'id' => 'first_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $manager_info['first_name'],
         );
         $this->data['last_name'] = array(
             'name' => 'last_name',
             'id' => 'last_name',
             'type' => 'text',
-            'class' => 'form-control',
             'value' => $manager_info['last_name'],
         );
         $this->data['address'] = array(
@@ -1693,7 +1668,6 @@ class User extends CI_Controller {
             'name' => 'submit_update_manager',
             'id' => 'submit_update_manager',
             'type' => 'submit',
-            'class' => '',
             'value' => 'Update',
         );
         $this->template->load(null, 'manager/update_manager',$this->data);

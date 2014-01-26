@@ -86,56 +86,48 @@ class Product extends CI_Controller {
             'name' => 'name',
             'id' => 'name',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('name'),
         );
         $this->data['size'] = array(
             'name' => 'size',
             'id' => 'size',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('size'),
         );
         $this->data['weight'] = array(
             'name' => 'weight',
             'id' => 'weight',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('weight'),
         );
         $this->data['warranty'] = array(
             'name' => 'warranty',
             'id' => 'warranty',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('warranty'),
         );
         $this->data['quality'] = array(
             'name' => 'quality',
             'id' => 'quality',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('quality'),
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
             'id' => 'unit_price',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('unit_price'),
         );
         $this->data['brand_name'] = array(
             'name' => 'brand_name',
             'id' => 'brand_name',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('brand_name'),
         );
         $this->data['remarks'] = array(
             'name' => 'remarks',
             'id' => 'remarks',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $this->form_validation->set_value('remarks'),
         );
         $this->data['submit_create_product'] = array(
@@ -236,56 +228,48 @@ class Product extends CI_Controller {
             'name' => 'name',
             'id' => 'name',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['name']
         );
         $this->data['size'] = array(
             'name' => 'size',
             'id' => 'size',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['size']
         );
         $this->data['weight'] = array(
             'name' => 'weight',
             'id' => 'weight',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['weight']
         );
         $this->data['warranty'] = array(
             'name' => 'warranty',
             'id' => 'warranty',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['warranty']
         );
         $this->data['quality'] = array(
             'name' => 'quality',
             'id' => 'quality',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['quality']
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
             'id' => 'unit_price',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['unit_price']
         );
         $this->data['brand_name'] = array(
             'name' => 'brand_name',
             'id' => 'brand_name',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['brand_name']
         );
         $this->data['remarks'] = array(
             'name' => 'remarks',
             'id' => 'remarks',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['remarks']
         );
         $this->data['submit_update_product'] = array(
@@ -317,49 +301,42 @@ class Product extends CI_Controller {
             'name' => 'name',
             'id' => 'name',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['name'],
         );
         $this->data['size'] = array(
             'name' => 'size',
             'id' => 'size',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['size'],
         );
         $this->data['weight'] = array(
             'name' => 'weight',
             'id' => 'weight',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['weight'],
         );
         $this->data['warranty'] = array(
             'name' => 'warranty',
             'id' => 'warranty',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['warranty'],
         );
         $this->data['quality'] = array(
             'name' => 'quality',
             'id' => 'quality',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['quality'],
         );
         $this->data['unit_price'] = array(
             'name' => 'unit_price',
             'id' => 'unit_price',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['unit_price'],
         );
         $this->data['brand_name'] = array(
             'name' => 'brand_name',
             'id' => 'brand_name',
             'type' => 'text',
-            'class' => 'span2',
             'value' => $product_info['brand_name'],
         );
         $this->template->load(null, 'product/show_product', $this->data);

@@ -102,14 +102,12 @@ class Expense extends CI_Controller {
         $this->data['expense_description'] = array(
             'name' => 'expense_description',
             'id' => 'expense_description',
-            'class' => 'span2',
             'type' => 'text',
             'value' => $this->form_validation->set_value('expense_description'),
         );
         $this->data['expense_amount'] = array(
             'name' => 'expense_amount',
             'id' => 'expense_amount',
-            'class' => 'span2',
             'type' => 'text',
             'value' => $this->form_validation->set_value('expense_amount'),
         );
@@ -146,7 +144,22 @@ class Expense extends CI_Controller {
             }            
         }
         $this->data['item_list'] = $shop_list;
-        
+        $this->data['show_expense_start_date'] = array(
+            'name' => 'show_expense_start_date',
+            'id' => 'show_expense_start_date',
+            'type' => 'text'
+        );
+        $this->data['show_expense_end_date'] = array(
+            'name' => 'show_expense_end_date',
+            'id' => 'show_expense_end_date',
+            'type' => 'text'
+        );
+        $this->data['button_search_expense'] = array(
+            'name' => 'button_search_expense',
+            'id' => 'button_search_expense',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
         $this->template->load(null, 'expense/show_expense', $this->data);
     }
     

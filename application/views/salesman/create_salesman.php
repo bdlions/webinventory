@@ -1,93 +1,60 @@
- <h2>Create Salesman</h2>
-<div class="clr search_details">
-    <div class="clr span12">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tabs1-pane1" data-toggle="tab">Salesman Info</a></li>								
-                    </ul>
-                    <div class="tab-content">
-                        <?php echo form_open("user/create_salesman", array('id' => 'form_create_salesman')); ?>
-                        <div class="tab-pane active" id="tabs1-pane1">
-                            <?php echo $message;?>
-                            <p class="clr">										
-                            <div class="clr">
-                                <div class="fifty fl span6">
-                                    <fieldset>
-                                        <legend>General Information</legend>
-                                        <div class="clr span10">
-                                            <span class="fl">Phone</span>
-                                            <span class="fr">
-                                                <?php echo form_input($phone); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">First Name</span>
-                                            <span class="fr">
-                                                <?php echo form_input($first_name); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">Last Name</span>
-                                            <span class="fr">
-                                                <?php echo form_input($last_name); ?>
-                                            </span>			
-                                        </div>
-                                        <div class="clr span10">
-                                            <span class="fl">Address</span>
-                                            <span class="fr">
-                                                <?php echo form_input($address); ?>
-                                            </span>			
-                                        </div> 
-                                        <div class="clr span10">
-                                            <span class="fl">
-                                                <?php echo form_submit($submit_create_salesman); ?>
-                                            </span>			
-                                        </div>
-                                    </fieldset>
-                                </div>
-                                <div class="fifty fr span6">
-                                    <form>
-                                        <fieldset>
-                                            <legend>Picture</legend>
-											<p>Upload a photo for your profile picture.</p>
-											<div class="span7 offset2">	
-												<div class="pictureBox">
-													<img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRzqaxb6ifkzZ0zi5iDxamjKiS7OAsz8sbPUoQPukI28DZTO-ClK24pXBen" alt="">
-												</div>
-											</div>
-                                            <div class="clr span6">
-                                                <span class="">
-                                                    <input type="file" class="span2" value="Browse" />
-                                                </span>			
-												<span class="">
-                                                    <button class="btn btn-success fr">Upload </button>
-                                                </span>			
-                                            </div>
-											<div class="clr span9" style="margin:10px;">
-												<form action="#" method="post" accept-charset="utf-8" class="form-horizontal"> 
-												<div class="control-group">
-													<div class="controls pull-right">
-														<button class="btn btn-success fl" style="margin-right:5px">cancel </button>
-														<button class="btn btn-success fr">Save </button>
-													</div>
-												</div>
-												</form>
-											</div>	
-                                        </fieldset>
-                                    </form>		
-                                </div>
-                            </div>                            	
-                            </p>
-
+<div class ="row">
+    <div class ="col-md-12">
+        <div class ="row">
+            <div class ="col-md-12 form-horizontal form-background">
+                <?php echo form_open("user/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
+                <div class="row">
+                    <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
+                        <div class ="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-8"><?php echo $message; ?></div>
                         </div>
-                        <?php echo form_close(); ?>
+                        <?php echo form_fieldset('General Information'); ?>
+                        <div class="form-group">
+                            <label for="first_name" class="col-md-6 control-label requiredField">
+                                First Name
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($first_name+array('class'=>'form-control')); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name" class="col-md-6 control-label requiredField">
+                                Last Name
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($last_name+array('class'=>'form-control')); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-md-6 control-label requiredField">
+                                Phone No
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($phone+array('class'=>'form-control')); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-6 control-label requiredField">
+                                Address
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($address+array('class'=>'form-control')); ?>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-md-6 control-label requiredField">
+
+                            </label>
+                            <div class ="col-md-6">
+                                <?php echo form_input($submit_create_salesman+array('class'=>'form-control btn-success')); ?>
+                            </div> 
+                        </div>
+                        <?php echo form_fieldset_close(); ?>
                     </div>
                 </div>
+                <?php echo form_close(); ?>
             </div>
-            <hr>
         </div>
-    </div>				
-    <p class="clr">&nbsp;</p>
+    </div>    
 </div>

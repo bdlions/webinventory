@@ -24,6 +24,7 @@ class Search extends CI_Controller {
         $this->lang->load('auth');
         $this->load->helper('language');
         $this->load->library('org/product/product_library');
+        $this->load->library('org/search/search_customer');
     }
     
     function index()
@@ -85,6 +86,17 @@ class Search extends CI_Controller {
         echo json_encode($result_array);
     }
     
+    //---------------------------------------- Customer Search -------------------------------------------
+    /*
+     * Ajax Call
+     */
+    public function search_customer_by_profession()
+    {
+        $profession_id = $_POST['profession_id'];
+        $result_array['customer_list'] = $this->search_customer->search_customer_by_profession($profession_id)->result_array();
+        echo json_encode($result_array);
+    }
+    
     public function search_customer_profession()
     {
         $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
@@ -95,6 +107,41 @@ class Search extends CI_Controller {
                 $this->data['profession_list'][$profession['id']] = $profession['description'];
             }
         }
-        $this->template->load(null, 'search/customer_profession',$this->data);
+        $this->data['button_search_customer'] = array(
+            'name' => 'button_search_customer',
+            'id' => 'button_search_customer',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/customer/profession',$this->data);
+    }
+    
+    /*
+     * Ajax Call
+     */
+    public function search_customer_by_institution()
+    {
+        $institution_id = $_POST['institution_id'];
+        $result_array['institution_list'] = $this->search_customer->search_customer_by_institution($institution_id)->result_array();
+        echo json_encode($result_array);
+    }
+    
+    public function search_customer_institution()
+    {
+        $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
+        $this->data['institution_list'] = array();
+        if( !empty($institution_list_array) )
+        {
+            foreach ($institution_list_array as $key => $institution) {
+                $this->data['institution_list'][$institution['id']] = $institution['description'];
+            }
+        }
+        $this->data['button_search_customer'] = array(
+            'name' => 'button_search_customer',
+            'id' => 'button_search_customer',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/customer/institution',$this->data);
     }
 }
