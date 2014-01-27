@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(function() {
         // Setup form validation on the #register-form element
-        /*$("#salesman-login").validate({
+        /*$("#admin-login").validate({
             // Specify the validation rules
             rules: {
                 identity: {
@@ -40,7 +40,7 @@
 
             <div id="message" ><?php echo $message; ?></div>
 
-            <?php echo form_open(SALESMAN_LOGIN_SUCCESS_URI, array('id' => 'salesman-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
+            <?php echo form_open(ADMIN_LOGIN_SUCCESS_URI, array('id' => 'admin-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
             <div class="form-group">
                 <label for="identity" class="col-md-4 control-label requiredField">
                     <?php echo lang('login_identity_label', 'identity'); ?>

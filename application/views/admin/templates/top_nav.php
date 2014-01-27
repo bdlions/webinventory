@@ -1,5 +1,15 @@
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Shop<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./shop/set_shop");?>">Change Shop</a></li>
+        <li><a href="<?php echo base_url("./shop/create_shop");?>">Create Shop</a></li>
+        <li><a href="<?php echo base_url("./shop/show_all_shops");?>">Shop List</a></li>  
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Sales<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">

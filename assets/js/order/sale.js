@@ -3,6 +3,7 @@ function Sale()
     var sale_order_no; 
     var customer_id;
     var remarks;
+    var created_by;
     Sale.prototype.setOrderNo = function(value)
     {
         this.sale_order_no = value;
@@ -26,6 +27,14 @@ function Sale()
     Sale.prototype.getRemarks = function()
     {
         return this.remarks;
+    }
+    Sale.prototype.setCreatedBy= function(value)
+    {
+        this.created_by = value;
+    }
+    Sale.prototype.getCreatedBy = function()
+    {
+        return this.created_by;
     }
 }
 

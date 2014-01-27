@@ -21,6 +21,13 @@ define('CUSTOMER_LOGIN_SUCCESS_TEMPLATE', 'customer/templates/main');
 define('CUSTOMER_LOGIN_VIEW', 'customer/login');
 define('CUSTOMER_LOGIN_SUCCESS_VIEW', 'customer/home');
 define('NON_MEMBER_TEMPLATE', 'nonmember/templates/main');
+
+define('ADMIN_LOGIN_URI', 'admin/admin_login');
+define('ADMIN_LOGIN_SUCCESS_URI', 'admin/admin_login');
+define('ADMIN_LOGIN_TEMPLATE', 'admin/templates/login');
+define('ADMIN_LOGIN_VIEW', 'admin/login');
+define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'admin/templates/main');
+define('ADMIN_LOGIN_SUCCESS_VIEW', 'admin/home');
 /***************** Custom constant End **********************/
 
 /*

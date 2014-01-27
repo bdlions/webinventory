@@ -9,15 +9,24 @@
         <meta name="og:title" content="buy and sales" />
         <meta name="og:description" content="easy for sales, invetory and product disyplay" />	
         <meta name="keywords" content=""/>
-        </style>        
         <title>"Enjoy Shopping!!!"</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/bootstrap3/css/custom_styles.css">
         
         <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-1.10.2.min.js"></script>
         <script src="<?php echo base_url() ?>assets/bootstrap3/js/bootstrap.min.js"></script>
-        
     </head>
-    <body screen_capture_injected="true" cz-shortcut-listen="true">
-        <?php echo $contents; ?>
+    <body>
+        <div class ="container">
+            <div class ="row">
+                <!-- Header part -->
+            </div>
+            <div class="row">
+                <?php echo $contents ?>
+            </div>
+            <div class ="row">
+                <?php $this->load->view("salesman/templates/footer"); ?>
+            </div>
+        </div>
     </body>
 </html>
+

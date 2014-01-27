@@ -6,23 +6,11 @@
                 alert("Product Name is required.");
                 return;
             }
-            else if ($("#input_product_code").val().length == 0)
-            {
-                alert("Product Code is required.");
-                return;
-            }
-            else if ($("#input_unit_price").val().length == 0)
-            {
-                alert("Unit Price is required.");
-                return;
-            }
             $.ajax({
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
                 data: {
-                    product_name: $("#input_product_name").val(),
-                    product_code: $("#input_product_code").val(),
-                    unit_price: $("#input_unit_price").val()
+                    product_name: $("#input_product_name").val()
                 },
                 success: function(data) {
                     var response = JSON.parse(data);
@@ -37,7 +25,6 @@
                         var current_temp_html_product = $("#div_product_list").html();
                         current_temp_html_product = current_temp_html_product + '<div class ="row" id ="span_product_info"><div class ="col-md-4 col-md-offset-1" id="div_product_list_id">';
                         current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="form-control" type="text" value="' + product_info['name'] + '"/></div><div class ="col-md-4"  id="div_product_list_id">';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="form-control" type="text" value="' + product_info['code'] + '"/></div><div class ="col-md-3">';
                         current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
                         current_temp_html_product = current_temp_html_product + '</div>';
                         current_temp_html_product = current_temp_html_product + '</div>';
@@ -85,9 +72,6 @@
             <div class ="col-md-4 col-md-offset-1">
                 <h3>Product Name</h3>
             </div>
-            <div class ="col-md-4">
-                <h3>Product Code</h3>
-            </div>
             <div class ="col-md-3">
                 <h3>Details</h3>
             </div>
@@ -97,9 +81,6 @@
                 <div class ="row" id ="span_product_info">
                     <div class ="col-md-4 col-md-offset-1" id="div_product_list_id">
                         <?php echo form_input(array('value' => $product['name'], 'id' => $product['id'], 'class' => 'form-control')); ?>
-                    </div>
-                    <div class ="col-md-4"  id="div_product_list_id">
-                        <?php echo form_input(array('value' => $product['code'], 'id' => $product['id'], 'class' => 'form-control')); ?>            
                     </div>
                     <div class ="col-md-3">
                         <a target="_blank" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a>
@@ -140,26 +121,6 @@
                                     <?php echo form_input(array('name' => 'input_product_name', 'id' => 'input_product_name', 'class' => 'form-control')); ?>
                                 </div> 
                             </div>
-
-                            <div class="form-group">
-                                <label for="input_product_code" class="col-md-4 control-label requiredField">
-                                    Product Code
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input(array('name' => 'input_product_code', 'id' => 'input_product_code', 'class' => 'form-control')); ?>
-                                </div> 
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="input_unit_price" class="col-md-4 control-label requiredField">
-                                    Unit Price
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input(array('name' => 'input_unit_price', 'id' => 'input_unit_price', 'class' => 'form-control')); ?>
-                                </div> 
-                            </div>
-
 
                             <div class="form-group">
                                 <label for="button_add_product" class="col-md-4 control-label requiredField">

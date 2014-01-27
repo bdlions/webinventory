@@ -25,6 +25,7 @@ class Search extends CI_Controller {
         $this->load->helper('language');
         $this->load->library('org/product/product_library');
         $this->load->library('org/search/search_customer');
+        $this->load->library('org/sale/sale_library');
     }
     
     function index()
@@ -86,6 +87,80 @@ class Search extends CI_Controller {
         echo json_encode($result_array);
     }
     
+    //---------------------------------------- Sale Search ----------------------------------------------
+    public function all_sales()
+    {
+        $this->data['sale_list'] = array();
+        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
+        if( !empty($sale_list_array) )
+        {
+            $this->data['sale_list'] = $sale_list_array;
+        } 
+        $this->template->load(null, 'search/sale/all_sales', $this->data);
+    }
+    
+    /*
+     * Ajax Call
+     */
+    public function search_by_sales()
+    {
+        $user_id = $_POST['user_id'];
+        $product_id = $_POST['product_id'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+        $this->data['sale_list'] = array();
+        $sale_list_array = $this->sale_library->get_user_sales($start_date, $end_date, $user_id, $product_id)->result_array();
+        $result_array['sale_list'] = $sale_list_array;    
+        echo json_encode($result_array);
+    }
+    public function search_sales()
+    {
+        $employee_list = array();
+        $employee_list_array = $this->ion_auth->get_all_salesman()->result_array();
+        if(!empty($employee_list_array))
+        {
+            foreach($employee_list_array as $key => $employee_info)
+            {
+                $employee_list[$employee_info['user_id']] = $employee_info['first_name'].' '.$employee_info['last_name'];
+            }
+        }
+        $this->data['employee_list'] = $employee_list;
+        $this->data['user_info'] = array();
+        $user_info_array = $this->ion_auth->user()->result_array();
+        if(!empty($user_info_array))
+        {
+            $this->data['user_info'] = $user_info_array[0];
+        }
+        
+        $product_list = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        if( !empty($product_list_array) )
+        {
+            foreach($product_list_array as $key => $product_info)
+            {
+                $product_list[$product_info['id']] = $product_info['name'];
+            }
+        }
+        $this->data['product_list'] = $product_list;
+        $this->data['start_date'] = array(
+            'name' => 'start_date',
+            'id' => 'start_date',
+            'type' => 'text'
+        );
+        $this->data['end_date'] = array(
+            'name' => 'end_date',
+            'id' => 'end_date',
+            'type' => 'text'
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/search_sales', $this->data);
+    }
+    
     //---------------------------------------- Customer Search -------------------------------------------
     /*
      * Ajax Call
@@ -143,5 +218,30 @@ class Search extends CI_Controller {
             'value' => 'Search',
         );
         $this->template->load(null, 'search/customer/institution',$this->data);
+    }
+    /*
+     * Ajax Call
+     */
+    public function search_customer_by_card_no()
+    {
+        $card_no = $_POST['card_no'];
+        $result_array['customer_list'] = $this->search_customer->search_customer_by_card_no($card_no)->result_array();
+        echo json_encode($result_array);
+    }
+    
+    public function search_customer_card_no()
+    {
+        $this->data['card_no'] = array(
+            'name' => 'card_no',
+            'id' => 'card_no',
+            'type' => 'text'
+        );
+        $this->data['button_search_customer'] = array(
+            'name' => 'button_search_customer',
+            'id' => 'button_search_customer',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/customer/card_no',$this->data);
     }
 }

@@ -101,7 +101,8 @@ class Sale extends CI_Controller {
                 'shop_id' => $shop_id,
                 'sale_order_no' => $sale_info['sale_order_no'],
                 'discount' => $prod_info['discount'],
-                'sub_total' => $prod_info['sub_total']
+                'sub_total' => $prod_info['sub_total'],
+                'created_by' => $sale_info['created_by']
             );
             $sale_product_list[] = $product_info;
             if ( array_key_exists($product_info['product_id'].'_'.$product_info['purchase_order_no'], $product_quantity_map) && ( $product_quantity_map[$stock_info['product_id'].'_'.$stock_info['purchase_order_no']] >= $prod_info['quantity'] ) ) {
@@ -126,7 +127,8 @@ class Sale extends CI_Controller {
             'shop_id' => $shop_id,
             'customer_id' => $sale_info['customer_id'],
             'sale_order_status_id' => 1,
-            'remarks' => $sale_info['remarks']
+            'remarks' => $sale_info['remarks'],            
+            'created_by' => $sale_info['created_by']
         );        
         $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $update_stock_list);
         if( $sale_id !== FALSE )
@@ -150,7 +152,7 @@ class Sale extends CI_Controller {
         echo json_encode($response);
     }
     
-    public function show_all_sales()
+    /*public function show_all_sales()
     {
         $this->data['sale_list'] = array();
         $sale_list_array = $this->sale_library->get_all_sales()->result_array();
@@ -159,5 +161,5 @@ class Sale extends CI_Controller {
             $this->data['sale_list'] = $sale_list_array;
         } 
         $this->template->load(null, 'sales/show_all_sales', $this->data);
-    }
+    }*/
 }

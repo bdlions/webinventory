@@ -67,4 +67,22 @@ class Search_customer_model extends Ion_auth_model {
                     ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get(); 
     }
+    
+    public function search_customer_by_card_no($card_no = '', $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if(!empty($card_no))
+        {
+            $this->db->where($this->tables['customers'].'.card_no',$card_no);
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get(); 
+    }
 }

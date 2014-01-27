@@ -28,12 +28,12 @@
             return;
         }
         var current_temp_product_html = $("#div_selected_product_list").html();
-        current_temp_product_html = current_temp_product_html + '<span class="span12 sales_view_block" style="">';
-        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="fl" type="text" value="' + prod_info['name'] + '"/>';
-        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="quantity" class="fl" type="text" value="1"/>';
-        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="price" class="fl" type="text" value="100"/>';
-        current_temp_product_html = current_temp_product_html + '<input name="product_buy_price" readonly="true" class="fl" type="text" value="100"/>';
-        current_temp_product_html = current_temp_product_html + '</span>';
+        current_temp_product_html = current_temp_product_html + '<div class="row">';
+        current_temp_product_html = current_temp_product_html + '<input class="col-md-3" readonly="true" type="text" value="' + prod_info['name'] + '"/>';
+        current_temp_product_html = current_temp_product_html + '<input class="col-md-3" id="' + prod_info['id'] + '" name="quantity" type="text" value="1"/>';
+        current_temp_product_html = current_temp_product_html + '<input class="col-md-3" id="' + prod_info['id'] + '" name="price" type="text" value="100"/>';
+        current_temp_product_html = current_temp_product_html + '<input class="col-md-3" name="product_buy_price" readonly="true" type="text" value="100"/>';
+        current_temp_product_html = current_temp_product_html + '</div>';
         $("#div_selected_product_list").html(current_temp_product_html);
 
         var total_purchase_price = 0;
@@ -110,7 +110,7 @@
             }
             //checking whether at least one product is selected or not
             var selected_product_counter = 0;
-            $("span", "#div_selected_product_list").each(function() {
+            $("div", "#div_selected_product_list").each(function() {
                 $("input", $(this)).each(function() {
                     if ($(this).attr("name") === "quantity")
                     {
@@ -203,7 +203,7 @@
                 var total_purchase_price = 0;
                 var product_list = new Array();
                 var product_list_counter = 0;
-                $("span", "#div_selected_product_list").each(function() {
+                $("div", "#div_selected_product_list").each(function() {
                     var product_info = new Product();
                     $("input", $(this)).each(function() {
                         if ($(this).attr("name") === "quantity")
@@ -512,6 +512,7 @@
                         Supplier
                     </label> 
                     <div class ="col-md-8">
+                        <?php echo form_input(array('name' => 'input_add_purchase_supplier_id', 'id' => 'input_add_purchase_supplier_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
                         <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_add_supplier')); ?>
                     </div> 
                 </div>
@@ -579,19 +580,16 @@
         <div class ="row boxshad">
             <div class ="row">
                 <div class="col-md-12">
-                    <div class ="col-md-2">
+                    <div class ="col-md-3">
                         Product Name
                     </div>
-                    <div class ="col-md-2">
-                        Product Code
-                    </div>
-                    <div class ="col-md-2">
+                    <div class ="col-md-3">
                         Quantity
                     </div>
-                    <div class ="col-md-2">
+                    <div class ="col-md-3">
                         Unit Price
                     </div>
-                    <div class ="col-md-2">
+                    <div class ="col-md-3">
                         Sub-Total
                     </div>
                 </div>
@@ -627,7 +625,7 @@
 
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_button(array('name' => 'save', 'id' => 'save', 'content' => 'Save')); ?>
+                        <?php echo form_button(array('name' => 'button_save_purchase_order', 'id' => 'button_save_purchase_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
                     </div> 
                 </div>
             </div>
@@ -635,6 +633,23 @@
 
     </div>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
+      </div>
+      <div class="modal-body">
+       Do You want to proceed?
+      </div>
+      <div class="modal-footer">          
+        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <?php $this->load->view("purchase/modal_add_supplier"); ?>
 <?php $this->load->view("purchase/modal_add_product"); ?>

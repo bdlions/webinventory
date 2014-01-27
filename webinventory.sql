@@ -384,7 +384,6 @@ CREATE TABLE `sale_order` (
 	UNIQUE KEY (`sale_order_no`, `shop_id`),
 	KEY `fk_sale_order_shop_info1_idx` (`shop_id`),
 	KEY `fk_sale_order_sale_order_status1_idx` (`sale_order_status_id`),
-	KEY `fk_sale_order_users1_idx` (`seller_id`),
 	KEY `fk_sale_order_customers1_idx` (`customer_id`),
 	KEY `fk_sale_order_users1_idx` (`created_by`),
 	KEY `fk_sale_order_users2_idx` (`modified_by`)
