@@ -81,112 +81,125 @@
     });
 </script>
 
-<div class ="row modal" id="modal_add_supplier">
-    <div class ="col-md-3"></div>
-    <div class ="col-md-6 modal-style form-background">
-        <div class ="row">
-            <div class ="col-md-4 col-md-offset-1">
-                <h3>Phone</h3>
+<div class="modal fade" id="modal_add_supplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Select Supplier</h4>
             </div>
-            <div class ="col-md-4">
-                <h3>Company</h3>
-            </div>
-            <div class ="col-md-3">
-                <h3>Details</h3>
-            </div>
-        </div>
-        <div class ="row" id="div_supplier_list">
-            <?php
-            foreach ($supplier_list_array as $key => $supplier) {
-                ?>
-                <div class ="row" id ="span_customer_info">
-                    <div class ="col-md-4 col-md-offset-1" id="div_supplier_list_id">
-                        <?php echo form_input(array('name' => $supplier['supplier_id'], 'value' => $supplier['phone'], 'id' => $supplier['supplier_id'], 'class' => 'form-control')); ?>
-                    </div>
-                    <div class ="col-md-4"  id="div_supplier_list_id">
-                        <?php echo form_input(array('name' => $supplier['supplier_id'], 'value' => $supplier['company'], 'id' => $supplier['supplier_id'], 'class' => 'form-control')); ?>            
-                    </div>
-                    <div class ="col-md-3">
-                        <a target="_blank" href="<?php echo base_url() . "user/show_supplier/" . $supplier['supplier_id']; ?>">view</a>
-                    </div>
-                </div>
-            <?php } ?>  
-        </div>
-        <div class ="row margin-top-bottom">
-            <div class ="col-md-4">
-                <h3>Search</h3>
-            </div>
-            <div class ="col-md-4">
-                <?php echo form_dropdown('dropdown_search_supplier', $supplier_search_category, '0', 'id="dropdown_search_supplier"'); ?>
-            </div>
-            <div class ="col-md-4">
-                <?php echo form_input(array('name' => 'input_search_supplier', 'id' => 'input_search_supplier', 'class' => 'form-control')); ?>
+            <div class="modal-body">
                 <div class ="row">
-                    <div class ="col-md-4">
-                        <?php echo form_button(array('name' => 'button_search_supplier', 'id' => 'button_search_supplier', 'content' => 'Search')); ?>
+                    <div class ="row">
+                        <div class ="col-md-4 col-md-offset-1">
+                            <h3>Phone</h3>
+                        </div>
+                        <div class ="col-md-4">
+                            <h3>Company</h3>
+                        </div>
+                        <div class ="col-md-3">
+                            <h3>Details</h3>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class ="row margin-top-bottom">
-            <div class ="col-md-5">
-                <h3>Add New</h3>
-            </div>
-            <div class ="col-md-7">
-                <div class="form-horizontal">
-                    <div class="row">
-                        <div class ="col-md-12"> 
-                            <div class="form-group">
-                                <label for="input_first_name" class="col-md-4 control-label requiredField">
-                                    First Name
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input(array('name' => 'input_first_name', 'id' => 'input_first_name', 'class' => 'form-control')); ?>
-                                </div> 
+                    <div class ="row" id="div_supplier_list">
+                        <?php
+                        foreach ($supplier_list_array as $key => $supplier) {
+                            ?>
+                            <div class ="row" id ="span_customer_info">
+                                <div class ="col-md-4 col-md-offset-1" id="div_supplier_list_id">
+                                    <?php echo form_input(array('name' => $supplier['supplier_id'], 'value' => $supplier['phone'], 'id' => $supplier['supplier_id'], 'class' => 'form-control')); ?>
+                                </div>
+                                <div class ="col-md-4"  id="div_supplier_list_id">
+                                    <?php echo form_input(array('name' => $supplier['supplier_id'], 'value' => $supplier['company'], 'id' => $supplier['supplier_id'], 'class' => 'form-control')); ?>            
+                                </div>
+                                <div class ="col-md-3">
+                                    <a target="_blank" href="<?php echo base_url() . "user/show_supplier/" . $supplier['supplier_id']; ?>">view</a>
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label for="input_last_name" class="col-md-4 control-label requiredField">
-                                    Last Name
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
-                                </div> 
+                        <?php } ?>  
+                    </div>
+                    <div class ="row margin-top-bottom">
+                        <div class ="col-md-4">
+                            <h3>Search</h3>
+                        </div>
+                        <div class ="col-md-4">
+                            <?php echo form_dropdown('dropdown_search_supplier', $supplier_search_category, '0', 'id="dropdown_search_supplier"'); ?>
+                        </div>
+                        <div class ="col-md-4">
+                            <?php echo form_input(array('name' => 'input_search_supplier', 'id' => 'input_search_supplier', 'class' => 'form-control')); ?>
+                            <div class ="row">
+                                <div class ="col-md-4">
+                                    <?php echo form_button(array('name' => 'button_search_supplier', 'id' => 'button_search_supplier', 'content' => 'Search')); ?>
+                                </div>
                             </div>
+                        </div>
+
+                    </div>
+
+                    <div class ="row margin-top-bottom">
+                        <div class ="col-md-5">
+                            <h3>Add New</h3>
+                        </div>
+                        <div class ="col-md-7">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class ="col-md-12"> 
+                                        <div class="form-group">
+                                            <label for="input_first_name" class="col-md-4 control-label requiredField">
+                                                First Name
+                                            </label>
+                                            <div class ="col-md-6">
+                                                <?php echo form_input(array('name' => 'input_first_name', 'id' => 'input_first_name', 'class' => 'form-control')); ?>
+                                            </div> 
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="input_last_name" class="col-md-4 control-label requiredField">
+                                                Last Name
+                                            </label>
+                                            <div class ="col-md-6">
+                                                <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
+                                            </div> 
+                                        </div>
 
 
-                            <div class="form-group">
-                                <label for="input_phone_no" class="col-md-4 control-label requiredField">
-                                    Phone No.
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
-                                </div> 
+                                        <div class="form-group">
+                                            <label for="input_phone_no" class="col-md-4 control-label requiredField">
+                                                Phone No.
+                                            </label>
+                                            <div class ="col-md-6">
+                                                <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
+                                            </div> 
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="input_company" class="col-md-4 control-label requiredField">
+                                                Company
+                                            </label>
+                                            <div class ="col-md-6">
+                                                <?php echo form_input(array('name' => 'input_company', 'id' => 'input_company', 'class' => 'form-control')); ?>
+                                            </div> 
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="button_add_supplier" class="col-md-4 control-label requiredField">
+                                            </label>
+                                            <div class ="col-md-6">
+                                                <?php echo form_button(array('name' => 'button_add_supplier', 'id' => 'button_add_supplier', 'content' => 'Submit')); ?>
+                                            </div> 
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label for="input_company" class="col-md-4 control-label requiredField">
-                                    Company
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input(array('name' => 'input_company', 'id' => 'input_company', 'class' => 'form-control')); ?>
-                                </div> 
-                            </div>
-
-                            <div class="form-group">
-                                <label for="button_add_supplier" class="col-md-4 control-label requiredField">
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_button(array('name' => 'button_add_supplier', 'id' => 'button_add_supplier', 'content' => 'Submit')); ?>
-                                </div> 
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

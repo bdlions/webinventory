@@ -71,10 +71,17 @@
     });
 
 </script>
-<div class ="row modal" id="modal_add_product">
-    <div class ="col-md-3"></div>
-    <div class ="col-md-6 modal-style form-background">
-        <div class ="row">
+
+<div class="modal fade" id="modal_add_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Select Product</h4>
+            </div>
+            <div class="modal-body">
+                <div class ="row">
+                    <div class ="row">
             <div class ="col-md-4 col-md-offset-1">
                 <h3>Product Name</h3>
             </div>
@@ -117,7 +124,6 @@
             </div>
 
         </div>
-
         <div class ="row margin-top-bottom">
             <div class ="col-md-5">
                 <h3>Add New</h3>
@@ -168,5 +174,14 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
