@@ -43,13 +43,11 @@
                         var supplier_info = response['supplier_info'];
 
                         var current_temp_html_supplier = $("#div_supplier_list").html();
-                        current_temp_html_supplier = current_temp_html_supplier + '<div class ="row" id ="span_customer_info"><div class ="col-md-4 col-md-offset-1" id="div_customer_list_id">';
-                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
-                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
-                        current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
-                        current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
-                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
-                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
+                        current_temp_html_supplier = current_temp_html_supplier + '<div class ="row" id ="span_supplier_info">';            
+                        current_temp_html_supplier = current_temp_html_supplier + '<div class ="col-md-4 col-md-offset-1" id="div_supplier_list_id"><input id="' + supplier_info['supplier_id'] + '" class="form-control" type="text" value="' + supplier_info['phone'] + '"/></div>';
+                        current_temp_html_supplier = current_temp_html_supplier + '<div class ="col-md-4"  id="div_supplier_list_id"><input id="' + supplier_info['supplier_id'] + '" class="form-control" type="text" value="' + supplier_info['company'] + '"/></div>';
+                        current_temp_html_supplier = current_temp_html_supplier + '<div class ="col-md-3"><a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a></div>';
+                        current_temp_html_supplier = current_temp_html_supplier + '</div>';
                         $("#div_supplier_list").html(current_temp_html_supplier);
                         update_fields_selected_supplier(supplier_info);
                         $('#modal_add_supplier').modal('hide');
@@ -58,9 +56,9 @@
 
             });
         });
-        $("#div_supplier_list #span_customer_info #div_supplier_list_id").on("click", "input", function() {
+        $("#div_supplier_list #span_supplier_info #div_supplier_list_id").on("click", "input", function() {
 //                console.log("This "+$(this).attr("id")+", parent"+$(this).parent()+", parent parent"+$(this).parent().parent()+","+$(this).parent().parent().attr("id"));
-            if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "span_customer_info")
+            if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "span_supplier_info")
             {
                 var c_list = get_supplier_list();
                 console.log(c_list);
@@ -105,7 +103,7 @@
                         <?php
                         foreach ($supplier_list_array as $key => $supplier) {
                             ?>
-                            <div class ="row" id ="span_customer_info">
+                            <div class ="row" id ="span_supplier_info">
                                 <div class ="col-md-4 col-md-offset-1" id="div_supplier_list_id">
                                     <?php echo form_input(array('name' => $supplier['supplier_id'], 'value' => $supplier['phone'], 'id' => $supplier['supplier_id'], 'class' => 'form-control')); ?>
                                 </div>
@@ -128,8 +126,8 @@
                         <div class ="col-md-4">
                             <?php echo form_input(array('name' => 'input_search_supplier', 'id' => 'input_search_supplier', 'class' => 'form-control')); ?>
                             <div class ="row">
-                                <div class ="col-md-4">
-                                    <?php echo form_button(array('name' => 'button_search_supplier', 'id' => 'button_search_supplier', 'content' => 'Search')); ?>
+                                <div class ="col-md-12">
+                                    <?php echo form_button(array('name' => 'button_search_supplier', 'class'=>'form-control btn btn-success', 'id' => 'button_search_supplier', 'content' => 'Search')); ?>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +183,7 @@
                                             <label for="button_add_supplier" class="col-md-4 control-label requiredField">
                                             </label>
                                             <div class ="col-md-6">
-                                                <?php echo form_button(array('name' => 'button_add_supplier', 'id' => 'button_add_supplier', 'content' => 'Submit')); ?>
+                                                <?php echo form_button(array('name' => 'button_add_supplier', 'class'=>'form-control btn btn-success', 'id' => 'button_add_supplier', 'content' => 'Submit')); ?>
                                             </div> 
                                         </div>
 

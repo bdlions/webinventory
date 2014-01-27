@@ -114,8 +114,8 @@
                         <div class ="col-md-4">
                             <?php echo form_input(array('name' => 'input_search_customer', 'id' => 'input_search_customer', 'class' => 'form-control')); ?>
                             <div class ="row">
-                                <div class ="col-md-4">
-                                    <?php echo form_button(array('name' => 'existing_customer_search', 'id' => 'existing_customer_search', 'content' => 'Search')); ?>
+                                <div class ="col-md-12">
+                                    <?php echo form_button(array('name' => 'existing_customer_search','class'=>'form-control btn btn-success', 'id' => 'existing_customer_search', 'content' => 'Search')); ?>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                                             <label for="button_add_product" class="col-md-4 control-label requiredField">
                                             </label>
                                             <div class ="col-md-6">
-                                                <?php echo form_button(array('name' => 'button_add_product', 'id' => 'button_add_product', 'content' => 'Submit')); ?>
+                                                <?php echo form_button(array('name' => 'button_add_product', 'class'=>'form-control btn btn-success', 'id' => 'button_add_product', 'content' => 'Submit')); ?>
                                             </div> 
                                         </div>
 
