@@ -81,9 +81,9 @@
     });
 </script>
 
-<div class ="row modal" id="modal_add_supplier" style="margin-left: 2px;">
+<div class ="row modal" id="modal_add_supplier">
     <div class ="col-md-3"></div>
-    <div class ="col-md-6 modal-style boxshad">
+    <div class ="col-md-6 modal-style form-background">
         <div class ="row">
             <div class ="col-md-4 col-md-offset-1">
                 <h3>Phone</h3>
