@@ -244,4 +244,42 @@ class Search extends CI_Controller {
         );
         $this->template->load(null, 'search/customer/card_no',$this->data);
     }
+    
+    /*
+     * Ajax Call
+     */
+    public function search_customer_by_card_no_range()
+    {
+        $start_card_no = $_POST['start_card_no'];
+        $end_card_no = $_POST['end_card_no'];
+        $result_array['customer_list'] = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        echo json_encode($result_array);
+    }
+    
+    public function search_customer_card_no_range()
+    {
+        $this->data['start_card_no'] = array(
+            'name' => 'start_card_no',
+            'id' => 'start_card_no',
+            'type' => 'text'
+        );
+        $this->data['end_card_no'] = array(
+            'name' => 'end_card_no',
+            'id' => 'end_card_no',
+            'type' => 'text'
+        );
+        $this->data['button_search_customer'] = array(
+            'name' => 'button_search_customer',
+            'id' => 'button_search_customer',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/customer/card_no_range',$this->data);
+    }
+    
+    public function test()
+    {
+        $result_array = $this->search_customer->search_customer_by_card_no_range(1, 20)->result_array();
+        print_r($result_array);
+    }
 }
