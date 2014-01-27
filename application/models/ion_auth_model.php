@@ -2119,6 +2119,10 @@ class Ion_auth_model extends CI_Model {
         return true;
     }
     //--------------------------------------------salesman related queries-----------------------------------------
+    /*
+     * This method will return all salesman of a shop
+     * @Author Nazmul on 27th January 2014
+     */
     public function get_all_salesman($shop_id = '')
     {
         if(empty($shop_id))

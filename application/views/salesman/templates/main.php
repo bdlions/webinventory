@@ -36,22 +36,18 @@
         <script src="<?php echo base_url(); ?>assets/js/order/purchase.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/sale.js"></script>
     </head>
-
     <body>
         <div class ="container">
+            <div class ="row">
+                <!-- Header part -->
+            </div>
             <div class="row">
-                <div class="col-md-1">
-                    
-                </div>
-                <div class="col-md-11">
-                    <?php $this->load->view("salesman/templates/top_nav"); ?>
-                    <?php echo $contents ?>
-                </div>
+                <!-- Menu Items -->
+                <?php $this->load->view("salesman/templates/top_nav"); ?>
+                <?php echo $contents ?>
             </div>
             <div class ="row">
-                <div class ="col-md-4 col-md-offset-1">
-                    <?php $this->load->view("salesman/templates/footer"); ?>
-                </div>
+                <?php $this->load->view("salesman/templates/footer"); ?>
             </div>
         </div>
     </body>

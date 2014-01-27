@@ -37,6 +37,23 @@ class Sale extends CI_Controller {
     
     function sale_order()
     {
+        $salesman_list = array();
+        $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
+        if(!empty($salesman_list_array))
+        {
+            foreach($salesman_list_array as $key => $salesman_info)
+            {
+                $salesman_list[$salesman_info['user_id']] = $salesman_info['first_name'].' '.$salesman_info['last_name'];
+            }
+        }
+        $this->data['salesman_list'] = $salesman_list;
+        $this->data['user_info'] = array();
+        $user_info_array = $this->ion_auth->user()->result_array();
+        if(!empty($user_info_array))
+        {
+            $this->data['user_info'] = $user_info_array[0];
+        }
+        
         $this->data['customer_list_array'] = array();
         $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
         if( count($customer_list_array) > 0)

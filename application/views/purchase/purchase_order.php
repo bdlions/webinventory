@@ -11,7 +11,7 @@
     function append_selected_product(prod_info)
     {
         var is_product_previously_selected = false;
-        $("#div_selected_product_list").each(function() {
+        $("span", "#div_selected_product_list").each(function() {
             $("input", $(this)).each(function() {
                 if ($(this).attr("name") === "quantity")
                 {
@@ -28,13 +28,12 @@
             return;
         }
         var current_temp_product_html = $("#div_selected_product_list").html();
-        current_temp_product_html = current_temp_product_html + '<div class ="row"><div class ="col-md-2">';
-        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="form-control" type="text" value="' + prod_info['name'] + '"/></div><div class ="col-md-2">';
-        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="form-control" type="text" value="' + prod_info['code'] + '"/></div><div class ="col-md-2">';
-        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="quantity" class="form-control" type="text" value="1"/></div><div class ="col-md-2">';
-        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="price" class="form-control" type="text" value="100"/></div><div class ="col-md-2">';
-        current_temp_product_html = current_temp_product_html + '<input name="product_buy_price" readonly="true" class="form-control" type="text" value="100"/>';
-        current_temp_product_html = current_temp_product_html + '</div></div>';
+        current_temp_product_html = current_temp_product_html + '<span class="span12 sales_view_block" style="">';
+        current_temp_product_html = current_temp_product_html + '<input readonly="true" class="fl" type="text" value="' + prod_info['name'] + '"/>';
+        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="quantity" class="fl" type="text" value="1"/>';
+        current_temp_product_html = current_temp_product_html + '<input id="' + prod_info['id'] + '" name="price" class="fl" type="text" value="100"/>';
+        current_temp_product_html = current_temp_product_html + '<input name="product_buy_price" readonly="true" class="fl" type="text" value="100"/>';
+        current_temp_product_html = current_temp_product_html + '</span>';
         $("#div_selected_product_list").html(current_temp_product_html);
 
         var total_purchase_price = 0;
@@ -50,7 +49,7 @@
     function update_fields_selected_supplier(sup_info)
     {
         $("#input_add_purchase_supplier_id").val(sup_info['supplier_id']);
-        $("#input_add_purchase_supplier").val(sup_info['username']);
+        $("#input_add_purchase_supplier").val(sup_info['first_name']+' '+sup_info['last_name']);
         $("#input_add_purchase_company").val(sup_info['company']);
         $("#input_add_purchase_phone").val(sup_info['phone']);
     }
@@ -62,6 +61,210 @@
 
 <script type="text/javascript">
     $(function() {
+        $("#button_add_product").on("click", function() {
+            if ($("#input_product_name").val().length == 0)
+            {
+                alert("Product Name is required.");
+                return;
+            }
+            set_modal_confirmation_category_id(get_modal_confirmation_add_product_category_id());
+            $('#myModal').modal('show');
+        });
+        $("#button_add_supplier").on("click", function() {
+            if ($("#input_first_name").val().length == 0)
+            {
+                alert("First Name is required.");
+                return;
+            }
+            else if ($("#input_last_name").val().length == 0)
+            {
+                alert("Last Name is required.");
+                return;
+            }
+            else if ($("#input_phone_no").val().length == 0)
+            {
+                alert("Phone is required.");
+                return;
+            }
+            else if ($("#input_company").val().length == 0)
+            {
+                alert("Company is required.");
+                return;
+            }
+            set_modal_confirmation_category_id(get_modal_confirmation_add_supplier_category_id());
+            $('#myModal').modal('show');
+        });
+        $("#button_save_purchase_order").on("click", function() {
+            //validation checking of purchase order
+            //checking whether supplier is selected or not
+            if ($("#input_add_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
+            {
+                alert('Please select a supplier');
+                return;
+            }
+            //checking whether purchase order no is assigned or not
+            if ($("#purchase_order_no").val().length === 0)
+            {
+                alert('Please assign Lot #');
+                return;
+            }
+            //checking whether at least one product is selected or not
+            var selected_product_counter = 0;
+            $("span", "#div_selected_product_list").each(function() {
+                $("input", $(this)).each(function() {
+                    if ($(this).attr("name") === "quantity")
+                    {
+                        selected_product_counter++;
+                    }
+                });
+            });
+            if (selected_product_counter <= 0)
+            {
+                alert('Please select at least one product.');
+                return;
+            }
+            set_modal_confirmation_category_id(get_modal_confirmation_save_purchase_order_category_id());
+            $('#myModal').modal('show');
+        });
+        $("#modal_button_confirm").on("click", function() {
+            if (get_modal_confirmation_category_id() === get_modal_confirmation_add_product_category_id())
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "product/create_product_purchase_order",
+                    data: {
+                        product_name: $("#input_product_name").val()
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '1')
+                        {
+                            var p_list = get_product_list();
+                            p_list[p_list.length] = response['product_info'];
+                            set_product_list(p_list);
+                            alert('New product is added successfully.');
+                            var product_info = response['product_info'];
+
+                            var current_temp_html_product = $("#div_product_list").html();
+                            current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
+                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
+                            current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
+                            current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
+                            current_temp_html_product = current_temp_html_product + '</span>';
+                            current_temp_html_product = current_temp_html_product + '</span>';
+                            $("#div_product_list").html(current_temp_html_product);
+                            append_selected_product(product_info);
+                            $('div[class="clr dropdown open"]').removeClass('open');
+                        }
+                    }
+
+                });
+            }
+            else if (get_modal_confirmation_category_id() === get_modal_confirmation_add_supplier_category_id())
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "user/create_supplier_purchase_order",
+                    data: {
+                        first_name: $("#input_first_name").val(),
+                        last_name: $("#input_last_name").val(),
+                        phone_no: $("#input_phone_no").val(),
+                        company: $("#input_company").val()
+
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '1')
+                        {
+                            var s_list = get_supplier_list();
+                            s_list[s_list.length] = response['supplier_info'];
+                            set_supplier_list(s_list);
+                            alert('New supplier is added successfully.');
+                            var supplier_info = response['supplier_info'];
+
+                            var current_temp_html_supplier = $("#div_supplier_list").html();
+                            current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
+                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
+                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
+                            current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
+                            current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
+                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
+                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
+                            $("#div_supplier_list").html(current_temp_html_supplier);
+                            update_fields_selected_supplier(supplier_info);
+                            $('div[class="clr dropdown open"]').removeClass('open');
+                        }
+                    }
+
+                });
+            }
+            else if( get_modal_confirmation_category_id() === get_modal_confirmation_save_purchase_order_category_id() )
+            {
+                var total_purchase_price = 0;
+                var product_list = new Array();
+                var product_list_counter = 0;
+                $("span", "#div_selected_product_list").each(function() {
+                    var product_info = new Product();
+                    $("input", $(this)).each(function() {
+                        if ($(this).attr("name") === "quantity")
+                        {
+                            product_info.setProductId($(this).attr("id"));
+                            product_info.setQuantity($(this).attr("value"));
+                            product_info.setPurchaseOrderNo($("#purchase_order_no").val());
+                        }
+                        if ($(this).attr("name") === "price")
+                        {
+                            product_info.setUnitPrice($(this).attr("value"));
+                        }
+                        if ($(this).attr("name") === "product_buy_price")
+                        {
+                            product_info.setSubTotal($(this).attr("value"));
+                            total_purchase_price = +total_purchase_price + +$(this).attr("value");
+                        }
+                    });
+                    product_list[product_list_counter++] = product_info;
+                });
+                if (total_purchase_price !== +$("#total_purchase_price").val())
+                {
+                    alert('Calculation error. Please try again.');
+                    return;
+                }
+                var purchase_info = new Purchase();
+                purchase_info.setOrderNo($("#purchase_order_no").val());
+                purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
+                purchase_info.setRemarks($("#purchase_remarks").val());
+                purchase_info.setTotal($("#total_purchase_price").val());
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
+                    data: {
+                        product_list: product_list,
+                        purchase_info: purchase_info
+                    },
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        if (response['status'] === '0')
+                        {
+                            alert(response['message']);
+                        }
+                        else if (response['status'] === '1')
+                        {
+                            alert('Purchase order is executed successfully.');
+                            $("#div_selected_product_list").html('');
+                            $("#input_add_purchase_supplier_id").val('');
+                            $("#input_add_purchase_supplier").val('');
+                            $("#input_add_purchase_company").val('');
+                            $("#input_add_purchase_phone").val('');
+                            $("#purchase_order_no").val('');
+                            $("#purchase_remarks").val('');
+                            $("#total_purchase_price").val('');
+                        }
+                    }
+                });
+            }
+            $('#myModal').modal('hide');
+        });
+        
         $("#input_date_add_purchase").datepicker();
         $("#div_supplier_list").on("click", "input", function() {
             if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_supplier_list")
@@ -159,7 +362,6 @@
                         var prod_info = prod_list[counter];
                         current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
                         current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['name'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['code'] + '"/>';
                         current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
                         current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + prod_info['id'] + '">view</a>';
                         current_temp_html_product = current_temp_html_product + '</span>';
@@ -170,178 +372,11 @@
             });
         });
 
-//        $("#button_add_supplier").on("click", function() {
-//            if ($("#input_first_name").val().length == 0)
-//            {
-//                alert("First Name is required.");
-//                return;
-//            }
-//            else if ($("#input_last_name").val().length == 0)
-//            {
-//                alert("Last Name is required.");
-//                return;
-//            }
-//            else if ($("#input_phone_no").val().length == 0)
-//            {
-//                alert("Phone is required.");
-//                return;
-//            }
-//            else if ($("#input_company").val().length == 0)
-//            {
-//                alert("Company is required.");
-//                return;
-//            }
-//            $.ajax({
-//                type: "POST",
-//                url: '<?php //echo base_url();  ?>' + "user/create_supplier_purchase_order",
-//                data: {
-//                    first_name: $("#input_first_name").val(),
-//                    last_name: $("#input_last_name").val(),
-//                    phone_no: $("#input_phone_no").val(),
-//                    company: $("#input_company").val()
-//
-//                },
-//                success: function(data) {
-//                    var response = JSON.parse(data);
-//                    if (response['status'] === '1')
-//                    {
-//                        var s_list = get_supplier_list();
-//                        s_list[s_list.length] = response['supplier_info'];
-//                        set_supplier_list(s_list);
-//                        alert('New supplier is added successfully.');
-//                        var supplier_info = response['supplier_info'];
-//                        
-//                        var current_temp_html_supplier = $("#div_supplier_list").html();                        
-//                        current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
-//                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
-//                        current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
-//                        current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
-//                        current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
-//                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
-//                        current_temp_html_supplier = current_temp_html_supplier + '</span>';
-//                        $("#div_supplier_list").html(current_temp_html_supplier);                        
-//                        update_fields_selected_supplier(supplier_info);
-//                        $('div[class="clr dropdown open"]').removeClass('open');
-//                    }
-//                }
-//
-//            });
-//        });
-
-        $("#button_confirm").on("click", function() {
-            if ($("#input_product_name").val().length != 0)
-            {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
-                    data: {
-                        product_name: $("#input_product_name").val(),
-                        product_code: $("#input_product_code").val(),
-                        unit_price: $("#input_unit_price").val()
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
-                        {
-                            var p_list = get_product_list();
-                            p_list[p_list.length] = response['product_info'];
-                            set_product_list(p_list);
-                            alert('New product is added successfully.');
-                            var product_info = response['product_info'];
-
-                            var current_temp_html_product = $("#div_product_list").html();
-                            current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
-                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
-                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['code'] + '"/>';
-                            current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
-                            current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
-                            current_temp_html_product = current_temp_html_product + '</span>';
-                            current_temp_html_product = current_temp_html_product + '</span>';
-                            $("#div_product_list").html(current_temp_html_product);
-                            append_selected_product(product_info);
-                            $('div[class="clr dropdown open"]').removeClass('open');
-                        }
-                    }
-
-                });
-
-            }
-            if ($("#input_first_name").val().length != 0)
-            {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "user/create_supplier_purchase_order",
-                    data: {
-                        first_name: $("#input_first_name").val(),
-                        last_name: $("#input_last_name").val(),
-                        phone_no: $("#input_phone_no").val(),
-                        company: $("#input_company").val()
-
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
-                        {
-                            var s_list = get_supplier_list();
-                            s_list[s_list.length] = response['supplier_info'];
-                            set_supplier_list(s_list);
-                            alert('New supplier is added successfully.');
-                            var supplier_info = response['supplier_info'];
-
-                            var current_temp_html_supplier = $("#div_supplier_list").html();
-                            current_temp_html_supplier = current_temp_html_supplier + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
-                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['phone'] + '"/>';
-                            current_temp_html_supplier = current_temp_html_supplier + '<input id="' + supplier_info['supplier_id'] + '" class="fl" type="text" value="' + supplier_info['company'] + '"/>';
-                            current_temp_html_supplier = current_temp_html_supplier + '<span class="span10 view sales_view fl" style="">';
-                            current_temp_html_supplier = current_temp_html_supplier + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_supplier/' + supplier_info['supplier_id'] + '">view</a>';
-                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
-                            current_temp_html_supplier = current_temp_html_supplier + '</span>';
-                            $("#div_supplier_list").html(current_temp_html_supplier);
-                            update_fields_selected_supplier(supplier_info);
-                            $('div[class="clr dropdown open"]').removeClass('open');
-                        }
-                    }
-
-                });
-            }
-//            else if ($("#input_product_code").val().length == 0)
-//            {
-//                alert("Product Code is required.");
-//                return;
-//            }
-//            else if ($("#input_unit_price").val().length == 0)
-//            {
-//                alert("Unit Price is required.");
-//                return;
-//            }
-
-            $('#myModal').modal('hide');
-        });
-
-//        $("#button_add_product_confirm").on("click", function() {
-////            if ($("#input_product_name").val().length == 0)
-////            {
-////                alert("Product Name is required.");
-////                return;
-////            }
-////            else if ($("#input_product_code").val().length == 0)
-////            {
-////                alert("Product Code is required.");
-////                return;
-////            }
-////            else if ($("#input_unit_price").val().length == 0)
-////            {
-////                alert("Unit Price is required.");
-////                return;
-////            }
-//            
-//        });
-
         $("#div_selected_product_list").on("change", "input", function() {
             var product_id = '';
             var product_quantity = 1;
             var product_buy_price = 100;
-            $("input", $(this).parent().parent()).each(function() {
+            $("input", $(this).parent()).each(function() {
                 if ($(this).attr("name") === "quantity")
                 {
                     if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
@@ -387,98 +422,6 @@
             });
             $("#total_purchase_price").val(total_purchase_price);
 
-        });
-
-        $("#save_purchase_order").on("click", function() {
-            //validation checking of purchase order
-            //checking whether supplier is selected or not
-            if ($("#input_add_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
-            {
-                alert('Please select a supplier');
-                return;
-            }
-            //checking whether purchase order no is assigned or not
-            if ($("#purchase_order_no").val().length === 0)
-            {
-                alert('Please assign Order #');
-                return;
-            }
-            //checking whether at least one product is selected or not
-            var selected_product_counter = 0;
-            $("span", "#div_selected_product_list").each(function() {
-                $("input", $(this)).each(function() {
-                    if ($(this).attr("name") === "quantity")
-                    {
-                        selected_product_counter++;
-                    }
-                });
-            });
-            if (selected_product_counter <= 0)
-            {
-                alert('Please select at least one product.');
-                return;
-            }
-            var total_purchase_price = 0;
-            var product_list = new Array();
-            var product_list_counter = 0;
-            $("span", "#div_selected_product_list").each(function() {
-                var product_info = new Product();
-                $("input", $(this)).each(function() {
-                    if ($(this).attr("name") === "quantity")
-                    {
-                        product_info.setProductId($(this).attr("id"));
-                        product_info.setQuantity($(this).attr("value"));
-                        product_info.setPurchaseOrderNo($("#purchase_order_no").val());
-                    }
-                    if ($(this).attr("name") === "price")
-                    {
-                        product_info.setUnitPrice($(this).attr("value"));
-                    }
-                    if ($(this).attr("name") === "product_buy_price")
-                    {
-                        product_info.setSubTotal($(this).attr("value"));
-                        total_purchase_price = +total_purchase_price + +$(this).attr("value");
-                    }
-                });
-                product_list[product_list_counter++] = product_info;
-            });
-            if (total_purchase_price !== +$("#total_purchase_price").val())
-            {
-                alert('Calculation error. Please try again.');
-                return;
-            }
-            var purchase_info = new Purchase();
-            purchase_info.setOrderNo($("#purchase_order_no").val());
-            purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
-            purchase_info.setRemarks($("#purchase_remarks").val());
-            purchase_info.setTotal($("#total_purchase_price").val());
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
-                data: {
-                    product_list: product_list,
-                    purchase_info: purchase_info
-                },
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    if (response['status'] === '0')
-                    {
-                        alert(response['message']);
-                    }
-                    else if (response['status'] === '1')
-                    {
-                        alert('Purchase order is executed successfully.');
-                        $("#div_selected_product_list").html('');
-                        $("#input_add_purchase_supplier_id").val('');
-                        $("#input_add_purchase_supplier").val('');
-                        $("#input_add_purchase_company").val('');
-                        $("#input_add_purchase_phone").val('');
-                        $("#purchase_order_no").val('');
-                        $("#purchase_remarks").val('');
-                        $("#total_purchase_price").val('');
-                    }
-                }
-            });
         });
     });
 </script>

@@ -38,7 +38,7 @@
 |
 */
 //default controller from where our application starts
-$default_controller = "user/salesman_login";
+$default_controller = "nonmember";
 $route['default_controller'] = $default_controller; //Our default Controller
 
 //Get rid of the first segment (in our case we get rid of webpages)
