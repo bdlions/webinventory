@@ -7,8 +7,7 @@
         <li><a href="<?php echo base_url("./shop/create_shop");?>">Create Shop</a></li>
         <li><a href="<?php echo base_url("./shop/show_all_shops");?>">Shop List</a></li>  
     </ul>
-</div>
-<div class="btn-group">
+</div><div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Sales<span class="caret"></span>
     </button>
@@ -57,10 +56,13 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("search/all_sales");?>">All Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
+        <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("search/search_customer_profession");?>">Search Customer by Profession</a></li>
         <li><a href="<?php echo base_url("search/search_customer_institution");?>">Search Customer by Institution</a></li>
         <li><a href="<?php echo base_url("search/search_customer_card_no");?>">Search Customer by Card No</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_card_no_range");?>">Search Customer by Card No Range</a></li>
     </ul>
 </div>
 <div class="btn-group">
@@ -72,6 +74,18 @@
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Salesman</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Manager</a></li>
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Managers</a></li>
+        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        SMS<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./sms/sms_configuration_shop");?>">Configure SMS</a></li>
+        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Operator Creation</a></li>
+        <li><a href="<?php echo base_url("./user/create_manager");?>">Show All Operators</a></li>
+        <li><a href="<?php echo base_url("./sms/process_file");?>">Process File</a></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
     </ul>
 </div>

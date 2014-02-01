@@ -51,6 +51,7 @@ $config['tables']['expense_info']                   = 'expense_info';
 $config['tables']['users_shop_info']                = 'users_shop_info';
 $config['tables']['institution']                    = 'institution';
 $config['tables']['profession']                     = 'profession';
+$config['tables']['sms_configuration_shop']         = 'sms_configuration_shop';
 
 /*
  | Users table column and Group table column you want to join WITH.

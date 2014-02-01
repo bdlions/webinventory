@@ -12,8 +12,8 @@
         <title>"Enjoy Shopping!!!"</title>
 
 <!------------------------  Block for Slider ------------------------------------>
-                <link rel="stylesheet" type="text/css" href="./assets/bootstrap3/css/bootstrap.min.css">
-		<link rel="stylesheet" href="./assets/bootstrap3/css/custom_styles.css">		
+                <link rel="stylesheet" href="./assets/bootstrap3/css/custom_styles.css">
+                <link rel="stylesheet" href="./assets/bootstrap3/css/property.css">
 		<script src="./assets/js/jquery-1.10.2.min.js"></script>
 		<script src="./assets/slide/responsiveslides.min.js"></script>
 		<script src="./assets/slide/jquery-1.js" type="text/javascript"></script>
@@ -64,18 +64,12 @@
 <!------------------------  Block for Slider ------------------------------------>
         
     </head>
-    <body>
-        <div class ="container">
-            <div class ="row">
-                <!-- Header part -->
-            </div>
-            <div class="row">
-                <?php echo $contents ?>
-            </div>
-            <div class ="row">
-                <?php $this->load->view("salesman/templates/footer"); ?>
-            </div>
+    <body class="back">
+        <?php $this->load->view("nonmember/templates/header"); ?>
+        <div class="container">
+            <?php echo $contents?>
         </div>
+        <?php $this->load->view("nonmember/templates/footer"); ?>
     </body>
 </html>
 

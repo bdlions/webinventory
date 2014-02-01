@@ -3,6 +3,35 @@
 {
     background-color: #E4F2D9;
 }
+.navbar-top {
+    background: #ffffff url('../../images/bg2.png') top repeat-x;
+    min-height:80px;
+    border:0px;
+}
+.logo{
+    width:60px;
+    height:60px;
+    margin-right: 20px;
+    margin-bottom: 5%;
+}
+.logo-text{
+    color: #ffffff;
+    font-size: 30px;
+}
+.login-text{
+    color: #ffffff;
+    font-size: 14px;
+}
+.top-bottom-padding
+{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.input-width-table
+{
+    width:100%;
+}
 /******************************   Slide show Home page  *********************************************************/
 #slider2,
 #slider3 {

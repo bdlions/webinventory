@@ -3,10 +3,9 @@
         $("#button_search_customer").on("click", function() {
             $.ajax({
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_customer_by_card_no_range",
+                url: '<?php echo base_url(); ?>' + "search/search_customer_by_phone",
                 data: {
-                    start_card_no: $("#start_card_no").val(),
-                    end_card_no: $("#end_card_no").val()
+                    phone: $("#phone").val()
                 },
                 success: function(data) {
                     var result = JSON.parse(data);
@@ -37,19 +36,11 @@
                 <div class="row">
                     <div class ="col-md-6 margin-top-bottom">
                         <div class="form-group">
-                            <label for="start_card_no" class="col-md-6 control-label requiredField">
-                                Start Card No
+                            <label for="phone" class="col-md-6 control-label requiredField">
+                                Mobile No
                             </label>
                             <div class ="col-md-6">
-                                <?php echo form_input($start_card_no+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="end_card_no" class="col-md-6 control-label requiredField">
-                                Start Card No
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($end_card_no+array('class'=>'form-control')); ?>
+                                <?php echo form_input($phone+array('class'=>'form-control')); ?>
                             </div> 
                         </div>
                         <div class="form-group">

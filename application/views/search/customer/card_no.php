@@ -14,12 +14,12 @@
                     for (var counter = 0; counter < customer_list.length; counter++)
                     {
                         var customer_info = customer_list[counter];
-                        div_customer_list += '<div class="row">';
-                        div_customer_list += '<div class ="col-md-1">'+customer_info['first_name']+'</div>';
-                        div_customer_list += '<div class ="col-md-1">'+customer_info['last_name']+'</div>';
-                        div_customer_list += '<div class ="col-md-1">'+customer_info['phone']+'</div>';
-                        div_customer_list += '<div class ="col-md-1">'+customer_info['address']+'</div>';
-                        div_customer_list += '<div class ="col-md-1">'+customer_info['card_no']+'</div>';
+                        div_customer_list += '<div class="row col-md-10">';
+                        div_customer_list += '<div class ="col-md-2">'+customer_info['first_name']+'</div>';
+                        div_customer_list += '<div class ="col-md-2">'+customer_info['last_name']+'</div>';
+                        div_customer_list += '<div class ="col-md-2">'+customer_info['phone']+'</div>';
+                        div_customer_list += '<div class ="col-md-2">'+customer_info['address']+'</div>';
+                        div_customer_list += '<div class ="col-md-2">'+customer_info['card_no']+'</div>';
                         div_customer_list += '</div>';
                     }
                     
@@ -59,14 +59,14 @@
 </div>
 <h2>Search Result</h2>
 <div class="row form-background">
-    <div class="row">
-        <div class="col-md-1">First Name</div>
-        <div class="col-md-1">Last Name</div>
-        <div class="col-md-1">Phone</div>
-        <div class="col-md-1">Address</div>
-        <div class="col-md-1">Card No</div>
+    <div class="row col-md-10">
+        <div class="col-md-2">First Name</div>
+        <div class="col-md-2">Last Name</div>
+        <div class="col-md-2">Phone</div>
+        <div class="col-md-2">Address</div>
+        <div class="col-md-2">Card No</div>
     </div>
-    <div class="row" id="div_customer_list_result">
+    <div class="row col-md-12" id="div_customer_list_result">
         
     </div>
 </div>

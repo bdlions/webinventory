@@ -447,3 +447,12 @@ CREATE TABLE IF NOT EXISTS `expense_info` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `expense_info`
   ADD CONSTRAINT `fk_expense_info_expense_type1` FOREIGN KEY (`expense_type_id`) REFERENCES `expense_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+-- -----------------------------------SMS module --------------
+CREATE TABLE IF NOT EXISTS `sms_configuration_shop` (
+  `shop_id` int NOT NULL,
+  `status` boolean default FALSE,
+  PRIMARY KEY (`shop_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  
+ALTER TABLE `sms_configuration_shop`
+  ADD CONSTRAINT `fk_sms_configuration_shop_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

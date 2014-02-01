@@ -160,6 +160,44 @@ class Search extends CI_Controller {
         );
         $this->template->load(null, 'search/sale/search_sales', $this->data);
     }
+    /*
+     * Ajax Call
+     */
+    public function search_sales_by_customer_card_no()
+    {
+        $card_no = $_POST['card_no'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+        $this->data['sale_list'] = array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($start_date, $end_date, $card_no)->result_array();
+        $result_array['sale_list'] = $sale_list_array;    
+        echo json_encode($result_array);
+    }
+    public function search_sales_customer_card_no()
+    {
+        $this->data['card_no'] = array(
+            'name' => 'card_no',
+            'id' => 'card_no',
+            'type' => 'text'
+        );
+        $this->data['start_date'] = array(
+            'name' => 'start_date',
+            'id' => 'start_date',
+            'type' => 'text'
+        );
+        $this->data['end_date'] = array(
+            'name' => 'end_date',
+            'id' => 'end_date',
+            'type' => 'text'
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/customer_card_no', $this->data);
+    }
     
     //---------------------------------------- Customer Search -------------------------------------------
     /*
@@ -248,11 +286,47 @@ class Search extends CI_Controller {
     /*
      * Ajax Call
      */
+    public function search_customer_by_phone()
+    {
+        $phone = $_POST['phone'];
+        $result_array['customer_list'] = $this->search_customer->search_customer_by_phone($phone)->result_array();
+        echo json_encode($result_array);
+    }
+    
+    public function search_customer_phone()
+    {
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text'
+        );
+        $this->data['button_search_customer'] = array(
+            'name' => 'button_search_customer',
+            'id' => 'button_search_customer',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/customer/phone',$this->data);
+    }
+    
+    /*
+     * Ajax Call
+     */
     public function search_customer_by_card_no_range()
     {
         $start_card_no = $_POST['start_card_no'];
         $end_card_no = $_POST['end_card_no'];
-        $result_array['customer_list'] = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        
+        $customer_list = array();
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            if( $start_card_no+0 <= $customer_info['card_no']+0 && $customer_info['card_no']+0 <= $end_card_no+0)
+            {
+                $customer_list[] = $customer_info;
+            }
+        }
+        $result_array['customer_list'] = $customer_list;
         echo json_encode($result_array);
     }
     
@@ -277,9 +351,4 @@ class Search extends CI_Controller {
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
     }
     
-    public function test()
-    {
-        $result_array = $this->search_customer->search_customer_by_card_no_range(1, 20)->result_array();
-        print_r($result_array);
-    }
 }

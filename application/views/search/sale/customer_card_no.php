@@ -17,10 +17,9 @@
         $("#button_search_sale").on("click", function() {
             $.ajax({
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_by_sales",
+                url: '<?php echo base_url(); ?>' + "search/search_sales_by_customer_card_no",
                 data: {
-                    user_id: $("#employee_list").val(),
-                    product_id: $("#product_list").val(),
+                    card_no: $("#card_no").val(),
                     start_date: $("#start_date").val(),
                     end_date: $("#end_date").val()
                 },
@@ -57,19 +56,11 @@
                 <div class="row">
                     <div class ="col-md-6 margin-top-bottom">
                         <div class="form-group">
-                            <label for="employee_list" class="col-md-6 control-label requiredField">
-                                Select User
+                            <label for="card_no" class="col-md-6 control-label requiredField">
+                                Card No
                             </label>
                             <div class ="col-md-6">
-                                <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '','class="form-control" id="employee_list"'); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="product_list" class="col-md-6 control-label requiredField">
-                                Select Product
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '','class="form-control" id="product_list"'); ?>
+                                <?php echo form_input($card_no+array('class'=>'form-control')); ?>
                             </div> 
                         </div>
                         <div class="form-group">

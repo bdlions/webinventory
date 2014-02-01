@@ -117,7 +117,7 @@ class Sale extends CI_Controller {
             else
             {
                 $response['status'] = '0';
-                $response['message'] = 'Insufficient stock for the product : '.$prod_info['product_code'].' and lot no : '.$prod_info['purchase_order_no'];
+                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$prod_info['purchase_order_no'];
                 echo json_encode($response);
                 return;
             }

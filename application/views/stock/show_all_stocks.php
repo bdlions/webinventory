@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row col-md-12">
         <?php
         foreach ($stock_list as $key => $stock_info) {
             ?>

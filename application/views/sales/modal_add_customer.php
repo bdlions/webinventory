@@ -23,6 +23,7 @@
                 return;
             }
             $.ajax({
+                dataType: 'json',    
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "user/create_customer_sale_order",
                 data: {
@@ -56,25 +57,56 @@
 
             });
         });
-        $("#div_customer_list #span_customer_info #div_customer_list_id").on("click", "input", function() {
-//                console.log("This "+$(this).attr("id")+", parent"+$(this).parent()+", parent parent"+$(this).parent().parent()+","+$(this).parent().parent().attr("id"));
-            if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "span_customer_info")
+        $("#button_search_customer").on("click", function() {
+            if ($("#dropdown_search_customer")[0].selectedIndex == 0)
             {
-                var c_list = get_customer_list();
-                for (var counter = 0; counter < c_list.length; counter++)
-                {
-                    var cust_info = c_list[counter];
-                    if ($(this).attr("id") === cust_info['customer_id'])
-                    {
-                        update_fields_selected_customer(cust_info);
-                        $('div[class="clr dropdown open"]').removeClass('open');
-                        $('#modal_add_customer').modal('hide');
-                        return;
-                    }
-                }
+                alert("Please select search criteria.");
+                return false;
             }
+            else if ($("#input_search_customer").val().length == 0)
+            {
+                alert("Please assign value of search criteria");
+                return false;
+            }
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "search/search_customer_sale_order",
+                data: {
+                    search_category_name: $("#dropdown_search_customer").val(),
+                    search_category_value: $("#input_search_customer").val()
+                },
+                success: function(data) {
+                    var cust_list = JSON.parse(data);
+                    set_customer_list(cust_list);
+                    var current_temp_html_customer = '';
+                    for (var counter = 0; counter < cust_list.length; counter++)
+                    {
+                        var customer_info = cust_list[counter];
+                        current_temp_html_customer = current_temp_html_customer + '<div class ="row" id ="span_customer_info">';
+                        current_temp_html_customer = current_temp_html_customer + '<div class ="col-md-4 col-md-offset-1" id="div_customer_list_id"><input id="' + customer_info['customer_id'] + '" class="form-control" type="text" value="' + customer_info['phone'] + '"/></div>';
+                        current_temp_html_customer = current_temp_html_customer + '<div class ="col-md-4" id="div_customer_list_id"><input id="' + customer_info['customer_id'] + '" class="form-control" type="text" value="' + customer_info['card_no'] + '"/></div>';
+                        current_temp_html_customer = current_temp_html_customer + '<div class ="col-md-3"><a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + customer_info['customer_id'] + '">view</a></div>';
+                        current_temp_html_customer = current_temp_html_customer + '</div>';
+                    }
+                    $("#div_customer_list").html(current_temp_html_customer);
+                }
+            });
         });
-
+        $("#div_customer_list").on("click", "input", function() {
+            var c_list = get_customer_list();
+            for (var counter = 0; counter < c_list.length; counter++)
+            {
+                var cust_info = c_list[counter];
+                if ($(this).attr("id") === cust_info['customer_id'])
+                {
+                    update_fields_selected_customer(cust_info);
+                    $('div[class="clr dropdown open"]').removeClass('open');
+                    $('#modal_add_customer').modal('hide');
+                    return;
+                }
+            }            
+        });
     });
 </script>
 
@@ -100,11 +132,11 @@
                     </div>
                     <div class ="row" id="div_customer_list">
                         <?php foreach ($customer_list_array as $key => $customer) { ?>
-                            <div class ="row" id ="span_customer_info">
-                                <div class ="col-md-4 col-md-offset-1" id="div_customer_list_id">
-                                    <?php echo form_input(array('name' => 'phone_no', 'value' => $customer['phone'], 'id' => $customer['customer_id'], 'class' => 'form-control')); ?>
+                            <div class ="row">
+                                <div class ="col-md-4 col-md-offset-1">
+                                    <?php echo form_input(array('name' => $customer['customer_id'], 'value' => $customer['phone'], 'id' => $customer['customer_id'], 'class' => 'form-control')); ?>
                                 </div>
-                                <div class ="col-md-4"  id="div_customer_list_id">
+                                <div class ="col-md-4">
                                     <?php echo form_input(array('name' => $customer['customer_id'], 'value' => $customer['card_no'], 'id' => $customer['customer_id'], 'class' => 'form-control')); ?>            
                                 </div>
                                 <div class ="col-md-3">
@@ -124,7 +156,7 @@
                             <?php echo form_input(array('name' => 'input_search_customer', 'id' => 'input_search_customer', 'class' => 'form-control')); ?>
                             <div class ="row">
                                 <div class ="col-md-12">
-                                    <?php echo form_button(array('name' => 'existing_customer_search', 'class'=>'btn btn-success form-control', 'id' => 'existing_customer_search', 'content' => 'Search')); ?>
+                                    <?php echo form_button(array('name' => 'button_search_customer', 'class'=>'btn btn-success form-control', 'id' => 'button_search_customer', 'content' => 'Search')); ?>
                                 </div>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 function Product()
 {
     var product_id = '';
-    var product_code = '';
+    var name = '';
     var quantity = '';
     var unit_price = '';
     var discount = '';
@@ -16,13 +16,13 @@ function Product()
     {
         return this.product_id;
     }
-    Product.prototype.setProductCode = function(value)
+    Product.prototype.setName = function(value)
     {
-        this.product_code = value;
+        this.name = value;
     }
-    Product.prototype.getProductCode = function()
+    Product.prototype.getName = function()
     {
-        return this.product_code;
+        return this.name;
     }
     Product.prototype.setQuantity = function(value)
     {
