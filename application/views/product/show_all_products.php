@@ -1,66 +1,39 @@
-<div class ="row form-background">
-    <div class ="row">
-        <div class="col-md-10">
-            <div class ="col-md-1">
-                Product Name
-            </div>
-            <div class ="col-md-1">
-                Product Size
-            </div>
-            <div class ="col-md-1">
-                Product Weight
-            </div>
-            <div class ="col-md-1">
-                Product Warranty
-            </div>
-            <div class ="col-md-1">
-                Product Quality 
-            </div>
-            <div class ="col-md-1">
-                Brand Name
-            </div>
-            <div class ="col-md-1">
-                Unit Price
-            </div>
-            <div class ="col-md-1">
-                Manage
-            </div>
+<div class ="row">
+    <div class="form-background col-md-11">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Size</th>
+                        <th>Product Weight</th>
+                        <th>Product Warranty</th>
+                        <th>Product Quality</th>
+                        <th>Brand Name</th>
+                        <th>Unit Price</th>
+                        <th>Manage</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_product_list">
+                    <?php
+                    foreach ($product_list as $key => $product_info) {
+                    ?>
+                        <tr>
+                            <td><?php echo $product_info['name'] ?></td>
+                            <td><?php echo $product_info['size'] ?></td>
+                            <td><?php echo $product_info['weight'] ?></td>
+                            <td><?php echo $product_info['warranty'] ?></td>
+                            <td><?php echo $product_info['quality'] ?></td>
+                            <td><?php echo $product_info['brand_name'] ?></td>
+                            <td><?php echo $product_info['unit_price'] ?></td>
+                            <td><?php echo $product_info['name'] ?></td>
+                            <td><a href="<?php echo base_url("./product/update_product/" . $product_info['id']); ?>">Update</a></td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
-    </div>
-    <div class="row">
-        <?php
-        foreach ($product_list as $key => $prodduct_info) {
-            ?>
-            <div class="row">
-                <div class="col-md-10">
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['name'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['size'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['weight'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['warranty'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['quality'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['brand_name'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <?php echo $prodduct_info['unit_price'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <a href="<?php echo base_url("./product/update_product/" . $prodduct_info['id']); ?>">Update</a>
-                    </div>
-                </div>
-            </div>
-            <?php
-        }
-        ?>
-    </div>
+    </div> 
 </div>

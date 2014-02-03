@@ -10,37 +10,9 @@
 <script>
     function append_selected_product(prod_info)
     {
-        var is_product_previously_selected = false;
-        $("span", "#div_selected_product_list").each(function() {
-            $("input", $(this)).each(function() {
-                if ($(this).attr("name") === "quantity")
-                {
-                    if ($(this).attr("id") === prod_info['id'])
-                    {
-                        is_product_previously_selected = true;
-                    }
-                }
-            });
-        });
-        if (is_product_previously_selected === true)
-        {
-            alert('The product is already selected. Please update product quantity.');
-            return;
-        }
-
-        var current_temp_product_html = $("#div_selected_product_list").html();
-        current_temp_product_html = current_temp_product_html + '<span>';
-        current_temp_product_html = current_temp_product_html + '<input class="col-md-2" id="' + prod_info['id'] + '" name="purchase_order_no" type="text" value="1"/>';
-        current_temp_product_html = current_temp_product_html + '<input class="col-md-2" name="product_name" readonly="true" type="text" value="' + prod_info['name'] + '"/>';
-        current_temp_product_html = current_temp_product_html + '<input class="col-md-2" id="' + prod_info['id'] + '" name="quantity" type="text" value="1"/>';
-        current_temp_product_html = current_temp_product_html + '<input class="col-md-2" id="' + prod_info['id'] + '" type="text" name="unit_price" value="' + prod_info['unit_price'] + '"/>';
-        current_temp_product_html = current_temp_product_html + '<input class="col-md-2" id="' + prod_info['id'] + '" name="discount" type="text" value="0"/>';
-        current_temp_product_html = current_temp_product_html + '<input class="col-md-2" name="product_sale_price" readonly="true" type="text" value="' + prod_info['unit_price'] + '"/>';
-        current_temp_product_html = current_temp_product_html + '</span>';
-        $("#div_selected_product_list").html(current_temp_product_html);
-
+        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
         var total_sale_price = 0;
-        $("input", "#div_selected_product_list").each(function() {
+        $("input", "#tbody_selected_product_list").each(function() {
             if ($(this).attr("name") === "product_sale_price")
             {
                 total_sale_price = +total_sale_price + +$(this).val();
@@ -52,7 +24,7 @@
     function update_fields_selected_customer(cust_info)
     {
         $("#input_add_sale_customer_id").val(cust_info['customer_id']);
-        $("#input_add_sale_customer").val(cust_info['username']);
+        $("#input_add_sale_customer").val(cust_info['first_name']+' '+cust_info['last_name']);
         $("#input_add_sale_card_no").val(cust_info['card_no']);
         $("#input_add_sale_phone").val(cust_info['phone']);
 
@@ -74,39 +46,6 @@
 
 <script type="text/javascript">
     $(function() {
-        /*$("#button_add_product").on("click", function() {
-            if ($("#input_product_name").val().length == 0)
-            {
-                alert("Product Name is required.");
-                return;
-            }
-            set_modal_confirmation_category_id(get_modal_confirmation_add_product_category_id());
-            $('#myModal').modal('show');
-        });*/
-        /*$("#button_add_customer").on("click", function() {
-            if ($("#input_first_name").val().length == 0)
-            {
-                alert("First Name is required.");
-                return;
-            }
-            else if ($("#input_last_name").val().length == 0)
-            {
-                alert("Last Name is required.");
-                return;
-            }
-            else if ($("#input_phone_no").val().length == 0)
-            {
-                alert("Phone is required.");
-                return;
-            }
-            else if ($("#input_card_no").val().length == 0)
-            {
-                alert("Card No is required.");
-                return;
-            }
-            set_modal_confirmation_category_id(get_modal_confirmation_add_customer_category_id());
-            $('#myModal').modal('show');
-        });*/
         $("#save_sale_order").on("click", function() {
             //validation checking of sale order
             //checking whether customer is selected or not
@@ -123,13 +62,11 @@
             }
             //checking whether at least one product is selected or not
             var selected_product_counter = 0;
-            $("span", "#div_selected_product_list").each(function() {
-                $("input", $(this)).each(function() {
-                    if ($(this).attr("name") === "quantity")
-                    {
-                        selected_product_counter++;
-                    }
-                });
+            $("input", "#tbody_selected_product_list").each(function() {
+                if ($(this).attr("name") === "quantity")
+                {
+                    selected_product_counter++;
+                }
             });
             if (selected_product_counter <= 0)
             {
@@ -140,83 +77,12 @@
             $('#myModal').modal('show');
         });
         $("#modal_button_confirm").on("click", function() {
-            /*if (get_modal_confirmation_category_id() === get_modal_confirmation_add_product_category_id())
-            {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
-                    data: {
-                        product_name: $("#input_product_name").val()
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
-                        {
-                            var p_list = get_product_list();
-                            p_list[p_list.length] = response['product_info'];
-                            set_product_list(p_list);
-                            alert('New product is added successfully.');
-                            var product_info = response['product_info'];
-
-                            var current_temp_html_product = $("#div_product_list").html();
-                            current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
-                            current_temp_html_product = current_temp_html_product + '<input id="' + product_info['id'] + '" class="fl" type="text" value="' + product_info['name'] + '"/>';
-                            current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
-                            current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>product/show_product/' + product_info['id'] + '">view</a>';
-                            current_temp_html_product = current_temp_html_product + '</span>';
-                            current_temp_html_product = current_temp_html_product + '</span>';
-                            $("#div_product_list").html(current_temp_html_product);
-                            append_selected_product(product_info);
-                            $('div[class="clr dropdown open"]').removeClass('open');
-                        }
-                    }
-
-                });
-            }*/
-            /*else if (get_modal_confirmation_category_id() === get_modal_confirmation_add_customer_category_id())
-            {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "user/create_customer_sale_order",
-                    data: {
-                        first_name: $("#input_first_name").val(),
-                        last_name: $("#input_last_name").val(),
-                        phone_no: $("#input_phone_no").val(),
-                        card_no: $("#input_card_no").val()
-
-                    },
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
-                        {
-                            var c_list = get_customer_list();
-                            c_list[c_list.length] = response['customer_info'];
-                            set_customer_list(c_list);
-                            alert('New customer is added successfully.');
-                            var customer_info = response['customer_info'];
-
-                            var current_temp_html_customer = $("#div_customer_list").html();
-                            current_temp_html_customer = current_temp_html_customer + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
-                            current_temp_html_customer = current_temp_html_customer + '<input id="' + customer_info['customer_id'] + '" class="fl" type="text" value="' + customer_info['phone'] + '"/>';
-                            current_temp_html_customer = current_temp_html_customer + '<input id="' + customer_info['customer_id'] + '" class="fl" type="text" value="' + customer_info['card_no'] + '"/>';
-                            current_temp_html_customer = current_temp_html_customer + '<span class="span10 view sales_view fl" style="">';
-                            current_temp_html_customer = current_temp_html_customer + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + customer_info['customer_id'] + '">view</a>';
-                            current_temp_html_customer = current_temp_html_customer + '</span>';
-                            current_temp_html_customer = current_temp_html_customer + '</span>';
-                            $("#div_customer_list").html(current_temp_html_customer);
-                            update_fields_selected_customer(customer_info);
-                            $('div[class="clr dropdown open"]').removeClass('open');
-                        }
-                    }
-
-                });
-            }*/
             if (get_modal_confirmation_category_id() === get_modal_confirmation_save_sale_order_category_id())
             {
                 //creating a list based on selected products
                 var product_list = new Array();
                 var product_list_counter = 0;
-                $("span", "#div_selected_product_list").each(function() {
+                $("tr", "#tbody_selected_product_list").each(function() {
                     var product_info = new Product();
                     $("input", $(this)).each(function() {
                         if ($(this).attr("name") === "quantity")
@@ -264,7 +130,7 @@
                         if (response['status'] === '1')
                         {
                             alert('Sale order is executed successfully.');
-                            $("#div_selected_product_list").html('');
+                            $("#tbody_selected_product_list").html('');
                             $("#input_add_sale_customer_id").val('');
                             $("#input_add_sale_customer").val('');
                             $("#input_add_sale_company").val('');
@@ -283,120 +149,12 @@
             }
             $('#myModal').modal('hide');
         });
-
-        $("#input_date_add_sale").datepicker();
-        /*$("#div_customer_list").on("click", "input", function() {
-            if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_customer_list")
-            {
-                var c_list = get_customer_list();
-                for (var counter = 0; counter < c_list.length; counter++)
-                {
-                    var cust_info = c_list[counter];
-                    if ($(this).attr("id") === cust_info['customer_id'])
-                    {
-                        update_fields_selected_customer(cust_info);
-                        $('div[class="clr dropdown open"]').removeClass('open');
-                        return;
-                    }
-                }
-            }
-        });*/
-        /*$("#div_product_list").on("click", "input", function() {
-            if ($(this).parent() && $(this).parent().parent() && $(this).parent().parent().attr("id") === "div_product_list")
-            {
-                var p_list = get_product_list();
-                for (var counter = 0; counter < p_list.length; counter++)
-                {
-                    var prod_info = p_list[counter];
-                    if ($(this).attr("id") === prod_info['id'])
-                    {
-                        append_selected_product(prod_info);
-                        $('div[class="clr dropdown open"]').removeClass('open');
-                        return;
-                    }
-                }
-            }
-        });*/
-        /*$("#button_search_customer").on("click", function() {
-            if ($("#dropdown_search_customer")[0].selectedIndex == 0)
-            {
-                alert("Please select search criteria.");
-                return false;
-            }
-            else if ($("#input_search_customer").val().length == 0)
-            {
-                alert("Please assign value of search criteria");
-                return false;
-            }
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_customer_sale_order",
-                data: {
-                    search_category_name: $("#dropdown_search_customer").val(),
-                    search_category_value: $("#input_search_customer").val()
-                },
-                success: function(data) {
-                    var cust_list = JSON.parse(data);
-                    set_customer_list(cust_list);
-                    var current_temp_html_customer = '';
-                    for (var counter = 0; counter < cust_list.length; counter++)
-                    {
-                        var cust_info = cust_list[counter];
-                        current_temp_html_customer = current_temp_html_customer + '<span id="span_customer_info" class="span12 sales_view_block" style="">';
-                        current_temp_html_customer = current_temp_html_customer + '<input id="' + cust_info['customer_id'] + '" class="fl" type="text" value="' + cust_info['phone'] + '"/>';
-                        current_temp_html_customer = current_temp_html_customer + '<input id="' + cust_info['customer_id'] + '" class="fl" type="text" value="' + cust_info['card_no'] + '"/>';
-                        current_temp_html_customer = current_temp_html_customer + '<span class="span10 view sales_view fl" style="">';
-                        current_temp_html_customer = current_temp_html_customer + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + cust_info['customer_id'] + '">view</a>';
-                        current_temp_html_customer = current_temp_html_customer + '</span>';
-                        current_temp_html_customer = current_temp_html_customer + '</span>';
-                    }
-                    $("#div_customer_list").html(current_temp_html_customer);
-                }
-            });
-        });*/
-        /*$("#button_search_product").on("click", function() {
-            if ($("#dropdown_search_product")[0].selectedIndex == 0)
-            {
-                alert("Please select search criteria.");
-                return false;
-            }
-            else if ($("#input_search_product").val().length == 0)
-            {
-                alert("Please assign value of search criteria");
-                return false;
-            }
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_product_order",
-                data: {
-                    search_category_name: $("#dropdown_search_product").val(),
-                    search_category_value: $("#input_search_product").val()
-                },
-                success: function(data) {
-                    var prod_list = JSON.parse(data);
-                    set_product_list(prod_list);
-                    var current_temp_html_product = '';
-                    for (var counter = 0; counter < prod_list.length; counter++)
-                    {
-                        var prod_info = prod_list[counter];
-                        current_temp_html_product = current_temp_html_product + '<span id="span_product_info" class="span12 sales_view_block" style="">';
-                        current_temp_html_product = current_temp_html_product + '<input id="' + prod_info['id'] + '" class="fl" type="text" value="' + prod_info['name'] + '"/>';
-                        current_temp_html_product = current_temp_html_product + '<span class="span10 view sales_view fl" style="">';
-                        current_temp_html_product = current_temp_html_product + '<a target="_blank" class="view" href="<?php echo base_url(); ?>user/show_customer/' + prod_info['id'] + '">view</a>';
-                        current_temp_html_product = current_temp_html_product + '</span>';
-                        current_temp_html_product = current_temp_html_product + '</span>';
-                    }
-                    $("#div_product_list").html(current_temp_html_product);
-                }
-            });
-        });*/
-
-        $("#div_selected_product_list").on("change", "input", function() {
+        $("#tbody_selected_product_list").on("change", "input", function() {
             var product_quantity = '';
             var product_discount = '';
             var product_unit_price = '';
             var total_product_price = '';
-            $("input", $(this).parent()).each(function() {
+            $("input", $(this).parent().parent()).each(function() {
                 if ($(this).attr("name") === "purchase_order_no")
                 {
                     if ($(this).val() === '')
@@ -449,13 +207,20 @@
             });
 
             var total_sale_price = 0;
-            $("input", "#div_selected_product_list").each(function() {
+            $("input", "#tbody_selected_product_list").each(function() {
                 if ($(this).attr("name") === "product_sale_price")
                 {
                     total_sale_price = +total_sale_price + +$(this).val();
                 }
             });
             $("#total_sale_price").val(total_sale_price);
+        });
+        $('#input_date_add_sale').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-3d'
+        }).on('changeDate', function(ev) {
+            $('#input_date_add_sale').text($('#input_date_add_sale').data('date'));
+            $('#input_date_add_sale').datepicker('hide');
         });
     });
 </script>
@@ -469,8 +234,8 @@
     });
 </script>
 
-<h6>Sales Order</h6>
-<div class ="row margin-top-bottom form-background">
+<h3>Sales Order</h3>
+<div class ="row top-bottom-padding form-background">
     <div class ="col-md-3 form-horizontal">
         <h6>Search</h6>
         <div class="form-group">
@@ -538,11 +303,11 @@
             <div class ="col-md-7 form-horizontal margin-top-bottom">
                 <div class="form-group" >
                     <label for="input_add_sale_customer" class="col-md-3 control-label requiredField">
-                        Customer
+                        Customer name
                     </label> 
                     <div class ="col-md-8">
                         <?php echo form_input(array('name' => 'input_add_sale_customer_id', 'id' => 'input_add_sale_customer_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
-                        <?php echo form_input(array('name' => 'input_add_sale_customer', 'id' => 'input_add_sale_customer', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_add_customer')); ?>
+                        <?php echo form_input(array('name' => 'input_add_sale_customer', 'id' => 'input_add_sale_customer', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_customer')); ?>
                     </div> 
                 </div>
                 <div class="form-group">
@@ -574,7 +339,7 @@
                         Product
                     </label>
                     <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'input_add_sale_product', 'id' => 'input_add_sale_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_add_product')); ?>
+                        <?php echo form_input(array('name' => 'input_add_sale_product', 'id' => 'input_add_sale_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_product')); ?>
                     </div> 
                 </div>
             </div>
@@ -597,14 +362,6 @@
                 </div>
                 <div class="form-group">
                     <label for="status" class="col-md-4 control-label requiredField">
-                        Status
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'status', 'id' => 'status', 'class' => 'form-control')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="status" class="col-md-4 control-label requiredField">
                         Select Salesman
                     </label>
                     <div class ="col-md-8">
@@ -613,37 +370,38 @@
                 </div>
             </div>
         </div>
-
-        <div class ="row boxshad">
-            <div class ="row">
-                <div class="col-md-12">
-                    <div class ="col-md-2">
-                        Lot No
-                    </div>
-                    <div class ="col-md-2">
-                        Product Name
-                    </div>
-                    <div class ="col-md-2">
-                        Quantity
-                    </div>
-                    <div class ="col-md-2">
-                        Unit Price
-                    </div>
-                    <div class ="col-md-2">
-                        Discount % 
-                    </div>
-                    <div class ="col-md-2">
-                        Sub-Total
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div id="div_selected_product_list" class="col-md-12">										
-
-                </div>  
+        <div class="row col-md-11">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Lot No</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Discount</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_selected_product_list">                        
+                    </tbody>
+                    <script type="text/x-tmpl" id="tmpl_selected_product_info">
+                        {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
+                        {% while(product_info){ %}
+                        <tr>
+                        <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
+                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value="1"/></td>
+                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value="1"/></td>
+                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="unit_price" type="text" value="0"/></td>
+                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="discount" type="text" value="0"/></td>
+                        <td><input class="input-width-table" name="product_sale_price" type="text" readonly="true" value="0"/></td>
+                        </tr>
+                        {% product_info = ((o instanceof Array) ? o[i++] : null); %}
+                        {% } %}
+                    </script>
+                </table>
             </div>
         </div>
-
         <div class="row margin-top-bottom">
             <div class ="col-md-12 form-horizontal">
                 <div class="form-group">
@@ -694,5 +452,5 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("sales/modal_add_customer"); ?>
-<?php $this->load->view("sales/modal_add_product"); ?>
+<?php $this->load->view("sales/modal_select_customer"); ?>
+<?php $this->load->view("sales/modal_select_product"); ?>

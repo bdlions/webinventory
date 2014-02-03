@@ -206,7 +206,7 @@ class Search extends CI_Controller {
     public function search_customer_by_profession()
     {
         $profession_id = $_POST['profession_id'];
-        $result_array['customer_list'] = $this->search_customer->search_customer_by_profession($profession_id)->result_array();
+        $result_array = $this->search_customer->search_customer_by_profession($profession_id)->result_array();
         echo json_encode($result_array);
     }
     
@@ -235,7 +235,7 @@ class Search extends CI_Controller {
     public function search_customer_by_institution()
     {
         $institution_id = $_POST['institution_id'];
-        $result_array['institution_list'] = $this->search_customer->search_customer_by_institution($institution_id)->result_array();
+        $result_array = $this->search_customer->search_customer_by_institution($institution_id)->result_array();
         echo json_encode($result_array);
     }
     

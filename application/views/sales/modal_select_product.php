@@ -5,7 +5,7 @@
             {
                 alert("Product Name is required.");
                 return;
-            }
+            }            
             $.ajax({
                 dataType: 'json',
                 type: "POST",
@@ -30,6 +30,7 @@
                         alert('Error while creating product.');
                     }
                 }
+
             });
         });
         $("#button_search_product").on("click", function() {
@@ -75,7 +76,6 @@
     });
 
 </script>
-
 <div class="modal fade" id="modal_select_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -119,7 +119,6 @@
                             </table>
                         </div>
                     </div>
-                    
                     <div class ="row col-md-11 top-bottom-padding">
                         <div class ="col-md-3">
                             <h3>Search</h3>
@@ -139,7 +138,7 @@
                                 </div>
                             </div>
                         </div>                      
-                    </div>                    
+                    </div>
                     <div class ="row col-md-11">
                         <div class ="col-md-3">
                             <h3>Add New</h3>
@@ -164,6 +163,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -172,6 +172,3 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
-
