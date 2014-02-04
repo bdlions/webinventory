@@ -57,16 +57,10 @@ class Sms extends CI_Controller {
         $this->data['select_shop_id'] = $shop_id;
         if ($this->input->post('submit_sms_configuration_shop')) 
         {
-            $shop_id = $this->input->post('shop_list');
-            if($this->input->post('sms_configuration_status'))
-            {
-                print_r("clicked");
-            }
-            else
-            {
-                print_r("not clicked");
-            }
-            print_r($this->input->post());
+             $this->load->model('org/common/sms_configuration_model','smsconfig');
+             $checked = $this->input->post('sms_configuration_shop_status');
+             $this->data['sms_configuration_checked'] = $checked;
+             $this->smsconfig->store_sms_configuration_shop($this->data);
             return;
         }
         else
@@ -76,7 +70,8 @@ class Sms extends CI_Controller {
         $this->data['sms_configuration_shop_status'] = array(
             'name' => 'sms_configuration_shop_status',
             'id' => 'sms_configuration_shop_status',
-            'checked' => ''
+            'checked' => '',
+            'value' => '1'
         );
         $this->data['submit_sms_configuration_shop'] = array(
             'name' => 'submit_sms_configuration_shop',

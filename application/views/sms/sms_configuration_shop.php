@@ -23,6 +23,7 @@
                                 SMS Status
                             </label>
                             <div class ="col-md-6">
+                                <input type="hidden" name="sms_configuration_shop_status" value="0" />
                                 <?php echo form_checkbox($sms_configuration_shop_status+array('class'=>'form-control')); ?>
                             </div> 
                         </div>
