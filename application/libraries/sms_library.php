@@ -26,6 +26,7 @@ class Sms_library {
     public function __construct() {
         $this->load->config('ion_auth', TRUE);
         $this->load->library('email');
+        $this->load->library('org/common/sms_configuration');
         $this->lang->load('ion_auth');
         $this->load->helper('cookie');
 
@@ -35,6 +36,8 @@ class Sms_library {
         } else {
             $this->load->driver('session');
         }
+        
+        require_once(str_replace("\\","/",APPPATH).'libraries/nusoaplib/nusoap'.EXT); //If we are executing this script on a Windows server
     }
 
     /**
@@ -64,7 +67,16 @@ class Sms_library {
     
     public function send_sms($phoneNumber, $message)
     {
-        if($phoneNumber == "" || $message == ""){
+        $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop()->result_array();
+        if(!empty($sms_configuration_shop_array))
+        {
+            $status = $sms_configuration_shop_array[0]['status'];
+            if($status == 0)
+            {
+                return 0;
+            }
+        }
+        /*if($phoneNumber == "" || $message == ""){
                 return 0;
         }
         else{
@@ -78,6 +90,20 @@ class Sms_library {
             else{
                     return 0;
             }
-        }
+        }*/
+        $client = new nusoap_client("http://cmp.robi.com.bd/WS/CMPWebService.asmx?wsdl", true);
+        //print_r($client);
+        $params = array(
+        'Username' => 'apurbo',
+        'Password' => '654321',
+        'From' => '8801841104245',
+        'To' => $phoneNumber,
+        'Message' => $message
+        );
+        $result = $client->call('SendTextMessage', $params);
+        //echo "Result: ";
+        //echo "<pre>";
+        //print_r($result);
+        //echo "</pre>";
     }
 }

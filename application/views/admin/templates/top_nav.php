@@ -83,9 +83,9 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./sms/sms_configuration_shop");?>">Configure SMS</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Operator Creation</a></li>
-        <li><a href="<?php echo base_url("./user/create_manager");?>">Show All Operators</a></li>
-        <li><a href="<?php echo base_url("./sms/process_file");?>">Process File</a></li>
+        <li><a href="<?php echo base_url("./operator/create_operator");?>">Create Operator</a></li>
+        <li><a href="<?php echo base_url("./operator/show_all_operators");?>">Show All Operators</a></li>
+        <li><a href="<?php echo base_url("./sms/upload_file");?>">Process File</a></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
     </ul>
 </div>

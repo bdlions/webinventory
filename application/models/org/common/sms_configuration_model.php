@@ -34,10 +34,10 @@ class Sms_configuration_model extends Ion_auth_model {
     
    
     
-    public function store_sms_configuration_shop($sms_data)
+    public function store_sms_configuration_shop($data)
     {         
-        $data = array('shop_id'=>$sms_data['select_shop_id'],'status'=>$sms_data['sms_configuration_checked']);
-        if($this->shop_sms_status_check($sms_data['select_shop_id']))
+        $data = $this->_filter_data($this->tables['sms_configuration_shop'], $data);
+        if($this->is_shop_sms_status_stored($data['shop_id']))
         {            
             $this->update_sms_configuration_shop($data);
         }
@@ -50,13 +50,15 @@ class Sms_configuration_model extends Ion_auth_model {
     public function add_sms_configuration_shop($data)
     {
        $this->db->insert('sms_configuration_shop',$data);
-        return;
+       $this->set_message('add_shop_sms_configuration');
+       return;
     }
     
     public function update_sms_configuration_shop($data)
     {
         $this->db->where('shop_id', $data['shop_id']);
         $this->db->update('sms_configuration_shop',$data); 
+        $this->set_message('update_shop_sms_configuration');
         return;
     }
     
@@ -71,16 +73,12 @@ class Sms_configuration_model extends Ion_auth_model {
         return $this;
     }
     
-        function shop_sms_status_check($shop_id = '') {
-//        $this->trigger_events('username_check');
-//
-//        if (empty($username)) {
-//            return FALSE;
-//        }
-//
-//        $this->trigger_events('extra_where');
-//        print_r('nothing');
-
+    function is_shop_sms_status_stored($shop_id = 0) 
+    {
+        if( $shop_id == 0 )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         return $this->db->where('shop_id', $shop_id)->count_all_results($this->tables['sms_configuration_shop']) > 0;
     }
 }

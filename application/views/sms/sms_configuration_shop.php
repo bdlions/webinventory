@@ -2,7 +2,7 @@
     <div class ="col-md-12">
         <div class ="row">
             <div class ="col-md-12 form-horizontal form-background">
-                <?php echo form_open("sms/sms_configuration_shop", array('id' => 'form_sms_configuration_shop', 'class' => 'form-horizontal')); ?>
+                <?php echo form_open("sms/sms_configuration_shop/".$selected_shop_id, array('id' => 'form_sms_configuration_shop', 'class' => 'form-horizontal')); ?>
                 <div class="row">
                     <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
                         <div class ="row">
@@ -15,7 +15,7 @@
                                 Select Shop
                             </label>
                             <div class ="col-md-6">
-                                <?php echo form_dropdown('shop_list', array(''=>'Select Shop')+$shop_list, '', 'class=form-control'); ?>
+                                <?php echo form_dropdown('shop_list', array(''=>'Select Shop')+$shop_list, $selected_shop_id, 'class=form-control'); ?>
                             </div> 
                         </div>
                         <div class="form-group">
@@ -23,7 +23,6 @@
                                 SMS Status
                             </label>
                             <div class ="col-md-6">
-                                <input type="hidden" name="sms_configuration_shop_status" value="0" />
                                 <?php echo form_checkbox($sms_configuration_shop_status+array('class'=>'form-control')); ?>
                             </div> 
                         </div>

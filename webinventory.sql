@@ -456,3 +456,12 @@ CREATE TABLE IF NOT EXISTS `sms_configuration_shop` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  
 ALTER TABLE `sms_configuration_shop`
   ADD CONSTRAINT `fk_sms_configuration_shop_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+CREATE TABLE IF NOT EXISTS `operators` (
+  `operator_prefix` varchar(50) NOT NULL,	
+  `operator_name` varchar(200) NOT NULL,
+  `description` varchar(500) NOT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `modified_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`operator_prefix`, `operator_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  

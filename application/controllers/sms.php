@@ -12,9 +12,12 @@ class Sms extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('org/common/operators');
         $this->load->library('org/common/sms_configuration');
         $this->load->library('org/shop/shop_library');
+        $this->load->library('sms_library');
         $this->load->helper('url');
+        $this->load->helper('file');
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -35,17 +38,19 @@ class Sms extends CI_Controller {
      * This method will update currently logged in shop of a user
      * @author Nazmul on 23rd January 2014
      */
-    public function sms_configuration_shop()
+    public function sms_configuration_shop($shop_id = 0)
     {
         $this->data['message'] = '';
-        $shop_id = $this->session->userdata('shop_id');
-        $sms_configuration_shop_status = false;
-        $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop()->result_array();
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $sms_configuration_shop_status = 0;
+        $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop($shop_id)->result_array();
         if(!empty($sms_configuration_shop_array))
         {
             $sms_configuration_shop_status = $sms_configuration_shop_array[0]['status'];
         }
-        $this->data['select_shop_id'] = $this->session->userdata('shop_id');
         $shop_list_array = $this->shop_library->get_all_shops()->result_array();
         $this->data['shop_list'] = array();
         if( !empty($shop_list_array) )
@@ -54,14 +59,25 @@ class Sms extends CI_Controller {
                 $this->data['shop_list'][$shop_info['id']] = $shop_info['name'];
             }
         }
-        $this->data['select_shop_id'] = $shop_id;
+        if($this->input->post('shop_list'))
+        {
+            $shop_id = $this->input->post('shop_list');
+        }
+        $this->data['selected_shop_id'] = $shop_id;
         if ($this->input->post('submit_sms_configuration_shop')) 
         {
-             $this->load->model('org/common/sms_configuration_model','smsconfig');
-             $checked = $this->input->post('sms_configuration_shop_status');
-             $this->data['sms_configuration_checked'] = $checked;
-             $this->smsconfig->store_sms_configuration_shop($this->data);
-            return;
+            $status = 0;
+            if($this->input->post('sms_configuration_shop_status') !== FALSE)
+            {
+                $status = 1;
+            }            
+            $data = array(
+                'shop_id' => $shop_id,
+                'status' => $status
+            );
+            $this->sms_configuration->store_sms_configuration_shop($data);
+            $this->session->set_flashdata('message', $this->sms_configuration->messages());
+            redirect('sms/sms_configuration_shop/'.$shop_id, 'refresh');
         }
         else
         {
@@ -70,8 +86,7 @@ class Sms extends CI_Controller {
         $this->data['sms_configuration_shop_status'] = array(
             'name' => 'sms_configuration_shop_status',
             'id' => 'sms_configuration_shop_status',
-            'checked' => '',
-            'value' => '1'
+            'checked' => $sms_configuration_shop_status
         );
         $this->data['submit_sms_configuration_shop'] = array(
             'name' => 'submit_sms_configuration_shop',
@@ -82,9 +97,133 @@ class Sms extends CI_Controller {
         $this->template->load(null, 'sms/sms_configuration_shop', $this->data);
     }
     
-    public function process_file()
+    public function upload_file()
     {
         $this->data['message'] = '';
+        $file_content = '';
+        if($this->input->post('submit_upload_file'))
+        {
+            //$file_content = $this->input->post('submit_upload_file');
+            $config['upload_path'] = './upload/';
+            $config['allowed_types'] = 'txt';
+            $config['max_size'] = '5000';
+            $config['file_name'] = $this->session->userdata('user_id').".txt";
+            $config['overwrite'] = TRUE;
+
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) 
+            {
+                $file_content = $this->upload->display_errors();
+            } 
+            else 
+            {
+                $string = read_file('./upload/'.$this->session->userdata('user_id').'.txt');
+                $file_content = $string;
+            }
+        }
+        if($this->input->post('submit_process_file'))
+        {
+            $content = trim($this->input->post('textarea_details'));
+            $path = './upload/'.$this->session->userdata('user_id').'.txt';
+            if ( write_file($path, $content) )
+            {
+                 redirect('sms/process_file/');
+            }
+            
+        }
+        $this->data['textarea_details'] = array(
+            'name'  => 'textarea_details',
+            'id'    => 'textarea_details',
+            'value' => $file_content,
+            'rows'  => '20',
+            'cols'  => '100'
+        );
+        $this->data['submit_upload_file'] = array(
+            'name' => 'submit_upload_file',
+            'id' => 'submit_upload_file',
+            'type' => 'submit',
+            'value' => 'Upload',
+        );
+        $this->data['submit_process_file'] = array(
+            'name' => 'submit_process_file',
+            'id' => 'submit_process_file',
+            'type' => 'submit',
+            'value' => 'Process',
+        );
+        $this->template->load(null, 'sms/upload_file', $this->data);
+    }
+    
+    public function process_file()
+    {
+        $number_name_map = array();
+        $number_list = array();
+        $this->data['message'] = '';
+        $contact_list = array();
+        $file_content = read_file('./upload/'.$this->session->userdata('user_id').'.txt');
+        $file_content_array = explode("\n", $file_content);
+        foreach($file_content_array as $line)
+        {
+            $line_array = explode("~", $line);
+            if(count($line_array)> 1)
+            {
+                $number_name_map[$line_array[0]] = $line_array[1];
+                $number_list[] = $line_array[0];                 
+            }            
+        }
+        $result = array_count_values($number_list);
+        arsort($result);
+        $this->data['number_list'] = $result;
+        $this->data['number_name_map'] = $number_name_map;
+        
+        $this->data['operator_list'] = array();
+        $operator_list_array = $this->operators->get_all_operators()->result_array();        
+        foreach ($operator_list_array as $operator_info) {
+            $this->data['operator_list'][$operator_info['operator_prefix']] = $operator_info['operator_name'];
+        }
+        
+        
         $this->template->load(null, 'sms/process_file', $this->data);
+    }
+    
+    public function generate_number_file()
+    {
+        $selected_operator_length = 0;
+        $selected_operator = $this->input->post('operator_list');
+        if( $selected_operator != "" )
+        {
+            $selected_operator_length = strlen($selected_operator);
+        }
+        $number_list = array();
+        
+        $content = "";
+        $file_content = read_file('./upload/'.$this->session->userdata('user_id').'.txt');
+        $file_content_array = explode("\n", $file_content);
+        foreach($file_content_array as $line)
+        {
+            $line_array = explode("~", $line);
+            if(count($line_array)> 1)
+            {
+                if(!in_array($line_array[0], $number_list))
+                {
+                    if( $selected_operator == "")
+                    {
+                        $number_list[] = $line_array[0];
+                    }
+                    else if( substr($line_array[0], 0,$selected_operator_length) == $selected_operator  )
+                    {
+                        $number_list[] = $line_array[0];
+                    } 
+                }       
+            }            
+        }
+        foreach($number_list as $number)
+        {
+            $content = $content . $number . "\n"; 
+        }
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
     }
 }

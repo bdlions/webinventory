@@ -85,3 +85,9 @@ $lang['add_purchase_order_duplicate_purchase_order_no']       = 'Order # already
 $lang['add_expense_invalid_shop']       = 'Shop Id is invalid.';
 $lang['add_expense_invalid_user']       = 'User Id is invalid.';
 $lang['add_expense_success']       = 'Expense is added successfully.';
+
+//SMS
+$lang['add_shop_sms_configuration']                         = 'SMS configuration is added successfully';
+$lang['update_shop_sms_configuration']                      = 'SMS configuration is updated successfully.';
+$lang['operator_create_successful']                         = 'Operator is created successfully.';
+$lang['operator_creation_duplicate_operator']               = 'Operator Already Created or Invalid.';
