@@ -282,9 +282,9 @@ CREATE TABLE `purchase_order` (
 	`discount` double default 0,
 	`total` double,
 	`paid` double default 0,
-	`created_date` timestamp,
+	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int,
-    `modified_date` timestamp,
+    `modified_on` int(11) unsigned DEFAULT NULL,
     `modified_by` int default NULL,
 	`remarks` varchar(500),
 	PRIMARY KEY  (`id`),
@@ -311,9 +311,9 @@ CREATE TABLE `product_purchase_order` (
 	`unit_price` double,
 	`discount` varchar(200) default 0,
 	`sub_total` double,
-	`created_date` timestamp,
+	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int,
-    `modified_date` timestamp,
+    `modified_on` int(11) unsigned DEFAULT NULL,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_product_purchase_order_purchase_order1_idx` (`purchase_order_no`),
@@ -330,17 +330,19 @@ ALTER TABLE `product_purchase_order`
  CREATE TABLE `stock_info` (
 	`id` int NOT NULL auto_increment,
 	`shop_id` int NOT NULL,
+	`supplier_id` int NOT NULL,
 	`purchase_order_no` varchar(200),
 	`product_id` int NOT NULL,
 	`stock_amount` double,
-	`created_date` timestamp,
+	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int,
-    `modified_date` timestamp,
+    `modified_on` int(11) unsigned DEFAULT NULL,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_stock_info_shop_info1_idx` (`shop_id`),
 	KEY `fk_stock_info_purchase_order1_idx` (`purchase_order_no`),
 	KEY `fk_stock_info_product_info1_idx` (`product_id`),
+	KEY `fk_stock_info_suppliers1_idx` (`supplier_id`),
 	KEY `fk_stock_info_users1_idx` (`created_by`),
 	KEY `fk_stock_info_users2_idx` (`modified_by`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -348,6 +350,7 @@ ALTER TABLE `stock_info`
   ADD CONSTRAINT `fk_stock_info_purchase_order1` FOREIGN KEY (`purchase_order_no`) REFERENCES `purchase_order` (`purchase_order_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_stock_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_stock_info_product_info1` FOREIGN KEY (`product_id`) REFERENCES `product_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_stock_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_stock_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
@@ -372,7 +375,7 @@ CREATE TABLE `sale_order` (
 	`customer_id` int NOT NULL,
 	`sale_order_status_id` int NOT NULL,
 	`sale_date` timestamp,
-	`discount` varchar(200),
+	`discount` varchar(200) DEFAULT 0,
 	`total` double,
 	`paid` double,
 	`created_date` timestamp,
@@ -403,7 +406,7 @@ CREATE TABLE `product_sale_order` (
 	`purchase_order_no` varchar(200),
 	`quantity` double,
 	`unit_price` double,
-	`discount` varchar(200),
+	`discount` varchar(200) DEFAULT 0,
 	`sub_total` double,
 	`created_date` timestamp,
     `created_by` int NOT NULL,
@@ -465,3 +468,95 @@ CREATE TABLE IF NOT EXISTS `operators` (
   `modified_on` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`operator_prefix`, `operator_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  
+
+-- ---------------------------------Supplier payment record ---------------------------
+CREATE TABLE IF NOT EXISTS `supplier_payment_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `supplier_id` int NOT NULL,
+  `amount` double default 0,
+  `description` varchar(200) DEFAULT NULL,
+  `reference_id` varchar(200) DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_supplier_payment_info_shop_info1_idx` (`shop_id`),
+  KEY `fk_supplier_payment_info_suppliers1_idx` (`supplier_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `supplier_payment_info`
+  ADD CONSTRAINT `fk_supplier_payment_info_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_supplier_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE IF NOT EXISTS `supplier_transaction_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `supplier_id` int NOT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `lot_no` varchar(200) DEFAULT '',
+  `name` varchar(200) DEFAULT '', 
+  `quantity` varchar(200) DEFAULT '',
+  `unit_price` varchar(200) DEFAULT '',
+  `sub_total` varchar(200) DEFAULT '',
+  `payment_status` varchar(200) DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `fk_supplier_transaction_info_shop_info1_idx` (`shop_id`),
+  KEY `fk_supplier_transaction_info_suppliers1_idx` (`supplier_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `supplier_transaction_info`
+  ADD CONSTRAINT `fk_supplier_transaction_info_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_supplier_transaction_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ 
+
+-- --------------------------------Customer payment record ---------------------------
+CREATE TABLE IF NOT EXISTS `customer_payment_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `customer_id` int NOT NULL,
+  `amount` double default 0,
+  `description` varchar(200) DEFAULT NULL,
+  `reference_id` varchar(200) DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_customer_payment_info_shop_info1_idx` (`shop_id`),
+  KEY `fk_customer_payment_info_customers1_idx` (`customer_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `customer_payment_info`
+  ADD CONSTRAINT `fk_customer_payment_info_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE IF NOT EXISTS `customer_transaction_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `customer_id` int NOT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `lot_no` varchar(200) DEFAULT '',
+  `name` varchar(200) DEFAULT '', 
+  `quantity` varchar(200) DEFAULT '',
+  `unit_price` varchar(200) DEFAULT '',
+  `sub_total` varchar(200) DEFAULT '',
+  `payment_status` varchar(200) DEFAULT '',
+  `profit` varchar(200) DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `fk_customer_transaction_info_shop_info1_idx` (`shop_id`),
+  KEY `fk_customer_transaction_info_customers1_idx` (`customer_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `customer_transaction_info`
+  ADD CONSTRAINT `fk_customer_transaction_info_info_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_transaction_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ 
+-- -------------------------------Attendance ---------------------------------------- 
+CREATE TABLE IF NOT EXISTS `attendance` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `login_date` varchar(200) DEFAULT '',
+  `login_time` varchar(200) DEFAULT '',
+  `logout_time` varchar(200) DEFAULT '',
+  `attendance_comment` varchar(200) DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `fk_attendance_shop_info1_idx` (`shop_id`),
+  KEY `fk_attendance_users1_idx` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `attendance`
+  ADD CONSTRAINT `fk_attendance_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_attendance_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+

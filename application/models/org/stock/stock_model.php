@@ -587,10 +587,13 @@ class Stock_model extends CI_Model {
             $shop_id = $this->session->userdata('shop_id');
         }
         $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
-        return $this->db->select($this->tables['stock_info'].'.id as stock_id,'. $this->tables['stock_info'].'.shop_id,'. $this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.stock_amount, '.$this->tables['stock_info'].'.purchase_order_no, '.$this->tables['shop_info'].'.name as shop_name,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['product_info'].'.code as product_code')
+        return $this->db->select($this->tables['stock_info'].'.id as stock_id,'. $this->tables['stock_info'].'.shop_id,'. $this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.stock_amount, '.$this->tables['stock_info'].'.purchase_order_no, '.$this->tables['stock_info'].'.created_on, '.$this->tables['shop_info'].'.name as shop_name,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['product_info'].'.code as product_code,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name')
                     ->from($this->tables['stock_info'])
                     ->join($this->tables['shop_info'], $this->tables['stock_info'].'.shop_id='.$this->tables['shop_info'].'.id')
                     ->join($this->tables['product_info'], $this->tables['stock_info'].'.product_id='.$this->tables['product_info'].'.id')
+                    ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['stock_info'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['stock_info'].'.product_id')
+                    ->join($this->tables['suppliers'], $this->tables['suppliers'].'.id='.$this->tables['stock_info'].'.supplier_id')
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->get(); 
     }
 }

@@ -10,7 +10,6 @@
                         <th>Product Warranty</th>
                         <th>Product Quality</th>
                         <th>Brand Name</th>
-                        <th>Unit Price</th>
                         <th>Manage</th>
                     </tr>
                 </thead>
@@ -25,8 +24,6 @@
                             <td><?php echo $product_info['warranty'] ?></td>
                             <td><?php echo $product_info['quality'] ?></td>
                             <td><?php echo $product_info['brand_name'] ?></td>
-                            <td><?php echo $product_info['unit_price'] ?></td>
-                            <td><?php echo $product_info['name'] ?></td>
                             <td><a href="<?php echo base_url("./product/update_product/" . $product_info['id']); ?>">Update</a></td>
                         </tr>
                     <?php

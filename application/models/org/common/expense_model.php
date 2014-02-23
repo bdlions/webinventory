@@ -31,6 +31,7 @@ class Expense_model extends Ion_auth_model {
     protected $expense_type_list = array();
     public function __construct() {
         parent::__construct();
+        $this->load->library('org/common/payments');
         $this->expense_type_list = $this->config->item('expense_type', 'ion_auth');
     }
     public function get_all_expense_types()
@@ -86,6 +87,7 @@ class Expense_model extends Ion_auth_model {
                 return FALSE;
             }
         }
+        $this->db->trans_begin();
         $data['created_by'] = $this->session->userdata('user_id');
         $this->trigger_events('pre_add_expense');
             
@@ -95,9 +97,52 @@ class Expense_model extends Ion_auth_model {
         $this->db->insert($this->tables['expense_info'], $additional_data);
 
         $id = $this->db->insert_id();
+        
+        if($id > 0 && $data['expense_type_id'] === $this->expense_type_list['supplier'])
+        {
+            $supplier_payment_data = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $data['reference_id'],
+                'amount' => $data['expense_amount'],
+                'description' => 'expense',
+                'reference_id' => $id,
+                'created_on' => now()
+            );
+            $this->db->insert($this->tables['supplier_payment_info'], $supplier_payment_data);
+            
+            $supplier_transaction_info_array = array();
+            $current_due = $this->payments->get_supplier_current_due($data['reference_id']);
+            $supplier_transaction_info1 = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $data['reference_id'],
+                'created_on' => now(),
+                'lot_no' => '',
+                'name' => '',
+                'quantity' => '',
+                'unit_price' => '',
+                'sub_total' => $data['expense_amount'],
+                'payment_status' => 'Payment(Exp)'
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info1;
+            $supplier_transaction_info2 = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $data['reference_id'],
+                'created_on' => now(),
+                'lot_no' => '',
+                'name' => '',
+                'quantity' => '',
+                'unit_price' => '',
+                'sub_total' => $current_due,
+                'payment_status' => 'Total due'
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info2;
+            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);
+        }
+        
         $this->set_message('add_expense_success');
         $this->trigger_events('post_add_expense');
 
+        $this->db->trans_commit();
         return (isset($id)) ? $id : FALSE;
     }
     

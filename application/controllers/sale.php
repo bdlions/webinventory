@@ -84,6 +84,7 @@ class Sale extends CI_Controller {
         $selected_product_list = $_POST['product_list'];
         $sale_product_list = array();
         $sale_info = $_POST['sale_info'];
+        $current_due = $_POST['current_due'];
         
         $product_quantity_map = array();        
         $stock_list_array = $this->stock_library->get_all_stocks($shop_id)->result_array();
@@ -91,8 +92,23 @@ class Sale extends CI_Controller {
         {
             $product_quantity_map[$stock_info['product_id'].'_'.$stock_info['purchase_order_no']] = $stock_info['stock_amount'];
         }
+        $customer_transaction_info_array = array();
         foreach($selected_product_list as $key => $prod_info)
         {
+            $customer_transaction_info = array(
+                'shop_id' => $shop_id,
+                'customer_id' => $sale_info['customer_id'],
+                'created_on' => now(),
+                'lot_no' => $prod_info['purchase_order_no'],
+                'name' => $prod_info['name'],
+                'quantity' => $prod_info['quantity'],
+                'unit_price' => $prod_info['unit_price'],
+                'sub_total' => $prod_info['sub_total'],
+                'payment_status' => '',
+                'profit' => ''
+            );
+            $customer_transaction_info_array[] = $customer_transaction_info;
+            
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
                 'quantity' => $prod_info['quantity'],
@@ -100,7 +116,6 @@ class Sale extends CI_Controller {
                 'purchase_order_no' => $prod_info['purchase_order_no'],
                 'shop_id' => $shop_id,
                 'sale_order_no' => $sale_info['sale_order_no'],
-                'discount' => $prod_info['discount'],
                 'sub_total' => $prod_info['sub_total'],
                 'created_by' => $sale_info['created_by']
             );
@@ -122,7 +137,100 @@ class Sale extends CI_Controller {
                 return;
             }
         }
+        $customer_transaction_info = array(
+            'shop_id' => $shop_id,
+            'customer_id' => $sale_info['customer_id'],
+            'created_on' => now(),
+            'lot_no' => '',
+            'name' => '',
+            'quantity' => '',
+            'unit_price' => '',
+            'sub_total' => $current_due+$sale_info['cash_paid']+$sale_info['check_paid'],
+            'payment_status' => 'Total due',
+            'profit' => ''
+        );
+        $customer_transaction_info_array[] = $customer_transaction_info;
+        if( $sale_info['cash_paid']+$sale_info['check_paid'] > 0)
+        {
+            if( $sale_info['cash_paid'] > 0 )
+            {
+                $customer_transaction_info = array(
+                    'shop_id' => $shop_id,
+                    'customer_id' => $sale_info['customer_id'],
+                    'created_on' => now(),
+                    'lot_no' => '',
+                    'name' => '',
+                    'quantity' => '',
+                    'unit_price' => '',
+                    'sub_total' => $sale_info['cash_paid'],
+                    'payment_status' => 'Payment(Cash)',
+                    'profit' => ''
+                );
+                $customer_transaction_info_array[] = $customer_transaction_info;
+            }
+            if( $sale_info['check_paid'] > 0 )
+            {
+                $customer_transaction_info = array(
+                    'shop_id' => $shop_id,
+                    'customer_id' => $sale_info['customer_id'],
+                    'created_on' => now(),
+                    'lot_no' => '',
+                    'name' => '',
+                    'quantity' => '',
+                    'unit_price' => '',
+                    'sub_total' => $sale_info['check_paid'],
+                    'payment_status' => 'Payment(Check)',
+                    'profit' => ''
+                );
+                $customer_transaction_info_array[] = $customer_transaction_info;
+            }
+            if( $current_due > 0)
+            {
+                $customer_transaction_info = array(
+                    'shop_id' => $shop_id,
+                    'customer_id' => $sale_info['customer_id'],
+                    'created_on' => now(),
+                    'lot_no' => '',
+                    'name' => '',
+                    'quantity' => '',
+                    'unit_price' => '',
+                    'sub_total' => $current_due,
+                    'payment_status' => 'Total due',
+                    'profit' => ''
+                );
+                $customer_transaction_info_array[] = $customer_transaction_info;
+            }
+        }
+        
+        $customer_payment_data_array = array();
+        if( $sale_info['cash_paid'] > 0)
+        {
+            $customer_payment_data = array(
+                'shop_id' => $shop_id,
+                'customer_id' => $sale_info['customer_id'],
+                'amount' => $sale_info['cash_paid'],
+                'description' => 'sale cash',
+                'reference_id' => $sale_info['sale_order_no'],
+                'created_on' => now()
+            );
+            $customer_payment_data_array[] = $customer_payment_data;
+        }
+        if( $sale_info['check_paid'] > 0)
+        {
+            $customer_payment_data = array(
+                'shop_id' => $shop_id,
+                'customer_id' => $sale_info['customer_id'],
+                'amount' => $sale_info['check_paid'],
+                'description' => 'sale check:'.$sale_info['check_description'],
+                'reference_id' => $sale_info['sale_order_no'],
+                'created_on' => now()
+            );
+            $customer_payment_data_array[] = $customer_payment_data;
+        }
+        
         $additional_data = array(
+            'total' => $sale_info['total'],
+            'paid' => $sale_info['cash_paid']+$sale_info['check_paid'],
             'sale_order_no' => $sale_info['sale_order_no'],
             'shop_id' => $shop_id,
             'customer_id' => $sale_info['customer_id'],
@@ -130,7 +238,7 @@ class Sale extends CI_Controller {
             'remarks' => $sale_info['remarks'],            
             'created_by' => $sale_info['created_by']
         );        
-        $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $update_stock_list);
+        $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $update_stock_list, $customer_payment_data_array, $customer_transaction_info_array);
         if( $sale_id !== FALSE )
         {
             $sale_info_array = $this->sale_library->get_sale_order_info($sale_id)->result_array();

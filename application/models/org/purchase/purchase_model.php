@@ -55,7 +55,7 @@ class Purchase_model extends Ion_auth_model
      * @return bool
      * @author Nazmul on 22nd November 2014
      * */
-    public function add_purchase_order($additional_data, $purchased_product_list, $add_stock_list)
+    public function add_purchase_order($additional_data, $purchased_product_list, $add_stock_list, $supplier_payment_data, $supplier_transaction_info_array)
     {
         $this->trigger_events('pre_add_purchase_order');
         if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
@@ -71,6 +71,11 @@ class Purchase_model extends Ion_auth_model
         $id = $this->db->insert_id();
         if($id > 0)
         {
+            if($supplier_payment_data['amount'] > 0)
+            {
+                $this->db->insert($this->tables['supplier_payment_info'], $supplier_payment_data);
+            }            
+            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);
             $this->db->insert_batch($this->tables['product_purchase_order'], $purchased_product_list);
             if( !empty($add_stock_list) )
             {
@@ -105,5 +110,15 @@ class Purchase_model extends Ion_auth_model
                     ->from($this->tables['purchase_order'])
                     ->join($this->tables['product_purchase_order'], $this->tables['purchase_order'].'.id='.$this->tables['product_purchase_order'].'.purchase_order_id')
                     ->get();  
+    }
+    
+    public function get_total_purchase_price($supplier_id)
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('supplier_id', $supplier_id);
+        return $this->db->select('SUM(total) as total_purchase_price')
+                            ->from($this->tables['purchase_order'])
+                            ->get();
     }
 }

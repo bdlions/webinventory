@@ -80,26 +80,89 @@ class Purchase extends CI_Controller {
         $purchased_product_list = array();
         $add_stock_list = array();
         $purchase_info = $_POST['purchase_info'];
+        $current_due = $_POST['current_due'];
+        
+        $supplier_transaction_info_array = array();
         
         foreach($selected_product_list as $key => $prod_info)
         {
+            $supplier_transaction_info = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'created_on' => now(),
+                'lot_no' => $prod_info['purchase_order_no'],
+                'name' => $prod_info['name'],
+                'quantity' => $prod_info['quantity'],
+                'unit_price' => $prod_info['unit_price'],
+                'sub_total' => $prod_info['sub_total'],
+                'payment_status' => ''
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info;
+            
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
                 'quantity' => $prod_info['quantity'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
                 'shop_id' => $shop_id,
                 'unit_price' => $prod_info['unit_price'],
+                'created_on' => now(),
+                'created_by' => $user_id,
                 'sub_total' => $prod_info['sub_total']
             );
             $purchased_product_list[] = $product_info;
             $add_stock_info = array(
+                'supplier_id' => $purchase_info['supplier_id'],
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
                 'shop_id' => $shop_id,
-                'stock_amount' => $prod_info['quantity']
+                'stock_amount' => $prod_info['quantity'],
+                'created_on' => now()
             );
             $add_stock_list[] = $add_stock_info;
         }
+        $supplier_transaction_info = array(
+            'shop_id' => $shop_id,
+            'supplier_id' => $purchase_info['supplier_id'],
+            'created_on' => now(),
+            'lot_no' => '',
+            'name' => '',
+            'quantity' => '',
+            'unit_price' => '',
+            'sub_total' => $current_due+$purchase_info['paid'],
+            'payment_status' => 'Total due'
+        );
+        $supplier_transaction_info_array[] = $supplier_transaction_info;
+        if( $purchase_info['paid'] > 0)
+        {
+            $supplier_transaction_info = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'created_on' => now(),
+                'lot_no' => '',
+                'name' => '',
+                'quantity' => '',
+                'unit_price' => '',
+                'sub_total' => $purchase_info['paid'],
+                'payment_status' => 'Payment(Cash)'
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info;
+            if( $current_due > 0)
+            {
+                $supplier_transaction_info = array(
+                    'shop_id' => $shop_id,
+                    'supplier_id' => $purchase_info['supplier_id'],
+                    'created_on' => now(),
+                    'lot_no' => '',
+                    'name' => '',
+                    'quantity' => '',
+                    'unit_price' => '',
+                    'sub_total' => $current_due,
+                    'payment_status' => 'Total due'
+                );
+                $supplier_transaction_info_array[] = $supplier_transaction_info;
+            }
+        }       
+        
         $additional_data = array(
             'purchase_order_no' => $purchase_info['order_no'],
             'shop_id' => $shop_id,
@@ -107,9 +170,19 @@ class Purchase extends CI_Controller {
             'purchase_order_status_id' => 1,
             'remarks' => $purchase_info['remarks'],
             'total' => $purchase_info['total'],
+            'paid' => $purchase_info['paid'],
+            'created_on' => now(),
             'created_by' => $user_id
-        );        
-        $purchase_id = $this->purchase_library->add_purchase_order($additional_data, $purchased_product_list, $add_stock_list);
+        ); 
+        $supplier_payment_data = array(
+            'shop_id' => $shop_id,
+            'supplier_id' => $purchase_info['supplier_id'],
+            'amount' => $purchase_info['paid'],
+            'description' => 'purchase',
+            'reference_id' => $prod_info['purchase_order_no'],
+            'created_on' => now()
+        );
+        $purchase_id = $this->purchase_library->add_purchase_order($additional_data, $purchased_product_list, $add_stock_list, $supplier_payment_data, $supplier_transaction_info_array);
         if( $purchase_id !== FALSE )
         {
             $purchase_info_array = $this->purchase_library->get_purchase_order_info($purchase_id)->result_array();

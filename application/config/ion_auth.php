@@ -51,8 +51,14 @@ $config['tables']['expense_info']                   = 'expense_info';
 $config['tables']['users_shop_info']                = 'users_shop_info';
 $config['tables']['institution']                    = 'institution';
 $config['tables']['profession']                     = 'profession';
+$config['tables']['supplier_payment_info']          = 'supplier_payment_info';
+$config['tables']['supplier_transaction_info']      = 'supplier_transaction_info';
+$config['tables']['customer_payment_info']          = 'customer_payment_info';
+$config['tables']['customer_transaction_info']      = 'customer_transaction_info';
 $config['tables']['sms_configuration_shop']         = 'sms_configuration_shop';
+$config['tables']['attendance']                     = 'attendance';
 $config['tables']['operators']                      = 'operators';
+
 
 /*
  | Users table column and Group table column you want to join WITH.

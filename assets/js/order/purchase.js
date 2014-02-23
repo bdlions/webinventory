@@ -4,6 +4,7 @@ function Purchase()
     var supplier_id;
     var remarks;
     var total;
+    var paid;
     Purchase.prototype.setOrderNo = function(value)
     {
         this.order_no = value;
@@ -35,6 +36,14 @@ function Purchase()
     Purchase.prototype.getTotal = function()
     {
         return this.total;
+    }
+    Purchase.prototype.setPaid = function(value)
+    {
+        this.paid = value;
+    }
+    Purchase.prototype.getPaid = function()
+    {
+        return this.paid;
     }
 }
 

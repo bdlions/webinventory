@@ -91,3 +91,6 @@ $lang['add_shop_sms_configuration']                         = 'SMS configuration
 $lang['update_shop_sms_configuration']                      = 'SMS configuration is updated successfully.';
 $lang['operator_create_successful']                         = 'Operator is created successfully.';
 $lang['operator_creation_duplicate_operator']               = 'Operator Already Created or Invalid.';
+
+//Attendance
+$lang['store_attendance_successful']                         = 'Attendance successfully stored.';

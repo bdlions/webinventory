@@ -5,6 +5,11 @@
 
         var product_data = <?php echo json_encode($product_list_array) ?>;        
         set_product_list(product_data);
+        
+        $("#total_purchase_price").val(0);
+        $("#previous_due").val(0);
+        $("#paid_amount").val(0);
+        $("#current_due").val(0);
     });
 </script>
 <script>
@@ -34,6 +39,8 @@
             }
         });
         $("#total_purchase_price").val(total_purchase_price);
+        var current_due = +$("#total_purchase_price").val() - +$("#paid_amount").val() + +$("#previous_due").val();
+        $("#current_due").val(current_due);
     }
 
     function update_fields_selected_supplier(sup_info)
@@ -42,6 +49,21 @@
         $("#input_add_purchase_supplier").val(sup_info['first_name']+' '+sup_info['last_name']);
         $("#input_add_purchase_company").val(sup_info['company']);
         $("#input_add_purchase_phone").val(sup_info['phone']);
+        
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + "payment/get_supplier_previous_due",
+            data: {
+                supplier_id: sup_info['supplier_id']
+            },
+            success: function(data) {
+                $("#previous_due").val(data);
+                
+                var current_due = +$("#total_purchase_price").val() - +$("#paid_amount").val() + +$("#previous_due").val();
+                $("#current_due").val(current_due);
+            }
+        });
     }
 
     function isNumber(n) {
@@ -90,6 +112,10 @@
                 $("tr", "#tbody_selected_product_list").each(function() {
                     var product_info = new Product();
                     $("input", $(this)).each(function() {
+                        if ($(this).attr("name") === "name")
+                        {
+                            product_info.setName($(this).attr("value"));
+                        }
                         if ($(this).attr("name") === "quantity")
                         {
                             product_info.setProductId($(this).attr("id"));
@@ -118,12 +144,14 @@
                 purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
                 purchase_info.setRemarks($("#purchase_remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
+                purchase_info.setPaid($("#paid_amount").val());
                 $.ajax({
                     type: "POST",
                     url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
                     data: {
                         product_list: product_list,
-                        purchase_info: purchase_info
+                        purchase_info: purchase_info,
+                        current_due: $("#current_due").val()
                     },
                     success: function(data) {
                         var response = JSON.parse(data);
@@ -141,7 +169,10 @@
                             $("#input_add_purchase_phone").val('');
                             $("#purchase_order_no").val('');
                             $("#purchase_remarks").val('');
-                            $("#total_purchase_price").val('');
+                            $("#total_purchase_price").val(0);
+                            $("#previous_due").val(0);
+                            $("#paid_amount").val(0);
+                            $("#current_due").val(0);
                         }
                     }
                 });
@@ -198,7 +229,15 @@
                 }
             });
             $("#total_purchase_price").val(total_purchase_price);
+            
+            var current_due = +$("#total_purchase_price").val() - +$("#paid_amount").val() + +$("#previous_due").val();
+            $("#current_due").val(current_due);
 
+        });
+        
+        $("#paid_amount").on("change", function() {
+            var current_due = +$("#total_purchase_price").val() - +$("#paid_amount").val() + +$("#previous_due").val();
+            $("#current_due").val(current_due);
         });
         
         $('#input_date_add_purchase').datepicker({
@@ -337,7 +376,7 @@
             <div class ="col-md-5 form-horizontal margin-top-bottom">
                 <div class="form-group">
                     <label for="purchase_order_no" class="col-md-4 control-label requiredField">
-                        Order No.
+                        Lot No
                     </label>
                     <div class ="col-md-8">
                         <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
@@ -370,7 +409,7 @@
                         {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                         {% while(product_info){ %}
                         <tr>
-                        <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
+                        <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value="1"/></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="100"/></td>
                         <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value="100"/></td>
@@ -388,7 +427,7 @@
                         Remarks
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
+                        <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
 
                     </div> 
                 </div>
@@ -398,6 +437,30 @@
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
                         <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="previous_due" class="col-md-2 control-label requiredField">
+                        Previous Due
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="paid_amount" class="col-md-2 control-label requiredField">
+                        Payment Amount
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'paid_amount', 'id' => 'paid_amount', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="current_due" class="col-md-2 control-label requiredField">
+                        Current Due
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

@@ -39,7 +39,7 @@ class Sale_model extends Ion_auth_model
      * @return sale order id
      * @author Nazmul on 23rd November 2014
      * */
-    public function add_sale_order($additional_data, $sale_product_list, $update_stock_list)
+    public function add_sale_order($additional_data, $sale_product_list, $update_stock_list, $customer_payment_data_array, $customer_transaction_info_array)
     {
         $this->trigger_events('pre_add_sale_order');
         //filter out any data passed that doesnt have a matching column in the users table
@@ -50,6 +50,11 @@ class Sale_model extends Ion_auth_model
         $id = $this->db->insert_id();
         if($id > 0)
         {
+            if(!empty($customer_payment_data_array))
+            {
+                $this->db->insert_batch($this->tables['customer_payment_info'], $customer_payment_data_array);
+            }
+            $this->db->insert_batch($this->tables['customer_transaction_info'], $customer_transaction_info_array);
             $this->db->insert_batch($this->tables['product_sale_order'], $sale_product_list);
             foreach($update_stock_list as $key => $update_stock_info)
             {
@@ -129,5 +134,15 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
                     ->where($this->tables['product_sale_order'].'.shop_id',$shop_id)
                     ->get();  
+    }
+    
+    public function get_total_sale_price($customer_id)
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('customer_id', $customer_id);
+        return $this->db->select('SUM(total) as total_sale_price')
+                            ->from($this->tables['sale_order'])
+                            ->get();
     }
 }

@@ -187,7 +187,7 @@ class Expense extends CI_Controller {
             foreach($supplier_list_array as $key => $supplier_info)
             {
                 $supplier_list[] = array(
-                    'id' => $supplier_info['user_id'],
+                    'id' => $supplier_info['supplier_id'],
                     'value' => $supplier_info['first_name'].' '.$supplier_info['last_name']
                 );
             }

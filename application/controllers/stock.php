@@ -12,6 +12,7 @@ class Stock extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('org/common/utils');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -34,11 +35,17 @@ class Stock extends CI_Controller {
     function show_all_stocks()
     {
         $this->data['stock_list'] = array();
+        $stock_list = array();
         $stock_list_array = $this->stock_library->get_all_stocks()->result_array();
-        if( count($stock_list_array) > 0)
+        if( !empty($stock_list_array) )
         {
-            $this->data['stock_list'] = $stock_list_array;
+            foreach($stock_list_array as $stock_info)
+            {
+                $stock_info['created_on'] = $this->utils->process_time($stock_info['created_on']);
+                $stock_list[] = $stock_info;
+            }
         }
+        $this->data['stock_list'] = $stock_list;
         $this->template->load(null, 'stock/show_all_stocks', $this->data);
     }
 }

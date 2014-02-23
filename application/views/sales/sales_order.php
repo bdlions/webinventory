@@ -5,6 +5,13 @@
 
         var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
+        
+        $("#total_sale_price").val(0);
+        $("#previous_due").val(0);
+        $("#cash_paid_amount").val(0);
+        $("#check_paid_amount").val(0);
+        $("#check_description").val('');
+        $("#current_due").val(0);
     });
 </script>
 <script>
@@ -30,6 +37,21 @@
 
         var rString = randomString(13, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
         $("#sale_order_no").val(rString);
+        
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + "payment/get_customer_previous_due",
+            data: {
+                customer_id: cust_info['customer_id']
+            },
+            success: function(data) {
+                $("#previous_due").val(data);
+                
+                var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+                $("#current_due").val(current_due);
+            }
+        });
     }
 
     function isNumber(n) {
@@ -46,8 +68,17 @@
 
 <script type="text/javascript">
     $(function() {
+        $("#button_due_collect").on("click", function() {
+            $('#modal_due_collect').modal('show');
+        });
         $("#save_sale_order").on("click", function() {
             //validation checking of sale order
+            //checking whether staff is selected or not
+            if ($("#salesman_list").val().length === 0)
+            {
+                alert('Please select a staff.');
+                return;
+            }
             //checking whether customer is selected or not
             if ($("#input_add_sale_customer_id").val().length === 0 || $("#input_add_sale_customer_id").val() < 0)
             {
@@ -72,7 +103,7 @@
             {
                 alert('Please select at least one product.');
                 return;
-            }
+            }            
             set_modal_confirmation_category_id(get_modal_confirmation_save_sale_order_category_id());
             $('#myModal').modal('show');
         });
@@ -85,6 +116,10 @@
                 $("tr", "#tbody_selected_product_list").each(function() {
                     var product_info = new Product();
                     $("input", $(this)).each(function() {
+                        if ($(this).attr("name") === "name")
+                        {
+                            product_info.setName($(this).attr("value"));
+                        }
                         if ($(this).attr("name") === "quantity")
                         {
                             product_info.setProductId($(this).attr("id"));
@@ -118,12 +153,17 @@
                 sale_info.setCustomerId($("#input_add_sale_customer_id").val());
                 sale_info.setRemarks($("#sale_remarks").val());
                 sale_info.setCreatedBy($("#salesman_list").val());
+                sale_info.setTotal($("#total_sale_price").val());
+                sale_info.setCashPaid($("#cash_paid_amount").val());
+                sale_info.setCheckPaid($("#check_paid_amount").val());
+                sale_info.setCheckDescription($("#check_description").val());
                 $.ajax({
                     type: "POST",
                     url: '<?php echo base_url(); ?>' + "sale/add_sale",
                     data: {
                         product_list: product_list,
-                        sale_info: sale_info
+                        sale_info: sale_info,
+                        current_due: $("#current_due").val()
                     },
                     success: function(data) {
                         var response = JSON.parse(data);
@@ -138,7 +178,12 @@
                             $("#input_add_sale_card_no").val('');
                             $("#sale_order_no").val('');
                             $("#sale_remarks").val('');
-                            $("#total_sale_price").val('');
+                            $("#total_sale_price").val(0);
+                            $("#previous_due").val(0);
+                            $("#cash_paid_amount").val(0);
+                            $("#check_paid_amount").val(0);
+                            $("#check_description").val('');
+                            $("#current_due").val(0);
                         }
                         else if (response['status'] === '0')
                         {
@@ -214,6 +259,14 @@
                 }
             });
             $("#total_sale_price").val(total_sale_price);
+        });
+        $("#cash_paid_amount").on("change", function() {
+            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+            $("#current_due").val(current_due);
+        });
+        $("#check_paid_amount").on("change", function() {
+            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+            $("#current_due").val(current_due);
         });
         $('#input_date_add_sale').datepicker({
             format: 'yyyy-mm-dd',
@@ -362,10 +415,18 @@
                 </div>
                 <div class="form-group">
                     <label for="status" class="col-md-4 control-label requiredField">
-                        Select Salesman
+                        Select Staff
                     </label>
                     <div class ="col-md-8">
-                        <?php echo form_dropdown('salesman_list', $salesman_list, $user_info['id'], 'class="form-control" id="salesman_list"'); ?>
+                        <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="status" class="col-md-4 control-label requiredField">
+                        &nbsp;
+                    </label>
+                    <div class ="col-md-8">
+                        <?php echo form_button(array('name' => 'button_due_collect', 'id' => 'button_due_collect', 'content' => 'Due Collect', 'class' => 'form-control btn-success')); ?>
                     </div> 
                 </div>
             </div>
@@ -379,7 +440,6 @@
                             <th>Lot No</th>
                             <th>Quantity</th>
                             <th>Unit Price</th>
-                            <th>Discount</th>
                             <th>Sub Total</th>
                         </tr>
                     </thead>
@@ -389,11 +449,10 @@
                         {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                         {% while(product_info){ %}
                         <tr>
-                        <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
+                        <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value="1"/></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value="1"/></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="unit_price" type="text" value="0"/></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="discount" type="text" value="0"/></td>
                         <td><input class="input-width-table" name="product_sale_price" type="text" readonly="true" value="0"/></td>
                         </tr>
                         {% product_info = ((o instanceof Array) ? o[i++] : null); %}
@@ -419,6 +478,46 @@
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
                         <?php echo form_input(array('name' => 'total_sale_price', 'id' => 'total_sale_price', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="previous_due" class="col-md-2 control-label requiredField">
+                        Previous Due
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="cash_paid_amount" class="col-md-2 control-label requiredField">
+                        Cash Payment
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'cash_paid_amount', 'id' => 'cash_paid_amount', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="check_paid_amount" class="col-md-2 control-label requiredField">
+                        Check Payment
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'check_paid_amount', 'id' => 'check_paid_amount', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="check_description" class="col-md-2 control-label requiredField">
+                        Check Description
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'check_description', 'id' => 'check_description', 'class' => 'form-control')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="current_due" class="col-md-2 control-label requiredField">
+                        Current Due
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control')); ?>
                     </div> 
                 </div>
                 <div class="form-group">
@@ -452,5 +551,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<?php $this->load->view("sales/modal_due_collect"); ?>
 <?php $this->load->view("sales/modal_select_customer"); ?>
 <?php $this->load->view("sales/modal_select_product"); ?>

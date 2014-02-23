@@ -58,6 +58,15 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Attendance<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./attendance/store_attendance");?>">Store Attendance</a></li>
+        <li><a href="<?php echo base_url("./attendance/show_attendance");?>">Show Attendance</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Tools<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
