@@ -410,7 +410,7 @@
                         Date
                     </label>
                     <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'input_date_add_sale', 'id' => 'input_date_add_sale', 'class' => 'form-control')); ?>
+                        <?php echo form_input($input_date_add_sale+array('class' => 'form-control')) ?>
                     </div> 
                 </div>
                 <div class="form-group">

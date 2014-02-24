@@ -1,48 +1,31 @@
-<div class ="row form-background">
-    <div class ="row">
-        <div class="col-md-10">
-            <div class ="col-md-2">
-                First Name
-            </div>
-            <div class ="col-md-2">
-                Last Name
-            </div>
-            <div class ="col-md-2">
-                Phone
-            </div>
-            <div class ="col-md-2">
-                Address
-            </div>
-            <div class ="col-md-2">
-                Manage
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <?php
-        foreach ($manager_list as $key => $manager_info) {
-            ?>
-            <div class="row">
-                <div class="col-md-10">
-                    <div class ="col-md-2">
-                        <?php echo $manager_info['first_name'] ?>
-                    </div>
-                    <div class ="col-md-2">
-                        <?php echo $manager_info['last_name'] ?>
-                    </div>
-                    <div class ="col-md-2">
-                        <?php echo $manager_info['phone'] ?>
-                    </div>
-                    <div class ="col-md-2">
-                        <?php echo $manager_info['address'] ?>
-                    </div>
-                    <div class ="col-md-1">
-                        <a href="<?php echo base_url("./user/update_manager/" . $manager_info['user_id']); ?>">Update</a>
-                    </div>
-                </div>
-            </div>
-            <?php
-        }
-        ?>
+<h3>Manager List</h3>
+<div class ="row form-horizontal form-background top-bottom-padding">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Manage</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_product_list">
+                <?php
+                foreach ($manager_list as $key => $manager_info) {
+                ?>
+                    <tr>
+                        <td><?php echo $manager_info['first_name'] ?></td>
+                        <td><?php echo $manager_info['last_name'] ?></td>
+                        <td><?php echo $manager_info['phone'] ?></td>
+                        <td><?php echo $manager_info['address'] ?></td>
+                        <td><a href="<?php echo base_url("./user/update_manager/" . $manager_info['user_id']); ?>">Update</a></td>                        
+                    </tr>
+                <?php
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>

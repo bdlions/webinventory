@@ -61,7 +61,16 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
-        $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, 'purchase/purchase_order',$this->data);
+        
+        $date = date('Y-m-d');
+        $this->data['input_date_add_purchase'] = array(
+            'name' => 'input_date_add_purchase',
+            'id' => 'input_date_add_purchase',
+            'type' => 'text',
+            'value' => $date
+        );
+        
+        $this->template->load(null, 'purchase/purchase_order',$this->data);
     }
     /*
      * Ajax Call

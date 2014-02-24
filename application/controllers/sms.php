@@ -159,17 +159,23 @@ class Sms extends CI_Controller {
         $number_name_map = array();
         $number_list = array();
         $this->data['message'] = '';
-        $contact_list = array();
         $file_content = read_file('./upload/'.$this->session->userdata('user_id').'.txt');
         $file_content_array = explode("\n", $file_content);
         foreach($file_content_array as $line)
         {
-            $line_array = explode("~", $line);
-            if(count($line_array)> 1)
+            if( $line != '' )
             {
-                $number_name_map[$line_array[0]] = $line_array[1];
-                $number_list[] = $line_array[0];                 
-            }            
+                $line_array = explode("-", $line);
+                if(count($line_array)> 1)
+                {
+                    $number_name_map[$line_array[0]] = $line_array[1];                              
+                }  
+                else
+                {
+                    $number_name_map[$line_array[0]] = '';
+                }
+                $number_list[] = $line_array[0];
+            }               
         }
         $result = array_count_values($number_list);
         arsort($result);
@@ -180,9 +186,7 @@ class Sms extends CI_Controller {
         $operator_list_array = $this->operators->get_all_operators()->result_array();        
         foreach ($operator_list_array as $operator_info) {
             $this->data['operator_list'][$operator_info['operator_prefix']] = $operator_info['operator_name'];
-        }
-        
-        
+        }        
         $this->template->load(null, 'sms/process_file', $this->data);
     }
     
@@ -201,9 +205,9 @@ class Sms extends CI_Controller {
         $file_content_array = explode("\n", $file_content);
         foreach($file_content_array as $line)
         {
-            $line_array = explode("~", $line);
-            if(count($line_array)> 1)
+            if( $line!= '')
             {
+                $line_array = explode("-", $line);
                 if(!in_array($line_array[0], $number_list))
                 {
                     if( $selected_operator == "")
@@ -214,8 +218,8 @@ class Sms extends CI_Controller {
                     {
                         $number_list[] = $line_array[0];
                     } 
-                }       
-            }            
+                }
+            }                        
         }
         foreach($number_list as $number)
         {

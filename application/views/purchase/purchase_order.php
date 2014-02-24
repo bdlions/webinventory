@@ -387,7 +387,7 @@
                         Date
                     </label>
                     <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'input_date_add_purchase', 'id' => 'input_date_add_purchase', 'class' => 'form-control')); ?>
+                        <?php echo form_input($input_date_add_purchase+array('class' => 'form-control')); ?>
                     </div> 
                 </div>
             </div>

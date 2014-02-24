@@ -71,6 +71,7 @@ class Expense_model extends Ion_auth_model {
     }
     public function add_expense($data)
     {
+        $shop_id = $this->session->userdata('shop_id');
         if($data['expense_type_id'] === $this->expense_type_list['shop'])
         {
             //checking whether shop exists or not

@@ -62,8 +62,6 @@ class Attendance extends CI_Controller {
                             'attendance_comment' => $attendance_comment
                         );
                         $this->attendances->add_attendance($data);
-                        $this->session->set_flashdata('message', $this->attendances->messages());
-                        redirect('attendance/store_attendance','refresh');
                     }
                     else if( $login_time == '' && $logout_time != '' )
                     {
@@ -77,24 +75,24 @@ class Attendance extends CI_Controller {
                         {
                             $data['attendance_comment'] = $attendance_comment;
                         }
-                        $this->attendances->update_attendance($data);
-                        $this->session->set_flashdata('message', $this->attendances->messages());
-                        redirect('attendance/store_attendance','refresh');
-                    }
-                    
+                        $this->attendances->update_attendance($data);                        
+                    }                    
                 }
             }
+            $this->session->set_flashdata('message', 'Attendance stored successfully');
+            redirect('attendance/store_attendance','refresh');
         }
         else
         {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
         
-        
+        $date = date('Y-m-d');
         $this->data['login_date'] = array(
             'name' => 'login_date',
             'id' => 'login_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['login_time'] = array(
             'name' => 'login_time',
@@ -133,16 +131,18 @@ class Attendance extends CI_Controller {
             }
         }
         $this->data['salesman_list'] = $salesman_list;
-        
+        $date = date('Y-m-d');
         $this->data['show_attendance_start_date'] = array(
             'name' => 'show_attendance_start_date',
             'id' => 'show_attendance_start_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['show_attendance_end_date'] = array(
             'name' => 'show_attendance_end_date',
             'id' => 'show_attendance_end_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['button_search_attendance'] = array(
             'name' => 'button_search_attendance',
@@ -159,7 +159,7 @@ class Attendance extends CI_Controller {
         $user_id = $_POST['user_id'];
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
-        $attendance_info_array = $this->attendances->get_attendance($shop_id, $user_id, $start_date, $end_date)->result_array();
+        $attendance_info_array = $this->attendances->get_attendance($start_date, $end_date, $user_id, $shop_id)->result_array();
         echo json_encode($attendance_info_array);
     }
 }

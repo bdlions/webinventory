@@ -13,6 +13,7 @@ class Stock extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('org/common/utils');
+        $this->load->library('org/product/product_library');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -34,6 +35,16 @@ class Stock extends CI_Controller {
     
     function show_all_stocks()
     {
+        $product_list = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        foreach($product_list_array as $product_info)
+        {
+            $product_list[$product_info['id']] = $product_info['name'];
+        }
+        $this->data['product_list'] = $product_list;
+        
+        $total_quantity = 0;
+        $total_stock_value = 0;
         $this->data['stock_list'] = array();
         $stock_list = array();
         $stock_list_array = $this->stock_library->get_all_stocks()->result_array();
@@ -41,11 +52,39 @@ class Stock extends CI_Controller {
         {
             foreach($stock_list_array as $stock_info)
             {
+                $total_quantity = $total_quantity + $stock_info['stock_amount'];
+                $total_stock_value = $total_stock_value + $stock_info['stock_amount']*$stock_info['purchase_unit_price'];
                 $stock_info['created_on'] = $this->utils->process_time($stock_info['created_on']);
                 $stock_list[] = $stock_info;
             }
         }
         $this->data['stock_list'] = $stock_list;
+        $this->data['total_quantity'] = $total_quantity;
+        $this->data['total_stock_value'] = $total_stock_value;
         $this->template->load(null, 'stock/show_all_stocks', $this->data);
+    }
+    
+    function search_stock()
+    {
+        $total_quantity = 0;
+        $total_stock_value = 0;
+        $stock_list = array();
+        $shop_id = $this->session->userdata('shop_id');
+        $product_id             = $_POST['product_id'];
+        $purchase_order_no      = $_POST['purchase_order_no'];
+        $stock_list_array = $this->stock_library->get_all_stocks($shop_id, $product_id, $purchase_order_no)->result_array();
+        foreach($stock_list_array as $stock_info)
+        {
+            $total_quantity = $total_quantity + $stock_info['stock_amount'];
+            $total_stock_value = $total_stock_value + $stock_info['stock_amount']*$stock_info['purchase_unit_price'];
+            $stock_info['created_on'] = $this->utils->process_time($stock_info['created_on']);
+            $stock_list[] = $stock_info;
+        }
+        $result = array(
+            'stock_list' => $stock_list,
+            'total_quantity' => $total_quantity,
+            'total_stock_value' => $total_stock_value
+        );
+        echo json_encode($result);
     }
 }

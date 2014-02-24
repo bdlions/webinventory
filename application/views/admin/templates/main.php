@@ -35,6 +35,7 @@
         <script src="<?php echo base_url(); ?>assets/js/order/product.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/purchase.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/sale.js"></script>
+        <script src="<?php echo base_url(); ?>assets/bootstrap3/js/tmpl.js"></script>
     </head>
     <body>
         <div class ="container">

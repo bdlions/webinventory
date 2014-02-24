@@ -2,6 +2,7 @@
     $(function() {
         $("#button_search_customer").on("click", function() {
             $.ajax({
+                dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "search/search_customer_by_card_no_range",
                 data: {
@@ -9,28 +10,27 @@
                     end_card_no: $("#end_card_no").val()
                 },
                 success: function(data) {
-                    var result = JSON.parse(data);
-                    var customer_list = result['customer_list'];
-                    var div_customer_list = '';
-                    for (var counter = 0; counter < customer_list.length; counter++)
-                    {
-                        var customer_info = customer_list[counter];
-                        div_customer_list += '<div class="row col-md-10">';
-                        div_customer_list += '<div class ="col-md-2">'+customer_info['first_name']+'</div>';
-                        div_customer_list += '<div class ="col-md-2">'+customer_info['last_name']+'</div>';
-                        div_customer_list += '<div class ="col-md-2">'+customer_info['phone']+'</div>';
-                        div_customer_list += '<div class ="col-md-2">'+customer_info['address']+'</div>';
-                        div_customer_list += '<div class ="col-md-2">'+customer_info['card_no']+'</div>';
-                        div_customer_list += '</div>';
-                    }
-                    
-                    $("#div_customer_list_result").html(div_customer_list);
+                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data['customer_list']));   
                 }
             });
         });
     });
 </script>
-<div class ="row form-background">
+<script type="text/x-tmpl" id="tmpl_customer_list">
+    {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(customer_info){ %}
+    <tr>
+    <td ><?php echo '{%= customer_info.first_name%}'; ?></td>
+    <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
+    <td ><?php echo '{%= customer_info.phone%}'; ?></td>
+    <td ><?php echo '{%= customer_info.address%}'; ?></td>
+    <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
+    </tr>
+    {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
+</script>
+<h3>Search Customer by Card Range</h3>
+<div class ="row form-horizontal form-background top-bottom-padding">
     <div class ="col-md-6">
         <div class ="row">
             <div class ="col-md-12 form-horizontal">
@@ -66,16 +66,22 @@
         </div>
     </div>
 </div>
-<h2>Search Result</h2>
-<div class="row form-background">
-    <div class="row col-md-10">
-        <div class="col-md-2">First Name</div>
-        <div class="col-md-2">Last Name</div>
-        <div class="col-md-2">Phone</div>
-        <div class="col-md-2">Address</div>
-        <div class="col-md-2">Card No</div>
-    </div>
-    <div class="row col-md-12" id="div_customer_list_result">
-        
+<h3>Search Result</h3>
+<div class="row form-background top-bottom-padding">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Card No</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_customer_list">                
+            
+            </tbody>
+        </table>
     </div>
 </div>

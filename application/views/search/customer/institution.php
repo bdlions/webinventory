@@ -15,8 +15,22 @@
         });
     });
 </script>
-<div class ="row form-background">
-    <div class ="top-bottom-padding col-md-6">
+<script type="text/x-tmpl" id="tmpl_customer_list">
+    {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(customer_info){ %}
+    <tr>
+    <td ><?php echo '{%= customer_info.first_name%}'; ?></td>
+    <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
+    <td ><?php echo '{%= customer_info.phone%}'; ?></td>
+    <td ><?php echo '{%= customer_info.address%}'; ?></td>
+    <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
+    </tr>
+    {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
+</script>
+<h3>Search Customer by Institution</h3>
+<div class ="row form-horizontal form-background top-bottom-padding">
+    <div class ="col-md-6">
         <div class ="row">
             <div class ="col-md-12 form-horizontal">
                 <div class="row">
@@ -43,8 +57,8 @@
         </div>
     </div>
 </div>
-<h2>Search Result</h2>
-<div class="row col-md-11 form-background">
+<h3>Search Result</h3>
+<div class="row form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -57,19 +71,7 @@
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                
-            <script type="text/x-tmpl" id="tmpl_customer_list">
-                {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
-                {% while(customer_info){ %}
-                <tr>
-                <td ><?php echo '{%= customer_info.first_name%}'; ?></td>
-                <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
-                <td ><?php echo '{%= customer_info.phone%}'; ?></td>
-                <td ><?php echo '{%= customer_info.address%}'; ?></td>
-                <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
-                </tr>
-                {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
-                {% } %}
-            </script>
+            
             </tbody>
         </table>
     </div>

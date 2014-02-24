@@ -43,7 +43,8 @@
     {% attendance_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<div class ="row form-background">
+<h3>Search Attendance</h3>
+<div class ="row form-background top-bottom-padding">
     <div class ="col-md-6">
         <div class ="row">
             <div class ="col-md-12 form-horizontal">
@@ -54,7 +55,7 @@
                                 Select Staff
                             </label>
                             <div class ="col-md-6">
-                                <?php echo form_dropdown('salesman_list', $salesman_list, '','class="form-control" id="salesman_list"'); ?>
+                                <?php echo form_dropdown('salesman_list', $salesman_list+array('0' => 'All'), '0','class="form-control" id="salesman_list"'); ?>
                             </div> 
                         </div>
                         <div class="form-group">

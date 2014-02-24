@@ -142,15 +142,18 @@ class Search extends CI_Controller {
             }
         }
         $this->data['product_list'] = $product_list;
+        $date = date('Y-m-d');
         $this->data['start_date'] = array(
             'name' => 'start_date',
             'id' => 'start_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['end_date'] = array(
             'name' => 'end_date',
             'id' => 'end_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['button_search_sale'] = array(
             'name' => 'button_search_sale',
@@ -175,6 +178,7 @@ class Search extends CI_Controller {
     }
     public function search_sales_customer_card_no()
     {
+        $date = date('Y-m-d');
         $this->data['card_no'] = array(
             'name' => 'card_no',
             'id' => 'card_no',
@@ -183,12 +187,14 @@ class Search extends CI_Controller {
         $this->data['start_date'] = array(
             'name' => 'start_date',
             'id' => 'start_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['end_date'] = array(
             'name' => 'end_date',
             'id' => 'end_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['button_search_sale'] = array(
             'name' => 'button_search_sale',

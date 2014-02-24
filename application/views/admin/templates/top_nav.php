@@ -70,8 +70,8 @@
         Tools<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Salesman</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Salesman</a></li>
+        <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
+        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Manager</a></li>
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Managers</a></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 

@@ -71,6 +71,7 @@
 
         $("#button_search_expense").on("click", function() {
             $.ajax({
+                dataType: 'json', 
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "expense/get_expense",
                 data: {
@@ -79,27 +80,25 @@
                     end_date: $("#show_expense_end_date").val()
                 },
                 success: function(data) {
-                    var result = JSON.parse(data);
-                    var expense_list = result['expense_list'];
-                    var div_expense_description = '';
-                    for (var counter = 0; counter < expense_list.length; counter++)
-                    {
-                        var expense_info = expense_list[counter];
-                        div_expense_description += '<div class="row">';
-                        div_expense_description += '<div class ="col-md-3">'+''+'</div>';
-                        div_expense_description += '<div class ="col-md-3">'+expense_info['expense_amount']+'</div>';
-                        div_expense_description += '<div class ="col-md-3">'+expense_info['description']+'</div>';
-                        div_expense_description += '<div class ="col-md-3">'+''+'</div>';
-                        div_expense_description += '</div>';
-                    }
-                    
-                    $("#div_expense_search_result").html(div_expense_description);
+                    $("#tbody_expense_list").html(tmpl("tmpl_expense_list", data));
                 }
             });
         });
     });
 </script>
-<div class ="row form-background">
+<script type="text/x-tmpl" id="tmpl_expense_list">
+    {% var i=0, expense_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(expense_info){ %}
+    <tr>
+    <td>{%= expense_info.expense_amount %}</td>
+    <td>{%= expense_info.description %}</td>
+    <td>{%= expense_info.created_date %}</td>
+    </tr>
+    {% expense_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
+</script>
+<h3>Search Expense</h3>
+<div class ="row form-background top-bottom-padding">
     <div class ="col-md-6">
         <div class ="row">
             <div class ="col-md-12 form-horizontal">
@@ -161,15 +160,20 @@
         </div>
     </div>
 </div>
-<h2>Search Result</h2>
+<h3>Search Result</h3>
 <div class="row form-background">
-    <div class="row">
-        <div class="col-md-3">Expense Type</div>
-        <div class="col-md-3">Amount</div>
-        <div class="col-md-3">Description</div>
-        <div class="col-md-3">Date</div>
-    </div>
-    <div class="row" id="div_expense_search_result">
-        
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_expense_list">                    
+
+            </tbody>
+        </table>
     </div>
 </div>

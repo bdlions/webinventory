@@ -1,4 +1,5 @@
-<div class ="row col-md-12 form-horizontal form-background">
+<h3>Process File</h3>
+<div class ="row form-horizontal form-background top-bottom-padding">
     <?php echo form_open_multipart("sms/upload_file", array('id' => 'form_upload_file', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class="form-group">

@@ -144,15 +144,18 @@ class Expense extends CI_Controller {
             }            
         }
         $this->data['item_list'] = $shop_list;
+        $date = date('Y-m-d');        
         $this->data['show_expense_start_date'] = array(
             'name' => 'show_expense_start_date',
             'id' => 'show_expense_start_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['show_expense_end_date'] = array(
             'name' => 'show_expense_end_date',
             'id' => 'show_expense_end_date',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $date
         );
         $this->data['button_search_expense'] = array(
             'name' => 'button_search_expense',
@@ -215,6 +218,7 @@ class Expense extends CI_Controller {
         $expense_type_id = $_POST['expense_type_id'];
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
+        $expense_list_array = array();
         if($expense_type_id > 0)
         {
             $expense_list_array = $this->expenses->get_expenses($expense_type_id, $start_date, $end_date)->result_array();
@@ -223,8 +227,7 @@ class Expense extends CI_Controller {
         {
             $expense_list_array = $this->expenses->get_all_expenses($start_date, $end_date)->result_array();
         }
-        $result_array['expense_list'] = $expense_list_array;    
-        echo json_encode($result_array);
+        echo json_encode($expense_list_array);
     }
     
     public function test()

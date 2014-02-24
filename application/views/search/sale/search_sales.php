@@ -16,6 +16,7 @@
         });
         $("#button_search_sale").on("click", function() {
             $.ajax({
+                dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "search/search_by_sales",
                 data: {
@@ -25,32 +26,30 @@
                     end_date: $("#end_date").val()
                 },
                 success: function(data) {
-                    var result = JSON.parse(data);
-                    var result_list = result['sale_list'];
-                    var div_search_description = '';
-                    for (var counter = 0; counter < result_list.length; counter++)
-                    {
-                        var result_info = result_list[counter];
-                        div_search_description += '<div class="row col-md-9">';
-                        div_search_description += '<div class ="col-md-1">'+result_info['name']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['purchase_order_no']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['quantity']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['purchase_unit_price']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['sale_unit_price']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['quantity']*result_info['purchase_unit_price']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['discount']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+result_info['total_sale_price']+'</div>';
-                        div_search_description += '<div class ="col-md-1">'+(result_info['total_sale_price'] - (result_info['quantity']*result_info['purchase_unit_price']))+'</div>';
-                        div_search_description += '</div>';
-                    }
-                    
-                    $("#div_search_result").html(div_search_description);
+                    $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));                    
                 }
             });
         });
     });
 </script>
-<div class ="row form-background">
+<script type="text/x-tmpl" id="tmpl_customer_sale_list">
+    {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(sale_info){ %}
+    <tr>
+    <td ><?php echo '{%= sale_info.name%}'; ?></td>
+    <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
+    <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
+    <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
+    <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
+    <td ><?php echo '{%= sale_info.quantity*sale_info.purchase_unit_price%}'; ?></td>
+    <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>
+    <td ><?php echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; ?></td>
+    </tr>
+    {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
+</script>
+<h3>Search Sale</h3>
+<div class ="row form-horizontal form-background top-bottom-padding">
     <div class ="col-md-6">
         <div class ="row">
             <div class ="col-md-12 form-horizontal">
@@ -112,20 +111,25 @@
         </div>
     </div>
 </div>
-<h2>Search Result</h2>
-<div class="row form-background">
-    <div class="row col-md-9">
-        <div class="col-md-1">Product Name</div>
-        <div class="col-md-1">Lot No</div>
-        <div class="col-md-1">Quantity</div>
-        <div class="col-md-1">Purchase Unit Price</div>
-        <div class="col-md-1">Sale Unit Price</div>
-        <div class="col-md-1">Total Purchase Price</div>
-        <div class="col-md-1">Discount(%)</div>
-        <div class="col-md-1">Total Sale Price</div>
-        <div class="col-md-1">Net Profit</div>
-    </div>
-    <div class="row col-md-12" id="div_search_result">
-        
+<h3>Search Result</h3>
+<div class="row form-background top-bottom-padding">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Lot No</th>
+                    <th>Quantity</th>
+                    <th>Purchase Unit Price</th>
+                    <th>Sale Unit Price</th>
+                    <th>Total Purchase Price</th>
+                    <th>Total Sale Price</th>
+                    <th>Net Profit</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_customer_sale_list">                
+            
+            </tbody>
+        </table>
     </div>
 </div>

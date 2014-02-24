@@ -1,38 +1,107 @@
-<div class ="row">
-    <div class="form-background col-md-11">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
+<script type="text/javascript">
+    $(function(){
+        $("#button_search_stock").on("click", function() {
+            var product_id = $("#product_list").val();
+            var purchase_order_no = $("#input_lot_no").val();
+            $.ajax({
+                dataType: 'json', 
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "stock/search_stock",
+                data: {
+                    product_id: product_id,
+                    purchase_order_no: purchase_order_no
+                },
+                success: function(data) {
+                    $("#tbody_stock_list").html(tmpl("tmpl_stock_list", data['stock_list']));
+                    $("#total_quantity").html('Total Quantity:'+data['total_quantity']+' pieces');
+                    $("#total_stock_value").html('Total Stock Value:'+data['total_stock_value']);
+                }
+            });
+        });
+    });
+</script>
+<script type="text/x-tmpl" id="tmpl_stock_list">
+    {% var i=0, stock_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(stock_info){ %}
+    <tr>
+        <td>{%= stock_info.created_on %}</td>
+        <td>{%= stock_info.first_name %} {%= stock_info.last_name %}</td>
+        <td>{%= stock_info.product_name %}</td>
+        <td>{%= stock_info.purchase_order_no %}</td>
+        <td>{%= stock_info.stock_amount %}</td>
+        <td>{%= stock_info.purchase_unit_price %}</td>
+        <td>{%= stock_info.stock_amount*stock_info.purchase_unit_price %}</td>
+    </tr>
+    {% stock_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
+</script>
+<h3>Stock Information</h3>
+<div class="row form-horizontal form-background top-bottom-padding">
+    <div class="col-md-4">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="" class="col-md-6 control-label">Select Product</label>
+              <div class="col-md-6">
+                <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="input_lot_no" class="col-md-6 control-label">Lot No</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" id="input_lot_no" name="input_lot_no">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12">
+                <button type="button" id="button_search_stock" name="button_search_stock" class="btn btn-success pull-right">Search</button>
+              </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <label id="total_quantity">
+            Total Quantity:<?php echo $total_quantity.' pieces';?>
+        </label>
+    </div>
+    <div class="col-md-4">
+        <label id="total_stock_value">
+            Total Stock Value:<?php echo $total_stock_value;?>
+        </label>
+    </div>
+</div>
+<div class ="row form-background">    
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Supplier Name</th>
+                    <th>Product Name</th>
+                    <th>Lot No</th>
+                    <th>Quantity</th>
+                    <th>Purchase Unit Price</th>
+                    <th>Total Purchase Price</th>
+
+                </tr>
+            </thead>
+            <tbody id="tbody_stock_list">
+                <?php
+                foreach ($stock_list as $key => $stock_info) {
+                ?>
                     <tr>
-                        <th>Date & Time</th>
-                        <th>Supplier Name</th>
-                        <th>Product Name</th>
-                        <th>Lot No</th>
-                        <th>Quantity</th>
-                        <th>Purchase Unit Price</th>
-                        <th>Total Purchase Price</th>
-                        
+                        <td><?php echo $stock_info['created_on'] ?></td>
+                        <td><?php echo $stock_info['first_name'].' '.$stock_info['last_name'] ?></td>
+                        <td><?php echo $stock_info['product_name'] ?></td>
+                        <td><?php echo $stock_info['purchase_order_no'] ?></td>
+                        <td><?php echo $stock_info['stock_amount'] ?></td>
+                        <td><?php echo $stock_info['purchase_unit_price'] ?></td>
+                        <td><?php echo $stock_info['stock_amount']*$stock_info['purchase_unit_price'] ?></td>
+
                     </tr>
-                </thead>
-                <tbody id="tbody_product_list">
-                    <?php
-                    foreach ($stock_list as $key => $stock_info) {
-                    ?>
-                        <tr>
-                            <td><?php echo $stock_info['created_on'] ?></td>
-                            <td><?php echo $stock_info['first_name'].' '.$stock_info['last_name'] ?></td>
-                            <td><?php echo $stock_info['product_name'] ?></td>
-                            <td><?php echo $stock_info['purchase_order_no'] ?></td>
-                            <td><?php echo $stock_info['stock_amount'] ?></td>
-                            <td><?php echo $stock_info['purchase_unit_price'] ?></td>
-                            <td><?php echo $stock_info['stock_amount']*$stock_info['purchase_unit_price'] ?></td>
-                            
-                        </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div> 
+                <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>     
 </div>
