@@ -1515,13 +1515,16 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+        
         
         if ($this->input->post('submit_create_manager')) 
         {
             if ($this->form_validation->run() == true) 
             {
                 $user_name = $this->input->post('phone');
-                $password = "password";
+                $password = $this->input->post('password');
                 $email = "dummy@dummy.com";
                 $additional_data = array(
                     'account_status_id' => $this->account_status_list['active_id'],
@@ -1576,6 +1579,18 @@ class User extends CI_Controller {
             'id' => 'address',
             'type' => 'textarea',
             'value' => $this->form_validation->set_value('address'),
+        );
+        $this->data['password'] = array(
+            'name' => 'password',
+            'id' => 'password',
+            'type' => 'password',
+            'value' => $this->form_validation->set_value('password'),
+        );
+        $this->data['password_confirm'] = array(
+            'name' => 'password_confirm',
+            'id' => 'password_confirm',
+            'type' => 'password',
+            'value' => $this->form_validation->set_value('password_confirm'),
         );
         $this->data['submit_create_manager'] = array(
             'name' => 'submit_create_manager',

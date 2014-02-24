@@ -38,6 +38,7 @@
         <script src="<?php echo base_url(); ?>assets/bootstrap3/js/tmpl.js"></script>
     </head>
     <body>
+        <?php $this->load->view("salesman/templates/header"); ?>
         <div class ="container">
             <div class ="row">
                 <!-- Header part -->
