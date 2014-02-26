@@ -23,6 +23,9 @@ class Search extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->load->library('org/common/expenses');
+        $this->load->library('org/common/payments');
+        $this->load->library('org/common/utils');
         $this->load->library('org/product/product_library');
         $this->load->library('org/search/search_customer');
         $this->load->library('org/sale/sale_library');
@@ -88,10 +91,119 @@ class Search extends CI_Controller {
     }
     
     //---------------------------------------- Sale Search ----------------------------------------------
+    /*
+     * Daily Sale
+     */
+    public function daily_sales()
+    {
+        $this->data = $this->process_daily_sale();
+        $this->template->load(null, 'search/sale/daily_sales', $this->data);
+    }
+    /*
+     * Ajax call
+     */
+    public function get_daily_sales()
+    {
+        $product_id = $_POST['product_id'];
+        $result = $this->process_daily_sale($product_id);
+        echo json_encode($result);
+    }
+    
+    public function process_daily_sale($product_id = 0)
+    {
+        $today = gmdate('Y-m-d');
+        $result = array();
+        $shop_id = $this->session->userdata('shop_id');
+        $product_list = array();
+        $product_list_array = $this->product_library->get_all_products($shop_id)->result_array();
+        if( !empty($product_list_array) )
+        {
+            foreach($product_list_array as $product_info)
+            {
+                $product_list[$product_info['id']] = $product_info['name'];
+            }
+        }
+        $result['product_list'] = $product_list;
+        
+        $total_product_sold = 0;
+        $total_profit = 0;
+        $total_sale_price = 0;
+        
+        $time = $this->utils->get_human_to_unix(date('Y-m-d'));
+        $sale_list = array();
+        $sale_list_array = $this->sale_library->get_daily_sales($time, $shop_id, $product_id)->result_array();
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);
+                $total_product_sold = $total_product_sold + $sale_info['quantity'];
+                $total_profit = $total_profit + $sale_info['total_sale_price'] - ($sale_info['quantity']*$sale_info['purchase_unit_price']);
+                $total_sale_price = $total_sale_price + $sale_info['total_sale_price'];
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result['sale_list'] = $sale_list;
+        $result['total_product_sold'] = $total_product_sold;
+        $result['total_profit'] = $total_profit;
+        $result['total_sale_price'] = $total_sale_price;
+        
+        //expense of today
+        $total_expense = 0;
+        $today = gmdate('Y-m-d');
+        $start_time = $this->utils->get_human_to_unix($today);
+        $end_time = $this->utils->get_human_to_unix($today) + 86400;
+        $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time)->result_array();
+        foreach($expense_list_array as $expense_info)
+        {
+            $total_expense = $total_expense + $expense_info['expense_amount'];
+        }
+        $result['total_expense'] = $total_expense;
+        //total due
+        $total_due = 0;
+        $start_time = $this->utils->get_human_to_unix($today);
+        $end_time = $this->utils->get_human_to_unix($today) + 86400;
+        $sale_list_array = $this->sale_library->get_sale_orders($start_time, $end_time)->result_array();
+        foreach($sale_list_array as $sale_info)
+        {
+            if( ($sale_info['total'] - $sale_info['paid']) > 0)
+            {
+                $total_due = $total_due + ($sale_info['total'] - $sale_info['paid']);
+            }
+        }
+        $result['total_due'] = $total_due;
+        
+        //total due collect
+        $total_due_collect = 0;
+        $start_time = $this->utils->get_human_to_unix($today);
+        $end_time = $this->utils->get_human_to_unix($today) + 86400;
+        $payment_list_array = $this->payments->get_customer_payments($start_time, $end_time)->result_array();
+        if(!empty($payment_list_array))
+        {
+            $total_due_collect = $payment_list_array[0]['total_due_collect'];
+        }
+        
+        $result['total_due_collect'] = $total_due_collect;
+        return $result;
+    }
+    
     public function all_sales()
     {
+        $shop_id = $this->session->userdata('shop_id');
+        $product_list = array();
+        $product_list_array = $this->product_library->get_all_products($shop_id)->result_array();
+        if( !empty($product_list_array) )
+        {
+            foreach($product_list_array as $key => $product_info)
+            {
+                $product_list[$product_info['id']] = $product_info['name'];
+            }
+        }
+        $this->data['product_list'] = $product_list;
+        
+        $time = $this->utils->get_human_to_unix(date('Y-m-d'));
         $this->data['sale_list'] = array();
-        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
+        $sale_list_array = $this->sale_library->get_all_sales($time, $shop_id)->result_array();
         if( !empty($sale_list_array) )
         {
             $this->data['sale_list'] = $sale_list_array;
@@ -108,8 +220,10 @@ class Search extends CI_Controller {
         $product_id = $_POST['product_id'];
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
+        $start_time = $this->utils->get_human_to_unix($start_date);
+        $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
         $this->data['sale_list'] = array();
-        $sale_list_array = $this->sale_library->get_user_sales($start_date, $end_date, $user_id, $product_id)->result_array();
+        $sale_list_array = $this->sale_library->get_user_sales($start_time, $end_time, $user_id, $product_id)->result_array();
         $result_array['sale_list'] = $sale_list_array;    
         echo json_encode($result_array);
     }
@@ -171,8 +285,10 @@ class Search extends CI_Controller {
         $card_no = $_POST['card_no'];
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
+        $start_time = $this->utils->get_human_to_unix($start_date);
+        $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
         $this->data['sale_list'] = array();
-        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($start_date, $end_date, $card_no)->result_array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($start_time, $end_time, $card_no)->result_array();
         $result_array['sale_list'] = $sale_list_array;    
         echo json_encode($result_array);
     }

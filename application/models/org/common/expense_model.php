@@ -71,6 +71,7 @@ class Expense_model extends Ion_auth_model {
     }
     public function add_expense($data)
     {
+        $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
         if($data['expense_type_id'] === $this->expense_type_list['shop'])
         {
@@ -107,7 +108,7 @@ class Expense_model extends Ion_auth_model {
                 'amount' => $data['expense_amount'],
                 'description' => 'expense',
                 'reference_id' => $id,
-                'created_on' => now()
+                'created_on' => $current_time
             );
             $this->db->insert($this->tables['supplier_payment_info'], $supplier_payment_data);
             
@@ -116,7 +117,7 @@ class Expense_model extends Ion_auth_model {
             $supplier_transaction_info1 = array(
                 'shop_id' => $shop_id,
                 'supplier_id' => $data['reference_id'],
-                'created_on' => now(),
+                'created_on' => $current_time,
                 'lot_no' => '',
                 'name' => '',
                 'quantity' => '',
@@ -128,7 +129,7 @@ class Expense_model extends Ion_auth_model {
             $supplier_transaction_info2 = array(
                 'shop_id' => $shop_id,
                 'supplier_id' => $data['reference_id'],
-                'created_on' => now(),
+                'created_on' => $current_time,
                 'lot_no' => '',
                 'name' => '',
                 'quantity' => '',
@@ -147,7 +148,7 @@ class Expense_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_expenses($expense_type_id, $start_date, $end_date)
+    /*public function get_expenses($expense_type_id, $start_date, $end_date)
     {
         $end_date = date('Y-m-d', strtotime('+1 day', strtotime($end_date)));
         $this->db->where('created_date >=', $start_date);
@@ -162,6 +163,22 @@ class Expense_model extends Ion_auth_model {
         $end_date = date('Y-m-d', strtotime('+1 day', strtotime($end_date)));
         $this->db->where('created_date >=', $start_date);
         $this->db->where('created_date <=', $end_date);
+        $this->response = $this->db->get($this->tables['expense_info']);
+        return $this;
+    }*/
+    public function get_expenses($expense_type_id, $start_time, $end_time)
+    {
+        $this->db->where('created_on >=', $start_time);
+        $this->db->where('created_on <=', $end_time);
+        $this->db->where('expense_type_id', $expense_type_id);
+        $this->response = $this->db->get($this->tables['expense_info']);
+        return $this;
+    }
+    
+    public function get_all_expenses($start_time, $end_time)
+    {
+        $this->db->where('created_on >=', $start_time);
+        $this->db->where('created_on <=', $end_time);
         $this->response = $this->db->get($this->tables['expense_info']);
         return $this;
     }

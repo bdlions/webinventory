@@ -75,19 +75,12 @@ class Sale extends CI_Controller {
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
         
-        $date = date('Y-m-d');
-        $this->data['input_date_add_sale'] = array(
-            'name' => 'input_date_add_sale',
-            'id' => 'input_date_add_sale',
-            'type' => 'text',
-            'value' => $date
-        );
-        
         $this->template->load(null, 'sales/sales_order',$this->data);
     }
     
     function add_sale()
     {
+        $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
         $selected_product_list = $_POST['product_list'];
         $sale_product_list = array();
@@ -106,7 +99,7 @@ class Sale extends CI_Controller {
             $customer_transaction_info = array(
                 'shop_id' => $shop_id,
                 'customer_id' => $sale_info['customer_id'],
-                'created_on' => now(),
+                'created_on' => $current_time,
                 'lot_no' => $prod_info['purchase_order_no'],
                 'name' => $prod_info['name'],
                 'quantity' => $prod_info['quantity'],
@@ -118,6 +111,7 @@ class Sale extends CI_Controller {
             $customer_transaction_info_array[] = $customer_transaction_info;
             
             $product_info = array(
+                'created_on' => $current_time,
                 'product_id' => $prod_info['product_id'],
                 'quantity' => $prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
@@ -148,7 +142,7 @@ class Sale extends CI_Controller {
         $customer_transaction_info = array(
             'shop_id' => $shop_id,
             'customer_id' => $sale_info['customer_id'],
-            'created_on' => now(),
+            'created_on' => $current_time,
             'lot_no' => '',
             'name' => '',
             'quantity' => '',
@@ -165,7 +159,7 @@ class Sale extends CI_Controller {
                 $customer_transaction_info = array(
                     'shop_id' => $shop_id,
                     'customer_id' => $sale_info['customer_id'],
-                    'created_on' => now(),
+                    'created_on' => $current_time,
                     'lot_no' => '',
                     'name' => '',
                     'quantity' => '',
@@ -181,7 +175,7 @@ class Sale extends CI_Controller {
                 $customer_transaction_info = array(
                     'shop_id' => $shop_id,
                     'customer_id' => $sale_info['customer_id'],
-                    'created_on' => now(),
+                    'created_on' => $current_time,
                     'lot_no' => '',
                     'name' => '',
                     'quantity' => '',
@@ -197,7 +191,7 @@ class Sale extends CI_Controller {
                 $customer_transaction_info = array(
                     'shop_id' => $shop_id,
                     'customer_id' => $sale_info['customer_id'],
-                    'created_on' => now(),
+                    'created_on' => $current_time,
                     'lot_no' => '',
                     'name' => '',
                     'quantity' => '',
@@ -219,7 +213,7 @@ class Sale extends CI_Controller {
                 'amount' => $sale_info['cash_paid'],
                 'description' => 'sale cash',
                 'reference_id' => $sale_info['sale_order_no'],
-                'created_on' => now()
+                'created_on' => $current_time
             );
             $customer_payment_data_array[] = $customer_payment_data;
         }
@@ -231,12 +225,14 @@ class Sale extends CI_Controller {
                 'amount' => $sale_info['check_paid'],
                 'description' => 'sale check:'.$sale_info['check_description'],
                 'reference_id' => $sale_info['sale_order_no'],
-                'created_on' => now()
+                'created_on' => $current_time
             );
             $customer_payment_data_array[] = $customer_payment_data;
         }
         
         $additional_data = array(
+            'sale_date' => $current_time,
+            'created_on' => $current_time,
             'total' => $sale_info['total'],
             'paid' => $sale_info['cash_paid']+$sale_info['check_paid'],
             'sale_order_no' => $sale_info['sale_order_no'],

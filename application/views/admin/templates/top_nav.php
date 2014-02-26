@@ -12,6 +12,8 @@
         Sales<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("sale/sale_order");?>">New Sales Order</a></li>
+        <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/create_customer");?>">New Customer</a></li>
         <li><a href="<?php echo base_url("./user/show_all_customers");?>">Customer List</a></li>
     </ul>
@@ -21,6 +23,8 @@
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("purchase/purchase_order");?>">New Purchase Order</a></li>
+        <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/create_supplier");?>">New Supplier</a></li>
         <li><a href="<?php echo base_url("./user/show_all_suppliers");?>">Supplier List</a></li>
     </ul>
@@ -50,7 +54,7 @@
         Reports<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("search/all_sales");?>">All Sales</a></li>
+        <li><a href="<?php echo base_url("search/daily_sales");?>">Daily Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
         <li class="divider"></li>

@@ -9,7 +9,7 @@
                     profession_id: $("#profession_list").val()
                 },
                 success: function(data) {
-                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data));                    
+                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data)); 
                 }
             });
         });

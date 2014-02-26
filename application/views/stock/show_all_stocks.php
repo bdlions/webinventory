@@ -13,8 +13,8 @@
                 },
                 success: function(data) {
                     $("#tbody_stock_list").html(tmpl("tmpl_stock_list", data['stock_list']));
-                    $("#total_quantity").html('Total Quantity:'+data['total_quantity']+' pieces');
-                    $("#total_stock_value").html('Total Stock Value:'+data['total_stock_value']);
+                    $("#total_quantity").html(data['total_quantity']+' pieces');
+                    $("#total_stock_value").html(data['total_stock_value']);
                 }
             });
         });
@@ -37,37 +37,61 @@
 </script>
 <h3>Stock Information</h3>
 <div class="row form-horizontal form-background top-bottom-padding">
-    <div class="col-md-4">
-        <form class="form-horizontal" role="form">
-            <div class="form-group">
-              <label for="" class="col-md-6 control-label">Select Product</label>
-              <div class="col-md-6">
-                <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="input_lot_no" class="col-md-6 control-label">Lot No</label>
-              <div class="col-md-6">
-                <input type="text" class="form-control" id="input_lot_no" name="input_lot_no">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-md-12">
-                <button type="button" id="button_search_stock" name="button_search_stock" class="btn btn-success pull-right">Search</button>
-              </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-4">
-        <label id="total_quantity">
-            Total Quantity:<?php echo $total_quantity.' pieces';?>
-        </label>
-    </div>
-    <div class="col-md-4">
-        <label id="total_stock_value">
-            Total Stock Value:<?php echo $total_stock_value;?>
-        </label>
-    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                        <label for="" class="col-md-6 control-label">Select Product</label>
+                        <div class="col-md-6">
+                          <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                        <label>
+                            Total Quantity:
+                        </label>
+                        <label id="total_quantity">
+                            <?php echo $total_quantity.' pieces';?>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            Total Stock Value:
+                        </label>
+                        <label id="total_stock_value">
+                            <?php echo $total_stock_value;?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="input_lot_no" class="col-md-6 control-label">Lot No</label>
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" id="input_lot_no" name="input_lot_no">
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <button type="button" id="button_search_stock" name="button_search_stock" class="btn btn-success pull-right">Search</button>
+                          </div>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
 </div>
 <div class ="row form-background">    
     <div class="table-responsive">

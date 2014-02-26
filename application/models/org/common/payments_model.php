@@ -85,4 +85,18 @@ class Payments_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;        
     }
     
+    public function get_customer_payments($start_time, $end_time, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['customer_payment_info'].'.created_on >=', $start_time);
+        $this->db->where($this->tables['customer_payment_info'].'.created_on <=', $end_time);
+        $this->db->where($this->tables['customer_payment_info'].'.description ', 'due collect');
+        return $this->db->select('sum(amount) as total_due_collect')
+                            ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
 }

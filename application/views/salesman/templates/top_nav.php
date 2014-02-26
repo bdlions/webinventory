@@ -45,7 +45,7 @@
         Reports<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("search/all_sales");?>">All Sales</a></li>
+        <li><a href="<?php echo base_url("search/daily_sales");?>">Daily Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
         <li class="divider"></li>

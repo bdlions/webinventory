@@ -68,7 +68,7 @@ class Product_model extends Ion_auth_model
         $data = array(
             'name' => $product_name,
             'shop_id' => $shop_id,
-            'created_date' => date('Y-m-d H:i:s')
+            'created_on' => now()
         );
         //filter out any data passed that doesnt have a matching column in the users table
         //and merge the product data and the additional data

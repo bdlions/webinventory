@@ -61,15 +61,6 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
-        
-        $date = date('Y-m-d');
-        $this->data['input_date_add_purchase'] = array(
-            'name' => 'input_date_add_purchase',
-            'id' => 'input_date_add_purchase',
-            'type' => 'text',
-            'value' => $date
-        );
-        
         $this->template->load(null, 'purchase/purchase_order',$this->data);
     }
     /*
@@ -83,6 +74,7 @@ class Purchase extends CI_Controller {
      */
     function add_purchase()
     {
+        $current_time = now();
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
         $selected_product_list = $_POST['product_list'];
@@ -98,7 +90,7 @@ class Purchase extends CI_Controller {
             $supplier_transaction_info = array(
                 'shop_id' => $shop_id,
                 'supplier_id' => $purchase_info['supplier_id'],
-                'created_on' => now(),
+                'created_on' => $current_time,
                 'lot_no' => $prod_info['purchase_order_no'],
                 'name' => $prod_info['name'],
                 'quantity' => $prod_info['quantity'],
@@ -114,7 +106,7 @@ class Purchase extends CI_Controller {
                 'purchase_order_no' => $prod_info['purchase_order_no'],
                 'shop_id' => $shop_id,
                 'unit_price' => $prod_info['unit_price'],
-                'created_on' => now(),
+                'created_on' => $current_time,
                 'created_by' => $user_id,
                 'sub_total' => $prod_info['sub_total']
             );
@@ -125,14 +117,14 @@ class Purchase extends CI_Controller {
                 'purchase_order_no' => $prod_info['purchase_order_no'],
                 'shop_id' => $shop_id,
                 'stock_amount' => $prod_info['quantity'],
-                'created_on' => now()
+                'created_on' => $current_time
             );
             $add_stock_list[] = $add_stock_info;
         }
         $supplier_transaction_info = array(
             'shop_id' => $shop_id,
             'supplier_id' => $purchase_info['supplier_id'],
-            'created_on' => now(),
+            'created_on' => $current_time,
             'lot_no' => '',
             'name' => '',
             'quantity' => '',
@@ -146,7 +138,7 @@ class Purchase extends CI_Controller {
             $supplier_transaction_info = array(
                 'shop_id' => $shop_id,
                 'supplier_id' => $purchase_info['supplier_id'],
-                'created_on' => now(),
+                'created_on' => $current_time,
                 'lot_no' => '',
                 'name' => '',
                 'quantity' => '',
@@ -160,7 +152,7 @@ class Purchase extends CI_Controller {
                 $supplier_transaction_info = array(
                     'shop_id' => $shop_id,
                     'supplier_id' => $purchase_info['supplier_id'],
-                    'created_on' => now(),
+                    'created_on' => $current_time,
                     'lot_no' => '',
                     'name' => '',
                     'quantity' => '',
@@ -173,6 +165,7 @@ class Purchase extends CI_Controller {
         }       
         
         $additional_data = array(
+            'order_date' => $current_time,
             'purchase_order_no' => $purchase_info['order_no'],
             'shop_id' => $shop_id,
             'supplier_id' => $purchase_info['supplier_id'],
@@ -180,7 +173,7 @@ class Purchase extends CI_Controller {
             'remarks' => $purchase_info['remarks'],
             'total' => $purchase_info['total'],
             'paid' => $purchase_info['paid'],
-            'created_on' => now(),
+            'created_on' => $current_time,
             'created_by' => $user_id
         ); 
         $supplier_payment_data = array(
@@ -189,7 +182,7 @@ class Purchase extends CI_Controller {
             'amount' => $purchase_info['paid'],
             'description' => 'purchase',
             'reference_id' => $prod_info['purchase_order_no'],
-            'created_on' => now()
+            'created_on' => $current_time
         );
         $purchase_id = $this->purchase_library->add_purchase_order($additional_data, $purchased_product_list, $add_stock_list, $supplier_payment_data, $supplier_transaction_info_array);
         if( $purchase_id !== FALSE )

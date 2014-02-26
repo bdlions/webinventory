@@ -75,6 +75,16 @@
     });
 
 </script>
+<script type="text/x-tmpl" id="tmpl_product_list">
+    {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(product_info){ %}
+    <tr>
+    <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
+    <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.id%}'; ?>">view</a></td>
+    </tr>
+    {% product_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
+</script>
 
 <div class="modal fade" id="modal_select_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -105,16 +115,7 @@
                                 <?php
                                 }
                                 ?>
-                                <script type="text/x-tmpl" id="tmpl_product_list">
-                                    {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                                    {% while(product_info){ %}
-                                    <tr>
-                                    <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
-                                    <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.id%}'; ?>">view</a></td>
-                                    </tr>
-                                    {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                                    {% } %}
-                                </script>
+                                
                                 </tbody>
                             </table>
                         </div>

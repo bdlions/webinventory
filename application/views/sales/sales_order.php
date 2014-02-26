@@ -268,13 +268,6 @@
             var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
             $("#current_due").val(current_due);
         });
-        $('#input_date_add_sale').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-3d'
-        }).on('changeDate', function(ev) {
-            $('#input_date_add_sale').text($('#input_date_add_sale').data('date'));
-            $('#input_date_add_sale').datepicker('hide');
-        });
     });
 </script>
 <script type="text/javascript">
@@ -289,67 +282,7 @@
 
 <h3>Sales Order</h3>
 <div class ="row top-bottom-padding form-background">
-    <div class ="col-md-3 form-horizontal">
-        <h6>Search</h6>
-        <div class="form-group">
-            <label for="order_no" class="col-md-3 control-label requiredField">
-                Order#
-            </label>
-            <div class ="col-md-8">
-                <?php echo form_input(array('name' => 'order_no', 'id' => 'order_no', 'class' => 'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="status" class="col-md-3 control-label requiredField">
-                Status
-            </label>
-            <div class ="col-md-8">
-                <?php echo form_dropdown('status', (array('all' => 'all', '1' => '1', '2' => '2', '3' => '3')), 3, "class='form-control'"); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="customer_search" class="col-md-3 control-label requiredField">
-                Customer
-            </label>
-            <div class ="col-md-8">
-                <?php echo form_dropdown('customer_search', (array('all' => 'all', '1' => '1', '2' => '2', '3' => '3')), 3, "class='form-control'"); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="customer_search" class="col-md-3 control-label requiredField">
-
-            </label>
-            <div class ="col-md-8">
-                <?php echo form_button(array('name' => 'customer_search', 'id' => 'customer_search', 'content' => 'Search')); ?>
-            </div> 
-        </div> 
-        <div class="row">			
-            <div class="col-md-6">
-                <div class ="row"><div class ="col-md-offset-2 col-md-11"><h3><u>Order#</u></h3></div></div>
-                <?php
-                foreach ($customer_list_array as $key => $customer) {
-                    ?>
-                    <div class ="row"><div class ="col-md-offset-2 col-md-11">
-                            <?php echo $customer['phone']; ?>
-                        </div></div>
-
-                    <?php
-                }
-                ?>
-            </div>
-            <div class="col-md-6">
-                <div class ="row"><div class ="col-md-offset-2 col-md-11"><h3><u>Status</u></h3></div></div>
-                <?php
-                foreach ($customer_list_array as $key => $customer) {
-                    ?>               
-                    <div class ="row"><div class ="col-md-offset-2 col-md-11">
-                            <?php echo $customer['card_no']; ?>   
-                        </div></div>
-                    <?php
-                }
-                ?>
-            </div>
-        </div>
+    <div class="col-md-2">        
     </div>
     <div class ="col-md-8 form-horizontal">
         <div class="row">
@@ -403,14 +336,6 @@
                     </label>
                     <div class ="col-md-8">
                         <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="input_date_add_sale" class="col-md-4 control-label requiredField">
-                        Date
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_input($input_date_add_sale+array('class' => 'form-control')) ?>
                     </div> 
                 </div>
                 <div class="form-group">
@@ -531,6 +456,8 @@
             </div>
         </div>
 
+    </div>
+    <div class="col-md-2">        
     </div>
 </div>
 <!-- Modal -->

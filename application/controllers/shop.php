@@ -48,7 +48,7 @@ class Shop extends CI_Controller {
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
-                    'created_date' => date('Y-m-d H:i:s')
+                    'created_on' => now()
                 );
                 if( $this->shop_library->create_shop($additional_data) !== FALSE)
                 {

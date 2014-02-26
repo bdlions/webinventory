@@ -60,7 +60,7 @@
                                 Select User
                             </label>
                             <div class ="col-md-6">
-                                <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '','class="form-control" id="employee_list"'); ?>
+                                <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '0','class="form-control" id="employee_list"'); ?>
                             </div> 
                         </div>
                         <div class="form-group">
@@ -68,7 +68,7 @@
                                 Select Product
                             </label>
                             <div class ="col-md-6">
-                                <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '','class="form-control" id="product_list"'); ?>
+                                <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
                             </div> 
                         </div>
                         <div class="form-group">

@@ -66,9 +66,9 @@ class Sale_model extends Ion_auth_model
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_all_sales($shop_id = '')
+    /*public function get_all_sales($shop_id = 0)
     {
-        if(empty($shop_id))
+        if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
@@ -78,9 +78,31 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['product_sale_order'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['product_sale_order'].'.product_id')
                     ->where($this->tables['product_sale_order'].'.shop_id',$shop_id)
                     ->get();  
+    }*/
+    
+    public function get_daily_sales($time, $shop_id = 0, $product_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if( $product_id != 0)
+        {
+            $this->db->where($this->tables['product_sale_order'].'.product_id',$product_id);
+        }
+        $this->db->where($this->tables['product_sale_order'].'.created_on >=',$time);
+        $this->db->where($this->tables['product_sale_order'].'.shop_id',$shop_id);
+        return $this->db->select($this->tables['product_sale_order'].'.created_on,'.$this->tables['product_sale_order'].'.purchase_order_no,'.$this->tables['product_info'].'.name as product_name,'. $this->tables['product_sale_order'].'.quantity,'. $this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_sale_order'].'.sub_total as total_sale_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name')
+                    ->from($this->tables['product_sale_order'])
+                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['product_sale_order'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['sale_order'], $this->tables['sale_order'].'.sale_order_no='.$this->tables['product_sale_order'].'.sale_order_no')
+                    ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['sale_order'].'.created_by')
+                    ->get();  
     }
     
-    public function get_user_sales($start_date, $end_date, $user_id = '' , $product_id = '', $shop_id = '')
+    /*public function get_user_sales($start_date, $end_date, $user_id = '' , $product_id = '', $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -103,6 +125,29 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['product_sale_order'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['product_sale_order'].'.product_id')
                     ->where($this->tables['product_sale_order'].'.shop_id',$shop_id)
                     ->get();  
+    }*/
+    public function get_user_sales($start_time, $end_time, $user_id = '' , $product_id = '', $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if(!empty($user_id) && $user_id > 0)
+        {
+            $this->db->where($this->tables['product_sale_order'].'.created_by', $user_id);
+        }
+        if(!empty($product_id) && $product_id > 0)
+        {
+            $this->db->where($this->tables['product_sale_order'].'.product_id', $product_id);
+        }
+        $this->db->where($this->tables['product_sale_order'].'.created_on >=', $start_time);
+        $this->db->where($this->tables['product_sale_order'].'.created_on <=', $end_time);
+        return $this->db->select($this->tables['product_info'].'.name,'. $this->tables['product_sale_order'].'.quantity,'. $this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_sale_order'].'.discount,'.$this->tables['product_sale_order'].'.sub_total as total_sale_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['product_purchase_order'].'.purchase_order_no')
+                    ->from($this->tables['product_sale_order'])
+                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['product_sale_order'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['product_sale_order'].'.product_id')
+                    ->where($this->tables['product_sale_order'].'.shop_id',$shop_id)
+                    ->get();  
     }
     
     public function get_sale_order_info($sale_id)
@@ -113,7 +158,7 @@ class Sale_model extends Ion_auth_model
                     ->get(); 
     }
     
-    public function get_user_sales_by_card_no($start_date, $end_date, $card_no = '' , $shop_id = '')
+    /*public function get_user_sales_by_card_no($start_date, $end_date, $card_no = '' , $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -134,6 +179,28 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
                     ->where($this->tables['product_sale_order'].'.shop_id',$shop_id)
                     ->get();  
+    }*/
+    
+    public function get_user_sales_by_card_no($start_time, $end_time, $card_no = '' , $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if(!empty($card_no))
+        {
+            $this->db->where($this->tables['customers'].'.card_no', $card_no);
+        }
+        $this->db->where($this->tables['product_sale_order'].'.created_on >=', $start_time);
+        $this->db->where($this->tables['product_sale_order'].'.created_on <=', $end_time);
+        return $this->db->select($this->tables['product_info'].'.name,'. $this->tables['product_sale_order'].'.quantity,'. $this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_sale_order'].'.discount,'.$this->tables['product_sale_order'].'.sub_total as total_sale_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['product_purchase_order'].'.purchase_order_no')
+                    ->from($this->tables['product_sale_order'])
+                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['product_sale_order'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['product_sale_order'].'.product_id')
+                    ->join($this->tables['sale_order'], $this->tables['sale_order'].'.sale_order_no='.$this->tables['product_sale_order'].'.sale_order_no')
+                    ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
+                    ->where($this->tables['product_sale_order'].'.shop_id',$shop_id)
+                    ->get();  
     }
     
     public function get_total_sale_price($customer_id)
@@ -142,6 +209,19 @@ class Sale_model extends Ion_auth_model
         $this->db->where('shop_id', $shop_id);
         $this->db->where('customer_id', $customer_id);
         return $this->db->select('SUM(total) as total_sale_price')
+                            ->from($this->tables['sale_order'])
+                            ->get();
+    }
+    
+    public function get_sale_orders($start_time, $end_time, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['sale_order'].'.created_on >=', $start_time);
+        $this->db->where($this->tables['sale_order'].'.created_on <=', $end_time);
+        return $this->db->select('*')
                             ->from($this->tables['sale_order'])
                             ->get();
     }

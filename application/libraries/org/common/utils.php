@@ -63,4 +63,15 @@ class Utils {
         $dateTime = new DateTime("now", $dateTimeZone);
         return unix_to_human($time + $dateTime->getOffset());
     }
+    
+    public function get_human_to_unix($date)
+    {
+        //adding default hour, minute and AM/PM if date is YYYY-MM-DD format
+        $date_array = explode(" ", $date);
+        if(count($date_array) == 1)
+        {
+            $date = $date.' 00:00 AM';
+        }
+        return human_to_unix($date)-21600;
+    }
 }
