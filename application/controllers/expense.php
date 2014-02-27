@@ -22,7 +22,7 @@ class Expense extends CI_Controller {
                         $this->load->database();
 
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
-
+        
         $this->lang->load('auth');
         $this->load->helper('language');
         $this->load->library('org/common/expenses');
@@ -38,6 +38,7 @@ class Expense extends CI_Controller {
     public function add_expense()
     {
         $current_time = now();
+        $shop_id = $this->session->userdata('shop_id');
         $this->data['expense_type_list'] = $this->expense_type_list;
         
         $expense_types_array = $this->expenses->get_all_expense_types()->result_array();
@@ -69,6 +70,7 @@ class Expense extends CI_Controller {
             if($this->form_validation->run() == true)
             {
                 $additional_data = array(
+                    'shop_id' => $shop_id,
                     'expense_date' => $current_time,
                     'created_on' => $current_time,
                     'expense_type_id' => $this->input->post('expense_categories'),
@@ -224,6 +226,7 @@ class Expense extends CI_Controller {
         $end_date = $_POST['end_date'];
         $start_time = $this->utils->get_human_to_unix($start_date);
         $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
+        $expense_list = array();
         $expense_list_array = array();
         if($expense_type_id > 0)
         {
@@ -233,7 +236,15 @@ class Expense extends CI_Controller {
         {
             $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time)->result_array();
         }
-        echo json_encode($expense_list_array);
+        if( !empty($expense_list_array) )
+        {
+            foreach($expense_list_array as $expense_info)
+            {
+                $expense_info['expense_date'] = $this->utils->process_time($expense_info['expense_date']);                
+                $expense_list[] = $expense_info;
+            }
+        }
+        echo json_encode($expense_list);
     }
     
     public function test()

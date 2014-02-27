@@ -92,7 +92,7 @@
     <tr>
     <td>{%= expense_info.expense_amount %}</td>
     <td>{%= expense_info.description %}</td>
-    <td>{%= expense_info.created_date %}</td>
+    <td>{%= expense_info.expense_date %}</td>
     </tr>
     {% expense_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}

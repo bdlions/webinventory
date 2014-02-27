@@ -57,4 +57,12 @@ class Stock_model extends Ion_auth_model
                     ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->get(); 
     }
+    
+    public function update_stock($update_stock_list)
+    {
+        foreach($update_stock_list as $key => $update_stock_info)
+        {
+            $this->db->update($this->tables['stock_info'], $update_stock_info, array('product_id' => $update_stock_info['product_id'], 'purchase_order_no' => $update_stock_info['purchase_order_no'], 'shop_id' => $update_stock_info['shop_id'] ));
+        }
+    }
 }

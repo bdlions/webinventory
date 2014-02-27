@@ -187,7 +187,7 @@
             $("input", $(this).parent().parent()).each(function() {
                 if ($(this).attr("name") === "quantity")
                 {
-                    if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
+                    /*if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
                     {
                         $(this).val('1');
                         alert("Invalid quantity.");
@@ -198,17 +198,29 @@
                         product_id = $(this).attr("id");
                         $(this).attr('value', $(this).val());
                         product_quantity = $(this).val();
+                    }*/
+                    if ($(this).attr("id") > 0)
+                    {
+                        product_id = $(this).attr("id");
+                        $(this).attr('value', $(this).val());
+                        product_quantity = $(this).val();
                     }
                 }
                 if ($(this).attr("name") === "price")
                 {
-                    if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
+                    /*if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
                     {
                         $(this).val('100');
                         alert("Invalid price.");
                         return false;
                     }
                     else if ($(this).attr("id") > 0)
+                    {
+                        product_id = $(this).attr("id");
+                        $(this).attr('value', $(this).val());
+                        product_buy_price = $(this).val();
+                    }*/
+                    if ($(this).attr("id") > 0)
                     {
                         product_id = $(this).attr("id");
                         $(this).attr('value', $(this).val());
@@ -332,9 +344,9 @@
                         {% while(product_info){ %}
                         <tr>
                         <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
-                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value="1"/></td>
-                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="100"/></td>
-                        <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value="100"/></td>
+                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
+                        <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
+                        <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
                         </tr>
                         {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                         {% } %}

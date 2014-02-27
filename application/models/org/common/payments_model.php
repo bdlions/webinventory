@@ -28,8 +28,10 @@ if (!defined('BASEPATH'))
  *
  */
 class Payments_model extends Ion_auth_model {
+    protected $payment_category_list = array();
     public function __construct() {
         parent::__construct();
+        $this->payment_category_list = $this->config->item('payment_category', 'ion_auth');
     }
     
     public function get_supplier_total_payment($supplier_id)
@@ -85,18 +87,64 @@ class Payments_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;        
     }
     
-    public function get_customer_payments($start_time, $end_time, $shop_id = '')
+    public function get_customer_due_collect_today($start_time, $shop_id = '')
     {
         if(empty($shop_id))
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        $this->db->where($this->tables['customer_payment_info'].'.created_on >=', $start_time);
-        $this->db->where($this->tables['customer_payment_info'].'.created_on <=', $end_time);
-        $this->db->where($this->tables['customer_payment_info'].'.description ', 'due collect');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $start_time);
+        $this->db->where('payment_category_id', $this->payment_category_list['due_collect_id']);
         return $this->db->select('sum(amount) as total_due_collect')
                             ->from($this->tables['customer_payment_info'])
                             ->get();
+    }
+    
+    public function get_customer_due_collect_list_today($start_time, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['customer_payment_info'].'.shop_id', $shop_id);
+        $this->db->where($this->tables['customer_payment_info'].'.created_on >=', $start_time);
+        $this->db->where('payment_category_id', $this->payment_category_list['due_collect_id']);
+        return $this->db->select($this->tables['customer_payment_info'].'.*,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['customers'].'.card_no')
+                            ->from($this->tables['customer_payment_info'])
+                            ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['customer_payment_info'].'.customer_id')
+                            ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                            ->get();
+    }
+    
+    public function get_customer_previous_due_collect($current_date, $shop_id = 0)
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on <', $current_date);
+        $this->db->where('payment_category_id', $this->payment_category_list['due_collect_id']);
+        return $this->db->select('sum(amount) as total_previous_due_collect')
+                            ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
+    public function add_customer_transactions($customer_transaction_info_array)
+    {
+        $this->db->insert_batch($this->tables['customer_transaction_info'], $customer_transaction_info_array);
+    }
+    
+    public function delete_customer_payment($sale_order_no, $shop_id = 0)
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('sale_order_no', $sale_order_no);
+        return $this->db->delete($this->tables['customer_payment_info']);
     }
     
 }

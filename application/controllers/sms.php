@@ -186,7 +186,10 @@ class Sms extends CI_Controller {
         $operator_list_array = $this->operators->get_all_operators()->result_array();        
         foreach ($operator_list_array as $operator_info) {
             $this->data['operator_list'][$operator_info['operator_prefix']] = $operator_info['operator_name'];
-        }        
+        }  
+        $this->data['color_list']['1'] = 'Green';
+        $this->data['color_list']['2'] = 'Blue';
+        $this->data['color_list']['3'] = 'Red';
         $this->template->load(null, 'sms/process_file', $this->data);
     }
     
@@ -194,6 +197,7 @@ class Sms extends CI_Controller {
     {
         $selected_operator_length = 0;
         $selected_operator = $this->input->post('operator_list');
+        $selected_color = $this->input->post('color_list');
         if( $selected_operator != "" )
         {
             $selected_operator_length = strlen($selected_operator);
@@ -205,23 +209,61 @@ class Sms extends CI_Controller {
         $file_content_array = explode("\n", $file_content);
         foreach($file_content_array as $line)
         {
-            if( $line!= '')
+            if( $line != '' )
             {
                 $line_array = explode("-", $line);
-                if(!in_array($line_array[0], $number_list))
-                {
-                    if( $selected_operator == "")
-                    {
-                        $number_list[] = $line_array[0];
-                    }
-                    else if( substr($line_array[0], 0,$selected_operator_length) == $selected_operator  )
-                    {
-                        $number_list[] = $line_array[0];
-                    } 
-                }
-            }                        
+                $number_list[] = $line_array[0];
+            }               
         }
-        foreach($number_list as $number)
+        $result = array_count_values($number_list);
+        arsort($result);
+        $filtered_number_list = array();
+        foreach($result as $number => $frequency)
+        {
+            if($frequency == 1 )
+            {
+                if( $selected_color == 1 || $selected_color == "" )
+                {                    
+                    $filtered_number_list[] = $number;
+                }
+            }
+            else
+            {
+                for($counter = 0; $counter < $frequency; $counter++)
+                {
+                    if($counter == 0 )
+                    {
+                        if( $selected_color == 2 || $selected_color == "" )
+                        {                    
+                            $filtered_number_list[] = $number;
+                        }
+                    }   
+                    else
+                    {
+                        if( $selected_color == 3 || $selected_color == "" )
+                        {
+                            $filtered_number_list[] = $number;
+                        }
+                    }
+                }
+            }
+        }
+        $processed_number_list = array();
+        foreach($filtered_number_list as $filtered_number)
+        {
+            if(!in_array($filtered_number, $processed_number_list))
+            {
+                if( $selected_operator == "")
+                {
+                    $processed_number_list[] = $filtered_number;
+                }
+                else if( substr($filtered_number, 0,$selected_operator_length) == $selected_operator  )
+                {
+                    $processed_number_list[] = $filtered_number;
+                } 
+            }                      
+        }
+        foreach($processed_number_list as $number)
         {
             $content = $content . $number . "\n"; 
         }

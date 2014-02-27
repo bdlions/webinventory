@@ -35,15 +35,28 @@ class Test extends CI_Controller {
     
     public function test1()
     {
-        $now = time();
-        print_r($now);
+        /*$gmt_unix_current_time = now();
+        $local_unix_current_time = ($gmt_unix_current_time + 21600);
+        $local_human_current_time = unix_to_human($local_unix_current_time);
+        $local_human_current_time_array= explode(" ", $local_human_current_time);
+        $local_human_current_date = $local_human_current_time_array[0];
+        $local_human_current_date_start_time = $local_human_current_date.' 00:00 AM';
+        $unix_local_current_date_start_time = human_to_unix($local_human_current_date_start_time);
+        $unix_gmt_current_date_start_time = ($unix_local_current_date_start_time - 21600);*/
+        
+        
+        
+        
+        $now = now();
+        //$now = time();
+        //print_r($now);
         $human = unix_to_human($now);
         print_r($human);
-        $unix = human_to_unix($human);
+        //$unix = human_to_unix($human);
         //print_r($unix);
         
-        $unix2 = human_to_unix('2014-02-22 00:00 AM');
-        print_r($unix2);
+        //$unix2 = human_to_unix('2014-02-22 00:00 AM');
+        //print_r($unix2);
     }
     
 }

@@ -13,7 +13,6 @@
                     $("#label_total_product_sold").html(data['total_product_sold']+" pieces");
                     $("#label_total_profit").html(data['total_profit']);
                     $("#label_total_sale_price").html(data['total_sale_price']);
-                    $("#label_total_expense").html(data['total_expense']);
                 }
             });
         });
@@ -51,29 +50,29 @@
                     </td> 
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Product Sold : 
+                            Total Sale Price : 
                         </label>
-                        <label id="label_total_product_sold" class="col-md-6 control-label requiredField">
-                            <?php echo $total_product_sold;?> pieces 
+                        <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
+                            <?php echo $total_sale_price;?> 
                         </label>
                     </td>
-                    <td>
+                    <td>                        
                         <label class="col-md-6 control-label requiredField">
-                            Total Profit : 
+                            Total Due <a href="<?php echo base_url().'payment/show_total_due'?>">View</a> : 
                         </label>
-                        <label id="label_total_profit" class="col-md-6 control-label requiredField">
-                            <?php echo $total_profit;?>
+                        <label id="label_total_due" class="col-md-6 control-label requiredField">
+                            <?php echo $total_due;?>
                         </label>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Sale Price : 
+                            Total Product Sold : 
                         </label>
-                        <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
-                            <?php echo $total_sale_price;?> 
-                        </label>
+                        <label id="label_total_product_sold" class="col-md-6 control-label requiredField">
+                            <?php echo $total_product_sold;?> pieces 
+                        </label>                        
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
@@ -85,38 +84,36 @@
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Due Collect : 
+                            Previous Balance : 
                         </label>
-                        <label id="label_total_due_collect" class="col-md-6 control-label requiredField">
-                            <?php echo $total_due_collect;?>
+                        <label id="label_previous_balance" class="col-md-6 control-label requiredField">
+                            <?php echo $previous_balance?>
                         </label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="form-group">
-                            <label class="col-md-6 control-label requiredField">
-                                Total Due : 
-                            </label>
-                            <label id="label_total_due" class="col-md-6 control-label requiredField">
-                                <?php echo $total_due;?>
-                            </label>
-                        </div>
+                        <label class="col-md-6 control-label requiredField">
+                            Total Profit : 
+                        </label>
+                        <label id="label_total_profit" class="col-md-6 control-label requiredField">
+                            <?php echo $total_profit;?>
+                        </label>                        
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Previous Balance : 
+                            Total Due Collect <a href="<?php echo base_url().'payment/show_due_collect'?>">View</a> : 
                         </label>
-                        <label id="label_previous_balance" class="col-md-6 control-label requiredField">
-                            0
-                        </label>
+                        <label id="label_total_due_collect" class="col-md-6 control-label requiredField">
+                            <?php echo $total_due_collect;?>
+                        </label>                        
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
                             Total Net Balance : 
                         </label>
                         <label id="label_total_net_balance" class="col-md-6 control-label requiredField">
-                            0
+                            <?php echo ($total_sale_price - $total_due + $total_due_collect + $previous_balance - $total_expense)?>
                         </label>
                     </td>
                 </tr>

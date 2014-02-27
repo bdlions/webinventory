@@ -12,7 +12,7 @@
             <?php foreach($number_list as $number => $frequency){
                 if($frequency == 1){
                 ?>
-                    <tr bgcolor="#00FF00">
+                    <tr bgcolor="#4DB849">
                         <th><?php echo $number_name_map[$number];?></th>
                         <th><?php echo $number;?></th>
                     </tr>
@@ -25,7 +25,7 @@
                         if($counter == 0)
                         {
                         ?>
-                            <tr bgcolor="#0000FF">
+                            <tr bgcolor="#108DE6">
                                 <th><?php echo $number_name_map[$number];?></th>
                                 <th><?php echo $number;?></th>
                             </tr>
@@ -34,7 +34,7 @@
                         else
                         {
                         ?>
-                            <tr bgcolor="#FF0000">
+                            <tr bgcolor="#E9393E">
                                 <th><?php echo $number_name_map[$number];?></th>
                                 <th><?php echo $number;?></th>
                             </tr>
@@ -48,7 +48,15 @@
     </div>
     <div class="row">
         <?php echo form_open("sms/generate_number_file/", array('id' => 'form_generate_number_file', 'class' => 'form-horizontal')); ?>
-        <div class="col-md-6"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4 form-group">
+            <label for="color_list" class="col-md-6 control-label requiredField">
+                Select Color
+            </label>
+            <div class ="col-md-6">
+                <?php echo form_dropdown('color_list', array(''=>'All')+$color_list, '', 'class=form-control'); ?>
+            </div> 
+        </div>
         <div class="col-md-4 form-group">
             <label for="operator_list" class="col-md-6 control-label requiredField">
                 Select Operator

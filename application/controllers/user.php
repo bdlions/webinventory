@@ -771,6 +771,21 @@ class User extends CI_Controller {
         $this->template->load(null, 'customer/create_customer',$this->data);
     }
     
+    public function download_search_customer()
+    {
+        $content = '';
+        $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+        }
+        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
+    }
+    
     public function show_all_customers()
     {
         $this->data['customer_list'] = array();
@@ -779,6 +794,12 @@ class User extends CI_Controller {
         {
             $this->data['customer_list'] = $customer_list_array;
         } 
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
+        );
         $this->template->load(null, 'customer/show_all_customers', $this->data);
     }
     

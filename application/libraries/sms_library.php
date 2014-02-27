@@ -67,7 +67,6 @@ class Sms_library {
     
     public function send_sms($phoneNumber, $message)
     {
-        return 0;
         $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop()->result_array();
         if(!empty($sms_configuration_shop_array))
         {
@@ -76,6 +75,10 @@ class Sms_library {
             {
                 return 0;
             }
+        }
+        else
+        {
+            return 0;
         }
         /*if($phoneNumber == "" || $message == ""){
                 return 0;

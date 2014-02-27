@@ -35,6 +35,7 @@
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
+    <td ><?php echo '{%= sale_info.sale_order_no%}'; ?></td>
     <td ><?php echo '{%= sale_info.name%}'; ?></td>
     <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
     <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
@@ -108,6 +109,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Sale Id</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>

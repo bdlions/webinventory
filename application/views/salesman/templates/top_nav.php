@@ -4,6 +4,7 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("sale/sale_order");?>">New Sales Order</a></li>
+        <li><a href="<?php echo base_url("sale/delete_sale");?>">Delete Sale</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/create_customer");?>">New Customer</a></li>
         <li><a href="<?php echo base_url("./user/show_all_customers");?>">Customer List</a></li>

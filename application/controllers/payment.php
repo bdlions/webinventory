@@ -8,12 +8,14 @@ class Payment extends CI_Controller {
      * 
      * $var array
      */
-
+    protected $payment_type_list = array();
+    protected $payment_category_list = array();
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('sms_library');
         $this->load->library('org/common/payments');
+        $this->load->library('org/common/utils');
         $this->load->library('org/purchase/purchase_library');
         $this->load->library('org/sale/sale_library');
         $this->load->helper('url');
@@ -25,7 +27,8 @@ class Payment extends CI_Controller {
                         $this->load->database();
 
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
-
+        $this->payment_type_list = $this->config->item('payment_type', 'ion_auth');
+        $this->payment_category_list = $this->config->item('payment_category', 'ion_auth');
         $this->lang->load('auth');
         $this->load->helper('language');
     }
@@ -110,6 +113,8 @@ class Payment extends CI_Controller {
         $amount = $_POST['amount'];
         
         $customer_payment_data = array(
+            'payment_type_id' => $this->payment_type_list['cash_id'],
+            'payment_category_id' => $this->payment_category_list['due_collect_id'],
             'shop_id' => $shop_id,
             'customer_id' => $customer_id,
             'amount' => $amount,
@@ -154,5 +159,34 @@ class Payment extends CI_Controller {
             $this->payments->add_customer_due_collect_transaction($customer_transaction_info_array);
             echo 1;
         }
+    }
+    
+    public function show_due_collect()
+    {
+        $due_collect_list = array();
+        $time = $this->utils->get_current_date_start_time();
+        $due_collect_list_array = $this->payments->get_customer_due_collect_list_today($time)->result_array();
+        foreach($due_collect_list_array as $due_collect)
+        {
+            $due_collect['created_on'] = $this->utils->process_time($due_collect['created_on']);
+            $due_collect_list[] = $due_collect;
+        }
+        $this->data['due_collect_list'] = $due_collect_list;
+        $this->template->load(null, 'search/due/due_collect',$this->data);
+    }
+    
+    public function show_total_due()
+    {
+        $due_list = array();
+        $time = $this->utils->get_current_date_start_time();
+        $this->data['due_list'] = $due_list;
+        $due_list_array = $this->sale_library->get_due_list_today($time)->result_array();
+        foreach($due_list_array as $due_info)
+        {
+            $due_info['created_on'] = $this->utils->process_time($due_info['created_on']);
+            $due_list[] = $due_info;
+        }
+        $this->data['due_list'] = $due_list;
+        $this->template->load(null, 'search/due/due_list',$this->data);
     }
 }

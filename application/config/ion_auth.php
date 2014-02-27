@@ -91,6 +91,12 @@ $config['expense_type']['supplier']         = '2';
 $config['expense_type']['user']             = '3';
 $config['expense_type']['other']            = '4';
 
+$config['payment_type']['cash_id']                          = '1';
+$config['payment_type']['check_id']                         = '2';
+
+$config['payment_category']['sale_payment_id']              = '1';
+$config['payment_category']['due_collect_id']               = '2';
+
 /*
  | -------------------------------------------------------------------------
  | Hash Method (sha1 or bcrypt)

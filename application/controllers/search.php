@@ -111,7 +111,8 @@ class Search extends CI_Controller {
     
     public function process_daily_sale($product_id = 0)
     {
-        $today = gmdate('Y-m-d');
+        //$today = date('Y-m-d');
+        $time = $this->utils->get_current_date_start_time();
         $result = array();
         $shop_id = $this->session->userdata('shop_id');
         $product_list = array();
@@ -129,7 +130,6 @@ class Search extends CI_Controller {
         $total_profit = 0;
         $total_sale_price = 0;
         
-        $time = $this->utils->get_human_to_unix(date('Y-m-d'));
         $sale_list = array();
         $sale_list_array = $this->sale_library->get_daily_sales($time, $shop_id, $product_id)->result_array();
         if( !empty($sale_list_array) )
@@ -150,10 +150,7 @@ class Search extends CI_Controller {
         
         //expense of today
         $total_expense = 0;
-        $today = gmdate('Y-m-d');
-        $start_time = $this->utils->get_human_to_unix($today);
-        $end_time = $this->utils->get_human_to_unix($today) + 86400;
-        $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time)->result_array();
+        $expense_list_array = $this->expenses->get_all_expenses_today($time)->result_array();
         foreach($expense_list_array as $expense_info)
         {
             $total_expense = $total_expense + $expense_info['expense_amount'];
@@ -161,10 +158,8 @@ class Search extends CI_Controller {
         $result['total_expense'] = $total_expense;
         //total due
         $total_due = 0;
-        $start_time = $this->utils->get_human_to_unix($today);
-        $end_time = $this->utils->get_human_to_unix($today) + 86400;
-        $sale_list_array = $this->sale_library->get_sale_orders($start_time, $end_time)->result_array();
-        foreach($sale_list_array as $sale_info)
+        $sale_order_array = $this->sale_library->get_sale_orders_today($time)->result_array();
+        foreach($sale_order_array as $sale_info)
         {
             if( ($sale_info['total'] - $sale_info['paid']) > 0)
             {
@@ -175,15 +170,33 @@ class Search extends CI_Controller {
         
         //total due collect
         $total_due_collect = 0;
-        $start_time = $this->utils->get_human_to_unix($today);
-        $end_time = $this->utils->get_human_to_unix($today) + 86400;
-        $payment_list_array = $this->payments->get_customer_payments($start_time, $end_time)->result_array();
+        $payment_list_array = $this->payments->get_customer_due_collect_today($time)->result_array();
         if(!empty($payment_list_array))
         {
             $total_due_collect = $payment_list_array[0]['total_due_collect'];
-        }
-        
+        }        
         $result['total_due_collect'] = $total_due_collect;
+        //previous balance
+        $previous_expense = 0;
+        $previous_expense_array = $this->expenses->get_previous_expenses($time)->result_array();
+        if(!empty($previous_expense_array))
+        {
+            $previous_expense = $previous_expense_array[0]['total_expense'];
+        }
+        $previous_due_collect = 0;
+        $previous_due_collect_array = $this->payments->get_customer_previous_due_collect($time)->result_array();
+        if(!empty($previous_due_collect_array))
+        {
+            $previous_due_collect = $previous_due_collect_array[0]['total_previous_due_collect'];
+        }
+        $previous_sale_amount = 0;
+        $previous_sale_amount_array = $this->sale_library->get_previous_sale_amount($time)->result_array();
+        if(!empty($previous_sale_amount_array))
+        {
+            $previous_sale_amount = $previous_sale_amount_array[0]['total_previous_sale_amount'];
+        }
+        $previous_balance = $previous_sale_amount + $previous_due_collect - $previous_expense;
+        $result['previous_balance'] = $previous_balance;
         return $result;
     }
     
@@ -221,10 +234,20 @@ class Search extends CI_Controller {
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
         $start_time = $this->utils->get_human_to_unix($start_date);
-        $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
+        $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
         $this->data['sale_list'] = array();
+        
+        $sale_list = array();
         $sale_list_array = $this->sale_library->get_user_sales($start_time, $end_time, $user_id, $product_id)->result_array();
-        $result_array['sale_list'] = $sale_list_array;    
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);                
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result_array['sale_list'] = $sale_list;    
         echo json_encode($result_array);
     }
     public function search_sales()
@@ -331,6 +354,21 @@ class Search extends CI_Controller {
         $result_array = $this->search_customer->search_customer_by_profession($profession_id)->result_array();
         echo json_encode($result_array);
     }
+    public function download_search_customer_by_profession()
+    {
+        $content = '';
+        $profession_id = $this->input->post('profession_list');
+        $customer_list_array = $this->search_customer->search_customer_by_profession($profession_id)->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+        }
+        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
+    }
     
     public function search_customer_profession()
     {
@@ -348,6 +386,12 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
+        );
         $this->template->load(null, 'search/customer/profession',$this->data);
     }
     
@@ -359,6 +403,22 @@ class Search extends CI_Controller {
         $institution_id = $_POST['institution_id'];
         $result_array = $this->search_customer->search_customer_by_institution($institution_id)->result_array();
         echo json_encode($result_array);
+    }
+    
+    public function download_search_customer_by_institution()
+    {
+        $content = '';
+        $institution_id = $this->input->post('institution_list');
+        $customer_list_array = $this->search_customer->search_customer_by_institution($institution_id)->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+        }
+        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
     }
     
     public function search_customer_institution()
@@ -377,6 +437,12 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
+        );
         $this->template->load(null, 'search/customer/institution',$this->data);
     }
     /*
@@ -387,6 +453,22 @@ class Search extends CI_Controller {
         $card_no = $_POST['card_no'];
         $result_array['customer_list'] = $this->search_customer->search_customer_by_card_no($card_no)->result_array();
         echo json_encode($result_array);
+    }
+    
+    public function download_search_customer_by_card_no()
+    {
+        $content = '';
+        $card_no = $this->input->post('card_no');
+        $customer_list_array = $this->search_customer->search_customer_by_card_no($card_no)->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+        }
+        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
     }
     
     public function search_customer_card_no()
@@ -402,6 +484,12 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
+        );
         $this->template->load(null, 'search/customer/card_no',$this->data);
     }
     
@@ -413,6 +501,22 @@ class Search extends CI_Controller {
         $phone = $_POST['phone'];
         $result_array['customer_list'] = $this->search_customer->search_customer_by_phone($phone)->result_array();
         echo json_encode($result_array);
+    }
+    
+    public function download_search_customer_by_phone()
+    {
+        $content = '';
+        $phone = $this->input->post('phone');
+        $customer_list_array = $this->search_customer->search_customer_by_phone($phone)->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+        }
+        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
     }
     
     public function search_customer_phone()
@@ -427,6 +531,12 @@ class Search extends CI_Controller {
             'id' => 'button_search_customer',
             'type' => 'reset',
             'value' => 'Search',
+        );
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
         );
         $this->template->load(null, 'search/customer/phone',$this->data);
     }
@@ -452,6 +562,23 @@ class Search extends CI_Controller {
         echo json_encode($result_array);
     }
     
+    public function download_search_customer_by_card_no_range()
+    {
+        $content = '';
+        $start_card_no = $this->input->post('start_card_no');
+        $end_card_no = $this->input->post('end_card_no');
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+        }
+        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
+    }
+    
     public function search_customer_card_no_range()
     {
         $this->data['start_card_no'] = array(
@@ -469,6 +596,12 @@ class Search extends CI_Controller {
             'id' => 'button_search_customer',
             'type' => 'reset',
             'value' => 'Search',
+        );
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
         );
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
     }

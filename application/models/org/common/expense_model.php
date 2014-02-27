@@ -166,8 +166,13 @@ class Expense_model extends Ion_auth_model {
         $this->response = $this->db->get($this->tables['expense_info']);
         return $this;
     }*/
-    public function get_expenses($expense_type_id, $start_time, $end_time)
+    public function get_expenses($expense_type_id, $start_time, $end_time, $shop_id = 0)
     {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
         $this->db->where('created_on >=', $start_time);
         $this->db->where('created_on <=', $end_time);
         $this->db->where('expense_type_id', $expense_type_id);
@@ -175,10 +180,44 @@ class Expense_model extends Ion_auth_model {
         return $this;
     }
     
-    public function get_all_expenses($start_time, $end_time)
+    public function get_all_expenses($start_time, $end_time, $shop_id = 0)
     {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
         $this->db->where('created_on >=', $start_time);
         $this->db->where('created_on <=', $end_time);
+        $this->response = $this->db->get($this->tables['expense_info']);
+        return $this;
+    }
+    
+    /*
+     * This method will return all expenses before current_date
+     */
+    public function get_previous_expenses($current_date, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('expense_date <', $current_date);
+        $this->response = $this->db->select('sum(expense_amount) as total_expense')
+                               ->from($this->tables['expense_info'])
+                               ->get();
+        return $this;
+    }
+    
+    public function get_all_expenses_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $time);
         $this->response = $this->db->get($this->tables['expense_info']);
         return $this;
     }

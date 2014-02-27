@@ -436,6 +436,7 @@ INSERT INTO `expense_type` (`id`, `description`) VALUES
 (4, 'Other');  
 CREATE TABLE IF NOT EXISTS `expense_info` (
 	`id` int NOT NULL AUTO_INCREMENT,
+	`shop_id` int NOT NULL,
 	`expense_type_id` int NOT NULL,
 	`reference_id` int DEFAULT 0,
 	`description` varchar(200) NOT NULL,
@@ -445,9 +446,11 @@ CREATE TABLE IF NOT EXISTS `expense_info` (
 	`created_by` int,
 	`modified_on` int(11) unsigned DEFAULT NULL,
 	`modified_by` int default NULL,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	KEY `fk_expense_info_shop_info1_idx` (`shop_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `expense_info`
+  ADD CONSTRAINT `fk_expense_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_expense_info_expense_type1` FOREIGN KEY (`expense_type_id`) REFERENCES `expense_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
 -- -----------------------------------SMS module --------------
@@ -506,25 +509,49 @@ ALTER TABLE `supplier_transaction_info`
  
 
 -- --------------------------------Customer payment record ---------------------------
+CREATE TABLE `customer_payment_type_info` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200) NOT NULL default '',
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `customer_payment_type_info` (`id`, `description`) VALUES
+(1, 'Cash'),
+(2, 'Check');
+CREATE TABLE `customer_payment_category_info` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200) NOT NULL default '',
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `customer_payment_category_info` (`id`, `description`) VALUES
+(1, 'Sale Payment'),
+(2, 'Due Collect');
 CREATE TABLE IF NOT EXISTS `customer_payment_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `shop_id` int NOT NULL,
+  `sale_order_no` varchar(200),
   `customer_id` int NOT NULL,
   `amount` double default 0,
+  `payment_type_id` int NOT NULL,
+  `payment_category_id` int NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `reference_id` varchar(200) DEFAULT NULL,
   `created_on` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_customer_payment_info_shop_info1_idx` (`shop_id`),
-  KEY `fk_customer_payment_info_customers1_idx` (`customer_id`)
+  KEY `fk_customer_payment_info_customers1_idx` (`customer_id`),
+  KEY `fk_customer_payment_info_customer_payment_type_info1_idx` (`payment_type_id`),
+  KEY `fk_customer_payment_info_customer_payment_category_info1_idx` (`payment_category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `customer_payment_info`
   ADD CONSTRAINT `fk_customer_payment_info_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_customer_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_customer_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_payment_info_customer_payment_type_info1` FOREIGN KEY (`payment_type_id`) REFERENCES `customer_payment_type_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_payment_info_customer_payment_category_info1` FOREIGN KEY (`payment_category_id`) REFERENCES `customer_payment_category_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE TABLE IF NOT EXISTS `customer_transaction_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `shop_id` int NOT NULL,
+  `sale_order_no` varchar(200),
   `customer_id` int NOT NULL,
   `created_on` int(11) unsigned DEFAULT NULL,
   `lot_no` varchar(200) DEFAULT '',

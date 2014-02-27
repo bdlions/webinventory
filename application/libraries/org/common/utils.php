@@ -58,10 +58,11 @@ class Utils {
     
     public function process_time($time)
     {
-        $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, 'BD');
-        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
-        $dateTime = new DateTime("now", $dateTimeZone);
-        return unix_to_human($time + $dateTime->getOffset());
+        //$time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, 'BD');
+        //$dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        //$dateTime = new DateTime("now", $dateTimeZone);
+        //return unix_to_human($time + $dateTime->getOffset());
+        return unix_to_human($time);
     }
     
     public function get_human_to_unix($date)
@@ -72,6 +73,18 @@ class Utils {
         {
             $date = $date.' 00:00 AM';
         }
-        return human_to_unix($date)-21600;
+        //return human_to_unix($date)-21600;
+        return human_to_unix($date);
+    }
+    
+    public function get_current_date_start_time()
+    {
+        $unix_current_time = now();
+        $human_current_time = unix_to_human($unix_current_time);
+        $human_current_time_array= explode(" ", $human_current_time);
+        $human_current_date = $human_current_time_array[0];
+        $human_current_date_start_time = $human_current_date.' 00:00 AM';
+        $unix_current_date_start_time = human_to_unix($human_current_date_start_time);
+        return $unix_current_date_start_time;
     }
 }
