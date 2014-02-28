@@ -97,6 +97,13 @@ class Sms extends CI_Controller {
         $this->template->load(null, 'sms/sms_configuration_shop', $this->data);
     }
     
+    public function sms_status()
+    {
+        $sms_status_array = $this->sms_configuration->get_sms_status()->result_array();
+        $this->data['sms_status_array'] = $sms_status_array;
+        $this->template->load(null, 'sms/sms_status', $this->data);
+    }
+    
     public function upload_file()
     {
         $this->data['message'] = '';

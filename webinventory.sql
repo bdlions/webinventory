@@ -186,12 +186,15 @@ INSERT INTO `users_shop_info` (`id`, `user_id`, `shop_id`) VALUES
  CREATE TABLE IF NOT EXISTS `suppliers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `shop_id` int NOT NULL,
   `company` varchar(200) DEFAULT NULL,  
   PRIMARY KEY (`id`),
-  KEY `fk_suppliers_users1_idx` (`user_id`)
+  KEY `fk_suppliers_users1_idx` (`user_id`),
+  KEY `fk_suppliers_shop_info1_idx` (`shop_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `suppliers`
-  ADD CONSTRAINT `fk_suppliers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_suppliers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_suppliers_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
  CREATE TABLE IF NOT EXISTS `customers` (
   `id` int NOT NULL AUTO_INCREMENT,

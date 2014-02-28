@@ -1,5 +1,84 @@
 <script type="text/javascript">
+var timerID = null;
+var timerRunning = false;
+ 
+  
+//--Reset the clock before its starts   
+function stoptimer()
+{      
+   if(timerRunning)
+   {     
+       clearTimeout(timerID);
+       timerRunning = false;
+    }
+}
+ 
+ 
+       //--Clear the timerId value to reset the clock.
+//--Start the timer and display the Date and time
+function showtime()
+{
+    //--Retrieve Current Date and Time
+        var now = new Date();
+   
+    //--Retrieve Hours from Current Date and Time object
+        var hours = now.getHours();
+   
+     //--Retrieve Minutes from Current Date and Time object
+        var minutes = now.getMinutes();
+   
+     //--Retrieve Seconds from Current Date and Time object
+        var seconds = now.getSeconds();
+   
+    //--Retrive current Date from Current Date and Time object
+        var date = now.getDate();
+   
+     //--Retrieve current Date from Current Date and Time object
+        var month = now.getMonth();
+       var month=(month+1);
+   
+    //--Retrieve current Date from Current Date and Time object
+        var year = now.getFullYear();
+   
+    //--Append the date,month and year value as digital numbers
+       var dateValue = ((month < 10) ? "0" : "") + month ;
+    dateValue += ((date < 10) ? "/0" : "/") + date;
+    dateValue += "/" + year;
+    //--Append the hours,minutes and seconds value as digital numbers
+        var timeValue = ((hours < 10) ? "0" : "") + hours ;
+    timeValue += ((minutes < 10) ? ":0" : ":") + minutes;
+    timeValue += ((seconds < 10) ? ":0" : ":") + seconds ;
+ 
+ 
+   
+    //--Append the current date and time
+    dateValue += " " + timeValue ;
+   
+    //--Display the value in a button control
+    //document.form.btnDisplay.value = dateValue;
+    $("#time_display").html(dateValue);
+   
+    //--Set timer to display time at each interval of time.
+    timerID = setTimeout("showtime()",1000);
+   
+    //--Set the timerrunning is true
+    timerRunning = true;
+}
+ 
+ 
+//--Function call for start timer and display the Output
+function startclock()
+{
+    stoptimer();
+    showtime();
+}
+
+</script>
+
+
+<script type="text/javascript">
     $(function(){
+        startclock();
         $( "#product_list" ).change(function() {
             $.ajax({
                 dataType: 'json',
@@ -34,7 +113,15 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Daily Sale Page</h3>
+<div class="row">
+    <div class="col-md-4">
+        <h3>Daily Sale Page</h3>
+    </div>
+    <div class="col-md-2 pull-right">
+        <div id="time_display"></div>
+    </div>
+</div>
+
 <div class ="row form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">

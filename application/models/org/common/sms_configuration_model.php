@@ -73,6 +73,15 @@ class Sms_configuration_model extends Ion_auth_model {
         return $this;
     }
     
+    public function get_sms_status()
+    {
+        $this->response = $this->db->select('*')
+                            ->from('sms_configuration_shop')
+                            ->join($this->tables['shop_info'], $this->tables['shop_info'].'.id='.$this->tables['sms_configuration_shop'].'.shop_id')
+                            ->get();
+        return $this;
+    }
+    
     function is_shop_sms_status_stored($shop_id = 0) 
     {
         if( $shop_id == 0 )

@@ -81,6 +81,7 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./sms/sms_configuration_shop");?>">Configure SMS</a></li>
+        <li><a href="<?php echo base_url("./sms/sms_status");?>">SMS Status</a></li>
         <li><a href="<?php echo base_url("./operator/create_operator");?>">Create Operator</a></li>
         <li><a href="<?php echo base_url("./operator/show_all_operators");?>">Show All Operators</a></li>
         <li><a href="<?php echo base_url("./sms/upload_file");?>">Process File</a></li>
@@ -92,6 +93,7 @@
         Tools<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./upload/upload_logo");?>">Upload Logo</a></li>
         <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Manager</a></li>

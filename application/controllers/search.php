@@ -306,34 +306,17 @@ class Search extends CI_Controller {
     public function search_sales_by_customer_card_no()
     {
         $card_no = $_POST['card_no'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
-        $start_time = $this->utils->get_human_to_unix($start_date);
-        $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
         $this->data['sale_list'] = array();
-        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($start_time, $end_time, $card_no)->result_array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($card_no)->result_array();
         $result_array['sale_list'] = $sale_list_array;    
         echo json_encode($result_array);
     }
     public function search_sales_customer_card_no()
     {
-        $date = date('Y-m-d');
         $this->data['card_no'] = array(
             'name' => 'card_no',
             'id' => 'card_no',
             'type' => 'text'
-        );
-        $this->data['start_date'] = array(
-            'name' => 'start_date',
-            'id' => 'start_date',
-            'type' => 'text',
-            'value' => $date
-        );
-        $this->data['end_date'] = array(
-            'name' => 'end_date',
-            'id' => 'end_date',
-            'type' => 'text',
-            'value' => $date
         );
         $this->data['button_search_sale'] = array(
             'name' => 'button_search_sale',

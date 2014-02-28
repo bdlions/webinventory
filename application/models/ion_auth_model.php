@@ -2009,6 +2009,7 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $this->db->where($this->tables['customers'].'.shop_id',$shop_id);
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
@@ -2038,6 +2039,7 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $this->db->where($this->tables['customers'].'.shop_id',$shop_id);
         $this->db->like($key, $value); 
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
@@ -2070,10 +2072,13 @@ class Ion_auth_model extends CI_Model {
     public function create_supplier($additional_data)
     {
         $this->trigger_events('pre_create_supplier');
+        $data = array(
+            'shop_id' => $this->session->userdata('shop_id')
+        );
         //filter out any data passed that doesnt have a matching column in the users table
-        $customer_data = $this->_filter_data($this->tables['suppliers'], $additional_data);
-
-        $this->db->insert($this->tables['suppliers'], $customer_data);
+        $supplier_data = array_merge($this->_filter_data($this->tables['suppliers'], $additional_data), $data);
+        
+        $this->db->insert($this->tables['suppliers'], $supplier_data);
 
         $id = $this->db->insert_id();
 
@@ -2088,6 +2093,7 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $this->db->where($this->tables['suppliers'].'.shop_id',$shop_id);
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address , '.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])
                     ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
@@ -2118,6 +2124,7 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $this->db->where($this->tables['suppliers'].'.shop_id',$shop_id);
         $this->db->like($key, $value); 
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])
