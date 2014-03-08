@@ -9,6 +9,8 @@
                     card_no: $("#card_no").val()
                 },
                 success: function(data) {
+                    $("#label_total_sale_price").html(data['total_sale_price']);
+                    $("#label_total_quantity").html(data['total_quantity']);
                     $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));
                 }
             });
@@ -34,32 +36,54 @@
 </script>
 <h3>Search Customer sale by Card No</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="card_no" class="col-md-6 control-label requiredField">
-                                Card No
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($card_no+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="button_search_sale" class="col-md-6 control-label requiredField">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="card_no" class="col-md-6 control-label requiredField">
+                            Card No
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_input($card_no+array('class'=>'form-control')); ?>
+                        </div> 
+                    </td> 
+                    <td>
+                        <label class="col-md-6 control-label requiredField">
+                            Total Sale Price : 
+                        </label>
+                        <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
+                            <?php //echo $total_sale_price;?> 
+                        </label>
+                    </td>
+                    <td>                        
+                        <label class="col-md-6 control-label requiredField">
+                            Total Quantity : 
+                        </label>
+                        <label id="label_total_quantity" class="col-md-6 control-label requiredField">
+                            <?php //echo $total_expense;?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>      
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
+                        </div>                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>                
+            </tbody>  
+        </table>
+    </div>     
 </div>
 <h3>Search Result</h3>
 <div class="row form-background top-bottom-padding">

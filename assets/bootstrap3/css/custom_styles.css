@@ -3,6 +3,12 @@
 {
     background-color: #E4F2D9;
 }
+.table td {
+   text-align: center;   
+}
+.table th {
+   text-align: center;   
+}
 .navbar-top {
     background: #ffffff url('../../images/bg2.png') top repeat-x;
     min-height:80px;

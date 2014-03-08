@@ -235,6 +235,10 @@ class Search extends CI_Controller {
         $end_date = $_POST['end_date'];
         $start_time = $this->utils->get_human_to_unix($start_date);
         $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
+        
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        
         $this->data['sale_list'] = array();
         
         $sale_list = array();
@@ -244,10 +248,14 @@ class Search extends CI_Controller {
             foreach($sale_list_array as $sale_info)
             {
                 $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);                
+                $total_sale_price = $total_sale_price + $sale_info['total_sale_price'];
+                $total_quantity = $total_quantity + $sale_info['quantity'];
                 $sale_list[] = $sale_info;
             }
         }
-        $result_array['sale_list'] = $sale_list;    
+        $result_array['sale_list'] = $sale_list;  
+        $result_array['total_sale_price'] = $total_sale_price;  
+        $result_array['total_quantity'] = $total_quantity;  
         echo json_encode($result_array);
     }
     public function search_sales()
@@ -306,9 +314,22 @@ class Search extends CI_Controller {
     public function search_sales_by_customer_card_no()
     {
         $card_no = $_POST['card_no'];
-        $this->data['sale_list'] = array();
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $sale_list = array();
         $sale_list_array = $this->sale_library->get_user_sales_by_card_no($card_no)->result_array();
-        $result_array['sale_list'] = $sale_list_array;    
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $total_sale_price = $total_sale_price + $sale_info['total_sale_price'];
+                $total_quantity = $total_quantity + $sale_info['quantity'];
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result_array['sale_list'] = $sale_list;  
+        $result_array['total_sale_price'] = $total_sale_price;  
+        $result_array['total_quantity'] = $total_quantity;  
         echo json_encode($result_array);
     }
     public function search_sales_customer_card_no()

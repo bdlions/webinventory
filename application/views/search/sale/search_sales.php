@@ -26,6 +26,8 @@
                     end_date: $("#end_date").val()
                 },
                 success: function(data) {
+                    $("#label_total_sale_price").html(data['total_sale_price']);
+                    $("#label_total_quantity").html(data['total_quantity']);
                     $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));                    
                 }
             });
@@ -51,66 +53,80 @@
 </script>
 <h3>Search Sale</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="employee_list" class="col-md-6 control-label requiredField">
-                                Select User
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '0','class="form-control" id="employee_list"'); ?>
-                            </div> 
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="employee_list" class="col-md-6 control-label requiredField">
+                            Select User
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '0','class="form-control" id="employee_list"'); ?>
+                        </div> 
+                    </td> 
+                    <td>
+                        <label class="col-md-6 control-label requiredField">
+                            Total Sale Price : 
+                        </label>
+                        <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
+                            <?php //echo $total_sale_price;?> 
+                        </label>
+                    </td>
+                    <td>                        
+                        <label for="start_date" class="col-md-6 control-label requiredField">
+                            Start Date
+                        </label>
+                        <div class ="col-md-6">
+                           <?php echo form_input($start_date+array('class'=>'form-control')); ?>
+                        </div> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="product_list" class="col-md-6 control-label requiredField">
+                            Select Product
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
+                        </div>                        
+                    </td>
+                    <td>
+                        <label class="col-md-6 control-label requiredField">
+                            Total Quantity : 
+                        </label>
+                        <label id="label_total_quantity" class="col-md-6 control-label requiredField">
+                            <?php //echo $total_expense;?>
+                        </label>
+                    </td>
+                    <td>
+                        <label for="end_date" class="col-md-6 control-label requiredField">
+                            End Date
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_input($end_date+array('class'=>'form-control')); ?>
                         </div>
-                        <div class="form-group">
-                            <label for="product_list" class="col-md-6 control-label requiredField">
-                                Select Product
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="button_search_sale" class="col-md-6 control-label requiredField">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="start_date" class="col-md-6 control-label requiredField">
-                                Start Date
-                            </label>
-                            <div class ="col-md-6">
-                               <?php echo form_input($start_date+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="end_date" class="col-md-6 control-label requiredField">
-                                End Date
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($end_date+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
+                        </div>                        
+                    </td>
+                    <td>
+                                              
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </tbody>  
+        </table>
+    </div>     
 </div>
 <h3>Search Result</h3>
 <div class="row form-background top-bottom-padding">

@@ -328,14 +328,6 @@
                     </div> 
                 </div>
                 <div class="form-group">
-                    <label for="address" class="col-md-3 control-label requiredField">
-                        Address
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_textarea(array('name' => 'textarea_add_sale_address', 'id' => 'textarea_add_sale_address', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
                     <label for="product" class="col-md-3 control-label requiredField">
                         Product
                     </label>
@@ -417,7 +409,7 @@
                         Total
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'total_sale_price', 'id' => 'total_sale_price', 'class' => 'form-control')); ?>
+                        <?php echo form_input(array('name' => 'total_sale_price', 'id' => 'total_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                     </div> 
                 </div>
                 <div class="form-group">
@@ -457,7 +449,7 @@
                         Current Due
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control')); ?>
+                        <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

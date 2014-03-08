@@ -87,4 +87,10 @@ class Stock extends CI_Controller {
         );
         echo json_encode($result);
     }
+    
+    public function update_stock()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'stock/update_stock', $this->data);
+    }
 }

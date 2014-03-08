@@ -73,13 +73,17 @@ class Sms_library {
             $status = $sms_configuration_shop_array[0]['status'];
             if($status == 0)
             {
-                return 0;
+                //print_r('configuraion disabled');
+                return 0;                
             }
         }
         else
         {
-            return 0;
+            //print_r('configuraion not configured');
+            return 0;            
         }
+        //print_r('sending');
+        //return;
         /*if($phoneNumber == "" || $message == ""){
                 return 0;
         }

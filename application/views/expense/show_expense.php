@@ -90,9 +90,9 @@
     {% var i=0, expense_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(expense_info){ %}
     <tr>
-    <td>{%= expense_info.expense_amount %}</td>
-    <td>{%= expense_info.description %}</td>
-    <td>{%= expense_info.expense_date %}</td>
+        <td>{%= expense_info.expense_date %}</td>
+        <td>{%= expense_info.expense_amount %}</td>
+        <td>{%= expense_info.description %}</td>
     </tr>
     {% expense_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -166,9 +166,9 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Amount</th>
-                    <th>Description</th>
                     <th>Date</th>
+                    <th>Amount</th>
+                    <th>Description</th>                    
                 </tr>
             </thead>
             <tbody id="tbody_expense_list">                    

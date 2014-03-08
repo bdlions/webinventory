@@ -35,6 +35,7 @@ class Test extends CI_Controller {
     
     public function test1()
     {
+        $this->sms_library->send_sms('','');
         /*$gmt_unix_current_time = now();
         $local_unix_current_time = ($gmt_unix_current_time + 21600);
         $local_human_current_time = unix_to_human($local_unix_current_time);
@@ -47,7 +48,7 @@ class Test extends CI_Controller {
         
         
         
-        $now = now();
+        /*$now = now();
         //$now = time();
         //print_r($now);
         $human = unix_to_human($now);
@@ -56,7 +57,7 @@ class Test extends CI_Controller {
         //print_r($unix);
         
         //$unix2 = human_to_unix('2014-02-22 00:00 AM');
-        //print_r($unix2);
+        //print_r($unix2);*/
     }
     
 }
