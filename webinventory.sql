@@ -475,22 +475,52 @@ CREATE TABLE IF NOT EXISTS `operators` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  
 
 -- ---------------------------------Supplier payment record ---------------------------
+CREATE TABLE `supplier_payment_category_info` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200) NOT NULL default '',
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `supplier_payment_category_info` (`id`, `description`) VALUES
+(1, 'Purchase Payment'),
+(2, 'Expense Payment');
 CREATE TABLE IF NOT EXISTS `supplier_payment_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `shop_id` int NOT NULL,
   `supplier_id` int NOT NULL,
   `amount` double default 0,
+  `payment_category_id` int NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `reference_id` varchar(200) DEFAULT NULL,
   `created_on` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_supplier_payment_info_shop_info1_idx` (`shop_id`),
-  KEY `fk_supplier_payment_info_suppliers1_idx` (`supplier_id`)
+  KEY `fk_supplier_payment_info_suppliers1_idx` (`supplier_id`),
+  KEY `fk_supplier_payment_info_supplier_payment_category_info1_idx` (`payment_category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `supplier_payment_info`
   ADD CONSTRAINT `fk_supplier_payment_info_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_supplier_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_supplier_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_supplier_payment_info_supplier_payment_category_info1` FOREIGN KEY (`payment_category_id`) REFERENCES `supplier_payment_category_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+CREATE TABLE IF NOT EXISTS `supplier_returned_payment_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `supplier_id` int NOT NULL,
+  `purchase_order_no` varchar(200),
+  `amount` double default 0,
+  `description` varchar(200) DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_by` int,
+  PRIMARY KEY (`id`),
+  KEY `fk_supplier_returned_payment_info_shop_info1_idx` (`shop_id`),
+  KEY `fk_supplier_returned_payment_info_suppliers1_idx` (`supplier_id`),
+  KEY `fk_supplier_returned_payment_info_users1_idx` (`created_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `supplier_returned_payment_info`
+	ADD CONSTRAINT `fk_supplier_returned_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT `fk_supplier_returned_payment_info_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT `fk_supplier_returned_payment_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
 CREATE TABLE IF NOT EXISTS `supplier_transaction_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `shop_id` int NOT NULL,

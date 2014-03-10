@@ -16,6 +16,7 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("purchase/purchase_order");?>">New Purchase Order</a></li>
+        <li><a href="<?php echo base_url("purchase/raise_purchase_order");?>">Raise Purchase Order</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/create_supplier");?>">New Supplier</a></li>
         <li><a href="<?php echo base_url("./user/show_all_suppliers");?>">Supplier List</a></li>

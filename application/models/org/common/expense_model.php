@@ -107,6 +107,7 @@ class Expense_model extends Ion_auth_model {
                 'supplier_id' => $data['reference_id'],
                 'amount' => $data['expense_amount'],
                 'description' => 'expense',
+                'payment_category_id' => PAYMENT_EXPENSE_PAYMENT,
                 'reference_id' => $id,
                 'created_on' => $current_time
             );

@@ -1,4 +1,7 @@
 <?php
+/***************** Custom constant **********************/
+include './constants/purchase.php';
+
 date_default_timezone_set('Asia/Dacca');
 /***************** Custom constant **********************/
 define('CUSTOMER', 'customer');
