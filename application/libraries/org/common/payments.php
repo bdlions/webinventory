@@ -83,6 +83,7 @@ class Payments {
     {
         $total_purchase_price = 0;
         $total_payment = 0;
+        $total_returned_payment = 0;
         $total_purchase_price_array = $this->purchase_library->get_total_purchase_price($supplier_id)->result_array();
         if( !empty($total_purchase_price_array) )
         {
@@ -93,7 +94,12 @@ class Payments {
         {
             $total_payment = $total_payment_array[0]['total_payment'];
         }
-        return $total_purchase_price - $total_payment;
+        $total_returned_payment_array = $this->payments_model->get_supplier_total_returned_payment($supplier_id)->result_array();
+        if( !empty($total_returned_payment_array) )
+        {
+            $total_returned_payment = $total_returned_payment_array[0]['total_returned_payment'];
+        }
+        return $total_purchase_price - $total_payment + $total_returned_payment;
     }
     
     public function get_customer_current_due($customer_id)

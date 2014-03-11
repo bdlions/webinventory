@@ -581,6 +581,26 @@ ALTER TABLE `customer_payment_info`
   ADD CONSTRAINT `fk_customer_payment_info_customer_payment_type_info1` FOREIGN KEY (`payment_type_id`) REFERENCES `customer_payment_type_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_customer_payment_info_customer_payment_category_info1` FOREIGN KEY (`payment_category_id`) REFERENCES `customer_payment_category_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ CREATE TABLE IF NOT EXISTS `customer_returned_payment_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `shop_id` int NOT NULL,
+  `sale_order_no` varchar(200),
+  `customer_id` int NOT NULL,
+  `amount` double default 0,
+  `description` varchar(200) DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_by` int,
+  PRIMARY KEY (`id`),
+  KEY `fk_customer_returned_payment_info_shop_info1_idx` (`shop_id`),
+  KEY `fk_customer_returned_payment_info_customers1_idx` (`customer_id`),
+  KEY `fk_customer_returned_payment_info_users1_idx` (`created_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `customer_returned_payment_info`
+  ADD CONSTRAINT `fk_customer_returned_payment_info_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_returned_payment_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer_returned_payment_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+  
 CREATE TABLE IF NOT EXISTS `customer_transaction_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `shop_id` int NOT NULL,

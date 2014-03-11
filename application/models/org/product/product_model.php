@@ -115,6 +115,13 @@ class Product_model extends Ion_auth_model
         $this->response = $this->db->get($this->tables['product_info']);
         return $this;
     }
+    
+    public function get_products($product_id_list)
+    {
+        $this->db->where_in('id', $product_id_list);
+        $this->response = $this->db->get($this->tables['product_info']);
+        return $this;
+    }
     /**
      * Product List of a shop
      *

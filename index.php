@@ -17,6 +17,13 @@ define('SALESMAN_LOGIN_SUCCESS_TEMPLATE', 'salesman/templates/main');
 define('SALESMAN_LOGIN_VIEW', 'salesman/login');
 define('SALESMAN_LOGIN_SUCCESS_VIEW', 'salesman/home');
 
+define('MANAGER_LOGIN_URI', 'user/manager_login');
+define('MANAGER_LOGIN_SUCCESS_URI', 'user/manager_login');
+define('MANAGER_LOGIN_TEMPLATE', 'manager/templates/login');
+define('MANAGER_LOGIN_SUCCESS_TEMPLATE', 'manager/templates/main');
+define('MANAGER_LOGIN_VIEW', 'manager/login');
+define('MANAGER_LOGIN_SUCCESS_VIEW', 'manager/home');
+
 define('CUSTOMER_LOGIN_URI', 'customer');
 define('CUSTOMER_LOGIN_SUCCESS_URI', 'customer');
 define('CUSTOMER_LOGIN_TEMPLATE', 'customer/templates/main');

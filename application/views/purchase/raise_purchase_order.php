@@ -29,9 +29,9 @@
         for(var counter = 0; counter < purchased_product_list.length ; counter++)
         {
             var purchased_product_info = purchased_product_list[counter];
-            if(purchased_product_info['id']=== prod_info['id'])
+            if(purchased_product_info['product_id']=== prod_info['id'])
             {
-                prod_info['unit_price'] = purchased_product_info['unit_price'];   
+                prod_info['unit_price'] = purchased_product_info['unit_price']; 
                 prod_info['readonly'] = 'true';
             }
         }

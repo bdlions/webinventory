@@ -10,18 +10,18 @@
         </div> 
     </div>
     <div class="form-group">
-        <label for="input_add_sale_phone" class="col-md-3 control-label requiredField">
-            Sale Id
+        <label for="input_add_sale_phone" class="col-md-4 control-label requiredField">
+            Sale Order No
         </label>
-        <div class ="col-md-8">
+        <div class ="col-md-7">
             <?php echo form_input($sale_order_no+array('class' => 'form-control')); ?>
         </div> 
     </div>
     <div class="form-group">
-        <label for="submit_delete_sale" class="col-md-3 control-label requiredField">
+        <label for="submit_delete_sale" class="col-md-7 control-label requiredField">
             
         </label>
-        <div class ="col-md-8">
+        <div class ="col-md-4">
              <?php echo form_input($submit_delete_sale+array('class'=>'form-control btn-success')); ?>
         </div> 
     </div>

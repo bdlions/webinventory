@@ -42,6 +42,13 @@ class Purchase extends CI_Controller {
     function purchase_order()
     {
         $this->data['supplier_list_array'] = array();
+        $purchase_order_no = 1;
+        $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
+        if(!empty($purchase_order_no_array))
+        {
+            $purchase_order_no = $purchase_order_no_array[0]['purchase_order_no']+1;
+        }
+        $this->data['purchase_order_no'] = $purchase_order_no;
         $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
         if( count($supplier_list_array) > 0)
         {
@@ -72,6 +79,19 @@ class Purchase extends CI_Controller {
         if( count($product_list_array) > 0)
         {
             $this->data['product_list_array'] = $product_list_array;
+        }       
+        $this->data['product_search_category'] = array();
+        $this->data['product_search_category'][0] = "Select an item";
+        $this->data['product_search_category']['name'] = "Product Name";
+        $this->template->load(null, 'purchase/raise_purchase_order',$this->data);
+    }
+    function return_purchase_order()
+    {
+        $this->data['product_list_array'] = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        if( count($product_list_array) > 0)
+        {
+            $this->data['product_list_array'] = $product_list_array;
         }
         
         $this->data['supplier_search_category'] = array();
@@ -82,7 +102,7 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
-        $this->template->load(null, 'purchase/raise_purchase_order',$this->data);
+        $this->template->load(null, 'purchase/return_purchase_order',$this->data);
     }
     /*
      */
@@ -98,7 +118,7 @@ class Purchase extends CI_Controller {
         {
             $purchase_order_info = $purchase_order_array[0];
             $supplier_id = $purchase_order_info['supplier_id'];
-            $supplier_info_array = $this->ion_auth->get_supplier()->result_array(0, $supplier_id);
+            $supplier_info_array = $this->ion_auth->get_supplier(0, $supplier_id)->result_array();
             if(!empty($supplier_info_array))
             {
                 $supplier_info = $supplier_info_array[0]; 
@@ -107,12 +127,26 @@ class Purchase extends CI_Controller {
         }
         $result['supplier_info'] = $supplier_info;
         $result['supplier_due'] = $supplier_due;
+        $product_id_list = array();
         $product_list_array = $this->purchase_library->get_product_list_purchase_order($lot_no)->result_array();
         if(!empty($product_list_array))
         {
             $product_list = $product_list_array;
+            foreach($product_list_array as $product_info)
+            {
+                if(!in_array($product_info['product_id'],$product_id_list))
+                {
+                    $product_id_list[] = $product_info['product_id'];
+                }
+            }
         }
         $result['product_list'] = $product_list;
+        $product_info_array = array();
+        if(!empty($product_id_list))
+        {
+            $product_info_array = $this->product_library->get_products($product_id_list)->result_array();
+        }        
+        $result['product_info_array'] = $product_info_array;
         echo(json_encode($result));
     }
     /*
@@ -396,6 +430,157 @@ class Purchase extends CI_Controller {
         $response['additional_data'] = $additional_data;*/
         
         $status = $this->purchase_library->raise_purchase_order($additional_data, $new_purchased_product_list, $existing_purchased_product_list, $add_stock_list, $update_stock_list, $supplier_transaction_info_array);
+        if( $status === TRUE )
+        {
+            $purchase_info_array = $this->purchase_library->get_purchase_order_info(0, $order_no)->result_array();
+            $purchase_info = array();
+            if( count($purchase_info_array) > 0 )
+            {
+                $purchase_info = $purchase_info_array[0];
+            }
+            $response['status'] = '1';
+        } 
+        else
+        {
+            $response['status'] = '0';
+            $response['message'] = $this->purchase_library->errors_alert();
+        }        
+        echo json_encode($response);
+    }
+    
+    /*
+     * Ajax Call
+     */
+    function return_purchase()
+    {
+        $current_time = now();
+        $user_id = $this->session->userdata('user_id');
+        $shop_id = $this->session->userdata('shop_id');
+        $current_due = $_POST['current_due'];
+        $return_balance = $_POST['return_balance'];
+        $selected_product_list = $_POST['product_list'];
+        $purchase_info = $_POST['purchase_info']; 
+        $order_no = $purchase_info['order_no'];
+        
+        //existing purchase order info
+        $existing_purchase_order_info = array();
+        $existing_purchase_order_array = $this->purchase_library->get_purchase_order_info(0, $order_no)->result_array();
+        if(!empty($existing_purchase_order_array))
+        {
+            $existing_purchase_order_info = $existing_purchase_order_array[0];
+        }
+        //product list of existing purchase order
+        $product_id_product_info_map = array();
+        $existing_product_id_list = array();
+        $existing_product_list_array = $this->purchase_library->get_product_list_purchase_order($order_no)->result_array();
+        foreach($existing_product_list_array as $product_info)
+        {
+            if(!in_array($product_info['product_id'], $existing_product_id_list))
+            {
+                $existing_product_id_list[] = $product_info['product_id'];
+            }
+            $product_id_product_info_map[$product_info['product_id']] = $product_info;
+        }
+        //existing stock list
+        $product_quantity_map = array();        
+        $stock_list_array = $this->stock_library->get_all_stocks($shop_id, 0 , $order_no)->result_array();
+        foreach($stock_list_array as $key => $stock_info)
+        {
+            $product_quantity_map[$stock_info['product_id'].'_'.$stock_info['purchase_order_no']] = $stock_info['stock_amount'];
+        }
+        
+        $supplier_transaction_info_array = array();
+        
+        $existing_purchased_product_list = array();
+        $update_stock_list = array();
+        
+        foreach($selected_product_list as $key => $prod_info)
+        {
+            $supplier_transaction_info = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'created_on' => $current_time,
+                'lot_no' => $order_no,
+                'name' => $prod_info['name'],
+                'quantity' => '-'.$prod_info['quantity'],
+                'unit_price' => $prod_info['unit_price'],
+                'sub_total' => '-'.$prod_info['sub_total'],
+                'payment_status' => 'Return goods'
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info;
+            if ( array_key_exists($prod_info['product_id'].'_'.$order_no, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no] >= $prod_info['quantity'] ) ) {
+                $purchased_product_info = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $order_no,
+                    'shop_id' => $shop_id,
+                    'quantity' => ( $product_id_product_info_map[$prod_info['product_id']]['quantity'] - $prod_info['quantity'] ),
+                    'sub_total' => ( $product_id_product_info_map[$prod_info['product_id']]['sub_total'] - $prod_info['sub_total'] ),
+                    'modified_on' => $current_time,
+                    'modified_by' => $user_id
+                );
+                $existing_purchased_product_list[] = $purchased_product_info;
+                $update_stock_info = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $order_no,
+                    'shop_id' => $shop_id,
+                    'stock_amount' => ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no] - $prod_info['quantity'] )
+                );
+                $update_stock_list[] = $update_stock_info;
+            }
+            else
+            {
+                $response['status'] = '0';
+                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$order_no;
+                echo json_encode($response);
+                return;
+            }                    
+        }
+        $supplier_transaction_info = array(
+            'shop_id' => $shop_id,
+            'supplier_id' => $purchase_info['supplier_id'],
+            'created_on' => $current_time,
+            'lot_no' => '',
+            'name' => '',
+            'quantity' => '',
+            'unit_price' => '',
+            'sub_total' => $current_due,
+            'payment_status' => 'Total due'
+        );
+        $supplier_transaction_info_array[] = $supplier_transaction_info;
+        $additional_data = array(
+            'purchase_order_no' => $order_no,
+            'shop_id' => $shop_id,
+            'remarks' => $purchase_info['remarks'],
+            'total' => ($existing_purchase_order_info['total']-$purchase_info['total']),
+            'modified_on' => $current_time,
+            'modified_by' => $user_id
+        ); 
+        $return_balance_info = array();
+        if($return_balance > 0)
+        {
+            $return_balance_info = array(
+                'shop_id' => $shop_id,
+                'purchase_order_no' => $order_no,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'amount' => $return_balance,
+                'created_on' => $current_time,
+                'created_by' => $user_id
+            );
+            $supplier_transaction_info = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'created_on' => $current_time,
+                'lot_no' => '',
+                'name' => '',
+                'quantity' => '',
+                'unit_price' => '',
+                'sub_total' => $return_balance,
+                'payment_status' => 'Return balance'
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info;
+        }
+        
+        $status = $this->purchase_library->return_purchase_order($additional_data, $existing_purchased_product_list, $update_stock_list, $supplier_transaction_info_array, $return_balance_info);
         if( $status === TRUE )
         {
             $purchase_info_array = $this->purchase_library->get_purchase_order_info(0, $order_no)->result_array();

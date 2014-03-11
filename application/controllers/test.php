@@ -14,6 +14,7 @@ class Test extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('sms_library');
         $this->load->library('org/purchase/purchase_library');
+        $this->load->library('org/sale/sale_library');
         $this->load->helper('url');
         $this->load->helper('file');
 
@@ -35,7 +36,7 @@ class Test extends CI_Controller {
     
     public function test1()
     {
-        $this->sms_library->send_sms('','');
+        print_r($this->purchase_library->get_next_purchase_order_no()->result_array());
         /*$gmt_unix_current_time = now();
         $local_unix_current_time = ($gmt_unix_current_time + 21600);
         $local_human_current_time = unix_to_human($local_unix_current_time);

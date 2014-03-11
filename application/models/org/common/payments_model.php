@@ -44,6 +44,16 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     
+    public function get_supplier_total_returned_payment($supplier_id)
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('supplier_id', $supplier_id);
+        return $this->db->select('SUM(amount) as total_returned_payment')
+                            ->from($this->tables['supplier_returned_payment_info'])
+                            ->get();
+    }
+    
     public function get_supplier_transactions($supplier_id)
     {
         $shop_id = $this->session->userdata('shop_id');

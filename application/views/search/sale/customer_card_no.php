@@ -91,7 +91,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Sale Id</th>
+                    <th>Sale Order No</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>

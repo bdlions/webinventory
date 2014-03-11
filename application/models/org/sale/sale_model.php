@@ -150,9 +150,17 @@ class Sale_model extends Ion_auth_model
                     ->get();  
     }
     
-    public function get_sale_order_info($sale_id)
+    public function get_sale_order_info($sale_id = 0, $sale_order_no = 0)
     {
-        $this->db->where($this->tables['sale_order'].'.id', $sale_id);
+        if( $sale_id != 0)
+        {
+            $this->db->where($this->tables['sale_order'].'.id', $sale_id);
+        }
+        if( $sale_order_no != 0)
+        {
+            $this->db->where($this->tables['sale_order'].'.sale_order_no', $sale_order_no);
+        }
+        
         return $this->db->select('*')
                     ->from($this->tables['sale_order'])
                     ->get(); 
@@ -266,6 +274,20 @@ class Sale_model extends Ion_auth_model
                             ->get();
     }
     
+    public function get_product_list_sale_order($sale_order_no, $shop_id = 0)
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['product_info'].'.shop_id', $shop_id);
+        $this->db->where('sale_order_no', $sale_order_no);
+        return $this->db->select($this->tables['product_sale_order'].'.*,'.$this->tables['product_info'].'.name as product_name')
+                            ->from($this->tables['product_sale_order'])
+                            ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_sale_order'].'.product_id')
+                            ->get();
+    }
+    
     public function get_sale_order($sale_order_no, $shop_id = 0)
     {
         if(empty($shop_id))
@@ -299,5 +321,33 @@ class Sale_model extends Ion_auth_model
         $this->db->where('shop_id', $shop_id);
         $this->db->where('sale_order_no', $sale_order_no);
         return $this->db->delete($this->tables['sale_order']);
+    }
+    
+    public function return_sale_order($additional_data, $existing_sale_product_list, $update_stock_list, $customer_transaction_info_array, $return_balance_info)
+    {
+        $this->trigger_events('pre_return_sale_order');
+        $this->db->trans_begin();
+        //filter out any data passed that doesnt have a matching column in the users table
+        $sale_data = $this->_filter_data($this->tables['sale_order'], $additional_data);
+        $this->db->update($this->tables['sale_order'], $sale_data, array('sale_order_no' => $sale_data['sale_order_no'], 'shop_id' => $sale_data['shop_id'] ));
+        if( !empty($return_balance_info) )
+        {
+            $return_balance_info = $this->_filter_data($this->tables['customer_returned_payment_info'], $return_balance_info);
+            $this->db->insert($this->tables['customer_returned_payment_info'], $return_balance_info);         
+        }
+        if( !empty($customer_transaction_info_array) )
+        {
+            $this->db->insert_batch($this->tables['customer_transaction_info'], $customer_transaction_info_array);       
+        }
+        foreach($existing_sale_product_list as $sale_product_list)
+        {
+            $this->db->update($this->tables['product_sale_order'], $sale_product_list, array('product_id' => $sale_product_list['product_id'], 'sale_order_no' => $sale_product_list['sale_order_no'], 'shop_id' => $sale_product_list['shop_id'] ));
+        }
+        foreach($update_stock_list as $stock_info)
+        {
+            $this->db->update($this->tables['stock_info'], $stock_info, array('product_id' => $stock_info['product_id'], 'purchase_order_no' => $stock_info['purchase_order_no'], 'shop_id' => $stock_info['shop_id'] ));
+        }
+        $this->db->trans_commit();
+        return TRUE;
     }
 }

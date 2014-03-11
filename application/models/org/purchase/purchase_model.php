@@ -121,6 +121,37 @@ class Purchase_model extends Ion_auth_model
         return TRUE;
     }
     
+    public function return_purchase_order($additional_data, $existing_purchased_product_list, $update_stock_list, $supplier_transaction_info_array, $return_balance_info)
+    {
+        $this->trigger_events('pre_return_purchase_order');
+        $this->db->trans_begin();
+        //filter out any data passed that doesnt have a matching column in the users table
+        $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
+        $this->db->update($this->tables['purchase_order'], $purchase_data, array('purchase_order_no' => $purchase_data['purchase_order_no'], 'shop_id' => $purchase_data['shop_id'] ));
+        
+        if( !empty($return_balance_info) )
+        {
+            $return_balance_info = $this->_filter_data($this->tables['supplier_returned_payment_info'], $return_balance_info);
+            $this->db->insert($this->tables['supplier_returned_payment_info'], $return_balance_info);         
+        }
+        if( !empty($supplier_transaction_info_array) )
+        {
+            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);       
+        }
+        
+        foreach($existing_purchased_product_list as $purchased_product_list)
+        {
+            $this->db->update($this->tables['product_purchase_order'], $purchased_product_list, array('product_id' => $purchased_product_list['product_id'], 'purchase_order_no' => $purchased_product_list['purchase_order_no'], 'shop_id' => $purchased_product_list['shop_id'] ));
+        }
+        
+        foreach($update_stock_list as $stock_info)
+        {
+            $this->db->update($this->tables['stock_info'], $stock_info, array('product_id' => $stock_info['product_id'], 'purchase_order_no' => $stock_info['purchase_order_no'], 'shop_id' => $stock_info['shop_id'] ));
+        }
+        $this->db->trans_commit();
+        return TRUE;
+    }
+    
     public function get_purchase_order_info($purchase_id = 0, $purchase_order_no = 0, $shop_id = 0)
     {
         if( $purchase_id != 0 )
@@ -180,5 +211,11 @@ class Purchase_model extends Ion_auth_model
         return $this->db->select('SUM(total) as total_purchase_price')
                             ->from($this->tables['purchase_order'])
                             ->get();
+    }
+    
+    public function get_next_purchase_order_no()
+    {
+        $query = 'SELECT MAX(purchase_order_no) as purchase_order_no FROM purchase_order';
+        return $this->db->query($query);
     }
 }

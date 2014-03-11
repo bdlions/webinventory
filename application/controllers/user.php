@@ -37,6 +37,25 @@ class User extends CI_Controller {
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
     }
 
+    function manager_login() {
+
+        $this->user_type = MANAGER;
+
+        $this->login_success_uri = MANAGER_LOGIN_SUCCESS_URI;
+        $this->login_uri = MANAGER_LOGIN_URI;
+        $this->login_template = MANAGER_LOGIN_TEMPLATE;
+        $this->login_view = MANAGER_LOGIN_VIEW;
+
+        if (!$this->ion_auth->logged_in()) {
+            $this->login();
+        } else {
+            //set the
+            //set flash data error message if there is one
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->template->load(MANAGER_LOGIN_SUCCESS_TEMPLATE, MANAGER_LOGIN_SUCCESS_VIEW, $this->data);
+        }
+    }
+    
     function salesman_login() {
 
         $this->user_type = SALESMAN;
@@ -679,7 +698,8 @@ class User extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
-                $user_name = $this->input->post('phone');
+                //$user_name = $this->input->post('phone');
+                $user_name = '';
                 $password = "password";
                 $email = "dummy@dummy.com";
                 $additional_data = array(
@@ -1001,7 +1021,8 @@ class User extends CI_Controller {
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
         $card_no = $_POST['card_no'];;
-        $user_name = $_POST['phone_no'];
+        //$user_name = $_POST['phone_no'];
+        $user_name = '';
         $password = "password";
         $email = "dummy@dummy.com";
         $additional_data = array(
@@ -1050,7 +1071,8 @@ class User extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
-                $user_name = $this->input->post('phone');
+                //$user_name = $this->input->post('phone');
+                $user_name = '';
                 $password = "password";
                 $email = "dummy@dummy.com";
                 $additional_data = array(
@@ -1301,7 +1323,8 @@ class User extends CI_Controller {
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
         $company = $_POST['company'];;
-        $user_name = $_POST['phone_no'];
+        //$user_name = $_POST['phone_no'];
+        $user_name = '';
         $password = "password";
         $email = "dummy@dummy.com";
         $additional_data = array(
@@ -1349,7 +1372,8 @@ class User extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
-                $user_name = $this->input->post('phone');
+                //$user_name = $this->input->post('phone');
+                $user_name = '';
                 $password = $this->input->post('password');
                 $email = "dummy@dummy.com";
                 $additional_data = array(
@@ -1544,7 +1568,8 @@ class User extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
-                $user_name = $this->input->post('phone');
+                //$user_name = $this->input->post('phone');
+                $user_name = '';
                 $password = $this->input->post('password');
                 $email = "dummy@dummy.com";
                 $additional_data = array(
