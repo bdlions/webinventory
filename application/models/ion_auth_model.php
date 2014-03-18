@@ -2058,14 +2058,67 @@ class Ion_auth_model extends CI_Model {
         return true;
     }
     
-    public function get_all_institutions()
+    public function create_institution($additional_data)
     {
+        $this->trigger_events('pre_create_institution');
+        $data = array(
+            'shop_id' => $this->session->userdata('shop_id')
+        );
+        //filter out any data passed that doesnt have a matching column in the institution table
+        $institution_data = array_merge($this->_filter_data($this->tables['institution'], $additional_data), $data);
+        $this->db->insert($this->tables['institution'], $institution_data);
+        $id = $this->db->insert_id();
+        if( $id > 0)
+        {
+            $this->set_message('create_institution_successful');
+        }
+        else
+        {
+            $this->set_error('create_institution_unsuccessful');
+        }        
+        $this->trigger_events('post_create_institution');
+        return (isset($id)) ? $id : FALSE;
+    }
+    public function get_all_institutions($shop_id = 0)
+    {
+        if( 0 == $shop_id )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id',$shop_id);
+        $this->db->order_by('description');
         $this->response = $this->db->get($this->tables['institution']);
         return $this;
     }
     
-    public function get_all_professions()
+    public function create_profession($additional_data)
     {
+        $this->trigger_events('pre_create_profession');
+        $data = array(
+            'shop_id' => $this->session->userdata('shop_id')
+        );
+        //filter out any data passed that doesnt have a matching column in the profession table
+        $profession_data = array_merge($this->_filter_data($this->tables['profession'], $additional_data), $data);
+        $this->db->insert($this->tables['profession'], $profession_data);
+        $id = $this->db->insert_id();
+        if( $id > 0)
+        {
+            $this->set_message('create_profession_successful');
+        }
+        else
+        {
+            $this->set_error('create_profession_unsuccessful');
+        }        
+        $this->trigger_events('post_create_profession');
+        return (isset($id)) ? $id : FALSE;
+    }
+    public function get_all_professions($shop_id = 0)
+    {
+        if( 0 == $shop_id )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id',$shop_id);
         $this->response = $this->db->get($this->tables['profession']);
         return $this;
     }
@@ -2088,11 +2141,15 @@ class Ion_auth_model extends CI_Model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_all_suppliers($shop_id = '')
+    public function get_all_suppliers($shop_id = 0, $supplier_id_list = array())
     {
-        if(empty($shop_id))
+        if( $shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if(!empty($supplier_id_list))
+        {
+            $this->db->where_in($this->tables['suppliers'].'.id',$supplier_id_list);
         }
         $this->db->where($this->tables['suppliers'].'.shop_id',$shop_id);
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address , '.$this->tables['suppliers'].'.company')
@@ -2146,11 +2203,15 @@ class Ion_auth_model extends CI_Model {
      * This method will return all salesman of a shop
      * @Author Nazmul on 27th January 2014
      */
-    public function get_all_salesman($shop_id = '')
+    public function get_all_salesman($shop_id = 0, $user_id_list = array())
     {
-        if(empty($shop_id))
+        if( 0 == $shop_id )
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if(!empty($user_id_list))
+        {
+            $this->db->where_in($this->tables['users'].'.id',$user_id_list);
         }
         return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address')
                     ->from($this->tables['users'])

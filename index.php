@@ -1,8 +1,9 @@
 <?php
 /***************** Custom constant **********************/
-include './constants/purchase.php';
-
 date_default_timezone_set('Asia/Dacca');
+
+define("PAYMENT_PURCHASE_PAYMENT",1);
+define("PAYMENT_EXPENSE_PAYMENT",2);
 /***************** Custom constant **********************/
 define('CUSTOMER', 'customer');
 define('SUPPLIER', 'supplier');

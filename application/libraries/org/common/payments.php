@@ -106,6 +106,7 @@ class Payments {
     {
         $total_sale_price = 0;
         $total_payment = 0;
+        $total_returned_payment = 0;
         $total_sale_price_array = $this->sale_library->get_total_sale_price($customer_id)->result_array();
         if( !empty($total_sale_price_array) )
         {
@@ -116,6 +117,11 @@ class Payments {
         {
             $total_payment = $total_payment_array[0]['total_payment'];
         }
-        return $total_sale_price - $total_payment;
+        $total_returned_payment_array = $this->payments_model->get_customer_total_returned_payment($customer_id)->result_array();
+        if( !empty($total_returned_payment_array) )
+        {
+            $total_returned_payment = $total_returned_payment_array[0]['total_returned_payment'];
+        }
+        return $total_sale_price - $total_payment + $total_returned_payment;
     }
 }

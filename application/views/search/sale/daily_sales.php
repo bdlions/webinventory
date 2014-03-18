@@ -90,7 +90,10 @@ function startclock()
                 success: function(data) {
                     $("#tbody_daily_sale_list").html(tmpl("tmpl_daily_sale_list", data['sale_list'])); 
                     $("#label_total_product_sold").html(data['total_product_sold']+" pieces");
-                    $("#label_total_profit").html(data['total_profit']);
+                    if(data['total_profit'])
+                    {
+                        $("#label_total_profit").html(data['total_profit']);
+                    }                    
                     $("#label_total_sale_price").html(data['total_sale_price']);
                 }
             });
@@ -101,14 +104,30 @@ function startclock()
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
-    <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
-    <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-    <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
-    <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
-    <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
-    <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>
-    <td ><?php echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; ?></td>
-    <td >{%= sale_info.first_name%} {%=sale_info.last_name %}</td>
+        <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
+        <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
+        <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
+        <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
+        <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
+        <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>        
+        <?php 
+            if($this->session->userdata('user_type') != SALESMAN)
+            {                                    
+                echo '<td>';
+                echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; 
+                echo '</td>';
+            }        
+        ?>
+        <td >{%= sale_info.first_name%} {%=sale_info.last_name %}</td>
+        <td >{%= sale_info.card_no%}</td>
+        <?php 
+            if($this->session->userdata('user_type') != SALESMAN)
+            {                                    
+                echo '<td>';
+                echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
+                echo '</td>';
+            }        
+        ?>
     </tr>
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -136,18 +155,18 @@ function startclock()
                         </div> 
                     </td> 
                     <td>
-                        <label class="col-md-6 control-label requiredField">
+                        <label class="col-md-8 control-label requiredField">
                             Total Sale Price : 
                         </label>
-                        <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
+                        <label id="label_total_sale_price" class="col-md-4 control-label requiredField">
                             <?php echo $total_sale_price;?> 
                         </label>
                     </td>
                     <td>                        
-                        <label class="col-md-6 control-label requiredField">
+                        <label class="col-md-8 control-label requiredField">
                             Total Due <a href="<?php echo base_url().'payment/show_total_due'?>">View</a> : 
                         </label>
-                        <label id="label_total_due" class="col-md-6 control-label requiredField">
+                        <label id="label_total_due" class="col-md-4 control-label requiredField">
                             <?php echo $total_due;?>
                         </label>
                     </td>
@@ -162,18 +181,18 @@ function startclock()
                         </label>                        
                     </td>
                     <td>
-                        <label class="col-md-6 control-label requiredField">
+                        <label class="col-md-8 control-label requiredField">
                             Total Expense : 
                         </label>
-                        <label id="label_total_expense" class="col-md-6 control-label requiredField">
+                        <label id="label_total_expense" class="col-md-4 control-label requiredField">
                             <?php echo $total_expense;?>
                         </label>
                     </td>
                     <td>
-                        <label class="col-md-6 control-label requiredField">
+                        <label class="col-md-8 control-label requiredField">
                             Previous Balance : 
                         </label>
-                        <label id="label_previous_balance" class="col-md-6 control-label requiredField">
+                        <label id="label_previous_balance" class="col-md-4 control-label requiredField">
                             <?php echo $previous_balance?>
                         </label>
                     </td>
@@ -181,27 +200,59 @@ function startclock()
                 <tr>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Profit : 
+                            <?php 
+                                if($this->session->userdata('user_type') != SALESMAN)
+                                {                                    
+                                    echo 'Total Profit : ';
+                                }
+                            ?>
+                            
                         </label>
                         <label id="label_total_profit" class="col-md-6 control-label requiredField">
-                            <?php echo $total_profit;?>
+                            <?php 
+                                if($this->session->userdata('user_type') != SALESMAN)
+                                {                                    
+                                    echo $total_profit;
+                                }
+                            ?>
                         </label>                        
                     </td>
                     <td>
-                        <label class="col-md-6 control-label requiredField">
+                        <label class="col-md-8 control-label requiredField">
                             Total Due Collect <a href="<?php echo base_url().'payment/show_due_collect'?>">View</a> : 
                         </label>
-                        <label id="label_total_due_collect" class="col-md-6 control-label requiredField">
+                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
                             <?php echo $total_due_collect;?>
                         </label>                        
                     </td>
                     <td>
-                        <label class="col-md-6 control-label requiredField">
+                        <label class="col-md-8 control-label requiredField">
                             Total Net Balance : 
                         </label>
-                        <label id="label_total_net_balance" class="col-md-6 control-label requiredField">
-                            <?php echo ($total_sale_price - $total_due + $total_due_collect + $previous_balance - $total_expense)?>
+                        <label id="label_total_net_balance" class="col-md-4 control-label requiredField">
+                            <?php echo $current_balance?>
                         </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                                              
+                    </td>
+                    <td>
+                        <label class="col-md-8 control-label requiredField">
+                            Suppliers total returned balance <a href="<?php echo base_url().'payment/show_suppliers_returned_payment_list'?>">View</a> : 
+                        </label>
+                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
+                            <?php echo $suppliers_total_returned_payment_today;?>
+                        </label>                        
+                    </td>
+                    <td>
+                        <label class="col-md-8 control-label requiredField">
+                            Customers total returned balance <a href="<?php echo base_url().'payment/show_customers_returned_payment_list'?>">View</a> : 
+                        </label>
+                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
+                            <?php echo $customers_total_returned_payment_today;?>
+                        </label>     
                     </td>
                 </tr>
             </tbody>  
@@ -220,9 +271,20 @@ function startclock()
                     <th>Quantity</th>
                     <th>Sale Unit Price</th>
                     <th>Sub Total</th>
-                    <th>Profit</th>
+                    <?php 
+                        if($this->session->userdata('user_type') != SALESMAN)
+                        {                                    
+                            echo '<th>Profit</th>';
+                        }                            
+                    ?> 
                     <th>Sale by Staff</th>
                     <th>Card No</th>
+                    <?php 
+                        if($this->session->userdata('user_type') != SALESMAN)
+                        {                                    
+                            echo '<th>Return</th>';
+                        }                            
+                    ?>
                 </tr>
             </thead>
             <tbody id="tbody_daily_sale_list">                
@@ -234,9 +296,24 @@ function startclock()
                         <td><?php echo $sale_info['quantity'];?></td>
                         <td><?php echo $sale_info['sale_unit_price'];?></td>
                         <td><?php echo $sale_info['total_sale_price'];?></td>
-                        <td><?php echo $sale_info['total_sale_price'] - ($sale_info['quantity']*$sale_info['purchase_unit_price']);?></td>
+                        <?php 
+                            if($this->session->userdata('user_type') != SALESMAN)
+                            {                                    
+                                echo '<td>';
+                                echo $sale_info['total_sale_price'] - ($sale_info['quantity']*$sale_info['purchase_unit_price']);
+                                echo '</td>';
+                            }                            
+                        ?>
                         <td><?php echo $sale_info['first_name'].' '.$sale_info['last_name'];?></td>
-                        <td><?php echo $sale_info['card_no'];?></td>                        
+                        <td><?php echo $sale_info['card_no'];?></td>  
+                        <?php 
+                            if($this->session->userdata('user_type') != SALESMAN)
+                            {                                    
+                                echo '<td>';
+                                echo '<a href="'.base_url().'sale/return_sale_order/'.$sale_info['sale_order_no'].'">Return</a>';
+                                echo '</td>';
+                            }                            
+                        ?>
                     </tr>
                 <?php } ?>
             </tbody>

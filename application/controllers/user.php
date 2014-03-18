@@ -709,10 +709,16 @@ class User extends CI_Controller {
                     'last_name' => $this->input->post('last_name'),
                     'phone' => $this->input->post('phone'),
                     'address' => $this->input->post('address'),
-                    'institution_id' => $this->input->post('institution_list'),
-                    'profession_id' => $this->input->post('profession_list'),
                     'created_date' => date('Y-m-d H:i:s')
                 );
+                if($this->input->post('institution_list'))
+                {
+                    $additional_data['institution_id'] = $this->input->post('institution_list');
+                }
+                if($this->input->post('profession_list'))
+                {
+                    $additional_data['profession_id'] = $this->input->post('profession_list');
+                }
                 $groups = array('id' => $this->user_group['customer_id']);
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
@@ -858,10 +864,16 @@ class User extends CI_Controller {
                     'last_name' => $this->input->post('last_name'),
                     'phone' => $this->input->post('phone'),
                     'address' => $this->input->post('address'),
-                    'institution_id' => $this->input->post('institution_list'),
-                    'profession_id' => $this->input->post('profession_list'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
+                if($this->input->post('institution_list'))
+                {
+                    $additional_data['institution_id'] = $this->input->post('institution_list');
+                }
+                if($this->input->post('profession_list'))
+                {
+                    $additional_data['profession_id'] = $this->input->post('profession_list');
+                }
                 if( $this->ion_auth->update($user_id, $additional_data) )
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -1745,6 +1757,101 @@ class User extends CI_Controller {
             'value' => 'Update',
         );
         $this->template->load(null, 'manager/update_manager',$this->data);
+    }
+    
+    public function create_institution()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('institution_name', 'Institution Name', 'xss_clean|required');
+        if ($this->input->post('submit_create_institution')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $institution_name = $this->input->post('institution_name');
+                $data = array(
+                    'description' => $institution_name,
+                    'created_on' => now()
+                );
+                $id = $this->ion_auth->create_institution($data);
+                if( $id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/create_institution","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        $this->data['institution_name'] = array(
+            'name' => 'institution_name',
+            'id' => 'institution_name',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('institution_name'),
+        );
+        $this->data['submit_create_institution'] = array(
+            'name' => 'submit_create_institution',
+            'id' => 'submit_create_institution',
+            'type' => 'submit',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'customer/create_institution',$this->data);
+    }
+    public function create_profession()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('profession_name', 'Profession Name', 'xss_clean|required');
+        if ($this->input->post('submit_create_profession')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $profession_name = $this->input->post('profession_name');
+                $data = array(
+                    'description' => $profession_name,
+                    'created_on' => now()
+                );
+                $id = $this->ion_auth->create_profession($data);
+                if( $id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("user/create_profession","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        $this->data['profession_name'] = array(
+            'name' => 'profession_name',
+            'id' => 'profession_name',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('profession_name'),
+        );
+        $this->data['submit_create_profession'] = array(
+            'name' => 'submit_create_profession',
+            'id' => 'submit_create_profession',
+            'type' => 'submit',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'customer/create_profession',$this->data);
     }
     
     public function test()

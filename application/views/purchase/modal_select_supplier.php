@@ -19,7 +19,7 @@
             }
             else if ($("#input_company").val().length == 0)
             {
-                alert("Card No is required.");
+                alert("Company is required.");
                 return;
             }
             $.ajax({
@@ -90,6 +90,9 @@
                     return;
                 }
             }
+        });
+        $("#button_close_modal_select_supplier").on("click", function() {
+            $('#modal_select_supplier').modal('hide');
         });
     });
 </script>
@@ -215,7 +218,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="button_close_modal_select_supplier" name="button_close_modal_select_supplier" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

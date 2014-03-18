@@ -21,15 +21,30 @@
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
-    <td ><?php echo '{%= sale_info.sale_order_no%}'; ?></td>
-    <td ><?php echo '{%= sale_info.name%}'; ?></td>
-    <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-    <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
-    <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
-    <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
-    <td ><?php echo '{%= sale_info.quantity*sale_info.purchase_unit_price%}'; ?></td>
-    <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>
-    <td ><?php echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; ?></td>
+        <td ><?php echo '{%= sale_info.sale_order_no%}'; ?></td>
+        <td ><?php echo '{%= sale_info.name%}'; ?></td>
+        <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
+        <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
+        <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
+        <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
+        <td ><?php echo '{%= sale_info.quantity*sale_info.purchase_unit_price%}'; ?></td>
+        <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>
+        <?php 
+            if($this->session->userdata('user_type') != SALESMAN)
+            {                                    
+                echo '<td>';
+                echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; 
+                echo '</td>';
+            }        
+        ?>
+        <?php 
+            if($this->session->userdata('user_type') != SALESMAN)
+            {                                    
+                echo '<td>';
+                echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
+                echo '</td>';
+            }        
+        ?>
     </tr>
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -99,7 +114,18 @@
                     <th>Sale Unit Price</th>
                     <th>Total Purchase Price</th>
                     <th>Total Sale Price</th>
-                    <th>Net Profit</th>
+                    <?php 
+                        if($this->session->userdata('user_type') != SALESMAN)
+                        {                                    
+                            echo '<th>Net Profit</th>';
+                        }                            
+                    ?> 
+                    <?php 
+                        if($this->session->userdata('user_type') != SALESMAN)
+                        {                                    
+                            echo '<th>Return</th>';
+                        }                            
+                    ?>
                 </tr>
             </thead>
             <tbody id="tbody_customer_sale_list">                

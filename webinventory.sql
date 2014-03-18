@@ -21,31 +21,43 @@ INSERT INTO `shop_info` (`id`, `shop_no`, `name`) VALUES
 CREATE TABLE `profession` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
-	PRIMARY KEY  (`id`)
+	`shop_id` int NOT NULL,
+	`created_on` int(11) unsigned NOT NULL,
+	`modified_on` int(11) unsigned NOT NULL,
+	PRIMARY KEY  (`id`),
+	KEY `fk_profession_shop_info1_idx` (`shop_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-INSERT INTO `profession` (`id`, `description`) VALUES
-(1, 'Business'),
-(2, 'Doctor'),
-(3, 'Engineer'),
-(4, 'Lawyear'),
-(5, 'Service'),
-(6, 'Student'),
-(7, 'Other');
+ALTER TABLE `profession`
+  ADD CONSTRAINT `fk_profession_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `profession` (`id`, `description`, `shop_id`) VALUES
+(1, 'Business', 1),
+(2, 'Doctor', 1),
+(3, 'Engineer', 1),
+(4, 'Lawyear', 1),
+(5, 'Service', 1),
+(6, 'Student', 1),
+(7, 'Other', 1);
 
 CREATE TABLE `institution` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
-	PRIMARY KEY  (`id`)
+	`shop_id` int NOT NULL,	
+	`created_on` int(11) unsigned NOT NULL,
+	`modified_on` int(11) unsigned NOT NULL,
+	PRIMARY KEY  (`id`),
+	KEY `fk_institution_shop_info1_idx` (`shop_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-INSERT INTO `institution` (`id`, `description`) VALUES
-(1, 'BUET'),
-(2, 'Dhaka College'),
-(3, 'Dhaka City College'),
-(4, 'Dhaka Medical College'),
-(5, 'Dhaka University'),
-(6, 'Jagonnath University'),
-(7, 'Jahangirnagar University'),
-(8, 'Mirpur Bangla College');
+ALTER TABLE `institution`
+  ADD CONSTRAINT `fk_institution_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `institution` (`id`, `description`, `shop_id`) VALUES
+(1, 'BUET', 1),
+(2, 'Dhaka College', 1),
+(3, 'Dhaka City College', 1),
+(4, 'Dhaka Medical College', 1),
+(5, 'Dhaka University', 1),
+(6, 'Jagonnath University', 1),
+(7, 'Jahangirnagar University', 1),
+(8, 'Mirpur Bangla College', 1);
 
 
 

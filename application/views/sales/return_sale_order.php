@@ -23,49 +23,56 @@
     function isNumber(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
+    
+    function process_sale_order_info(sale_order_no)
+    {
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + "sale/get_sale_info_from_sale_order_no",
+            data: {
+                sale_order_no: sale_order_no
+            },
+            success: function(data) {
+                var customer_info = data['customer_info'];
+                var customer_due = data['customer_due'];
+                if(customer_info.customer_id)
+                {
+                    set_product_list(data['product_list']);
+                    $("#tbody_sold_product_list").html(tmpl("tmpl_sold_product_list",  data['product_list']));
+                    $("#input_return_sale_customer_id").val(customer_info.customer_id);
+                    $("#input_return_sale_customer").val(customer_info.first_name+' '+customer_info.last_name);
+                    $("#input_return_sale_phone").val(customer_info.phone);
+                    $("#input_return_sale_card_no").val(customer_info.card_no);
+                    $('#input_return_sale_product').attr('type', 'text');
+                    $("#total_return_sale_price").val('');
+                    $("#previous_due").val(customer_due);
+                    $("#current_due").val(customer_due);
+                    $("#return_balance").val('');
+                }
+                else
+                {
+                    $("#input_return_sale_customer_id").val('');
+                    $("#input_return_sale_customer").val('');
+                    $("#input_return_sale_phone").val('');
+                    $("#input_return_sale_card_no").val('');
+                    $('#input_return_sale_product').attr('type', 'hidden');
+                    $("#total_return_sale_price").val('');
+                    $("#previous_due").val('');
+                    $("#current_due").val('');
+                    $("#return_balance").val('');                        
+                    $("#sale_order_no").val('');  
+                }
+            }
+        });
+    }
 </script>
 
 <script type="text/javascript">
     $(function() {
+        process_sale_order_info('<?php echo $sale_order_no?>');
         $("#sale_order_no").change(function() {
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "sale/get_sale_info_from_sale_order_no",
-                data: {
-                    sale_order_no: $("#sale_order_no").val()
-                },
-                success: function(data) {
-                    var customer_info = data['customer_info'];
-                    var customer_due = data['customer_due'];
-                    if(customer_info.customer_id)
-                    {
-                        set_product_list(data['product_list']);
-                        $("#tbody_sold_product_list").html(tmpl("tmpl_sold_product_list",  data['product_list']));
-                        $("#input_return_sale_customer_id").val(customer_info.customer_id);
-                        $("#input_return_sale_customer").val(customer_info.first_name+' '+customer_info.last_name);
-                        $("#input_return_sale_phone").val(customer_info.phone);
-                        $("#input_return_sale_card_no").val(customer_info.card_no);
-                        $('#input_return_sale_product').attr('type', 'text');
-                        $("#total_return_sale_price").val('');
-                        $("#previous_due").val(customer_due);
-                        $("#current_due").val(customer_due);
-                        $("#return_balance").val('');
-                    }
-                    else
-                    {
-                        $("#input_return_sale_customer_id").val('');
-                        $("#input_return_sale_customer").val('');
-                        $("#input_return_sale_phone").val('');
-                        $("#input_return_sale_card_no").val('');
-                        $('#input_return_sale_product').attr('type', 'hidden');
-                        $("#total_return_sale_price").val('');
-                        $("#previous_due").val('');
-                        $("#current_due").val('');
-                        $("#return_balance").val('');
-                    }
-                }
-            });
+            process_sale_order_info($("#sale_order_no").value());
         });
         
         $("#update_return_sale_order").on("click", function() {
@@ -167,6 +174,7 @@
                             $("#previous_due").val('');
                             $("#current_due").val('');
                             $("#return_balance").val('');
+                            $("#sale_order_no").val('');                            
                         }
                         else if (response['status'] === '0')
                         {
@@ -221,7 +229,8 @@
                 }
             });
             $("#total_return_sale_price").val(total_return_sale_price);
-            var current_due = +$("#previous_due").val() - +$("#total_return_sale_price").val();
+            $("#return_balance").val(total_return_sale_price);
+            /*var current_due = +$("#previous_due").val() - +$("#total_return_sale_price").val();
             if(current_due >=0 )
             {
                 $("#current_due").val(current_due);
@@ -231,8 +240,19 @@
             {
                 $("#current_due").val('0');
                 $("#return_balance").val(-current_due);
+            }*/
+        }); 
+        $("#return_balance").change(function() {
+            if( +$("#total_return_sale_price").val() < +$("#return_balance").val() )
+            {
+                alert('Incorrect value for Return Balance. It must be less than or equal to Total');
+                $("#current_due").val('');
+                $("#return_balance").val('');
+                return;
             }
-        });        
+            var current_due = +$("#previous_due").val() - (+$("#total_return_sale_price").val() - +$("#return_balance").val());
+            $("#current_due").val(current_due);
+        });
     });
 </script>
 <script type="text/javascript">
@@ -292,7 +312,7 @@
                         Sale Order No.
                     </label>
                     <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control')); ?>
+                        <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control', 'value' => $sale_order_no)); ?>
                     </div> 
                 </div>
                 <div class="form-group">
@@ -375,7 +395,7 @@
                         Return balance
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

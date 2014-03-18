@@ -213,9 +213,13 @@ class Purchase_model extends Ion_auth_model
                             ->get();
     }
     
-    public function get_next_purchase_order_no()
+    public function get_next_purchase_order_no($shop_id = 0)
     {
-        $query = 'SELECT MAX(purchase_order_no) as purchase_order_no FROM purchase_order';
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $query = 'SELECT MAX(purchase_order_no) as purchase_order_no FROM purchase_order where shop_id ='.$shop_id;
         return $this->db->query($query);
     }
 }

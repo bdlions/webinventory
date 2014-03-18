@@ -13,6 +13,8 @@ class Test extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('sms_library');
+        $this->load->library('org/common/utils');
+        $this->load->library('org/common/expenses');
         $this->load->library('org/purchase/purchase_library');
         $this->load->library('org/sale/sale_library');
         $this->load->helper('url');
@@ -36,7 +38,10 @@ class Test extends CI_Controller {
     
     public function test1()
     {
-        print_r($this->purchase_library->get_next_purchase_order_no()->result_array());
+        //$start_time = $this->utils->get_current_date_start_time();
+        //$end_time = $start_time + 86400;
+        //$this->expenses->get_all_expenses($start_time, $end_time);
+        print_r($this->sale_library->test(9)->result_array());
         /*$gmt_unix_current_time = now();
         $local_unix_current_time = ($gmt_unix_current_time + 21600);
         $local_human_current_time = unix_to_human($local_unix_current_time);

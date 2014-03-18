@@ -51,7 +51,7 @@
                 Institution
             </label>
             <div class ="col-md-6">
-                <?php echo form_dropdown('institution_list', $institution_list, 1,'class=form-control'); ?>
+                <?php echo form_dropdown('institution_list', $institution_list+array('' => 'Select'), '','class=form-control'); ?>
             </div> 
         </div>
         <div class="form-group">
@@ -59,7 +59,7 @@
                 Profession
             </label>
             <div class ="col-md-6">
-                <?php echo form_dropdown('profession_list', $profession_list, 1, 'class=form-control'); ?>
+                <?php echo form_dropdown('profession_list', $profession_list+array('' => 'Select'), '', 'class=form-control'); ?>
             </div> 
         </div>
         <div class="form-group">

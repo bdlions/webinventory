@@ -145,7 +145,10 @@ class Search extends CI_Controller {
         }
         $result['sale_list'] = $sale_list;
         $result['total_product_sold'] = $total_product_sold;
-        $result['total_profit'] = $total_profit;
+        if($this->session->userdata('user_type') != SALESMAN)
+        {                                    
+            $result['total_profit'] = $total_profit;
+        }        
         $result['total_sale_price'] = $total_sale_price;
         
         //expense of today
@@ -176,26 +179,67 @@ class Search extends CI_Controller {
             $total_due_collect = $payment_list_array[0]['total_due_collect'];
         }        
         $result['total_due_collect'] = $total_due_collect;
-        //previous balance
-        $previous_expense = 0;
-        $previous_expense_array = $this->expenses->get_previous_expenses($time)->result_array();
-        if(!empty($previous_expense_array))
+        
+        //customers total payments and total payments of today
+        $customers_total_payment = 0;
+        $customers_total_payment_array = $this->payments->get_customers_total_payment()->result_array();
+        if(!empty($customers_total_payment_array))
         {
-            $previous_expense = $previous_expense_array[0]['total_expense'];
+            $customers_total_payment = $customers_total_payment_array[0]['total_payment'];
         }
-        $previous_due_collect = 0;
-        $previous_due_collect_array = $this->payments->get_customer_previous_due_collect($time)->result_array();
-        if(!empty($previous_due_collect_array))
+        $customers_total_payment_today = 0;
+        $customers_total_payment_today_array = $this->payments->get_customers_total_payment_today($time)->result_array();
+        if(!empty($customers_total_payment_today_array))
         {
-            $previous_due_collect = $previous_due_collect_array[0]['total_previous_due_collect'];
+            $customers_total_payment_today = $customers_total_payment_today_array[0]['total_payment'];
         }
-        $previous_sale_amount = 0;
-        $previous_sale_amount_array = $this->sale_library->get_previous_sale_amount($time)->result_array();
-        if(!empty($previous_sale_amount_array))
+        //shop total expenses and total expenses of today
+        $shop_total_expenses = 0;
+        $shop_total_expenses_array = $this->expenses->get_shop_total_expenses()->result_array();
+        if(!empty($shop_total_expenses_array))
         {
-            $previous_sale_amount = $previous_sale_amount_array[0]['total_previous_sale_amount'];
+            $shop_total_expenses = $shop_total_expenses_array[0]['total_expense'];
         }
-        $previous_balance = $previous_sale_amount + $previous_due_collect - $previous_expense;
+        $shop_total_expenses_today = 0;
+        $shop_total_expenses_today_array = $this->expenses->get_shop_total_expenses_today($time)->result_array();
+        if(!empty($shop_total_expenses_today_array))
+        {
+            $shop_total_expenses_today = $shop_total_expenses_today_array[0]['total_expense'];
+        }
+        //suppliers total returned payment and returned payment of today
+        $suppliers_total_returned_payment = 0;
+        $suppliers_total_returned_payment_array = $this->payments->get_suppliers_total_returned_payment()->result_array();
+        if(!empty($suppliers_total_returned_payment_array))
+        {
+            $suppliers_total_returned_payment = $suppliers_total_returned_payment_array[0]['total_returned_payment'];
+        }
+        $suppliers_total_returned_payment_today = 0;
+        $suppliers_total_returned_payment_today_array = $this->payments->get_suppliers_total_returned_payment_today($time)->result_array();
+        if(!empty($suppliers_total_returned_payment_today_array))
+        {
+            $suppliers_total_returned_payment_today = $suppliers_total_returned_payment_today_array[0]['total_returned_payment'];
+        }
+        //customers total returned payment and returned payment of today
+        $customers_total_returned_payment = 0;
+        $customers_total_returned_payment_array = $this->payments->get_customers_total_returned_payment()->result_array();
+        if(!empty($customers_total_returned_payment_array))
+        {
+            $customers_total_returned_payment = $customers_total_returned_payment_array[0]['total_returned_payment'];
+        }
+        $customers_total_returned_payment_today = 0;
+        $customers_total_returned_payment_today_array = $this->payments->get_customers_total_returned_payment_today($time)->result_array();
+        if(!empty($customers_total_returned_payment_today_array))
+        {
+            $customers_total_returned_payment_today = $customers_total_returned_payment_today_array[0]['total_returned_payment'];
+        }
+        
+        $result['suppliers_total_returned_payment_today'] = $suppliers_total_returned_payment_today;
+        $result['customers_total_returned_payment_today'] = $customers_total_returned_payment_today;
+        
+        $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses;
+        $result['current_balance'] = $current_balance;
+        
+        $previous_balance = $current_balance - ($customers_total_payment_today + $suppliers_total_returned_payment_today - $customers_total_returned_payment_today - $shop_total_expenses_today);
         $result['previous_balance'] = $previous_balance;
         return $result;
     }
@@ -346,6 +390,140 @@ class Search extends CI_Controller {
             'value' => 'Search',
         );
         $this->template->load(null, 'search/sale/customer_card_no', $this->data);
+    }
+    
+    /*
+     * Ajax Call
+     */
+    public function search_sales_by_customer_name()
+    {
+        $name = $_POST['name'];
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $sale_list = array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_name($name)->result_array();
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $total_sale_price = $total_sale_price + $sale_info['total_sale_price'];
+                $total_quantity = $total_quantity + $sale_info['quantity'];
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result_array['sale_list'] = $sale_list;  
+        $result_array['total_sale_price'] = $total_sale_price;  
+        $result_array['total_quantity'] = $total_quantity;  
+        echo json_encode($result_array);
+    }
+    public function search_sales_customer_name()
+    {
+        $this->data['name'] = array(
+            'name' => 'name',
+            'id' => 'name',
+            'type' => 'text'
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/customer_name', $this->data);
+    }
+    
+    /*
+     * Ajax Call
+     */
+    public function search_sales_by_customer_phone()
+    {
+        $phone = $_POST['phone'];
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $sale_list = array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_phone($phone)->result_array();
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $total_sale_price = $total_sale_price + $sale_info['total_sale_price'];
+                $total_quantity = $total_quantity + $sale_info['quantity'];
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result_array['sale_list'] = $sale_list;  
+        $result_array['total_sale_price'] = $total_sale_price;  
+        $result_array['total_quantity'] = $total_quantity;  
+        echo json_encode($result_array);
+    }
+    public function search_sales_customer_phone()
+    {
+        $this->data['phone'] = array(
+            'name' => 'phone',
+            'id' => 'phone',
+            'type' => 'text'
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/customer_phone', $this->data);
+    }
+    
+    public function search_customers_by_total_purchased()
+    {
+        $total_purchased = $_POST['total_purchased'];
+        $customer_list = array();
+        $customer_list_array = $this->sale_library->get_customers_by_total_purchased()->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            if($customer_info['total_quantity'] == $total_purchased)
+            {
+                $customer_list[] = $customer_info;
+            }
+        }
+        $result_array['customer_list'] = $customer_list;  
+        echo json_encode($result_array);
+    }
+    public function download_search_customers_total_purchased()
+    {
+        $content = '';
+        $total_purchased = $this->input->post('total_purchased');
+        $customer_list_array = $this->sale_library->get_customers_by_total_purchased()->result_array();
+        foreach($customer_list_array as $customer_info)
+        {
+            if($customer_info['total_quantity'] == $total_purchased)
+            {
+                $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+            }            
+        }        
+        $file_name = now();
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
+        echo $content;
+    }
+    public function search_customers_total_purchased()
+    {
+        $this->data['total_purchased'] = array(
+            'name' => 'total_purchased',
+            'id' => 'total_purchased',
+            'type' => 'text'
+        );
+        $this->data['button_search_customer'] = array(
+            'name' => 'button_search_customer',
+            'id' => 'button_search_customer',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->data['button_download_customer'] = array(
+            'name' => 'button_download_customer',
+            'id' => 'button_download_customer',
+            'type' => 'submit',
+            'value' => 'Download',
+        );
+        $this->template->load(null, 'search/customer/total_purchased', $this->data);
     }
     
     //---------------------------------------- Customer Search -------------------------------------------

@@ -37,6 +37,9 @@ class Template {
         else if($this->CI->ion_auth->get_current_user_type() == SALESMAN){
             $current_template = SALESMAN_LOGIN_SUCCESS_TEMPLATE;
         }
+        else if($this->CI->ion_auth->get_current_user_type() == MANAGER){
+            $current_template = MANAGER_LOGIN_SUCCESS_TEMPLATE;
+        }
         return $current_template;
     }
 

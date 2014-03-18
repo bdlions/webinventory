@@ -215,7 +215,7 @@ class Purchase extends CI_Controller {
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
-            'sub_total' => $current_due+$purchase_info['paid'],
+            'sub_total' => ($current_due+$purchase_info['paid']),
             'payment_status' => 'Total due'
         );
         $supplier_transaction_info_array[] = $supplier_transaction_info;

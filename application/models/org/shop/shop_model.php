@@ -96,9 +96,9 @@ class Shop_model extends Ion_auth_model {
      * @return shop info
      * @author Nazmul on 23rd November 2014
      * */
-    public function get_shop($shop_id = '')
+    public function get_shop($shop_id = 0)
     {
-        if(empty($shop_id))
+        if( 0 == $shop_id )
         {
             $shop_id = $this->session->userdata('shop_id');
         }

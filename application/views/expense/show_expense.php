@@ -93,72 +93,79 @@
         <td>{%= expense_info.expense_date %}</td>
         <td>{%= expense_info.expense_amount %}</td>
         <td>{%= expense_info.description %}</td>
+        <td>{%= expense_info.category_title %}</td>
+        <td>{%= expense_info.category_description %}</td>
+        <td><a href="<?php echo base_url()."./expense/delete_expense/{%= expense_info.id %}"; ?>">Delete</a></td>
     </tr>
     {% expense_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
 <h3>Search Expense</h3>
 <div class ="row form-background top-bottom-padding">
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="expense_categories" class="col-md-6 control-label requiredField">
-                                Select Type
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('expense_categories', $expense_categories+ array('0' => 'All'), '','class="form-control" id="expense_categories"'); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="item_list" class="col-md-6 control-label requiredField">
-                                Select Item
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="address" class="col-md-6 control-label requiredField">
+    <div class="row col-md-6 col-md-offset-3"><?php echo $message?></div>
+    <div class="row">
+        <div class ="col-md-6">
+            <div class ="row">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="row">
+                        <div class ="col-md-6 margin-top-bottom">
+                            <div class="form-group">
+                                <label for="expense_categories" class="col-md-6 control-label requiredField">
+                                    Select Type
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_dropdown('expense_categories', $expense_categories+ array('0' => 'All'), '','class="form-control" id="expense_categories"'); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="item_list" class="col-md-6 control-label requiredField">
+                                    Select Item
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_search_expense+array('class'=>'form-control btn-success')); ?>
-                            </div> 
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($button_search_expense+array('class'=>'form-control btn-success')); ?>
+                                </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>  
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="expense_categories" class="col-md-6 control-label requiredField">
-                                Start Date
-                            </label>
-                            <div class ="col-md-6">
-                               <?php echo form_input($show_expense_start_date+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="item_list" class="col-md-6 control-label requiredField">
-                                End Date
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($show_expense_end_date+array('class'=>'form-control')); ?>
-                            </div> 
+        </div>  
+        <div class ="col-md-6">
+            <div class ="row">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="row">
+                        <div class ="col-md-6 margin-top-bottom">
+                            <div class="form-group">
+                                <label for="expense_categories" class="col-md-6 control-label requiredField">
+                                    Start Date
+                                </label>
+                                <div class ="col-md-6">
+                                   <?php echo form_input($show_expense_start_date+array('class'=>'form-control')); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="item_list" class="col-md-6 control-label requiredField">
+                                    End Date
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($show_expense_end_date+array('class'=>'form-control')); ?>
+                                </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
 </div>
 <h3>Search Result</h3>
 <div class="row form-background">
@@ -168,11 +175,23 @@
                 <tr>
                     <th>Date</th>
                     <th>Amount</th>
-                    <th>Description</th>                    
+                    <th>Description</th>
+                    <th>Category</th>   
+                    <th>Name</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody id="tbody_expense_list">                    
-
+                <?php foreach($expense_list as $expense_info) { ?>
+                    <tr>
+                        <td><?php echo $expense_info['expense_date'];?></td>
+                        <td><?php echo $expense_info['expense_amount'];?></td>
+                        <td><?php echo $expense_info['description'];?></td>
+                        <td><?php echo $expense_info['category_title'];?></td>
+                        <td><?php echo $expense_info['category_description'];?></td>
+                        <td><a href="<?php echo base_url("./expense/delete_expense/" . $expense_info['id']); ?>">Delete</a></td>
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
     </div>

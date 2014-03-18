@@ -82,9 +82,11 @@ $lang['customer_creation_duplicate_card_no']       = 'Card No Already Used or In
 $lang['add_purchase_order_duplicate_purchase_order_no']       = 'Order # already used or invalid.';
 
 //Expense
-$lang['add_expense_invalid_shop']       = 'Shop Id is invalid.';
-$lang['add_expense_invalid_user']       = 'User Id is invalid.';
-$lang['add_expense_success']       = 'Expense is added successfully.';
+$lang['add_expense_invalid_shop']           = 'Shop Id is invalid.';
+$lang['add_expense_invalid_user']           = 'User Id is invalid.';
+$lang['add_expense_success']                = 'Expense is added successfully.';
+$lang['delete_expense_successful']          = 'Expense is removed successfully.';
+$lang['delete_expense_unsuccessful']        = 'Error while deleting expense.';
 
 //SMS
 $lang['add_shop_sms_configuration']                         = 'SMS configuration is added successfully';
@@ -94,3 +96,12 @@ $lang['operator_creation_duplicate_operator']               = 'Operator Already 
 
 //Attendance
 $lang['store_attendance_successful']                         = 'Attendance successfully stored.';
+
+//Institution
+$lang['create_institution_successful']                         = 'Institution is created successfully.';
+$lang['create_institution_unsuccessful']                       = 'Error while creating institution.';
+
+//Profession
+$lang['create_profession_successful']                         = 'Profession is created successfully.';
+$lang['create_profession_unsuccessful']                       = 'Error while creating profession.';
+

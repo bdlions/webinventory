@@ -91,6 +91,11 @@
                 alert('Incorrect Order #');
                 return;
             }
+            if ( +$("#total_sale_price").val() < (+$("#cash_paid_amount").val() + +$("#check_paid_amount").val()) )
+            {
+                alert('Please click on Due Collect to pay previous due.');
+                return;
+            }
             //checking whether at least one product is selected or not
             var selected_product_counter = 0;
             $("input", "#tbody_selected_product_list").each(function() {
@@ -274,6 +279,8 @@
                 }
             });
             $("#total_sale_price").val(total_sale_price);
+            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+            $("#current_due").val(current_due);
         });
         $("#cash_paid_amount").on("change", function() {
             var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();

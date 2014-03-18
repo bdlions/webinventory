@@ -53,6 +53,53 @@ class Payments_model extends Ion_auth_model {
                             ->from($this->tables['supplier_returned_payment_info'])
                             ->get();
     }
+    /*
+     * Suppliers total returned payment
+     */
+    public function get_suppliers_total_returned_payment($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        return $this->db->select('SUM(amount) as total_returned_payment')
+                            ->from($this->tables['supplier_returned_payment_info'])
+                            ->get();
+    }
+    /*
+     * Suppliers total returned payment of today
+     */
+    public function get_suppliers_total_returned_payment_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $time);
+        return $this->db->select('SUM(amount) as total_returned_payment')
+                            ->from($this->tables['supplier_returned_payment_info'])
+                            ->get();
+    }
+    
+    /*
+     * Suppliers returned payment list of today
+     */
+    public function get_suppliers_returned_payment_list_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where($this->tables['supplier_returned_payment_info'].'.shop_id', $shop_id);
+        $this->db->where($this->tables['supplier_returned_payment_info'].'.created_on >=', $time);
+        return $this->db->select($this->tables['supplier_returned_payment_info'].'.*,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name')
+                            ->from($this->tables['supplier_returned_payment_info'])
+                            ->join($this->tables['suppliers'], $this->tables['suppliers'].'.id='.$this->tables['supplier_returned_payment_info'].'.supplier_id')
+                            ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                            ->get();
+    }
     
     public function get_supplier_transactions($supplier_id)
     {
@@ -70,6 +117,85 @@ class Payments_model extends Ion_auth_model {
         $this->db->where('customer_id', $customer_id);
         return $this->db->select('SUM(amount) as total_payment')
                             ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
+    public function get_customers_total_payment($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        return $this->db->select('SUM(amount) as total_payment')
+                            ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
+    public function get_customers_total_payment_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $time);
+        return $this->db->select('SUM(amount) as total_payment')
+                            ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
+    public function get_customer_total_returned_payment($customer_id)
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('customer_id', $customer_id);
+        return $this->db->select('SUM(amount) as total_returned_payment')
+                            ->from($this->tables['customer_returned_payment_info'])
+                            ->get();
+    }
+    /*
+     * Customers total returned payment
+     */
+    public function get_customers_total_returned_payment($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        return $this->db->select('SUM(amount) as total_returned_payment')
+                            ->from($this->tables['customer_returned_payment_info'])
+                            ->get();
+    }
+    /*
+     * Customers total returned payment of today
+     */
+    public function get_customers_total_returned_payment_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $time);
+        return $this->db->select('SUM(amount) as total_returned_payment')
+                            ->from($this->tables['customer_returned_payment_info'])
+                            ->get();
+    }
+    
+    public function get_customers_returned_payment_list_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where($this->tables['customer_returned_payment_info'].'.shop_id', $shop_id);
+        $this->db->where($this->tables['customer_returned_payment_info'].'.created_on >=', $time);
+        return $this->db->select($this->tables['customer_returned_payment_info'].'.*,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['customers'].'.card_no')
+                            ->from($this->tables['customer_returned_payment_info'])
+                            ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['customer_returned_payment_info'].'.customer_id')
+                            ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                             ->get();
     }
     

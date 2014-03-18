@@ -189,4 +189,38 @@ class Payment extends CI_Controller {
         $this->data['due_list'] = $due_list;
         $this->template->load(null, 'search/due/due_list',$this->data);
     }
+    
+    public function show_suppliers_returned_payment_list()
+    {
+        $time = $this->utils->get_current_date_start_time();
+        $suppliers_returned_payment_list = array();
+        $suppliers_returned_payment_list_today_array = $this->payments->get_suppliers_returned_payment_list_today($time)->result_array();
+        if(!empty($suppliers_returned_payment_list_today_array))
+        {
+            foreach($suppliers_returned_payment_list_today_array as $suppliers_returned_payment_list_today)
+            {
+                $suppliers_returned_payment_list_today['created_on'] = $this->utils->process_time($suppliers_returned_payment_list_today['created_on']);
+                $suppliers_returned_payment_list[] = $suppliers_returned_payment_list_today;
+            }
+        }
+        $this->data['suppliers_returned_payment_list'] = $suppliers_returned_payment_list;
+        $this->template->load(null, 'search/return/supplier_payment_list',$this->data);
+    }
+    
+    public function show_customers_returned_payment_list()
+    {
+        $time = $this->utils->get_current_date_start_time();
+        $customers_returned_payment_list = array();
+        $customers_returned_payment_list_today_array = $this->payments->get_customers_returned_payment_list_today($time)->result_array();
+        if(!empty($customers_returned_payment_list_today_array))
+        {
+            foreach($customers_returned_payment_list_today_array as $customer_returned_payment_list_today_array)
+            {
+                $customer_returned_payment_list_today_array['created_on'] = $this->utils->process_time($customer_returned_payment_list_today_array['created_on']);
+                $customers_returned_payment_list[] = $customer_returned_payment_list_today_array;
+            }
+        }
+        $this->data['customers_returned_payment_list'] = $customers_returned_payment_list;
+        $this->template->load(null, 'search/return/customer_payment_list',$this->data);
+    }
 }

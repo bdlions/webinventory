@@ -32,7 +32,7 @@ class Expense extends CI_Controller {
     
     function index()
     {
-        print_r($this->ion_auth->get_shop_id(2)->result_array());
+        //print_r($this->ion_auth->get_shop_id(2)->result_array());
     }
     
     public function add_expense()
@@ -129,7 +129,7 @@ class Expense extends CI_Controller {
     
     public function show_expense()
     {
-        $this->data['message'] = "";
+        $this->data['message'] = $this->session->flashdata('message');
         $this->data['expense_type_list'] = $this->expense_type_list;
         
         $expense_types_array = $this->expenses->get_all_expense_types()->result_array();
@@ -150,7 +150,13 @@ class Expense extends CI_Controller {
             }            
         }
         $this->data['item_list'] = $shop_list;
-        $date = date('Y-m-d');        
+        $date = date('Y-m-d');    
+        
+        $start_time = $this->utils->get_current_date_start_time();
+        $end_time = $start_time + 86400;
+        $expense_list = $this->expenses->get_all_expenses($start_time, $end_time);
+        $this->data['expense_list'] = $expense_list;
+        
         $this->data['show_expense_start_date'] = array(
             'name' => 'show_expense_start_date',
             'id' => 'show_expense_start_date',
@@ -226,32 +232,57 @@ class Expense extends CI_Controller {
         $end_date = $_POST['end_date'];
         $start_time = $this->utils->get_human_to_unix($start_date);
         $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
-        $expense_list = array();
         $expense_list_array = array();
         if($expense_type_id > 0)
         {
-            $expense_list_array = $this->expenses->get_expenses($expense_type_id, $start_time, $end_time)->result_array();
+            $expense_list_array = $this->expenses->get_expenses($expense_type_id, $start_time, $end_time);
         }
         else
         {
-            $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time)->result_array();
+            $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time);
         }
-        if( !empty($expense_list_array) )
+        echo json_encode($expense_list_array);
+    }
+    
+    public function delete_expense($expense_id)
+    {
+        $this->data['expense_id'] = $expense_id;
+        if ($this->input->post('submit_delete_expense_yes')) 
         {
-            foreach($expense_list_array as $expense_info)
+            if($this->expenses->delete_expense($expense_id))
             {
-                $expense_info['expense_date'] = $this->utils->process_time($expense_info['expense_date']);                
-                $expense_list[] = $expense_info;
+                $this->session->set_flashdata('message', $this->expenses->messages());
             }
+            else
+            {
+                $this->session->set_flashdata('message', $this->expenses->errors());
+            }
+            redirect('expense/show_expense','refresh');
         }
-        echo json_encode($expense_list);
+        else if ($this->input->post('submit_delete_expense_no')) 
+        {
+            redirect('expense/show_expense','refresh');
+        }
+        $this->data['submit_delete_expense_yes'] = array(
+            'name' => 'submit_delete_expense_yes',
+            'id' => 'submit_delete_expense_yes',
+            'type' => 'submit',
+            'value' => 'Yes',
+        );
+        $this->data['submit_delete_expense_no'] = array(
+            'name' => 'submit_delete_expense_no',
+            'id' => 'submit_delete_expense_no',
+            'type' => 'submit',
+            'value' => 'No',
+        );
+        $this->template->load(null, 'expense/delete_expense_confirmation', $this->data);
     }
     
     public function test()
     {
-        $start_date = '2014-01-22';
-        $end_date = '2014-01-23';
-        $expense_list_array = $this->expenses->get_all_expenses($start_date, $end_date)->result_array();
-        print_r($expense_list_array);
+        $expense_type_id = 1;
+        $start_date = '2014-03-18';
+        $end_date = '2014-03-18';
+        print_r($this->get_expense($expense_type_id, $start_date, $end_date));
     }
 }

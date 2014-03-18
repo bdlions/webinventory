@@ -238,7 +238,8 @@
                 }
             });
             $("#total_purchase_price").val(total_purchase_price);
-            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
+            $("#return_balance").val(total_purchase_price);
+            /*var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
             if(current_due >=0 )
             {
                 $("#current_due").val(current_due);
@@ -248,9 +249,20 @@
             {
                 $("#current_due").val('0');
                 $("#return_balance").val(-current_due);
+            }*/
+            
+            
+        });
+        $("#return_balance").change(function() {
+            if( +$("#total_purchase_price").val() < +$("#return_balance").val() )
+            {
+                alert('Incorrect value for Return Balance. It must be less than or equal to Total');
+                $("#current_due").val('');
+                $("#return_balance").val('');
+                return;
             }
-            
-            
+            var current_due = +$("#previous_due").val() - (+$("#total_purchase_price").val() - +$("#return_balance").val());
+            $("#current_due").val(current_due);
         });
 
     });
@@ -388,7 +400,7 @@
                         Return balance
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

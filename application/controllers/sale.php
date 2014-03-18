@@ -76,7 +76,7 @@ class Sale extends CI_Controller {
         $this->template->load(null, 'sales/sales_order', $this->data);
     }
 
-    public function return_sale_order() {
+    public function return_sale_order($sale_order_no = '') {
         $salesman_list = array();
         $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
         if (!empty($salesman_list_array)) {
@@ -95,6 +95,7 @@ class Sale extends CI_Controller {
         if (count($product_list_array) > 0) {
             $this->data['product_list_array'] = $product_list_array;
         }
+        $this->data['sale_order_no'] = $sale_order_no;
         $this->template->load(null, 'sales/return_sale_order', $this->data);
     }
 
@@ -341,7 +342,7 @@ class Sale extends CI_Controller {
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
-            'sub_total' => $current_due + $sale_info['cash_paid'] + $sale_info['check_paid'],
+            'sub_total' => ($current_due + $sale_info['cash_paid'] + $sale_info['check_paid']),
             'payment_status' => 'Total due',
             'profit' => ''
         );
