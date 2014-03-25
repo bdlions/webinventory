@@ -45,7 +45,7 @@
         </div>
         <div class="form-group">
             <label for="login_time" class="col-md-6 control-label requiredField">
-                Login Time
+                In Time
             </label>
             <div class ="col-md-6">
                 <?php echo form_input($login_time+array('class'=>'form-control')); ?>
@@ -53,7 +53,7 @@
         </div>
         <div class="form-group">
             <label for="logout_time" class="col-md-6 control-label requiredField">
-                Logout Time
+                Out Time
             </label>
             <div class ="col-md-6">
                 <?php echo form_input($logout_time+array('class'=>'form-control')); ?>

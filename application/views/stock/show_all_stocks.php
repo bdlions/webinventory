@@ -24,13 +24,12 @@
     {% var i=0, stock_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(stock_info){ %}
     <tr>
-        <td>{%= stock_info.created_on %}</td>
         <td>{%= stock_info.first_name %} {%= stock_info.last_name %}</td>
         <td>{%= stock_info.product_name %}</td>
         <td>{%= stock_info.purchase_order_no %}</td>
-        <td>{%= stock_info.stock_amount %}</td>
-        <td>{%= stock_info.purchase_unit_price %}</td>
-        <td>{%= stock_info.stock_amount*stock_info.purchase_unit_price %}</td>
+        <td>{%= stock_info.current_stock %}</td>
+        <td>{%= stock_info.unit_price %}</td>
+        <td>{%= stock_info.current_stock*stock_info.unit_price %}</td>
     </tr>
     {% stock_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -98,7 +97,6 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Date & Time</th>
                     <th>Supplier Name</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
@@ -113,13 +111,12 @@
                 foreach ($stock_list as $key => $stock_info) {
                 ?>
                     <tr>
-                        <td><?php echo $stock_info['created_on'] ?></td>
                         <td><?php echo $stock_info['first_name'].' '.$stock_info['last_name'] ?></td>
                         <td><?php echo $stock_info['product_name'] ?></td>
                         <td><?php echo $stock_info['purchase_order_no'] ?></td>
-                        <td><?php echo $stock_info['stock_amount'] ?></td>
-                        <td><?php echo $stock_info['purchase_unit_price'] ?></td>
-                        <td><?php echo $stock_info['stock_amount']*$stock_info['purchase_unit_price'] ?></td>
+                        <td><?php echo $stock_info['current_stock'] ?></td>
+                        <td><?php echo $stock_info['unit_price'] ?></td>
+                        <td><?php echo $stock_info['current_stock']*$stock_info['unit_price'] ?></td>
 
                     </tr>
                 <?php

@@ -11,6 +11,7 @@
                 success: function(data) {
                     $("#label_total_sale_price").html(data['total_sale_price']);
                     $("#label_total_quantity").html(data['total_quantity']);
+                    $("#label_total_profit").html(data['total_profit']);
                     $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));
                 }
             });
@@ -21,19 +22,18 @@
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
-        <td ><?php echo '{%= sale_info.sale_order_no%}'; ?></td>
-        <td ><?php echo '{%= sale_info.name%}'; ?></td>
+        <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-        <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
+        <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
-        <td ><?php echo '{%= sale_info.quantity*sale_info.purchase_unit_price%}'; ?></td>
-        <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>
+        <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
+        <td ><?php echo '{%= sale_info.total_sale*sale_info.sale_unit_price%}'; ?></td>
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
                 echo '<td>';
-                echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; 
+                echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.total_sale %}'; 
                 echo '</td>';
             }        
         ?>
@@ -42,6 +42,14 @@
             {                                    
                 echo '<td>';
                 echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
+                echo '</td>';
+            }        
+        ?>
+        <?php 
+            if($this->session->userdata('user_type') != SALESMAN)
+            {                                    
+                echo '<td>';
+                echo '<a href="'.base_url().'sale/delete_sale/{%= sale_info.sale_order_no%}">Delete</a>'; 
                 echo '</td>';
             }        
         ?>
@@ -90,7 +98,23 @@
                         </div>                        
                     </td>
                     <td>
-                        
+                        <label class="col-md-6 control-label requiredField">
+                            <?php 
+                                if($this->session->userdata('user_type') != SALESMAN)
+                                {                                    
+                                    echo 'Total Profit : ';
+                                }
+                            ?>
+                            
+                        </label>
+                        <label id="label_total_profit" class="col-md-6 control-label requiredField">
+                            <?php 
+                                if($this->session->userdata('user_type') != SALESMAN)
+                                {                                    
+                                    //echo $total_profit;
+                                }
+                            ?>
+                        </label>
                     </td>
                     <td>
                         
@@ -106,7 +130,6 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Sale Order No</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>
@@ -124,6 +147,12 @@
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
                             echo '<th>Return</th>';
+                        }                            
+                    ?>
+                    <?php 
+                        if($this->session->userdata('user_type') != SALESMAN)
+                        {                                    
+                            echo '<th>Delete</th>';
                         }                            
                     ?>
                 </tr>

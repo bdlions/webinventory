@@ -177,16 +177,7 @@ class Payment extends CI_Controller {
     
     public function show_total_due()
     {
-        $due_list = array();
-        $time = $this->utils->get_current_date_start_time();
-        $this->data['due_list'] = $due_list;
-        $due_list_array = $this->sale_library->get_due_list_today($time)->result_array();
-        foreach($due_list_array as $due_info)
-        {
-            $due_info['created_on'] = $this->utils->process_time($due_info['created_on']);
-            $due_list[] = $due_info;
-        }
-        $this->data['due_list'] = $due_list;
+        $this->data['due_list'] = $this->payments->get_daily_sale_due_list();
         $this->template->load(null, 'search/due/due_list',$this->data);
     }
     

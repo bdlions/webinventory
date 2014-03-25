@@ -104,27 +104,35 @@ function startclock()
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
-        <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
-        <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-        <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
-        <td ><?php echo '{%= sale_info.quantity%}'; ?></td>
-        <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
-        <td ><?php echo '{%= sale_info.total_sale_price%}'; ?></td>        
+        <td >{%= sale_info.created_on%}</td>
+        <td >{%= sale_info.purchase_order_no%}</td>
+        <td >{%= sale_info.product_name%}</td>
+        <td >{%= sale_info.total_sale%}</td>
+        <td >{%= sale_info.sale_unit_price%}</td>
+        <td >{%= sale_info.total_sale*sale_info.sale_unit_price %}</td>        
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
                 echo '<td>';
-                echo '{%= sale_info.total_sale_price-(sale_info.quantity*sale_info.purchase_unit_price)%}'; 
+                echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.quantity %}'; 
                 echo '</td>';
             }        
         ?>
-        <td >{%= sale_info.first_name%} {%=sale_info.last_name %}</td>
+        <td >{%= sale_info.salesman_first_name%} {%=sale_info.salesman_last_name %}</td>
         <td >{%= sale_info.card_no%}</td>
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
                 echo '<td>';
                 echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
+                echo '</td>';
+            }        
+        ?>
+        <?php 
+            if($this->session->userdata('user_type') != SALESMAN)
+            {                                    
+                echo '<td>';
+                echo '<a href="'.base_url().'sale/delete_sale/{%= sale_info.sale_order_no%}">Delete</a>'; 
                 echo '</td>';
             }        
         ?>
@@ -285,6 +293,12 @@ function startclock()
                             echo '<th>Return</th>';
                         }                            
                     ?>
+                    <?php 
+                        if($this->session->userdata('user_type') != SALESMAN)
+                        {                                    
+                            echo '<th>Delete</th>';
+                        }                            
+                    ?>
                 </tr>
             </thead>
             <tbody id="tbody_daily_sale_list">                
@@ -293,24 +307,32 @@ function startclock()
                         <td><?php echo $sale_info['created_on'];?></td>
                         <td><?php echo $sale_info['purchase_order_no'];?></td>
                         <td><?php echo $sale_info['product_name'];?></td>
-                        <td><?php echo $sale_info['quantity'];?></td>
+                        <td><?php echo $sale_info['total_sale'];?></td>
                         <td><?php echo $sale_info['sale_unit_price'];?></td>
-                        <td><?php echo $sale_info['total_sale_price'];?></td>
+                        <td><?php echo $sale_info['total_sale']*$sale_info['sale_unit_price'];?></td>
                         <?php 
                             if($this->session->userdata('user_type') != SALESMAN)
                             {                                    
                                 echo '<td>';
-                                echo $sale_info['total_sale_price'] - ($sale_info['quantity']*$sale_info['purchase_unit_price']);
+                                echo ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
                                 echo '</td>';
                             }                            
                         ?>
-                        <td><?php echo $sale_info['first_name'].' '.$sale_info['last_name'];?></td>
+                        <td><?php echo $sale_info['salesman_first_name'].' '.$sale_info['salesman_last_name'];?></td>
                         <td><?php echo $sale_info['card_no'];?></td>  
                         <?php 
                             if($this->session->userdata('user_type') != SALESMAN)
                             {                                    
                                 echo '<td>';
                                 echo '<a href="'.base_url().'sale/return_sale_order/'.$sale_info['sale_order_no'].'">Return</a>';
+                                echo '</td>';
+                            }                            
+                        ?>
+                        <?php 
+                            if($this->session->userdata('user_type') != SALESMAN)
+                            {                                    
+                                echo '<td>';
+                                echo '<a href="'.base_url().'sale/delete_sale/'.$sale_info['sale_order_no'].'">Delete</a>';
                                 echo '</td>';
                             }                            
                         ?>

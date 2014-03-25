@@ -50,5 +50,10 @@
             </div>
             <?php echo form_close(); ?>
         </div>    
-</div>
+    </div>
+    <?php 
+        if(isset($pagination)){
+            echo $pagination; 
+        }
+    ?>
 </div>

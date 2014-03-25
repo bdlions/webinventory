@@ -223,6 +223,35 @@ class Payments_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;        
     }
     
+    public function get_customer_payment_today($start_time, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $start_time);
+        $this->db->where('payment_category_id', $this->payment_category_list['sale_payment_id']);
+        return $this->db->select('sum(amount) as total_customer_payment')
+                            ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
+    public function get_customer_payment_list_today($start_time, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $start_time);
+        $this->db->where('payment_category_id', $this->payment_category_list['sale_payment_id']);
+        $this->db->group_by($this->tables['customer_payment_info'].'.sale_order_no');
+        return $this->db->select($this->tables['customer_payment_info'].'.sale_order_no, sum(amount) as total_payment')
+                            ->from($this->tables['customer_payment_info'])
+                            ->get();
+    }
+    
     public function get_customer_due_collect_today($start_time, $shop_id = '')
     {
         if(empty($shop_id))
@@ -282,5 +311,5 @@ class Payments_model extends Ion_auth_model {
         $this->db->where('sale_order_no', $sale_order_no);
         return $this->db->delete($this->tables['customer_payment_info']);
     }
-    
+       
 }

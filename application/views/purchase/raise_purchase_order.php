@@ -63,9 +63,9 @@
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
-                    var product_list = data['product_list'];
+                    var purchased_product_list = data['purchased_product_list'];
                     var supplier_due = data['supplier_due'];
-                    set_purchased_product_list(product_list);
+                    set_purchased_product_list(purchased_product_list);
                     if(supplier_info.supplier_id)
                     {
                         $("#input_raise_purchase_supplier_id").val(supplier_info.supplier_id);

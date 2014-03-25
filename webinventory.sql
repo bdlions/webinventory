@@ -30,13 +30,14 @@ CREATE TABLE `profession` (
 ALTER TABLE `profession`
   ADD CONSTRAINT `fk_profession_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `profession` (`id`, `description`, `shop_id`) VALUES
-(1, 'Business', 1),
-(2, 'Doctor', 1),
-(3, 'Engineer', 1),
-(4, 'Lawyear', 1),
-(5, 'Service', 1),
-(6, 'Student', 1),
-(7, 'Other', 1);
+(1, 'Other', 1),
+(2, 'Student', 1),
+(3, 'Service', 1),
+(4, 'Business', 1),
+(5, 'Engineer', 1),
+(6, 'Doctor', 1),
+(7, 'Lawyear', 1),
+(8, 'job', 1);
 
 CREATE TABLE `institution` (
 	`id` int NOT NULL auto_increment,
@@ -50,14 +51,17 @@ CREATE TABLE `institution` (
 ALTER TABLE `institution`
   ADD CONSTRAINT `fk_institution_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `institution` (`id`, `description`, `shop_id`) VALUES
-(1, 'BUET', 1),
-(2, 'Dhaka College', 1),
-(3, 'Dhaka City College', 1),
-(4, 'Dhaka Medical College', 1),
-(5, 'Dhaka University', 1),
-(6, 'Jagonnath University', 1),
-(7, 'Jahangirnagar University', 1),
-(8, 'Mirpur Bangla College', 1);
+(1, 'Other', 1),
+(2, 'BUET', 1),
+(3, 'Dhaka University', 1),
+(4, 'Dhaka Medical', 1),
+(5, '1840', 1),
+(6, 'Dhaka imperial college', 1),
+(7, 'jahangirnagar university', 1),
+(8, 'mirpur bangla college', 1),
+(9, 'jagonnath university', 1),
+(10, 'Dhaka citycollege', 1),
+(11, 'Dhaka college', 1);
 
 
 
@@ -126,9 +130,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `remember_code` varchar(40) DEFAULT NULL,
   `created_on` int(11) unsigned NOT NULL,
   `last_login` int(11) unsigned DEFAULT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT '',
+  `last_name` varchar(50) DEFAULT '',
+  `phone` varchar(20) DEFAULT '',
   `address` varchar(500) DEFAULT '',
   `account_status_id` int NOT NULL,
   PRIMARY KEY (`id`)
@@ -198,33 +202,26 @@ INSERT INTO `users_shop_info` (`id`, `user_id`, `shop_id`) VALUES
  CREATE TABLE IF NOT EXISTS `suppliers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `shop_id` int NOT NULL,
   `company` varchar(200) DEFAULT NULL,  
   PRIMARY KEY (`id`),
-  KEY `fk_suppliers_users1_idx` (`user_id`),
-  KEY `fk_suppliers_shop_info1_idx` (`shop_id`)
+  KEY `fk_suppliers_users1_idx` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `suppliers`
-  ADD CONSTRAINT `fk_suppliers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_suppliers_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_suppliers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
  CREATE TABLE IF NOT EXISTS `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `shop_id` int NOT NULL,
   `card_no` varchar(200) DEFAULT NULL, 
   `institution_id` int DEFAULT NULL,
   `profession_id` int DEFAULT NULL, 
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`shop_id`, `card_no`),
   KEY `fk_customers_users1_idx` (`user_id`),
-  KEY `fk_customers_shop_info1_idx` (`shop_id`),
   KEY `fk_customers_institution1_idx` (`institution_id`),
   KEY `fk_customers_profession1_idx` (`profession_id`)  
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `customers`
   ADD CONSTRAINT `fk_customers_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_customers_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_customers_institution1` FOREIGN KEY (`institution_id`) REFERENCES `institution` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_customers_profession1` FOREIGN KEY (`profession_id`) REFERENCES `profession` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
@@ -253,11 +250,30 @@ ALTER TABLE `product_info`
   ADD CONSTRAINT `fk_product_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+INSERT INTO `product_info` (`id`, `name`, `shop_id`) VALUES
+(1, '750', 1),
+(2, '650', 1),
+(3, '550', 1),
+(4, '450', 1),
+(5, 'jecket', 1),
+(6, '350', 1),
+(7, '290', 1),
+(8, 'Eid collection', 1),
+(9, 'wholesale', 1),
+(10, '850', 1),
+(11, '950', 1),
+(12, '1050', 1),
+(13, '1150', 1),
+(14, '1250', 1),
+(15, '1350', 1),
+(16, '1450', 1),
+(17, '1550', 1);
  
  CREATE TABLE `product_image_info` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,
-	`image_path` varchar(500),
+	`image_name` varchar(500),
 	`created_on` int(11) unsigned NOT NULL,
     `created_by` int,
     `modified_on` int(11) unsigned NOT NULL,
@@ -293,8 +309,6 @@ CREATE TABLE `purchase_order` (
 	`order_date` int(11) unsigned NOT NULL,
 	`requested_ship_date` int(11) unsigned NOT NULL,	
 	`discount` double default 0,
-	`total` double,
-	`paid` double default 0,
 	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int,
     `modified_on` int(11) unsigned DEFAULT NULL,
@@ -320,10 +334,8 @@ CREATE TABLE `product_purchase_order` (
 	`product_id` int NOT NULL,	
 	`purchase_order_no` varchar(200),
 	`shop_id` int NOT NULL,
-	`quantity` double,
-	`unit_price` double,
-	`discount` varchar(200) default 0,
-	`sub_total` double,
+	`unit_price` double default 0,
+	`discount` double default 0,
 	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int,
     `modified_on` int(11) unsigned DEFAULT NULL,
@@ -339,35 +351,7 @@ ALTER TABLE `product_purchase_order`
   ADD CONSTRAINT `fk_product_purchase_order_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_purchase_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_purchase_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
- CREATE TABLE `stock_info` (
-	`id` int NOT NULL auto_increment,
-	`shop_id` int NOT NULL,
-	`supplier_id` int NOT NULL,
-	`purchase_order_no` varchar(200),
-	`product_id` int NOT NULL,
-	`stock_amount` double,
-	`created_on` int(11) unsigned DEFAULT NULL,
-    `created_by` int,
-    `modified_on` int(11) unsigned DEFAULT NULL,
-    `modified_by` int default NULL,
-	PRIMARY KEY  (`id`),
-	KEY `fk_stock_info_shop_info1_idx` (`shop_id`),
-	KEY `fk_stock_info_purchase_order1_idx` (`purchase_order_no`),
-	KEY `fk_stock_info_product_info1_idx` (`product_id`),
-	KEY `fk_stock_info_suppliers1_idx` (`supplier_id`),
-	KEY `fk_stock_info_users1_idx` (`created_by`),
-	KEY `fk_stock_info_users2_idx` (`modified_by`)
-)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-ALTER TABLE `stock_info`
-  ADD CONSTRAINT `fk_stock_info_purchase_order1` FOREIGN KEY (`purchase_order_no`) REFERENCES `purchase_order` (`purchase_order_no`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_stock_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_stock_info_product_info1` FOREIGN KEY (`product_id`) REFERENCES `product_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_stock_info_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_stock_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_stock_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
-  
+ 
 CREATE TABLE `sale_order_status` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	
@@ -388,9 +372,7 @@ CREATE TABLE `sale_order` (
 	`customer_id` int NOT NULL,
 	`sale_order_status_id` int NOT NULL,
 	`sale_date` int(11) unsigned DEFAULT NULL,
-	`discount` varchar(200) DEFAULT 0,
-	`total` double,
-	`paid` double,
+	`discount` double default 0,
 	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int NOT NULL,
     `modified_on` int(11) unsigned DEFAULT NULL,
@@ -410,17 +392,15 @@ ALTER TABLE `sale_order`
   ADD CONSTRAINT `fk_sale_order_customers1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
+
 CREATE TABLE `product_sale_order` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,	
 	`sale_order_no` varchar(200),
 	`shop_id` int NOT NULL,
 	`purchase_order_no` varchar(200),
-	`quantity` double,
-	`unit_price` double,
-	`discount` varchar(200) DEFAULT 0,
-	`sub_total` double,
+	`unit_price` double default 0,
+	`discount` double default 0,
 	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int NOT NULL,
     `modified_on` int(11) unsigned DEFAULT NULL,
@@ -438,6 +418,51 @@ ALTER TABLE `product_sale_order`
   ADD CONSTRAINT `fk_product_sale_order_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_sale_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_sale_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `stock_transaction_category` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200),	
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `stock_transaction_category` (`id`, `description`) VALUES
+(1, 'Purchase In'),
+(2, 'Purchase Partial In'),
+(3, 'Purchase partial Out'),
+(4, 'Purchase Delete'),
+(5, 'Sale In'),
+(6, 'Sale partial Out'),
+(7, 'Sale Delete'); 
+ CREATE TABLE `stock_info` (
+	`id` int NOT NULL auto_increment,
+	`shop_id` int NOT NULL,
+	`purchase_order_no` varchar(200) DEFAULT NULL,
+	`sale_order_no` varchar(200) DEFAULT NULL,
+	`product_id` int NOT NULL,
+	`stock_in` double default 0,
+	`stock_out` double default 0,
+	`created_on` int(11) unsigned DEFAULT NULL,
+    `created_by` int,
+    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_by` int default NULL,
+	`transaction_category_id` int NOT NULL,
+	PRIMARY KEY  (`id`),
+	KEY `fk_stock_info_shop_info1_idx` (`shop_id`),
+	KEY `fk_stock_info_purchase_order1_idx` (`purchase_order_no`),
+	KEY `fk_stock_info_sale_order1_idx` (`sale_order_no`),
+	KEY `fk_stock_info_product_info1_idx` (`product_id`),
+	KEY `fk_stock_info_users1_idx` (`created_by`),
+	KEY `fk_stock_info_users2_idx` (`modified_by`),
+	KEY `fk_stock_info_stock_transaction_category1_idx` (`transaction_category_id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `stock_info`
+  ADD CONSTRAINT `fk_stock_info_purchase_order1` FOREIGN KEY (`purchase_order_no`) REFERENCES `purchase_order` (`purchase_order_no`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_sale_order1` FOREIGN KEY (`sale_order_no`) REFERENCES `sale_order` (`sale_order_no`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_product_info1` FOREIGN KEY (`product_id`) REFERENCES `product_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stock_info_stock_transaction_category1` FOREIGN KEY (`transaction_category_id`) REFERENCES `stock_transaction_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
   
 CREATE TABLE `expense_type` (
 	`id` int NOT NULL auto_increment,

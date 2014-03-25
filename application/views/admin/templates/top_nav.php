@@ -13,14 +13,14 @@
         Sales<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("sale/sale_order");?>">New Sales Order</a></li>
-        <li><a href="<?php echo base_url("sale/return_sale_order");?>">Return Sales Order</a></li>
+        <li><a href="<?php echo base_url("sale/sale_order");?>">add new sale</a></li>
+        <li><a href="<?php echo base_url("sale/return_sale_order");?>">return sale</a></li>
         <li><a href="<?php echo base_url("sale/delete_sale");?>">Delete Sale</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/create_institution");?>">New Institution</a></li>
-        <li><a href="<?php echo base_url("./user/create_profession");?>">New Profession</a></li>
-        <li><a href="<?php echo base_url("./user/create_customer");?>">New Customer</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_customers");?>">Customer List</a></li>
+        <li><a href="<?php echo base_url("./user/create_institution");?>">add new institution</a></li>
+        <li><a href="<?php echo base_url("./user/create_profession");?>">add new profession</a></li>
+        <li><a href="<?php echo base_url("./user/create_customer");?>">add new customer </a></li>
+        <li><a href="<?php echo base_url("./user/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT);?>">Customer List</a></li>
     </ul>
 </div>
 <div class="btn-group">
@@ -28,11 +28,11 @@
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("purchase/purchase_order");?>">New Purchase Order</a></li>
+        <li><a href="<?php echo base_url("purchase/purchase_order");?>">add new purchase</a></li>
         <li><a href="<?php echo base_url("purchase/raise_purchase_order");?>">Raise Purchase Order</a></li>
         <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return Purchase Order</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/create_supplier");?>">New Supplier</a></li>
+        <li><a href="<?php echo base_url("./user/create_supplier");?>">add new supplier</a></li>
         <li><a href="<?php echo base_url("./user/show_all_suppliers");?>">Supplier List</a></li>
     </ul>
 </div>
@@ -41,10 +41,10 @@
         Inventory<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("./product/create_product");?>">New Product</a></li>
+        <li><a href="<?php echo base_url("./product/create_product");?>">add new product</a></li>
         <li><a href="<?php echo base_url("./product/show_all_products");?>">Product List</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("stock/show_all_stocks");?>">Current Stock</a></li> 
+        <li><a href="<?php echo base_url("stock/show_all_stocks");?>">show current stock</a></li> 
     </ul>
 </div>
 <div class="btn-group">
@@ -92,8 +92,8 @@
         <li><a href="<?php echo base_url("./upload/upload_logo");?>">Upload Logo</a></li>
         <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
-        <li><a href="<?php echo base_url("./user/create_manager");?>">Create Manager</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Managers</a></li>
+        <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
+        <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
     </ul>
 </div>

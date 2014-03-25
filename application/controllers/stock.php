@@ -33,7 +33,7 @@ class Stock extends CI_Controller {
         
     }
     
-    function show_all_stocks()
+    /*function show_all_stocks()
     {
         $product_list = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
@@ -62,9 +62,35 @@ class Stock extends CI_Controller {
         $this->data['total_quantity'] = $total_quantity;
         $this->data['total_stock_value'] = $total_stock_value;
         $this->template->load(null, 'stock/show_all_stocks', $this->data);
+    }*/
+    
+    function show_all_stocks()
+    {
+        $product_list = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        foreach($product_list_array as $product_info)
+        {
+            $product_list[$product_info['id']] = $product_info['name'];
+        }
+        $this->data['product_list'] = $product_list;
+        $total_quantity = 0;
+        $total_stock_value = 0;
+        $stock_list_array = $this->stock_library->search_stocks()->result_array();
+        if( !empty($stock_list_array) )
+        {
+            foreach($stock_list_array as $stock_info)
+            {
+                $total_quantity = $total_quantity + $stock_info['current_stock'];
+                $total_stock_value = $total_stock_value + $stock_info['current_stock']*$stock_info['unit_price'];                
+            }
+        }
+        $this->data['stock_list'] = $stock_list_array;
+        $this->data['total_quantity'] = $total_quantity;
+        $this->data['total_stock_value'] = $total_stock_value;
+        $this->template->load(null, 'stock/show_all_stocks', $this->data);
     }
     
-    function search_stock()
+    /*function search_stock()
     {
         $total_quantity = 0;
         $total_stock_value = 0;
@@ -82,6 +108,29 @@ class Stock extends CI_Controller {
         }
         $result = array(
             'stock_list' => $stock_list,
+            'total_quantity' => $total_quantity,
+            'total_stock_value' => $total_stock_value
+        );
+        echo json_encode($result);
+    }*/
+    
+    function search_stock()
+    {
+        $product_id             = $_POST['product_id'];
+        $purchase_order_no      = $_POST['purchase_order_no'];
+        $total_quantity = 0;
+        $total_stock_value = 0;
+        $stock_list_array = $this->stock_library->search_stocks($product_id, $purchase_order_no)->result_array();
+        if( !empty($stock_list_array) )
+        {
+            foreach($stock_list_array as $stock_info)
+            {
+                $total_quantity = $total_quantity + $stock_info['current_stock'];
+                $total_stock_value = $total_stock_value + $stock_info['current_stock']*$stock_info['unit_price'];                
+            }
+        }
+        $result = array(
+            'stock_list' => $stock_list_array,
             'total_quantity' => $total_quantity,
             'total_stock_value' => $total_stock_value
         );

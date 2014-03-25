@@ -130,8 +130,10 @@ class Attendance extends CI_Controller {
                 $salesman_list[$salesman_info['user_id']] = $salesman_info['first_name'].' '.$salesman_info['last_name'];
             }
         }
-        $this->data['salesman_list'] = $salesman_list;
         $date = date('Y-m-d');
+        $attendance_info_array = $this->attendances->get_attendance($date, $date)->result_array();
+        $this->data['attendance_list'] = $attendance_info_array;
+        $this->data['salesman_list'] = $salesman_list;        
         $this->data['show_attendance_start_date'] = array(
             'name' => 'show_attendance_start_date',
             'id' => 'show_attendance_start_date',

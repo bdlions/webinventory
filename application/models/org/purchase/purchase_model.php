@@ -87,14 +87,18 @@ class Purchase_model extends Ion_auth_model
         $this->db->trans_commit();
         return (isset($id)) ? $id : FALSE;
     }
-    public function raise_purchase_order($additional_data, $new_purchased_product_list, $existing_purchased_product_list, $add_stock_list, $update_stock_list, $supplier_transaction_info_array)
+    public function raise_purchase_order($additional_data, $new_purchased_product_list, $add_stock_list, $supplier_transaction_info_array)
     {
         $this->trigger_events('pre_raise_purchase_order');
         $this->db->trans_begin();
         //filter out any data passed that doesnt have a matching column in the users table
         $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
         $this->db->update($this->tables['purchase_order'], $purchase_data, array('purchase_order_no' => $purchase_data['purchase_order_no'], 'shop_id' => $purchase_data['shop_id'] ));
-        
+        if ($this->db->trans_status() === FALSE) 
+        {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
         if( !empty($new_purchased_product_list) )
         {
             $this->db->insert_batch($this->tables['product_purchase_order'], $new_purchased_product_list);         
@@ -107,28 +111,22 @@ class Purchase_model extends Ion_auth_model
         {
             $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);       
         }
-        
-        foreach($existing_purchased_product_list as $purchased_product_list)
-        {
-            $this->db->update($this->tables['product_purchase_order'], $purchased_product_list, array('product_id' => $purchased_product_list['product_id'], 'purchase_order_no' => $purchased_product_list['purchase_order_no'], 'shop_id' => $purchased_product_list['shop_id'] ));
-        }
-        
-        foreach($update_stock_list as $stock_info)
-        {
-            $this->db->update($this->tables['stock_info'], $stock_info, array('product_id' => $stock_info['product_id'], 'purchase_order_no' => $stock_info['purchase_order_no'], 'shop_id' => $stock_info['shop_id'] ));
-        }
         $this->db->trans_commit();
         return TRUE;
     }
     
-    public function return_purchase_order($additional_data, $existing_purchased_product_list, $update_stock_list, $supplier_transaction_info_array, $return_balance_info)
+    public function return_purchase_order($additional_data, $stock_out_list, $supplier_transaction_info_array, $return_balance_info)
     {
         $this->trigger_events('pre_return_purchase_order');
         $this->db->trans_begin();
         //filter out any data passed that doesnt have a matching column in the users table
         $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
         $this->db->update($this->tables['purchase_order'], $purchase_data, array('purchase_order_no' => $purchase_data['purchase_order_no'], 'shop_id' => $purchase_data['shop_id'] ));
-        
+        if ($this->db->trans_status() === FALSE) 
+        {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
         if( !empty($return_balance_info) )
         {
             $return_balance_info = $this->_filter_data($this->tables['supplier_returned_payment_info'], $return_balance_info);
@@ -138,16 +136,11 @@ class Purchase_model extends Ion_auth_model
         {
             $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);       
         }
-        
-        foreach($existing_purchased_product_list as $purchased_product_list)
+        if( !empty($stock_out_list) )
         {
-            $this->db->update($this->tables['product_purchase_order'], $purchased_product_list, array('product_id' => $purchased_product_list['product_id'], 'purchase_order_no' => $purchased_product_list['purchase_order_no'], 'shop_id' => $purchased_product_list['shop_id'] ));
+            $this->db->insert_batch($this->tables['stock_info'], $stock_out_list);            
         }
         
-        foreach($update_stock_list as $stock_info)
-        {
-            $this->db->update($this->tables['stock_info'], $stock_info, array('product_id' => $stock_info['product_id'], 'purchase_order_no' => $stock_info['purchase_order_no'], 'shop_id' => $stock_info['shop_id'] ));
-        }
         $this->db->trans_commit();
         return TRUE;
     }
@@ -219,7 +212,34 @@ class Purchase_model extends Ion_auth_model
         {
             $shop_id = $this->session->userdata('shop_id');
         }        
-        $query = 'SELECT MAX(purchase_order_no) as purchase_order_no FROM purchase_order where shop_id ='.$shop_id;
+        $query = 'SELECT purchase_order_no FROM purchase_order where shop_id ='.$shop_id.' order by id desc limit 1';
         return $this->db->query($query);
+    }
+    
+    public function get_purchase_info($purchase_order_no, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['purchase_order'].'.purchase_order_no', $purchase_order_no);
+        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);
+        return $this->db->select('*')
+                    ->from($this->tables['purchase_order'])
+                    ->get();
+    }
+    
+    public function get_purchased_product_list($purchase_order_no, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['product_purchase_order'].'.purchase_order_no', $purchase_order_no);
+        $this->db->where($this->tables['product_purchase_order'].'.shop_id', $shop_id);
+        return $this->db->select($this->tables['product_purchase_order'].'.product_id,'.$this->tables['product_purchase_order'].'.unit_price,'.$this->tables['product_info'].'.name as product_name')
+                    ->from($this->tables['product_purchase_order'])
+                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_purchase_order'].'.product_id')
+                    ->get();
     }
 }

@@ -38,8 +38,8 @@
                 var customer_due = data['customer_due'];
                 if(customer_info.customer_id)
                 {
-                    set_product_list(data['product_list']);
-                    $("#tbody_sold_product_list").html(tmpl("tmpl_sold_product_list",  data['product_list']));
+                    set_product_list(data['sale_product_list']);
+                    $("#tbody_sold_product_list").html(tmpl("tmpl_sold_product_list",  data['sale_product_list']));
                     $("#input_return_sale_customer_id").val(customer_info.customer_id);
                     $("#input_return_sale_customer").val(customer_info.first_name+' '+customer_info.last_name);
                     $("#input_return_sale_phone").val(customer_info.phone);
@@ -72,7 +72,7 @@
     $(function() {
         process_sale_order_info('<?php echo $sale_order_no?>');
         $("#sale_order_no").change(function() {
-            process_sale_order_info($("#sale_order_no").value());
+            process_sale_order_info($("#sale_order_no").val());
         });
         
         $("#update_return_sale_order").on("click", function() {
@@ -176,9 +176,9 @@
                             $("#return_balance").val('');
                             $("#sale_order_no").val('');                            
                         }
-                        else if (response['status'] === '0')
+                        else if (data['status'] === '0')
                         {
-                            alert(response['message']);
+                            alert(data['message']);
                         }
                     }
                 });
@@ -229,8 +229,8 @@
                 }
             });
             $("#total_return_sale_price").val(total_return_sale_price);
-            $("#return_balance").val(total_return_sale_price);
-            /*var current_due = +$("#previous_due").val() - +$("#total_return_sale_price").val();
+            //$("#return_balance").val(total_return_sale_price);
+            var current_due = +$("#previous_due").val() - +$("#total_return_sale_price").val();
             if(current_due >=0 )
             {
                 $("#current_due").val(current_due);
@@ -240,7 +240,7 @@
             {
                 $("#current_due").val('0');
                 $("#return_balance").val(-current_due);
-            }*/
+            }
         }); 
         $("#return_balance").change(function() {
             if( +$("#total_return_sale_price").val() < +$("#return_balance").val() )
@@ -395,7 +395,7 @@
                         Return balance
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control')); ?>
+                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

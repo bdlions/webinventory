@@ -719,11 +719,12 @@ class User extends CI_Controller {
                 {
                     $additional_data['profession_id'] = $this->input->post('profession_list');
                 }
-                $groups = array('id' => $this->user_group['customer_id']);
+                $groups = array('id' => USER_GROUP_CUSTOMER);
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
+                    $customer_name = $this->input->post('first_name').' '.$this->input->post('last_name');
+                    $this->sms_library->send_sms($this->input->post('phone'),"Dear, ".$customer_name." Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market");
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/create_customer","refresh");
                 }
@@ -812,10 +813,16 @@ class User extends CI_Controller {
         echo $content;
     }
     
-    public function show_all_customers()
+    public function show_all_customers($limit, $offset = 0)
     {
         $this->data['customer_list'] = array();
-        $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+        //list the users
+        if ($limit == 0) {
+            $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+            $limit = PAGINATION_CUSTOMER_LIST_LIMIT;
+        } else {
+            $customer_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_customers()->result_array();
+        }
         if( !empty($customer_list_array) )
         {
             $this->data['customer_list'] = $customer_list_array;
@@ -826,6 +833,16 @@ class User extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
+        
+        $total_users = count($this->ion_auth->get_all_customers()->result_array());
+        $this->load->library('pagination');
+        $config['base_url'] = base_url() . 'user/show_all_customers/' . $limit;
+        $config['total_rows'] = $total_users;
+        $config['uri_segment'] = 4;
+        $config['per_page'] = PAGINATION_CUSTOMER_LIST_LIMIT;
+        $this->pagination->initialize($config);
+        $this->data['pagination'] = $this->pagination->create_links();
+        
         $this->template->load(null, 'customer/show_all_customers', $this->data);
     }
     
@@ -1045,7 +1062,7 @@ class User extends CI_Controller {
             'phone' => $phone_no,
             'created_date' => date('Y-m-d H:i:s')
         );
-        $groups = array('id' => $this->user_group['customer_id']);
+        $groups = array('id' => USER_GROUP_CUSTOMER);
         $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
         if( $user_id !== FALSE )
         {
@@ -1057,7 +1074,8 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['customer_info'] = $customer_info;
-            $this->sms_library->send_sms($phone_no,'Congratulation for registration');
+            $customer_name = $first_name.' '.$last_name;
+            $this->sms_library->send_sms($phone_no,"Dear, ".$customer_name." Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market");
         } 
         else
         {
@@ -1096,11 +1114,12 @@ class User extends CI_Controller {
                     'company' => $this->input->post('company'),
                     'created_date' => date('Y-m-d H:i:s')
                 );
-                $groups = array('id' => $this->user_group['supplier_id']);
+                $groups = array('id' => USER_GROUP_SUPPLIER);
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $this->sms_library->send_sms($this->input->post('phone'),'Congratulation for registration');
+                    $supplier_name = $this->input->post('first_name').' '.$this->input->post('last_name');
+                    $this->sms_library->send_sms($this->input->post('phone'), "Dear, ".$supplier_name." We hope that we can establish a good business relationship with you. Thanks, APURBO brand Bangladesh. Chandrima market, New market");
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/create_supplier","refresh");
                 }
@@ -1347,7 +1366,7 @@ class User extends CI_Controller {
             'phone' => $phone_no,
             'created_date' => date('Y-m-d H:i:s')
         );
-        $groups = array('id' => $this->user_group['supplier_id']);
+        $groups = array('id' => USER_GROUP_SUPPLIER);
         $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
         if( $user_id !== FALSE )
         {
@@ -1359,7 +1378,8 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['supplier_info'] = $supplier_info;
-            $this->sms_library->send_sms($phone_no,'Congratulation for registration');
+            $supplier_name = $first_name.' '.$last_name;
+            $this->sms_library->send_sms($phone_no,"Dear, ".$supplier_name." We hope that we can establish a good business relationship with you. Thanks, APURBO brand Bangladesh. Chandrima market, New market");
         } 
         else
         {

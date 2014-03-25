@@ -135,8 +135,9 @@ class Product_model extends Ion_auth_model
             $shop_id = $this->session->userdata('shop_id');
         }
         $this->db->where($this->tables['product_info'].'.shop_id', $shop_id);
-        $this->response = $this->db->get($this->tables['product_info']);
-        return $this;
+        return $this->db->select($this->tables['product_info'].'.id as product_id,'.$this->tables['product_info'].'.*')
+                    ->from($this->tables['product_info'])
+                    ->get();
     } 
     /**
      * Product Search

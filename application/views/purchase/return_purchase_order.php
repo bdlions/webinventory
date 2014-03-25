@@ -1,5 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        var product_data = <?php echo json_encode($product_list_array) ?>;        
+        set_product_list(product_data);
         $("#total_purchase_price").val('');        
     });
 </script>
@@ -59,13 +61,12 @@
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
-                    var product_list = data['product_list'];
+                    var purchased_product_list = data['purchased_product_list'];
                     var supplier_due = data['supplier_due'];
-                    set_purchased_product_list(product_list);
+                    set_purchased_product_list(purchased_product_list);
                     if(supplier_info.supplier_id)
                     {
-                        set_product_list(data['product_info_array']);
-                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['product_info_array']));
+                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
                         $("#input_raise_purchase_supplier_id").val(supplier_info.supplier_id);
                         $("#input_raise_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
                         $("#input_raise_purchase_phone").val(supplier_info.phone);
@@ -238,8 +239,8 @@
                 }
             });
             $("#total_purchase_price").val(total_purchase_price);
-            $("#return_balance").val(total_purchase_price);
-            /*var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
+            //$("#return_balance").val(total_purchase_price);
+            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
             if(current_due >=0 )
             {
                 $("#current_due").val(current_due);
@@ -249,22 +250,8 @@
             {
                 $("#current_due").val('0');
                 $("#return_balance").val(-current_due);
-            }*/
-            
-            
-        });
-        $("#return_balance").change(function() {
-            if( +$("#total_purchase_price").val() < +$("#return_balance").val() )
-            {
-                alert('Incorrect value for Return Balance. It must be less than or equal to Total');
-                $("#current_due").val('');
-                $("#return_balance").val('');
-                return;
             }
-            var current_due = +$("#previous_due").val() - (+$("#total_purchase_price").val() - +$("#return_balance").val());
-            $("#current_due").val(current_due);
         });
-
     });
 </script>
 <script type="text/javascript">
@@ -400,7 +387,7 @@
                         Return balance
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control')); ?>
+                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

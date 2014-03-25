@@ -15,8 +15,11 @@ class Test extends CI_Controller {
         $this->load->library('sms_library');
         $this->load->library('org/common/utils');
         $this->load->library('org/common/expenses');
+        $this->load->library('org/common/payments');
         $this->load->library('org/purchase/purchase_library');
         $this->load->library('org/sale/sale_library');
+        $this->load->library('org/stock/stock_library');
+        $this->load->library('org/product/product_library');
         $this->load->helper('url');
         $this->load->helper('file');
 
@@ -38,32 +41,28 @@ class Test extends CI_Controller {
     
     public function test1()
     {
-        //$start_time = $this->utils->get_current_date_start_time();
-        //$end_time = $start_time + 86400;
-        //$this->expenses->get_all_expenses($start_time, $end_time);
-        print_r($this->sale_library->test(9)->result_array());
-        /*$gmt_unix_current_time = now();
-        $local_unix_current_time = ($gmt_unix_current_time + 21600);
-        $local_human_current_time = unix_to_human($local_unix_current_time);
-        $local_human_current_time_array= explode(" ", $local_human_current_time);
-        $local_human_current_date = $local_human_current_time_array[0];
-        $local_human_current_date_start_time = $local_human_current_date.' 00:00 AM';
-        $unix_local_current_date_start_time = human_to_unix($local_human_current_date_start_time);
-        $unix_gmt_current_date_start_time = ($unix_local_current_date_start_time - 21600);*/
-        
-        
-        
-        
-        /*$now = now();
-        //$now = time();
-        //print_r($now);
-        $human = unix_to_human($now);
-        print_r($human);
-        //$unix = human_to_unix($human);
-        //print_r($unix);
-        
-        //$unix2 = human_to_unix('2014-02-22 00:00 AM');
-        //print_r($unix2);*/
+        /*$counter = 0;
+        for($counter = 0 ; $counter < 1000 ; $counter++)
+        {
+            $first_name = 'Nazmul'.$counter;
+            $last_name = 'Hasan'.$counter;
+            $phone_no = $counter;
+            $card_no = $counter;
+            $user_name = '';
+            $password = "password";
+            $email = "dummy@dummy.com";
+            $additional_data = array(
+                'card_no' => $card_no,
+                'account_status_id' => 1,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'phone' => $phone_no,
+                'created_date' => date('Y-m-d H:i:s')
+            );
+            $groups = array('id' => 5);
+            $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+        }*/
+        print_r($this->payments->get_daily_sale_due_list());
     }
     
 }

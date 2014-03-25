@@ -106,13 +106,20 @@
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Login Time</th>
-                        <th>Logout Time</th>
+                        <th>In Time</th>
+                        <th>Out Time</th>
                         <th>Comments</th>
                     </tr>
                 </thead>
                 <tbody id="tbody_attendance_list">                    
-                
+                    <?php foreach ($attendance_list as $attendance_info){?>
+                        <tr>
+                            <td><?php echo $attendance_info['login_date']; ?></td>
+                            <td><?php echo $attendance_info['login_time']; ?></td>
+                            <td><?php echo $attendance_info['logout_time']; ?></td>
+                            <td><?php echo $attendance_info['attendance_comment']; ?></td>
+                        </tr>
+                    <?php }?>
                 </tbody>
             </table>
         </div>

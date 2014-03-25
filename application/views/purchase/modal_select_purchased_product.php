@@ -23,8 +23,8 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr>
-    <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
-    <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.id%}'; ?>">view</a></td>
+    <td id="<?php echo '{%= product_info.product_id%}'; ?>"><?php echo '{%= product_info.product_name%}'; ?></td>
+    <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.product_id%}'; ?>">view</a></td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
