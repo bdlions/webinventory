@@ -24,8 +24,8 @@
                         <td><?php echo $customer_info['phone'] ?></td>
                         <td><?php echo $customer_info['address'] ?></td>
                         <td><?php echo $customer_info['card_no'] ?></td>
-                        <td><a href="<?php echo base_url("./user/update_customer/" . $customer_info['user_id']); ?>">Update</a></td>
-                        <td><a href="<?php echo base_url("./user/show_customer/" . $customer_info['user_id']); ?>">Show</a></td>
+                        <td><a href="<?php echo base_url("./user/update_customer/" . $customer_info['customer_id']); ?>">Update</a></td>
+                        <td><a href="<?php echo base_url("./user/show_customer/" . $customer_info['customer_id']); ?>">Show</a></td>
                         <td><a href="<?php echo base_url("./payment/show_customer_transactions/" . $customer_info['customer_id']); ?>">Show</a></td>
                     </tr>
                 <?php

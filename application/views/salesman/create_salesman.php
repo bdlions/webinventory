@@ -24,6 +24,22 @@
                 </div> 
             </div>
             <div class="form-group">
+                <label for="username" class="col-md-6 control-label requiredField">
+                    User Name
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($username+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-md-6 control-label requiredField">
+                    Email
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($email+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
                 <label for="password" class="col-md-6 control-label requiredField">
                     Password
                 </label>

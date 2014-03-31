@@ -24,8 +24,8 @@
                         <td><?php echo $supplier_info['phone'] ?></td>
                         <td><?php echo $supplier_info['address'] ?></td>
                         <td><?php echo $supplier_info['company'] ?></td>
-                        <td><a href="<?php echo base_url("./user/update_supplier/" . $supplier_info['user_id']); ?>">Update</a></td>
-                        <td><a href="<?php echo base_url("./user/show_supplier/" . $supplier_info['user_id']); ?>">Show</a></td>
+                        <td><a href="<?php echo base_url("./user/update_supplier/" . $supplier_info['supplier_id']); ?>">Update</a></td>
+                        <td><a href="<?php echo base_url("./user/show_supplier/" . $supplier_info['supplier_id']); ?>">Show</a></td>
                         <td><a href="<?php echo base_url("./payment/show_supplier_transactions/" . $supplier_info['supplier_id']); ?>">Show</a></td>
                     </tr>
                 <?php
@@ -34,4 +34,9 @@
             </tbody>
         </table>
     </div>
+    <?php 
+        if(isset($pagination)){
+            echo $pagination; 
+        }
+    ?>
 </div>

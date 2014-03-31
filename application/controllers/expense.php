@@ -35,8 +35,12 @@ class Expense extends CI_Controller {
         //print_r($this->ion_auth->get_shop_id(2)->result_array());
     }
     
-    public function add_expense()
+    public function add_expense($selected_expense_category = 0)
     {
+        if($selected_expense_category == 0)
+        {
+            $selected_expense_category = 3;
+        }
         $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
         $this->data['expense_type_list'] = $this->expense_type_list;
@@ -49,7 +53,8 @@ class Expense extends CI_Controller {
         }
         $this->data['expense_categories'] = $expense_categories;
         
-        $shop_list_array = $this->shop_library->get_all_shops()->result_array();
+        
+        /*$shop_list_array = $this->shop_library->get_all_shops()->result_array();
         $shop_list = array();
         foreach($shop_list_array as $key => $shop_info)
         {
@@ -58,7 +63,8 @@ class Expense extends CI_Controller {
                $shop_list[$shop_info['id']] = $shop_info['name']; 
             }            
         }
-        $this->data['item_list'] = $shop_list;
+        $this->data['item_list'] = $shop_list;*/
+        $this->data['item_list'] = array();
         
         $message_data = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
@@ -85,7 +91,8 @@ class Expense extends CI_Controller {
                 if( $expense_id !== FALSE )
                 {
                     $this->session->set_flashdata('message', $this->expenses->messages());
-                    redirect('expense/add_expense','refresh');
+                    $selected_expense_category = $this->input->post('expense_categories');
+                    redirect('expense/add_expense/'.$selected_expense_category,'refresh');
                 }
                 else
                 {
@@ -104,7 +111,7 @@ class Expense extends CI_Controller {
         }
         
         
-        
+        $this->data['selected_expense_category'] = $selected_expense_category;
         $this->data['expense_description'] = array(
             'name' => 'expense_description',
             'id' => 'expense_description',

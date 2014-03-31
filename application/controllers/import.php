@@ -43,7 +43,7 @@ class Import extends CI_Controller {
             $card_no = $splited_content[1];
             if(!in_array($card_no,$card_no_array))
             {
-                if($card_no >= 10001 && $card_no <= 100000)
+                if($card_no >= 8001 && $card_no <= 100000)
                 {
                     $card_no_array[] = $card_no;
                     $additional_data = array(

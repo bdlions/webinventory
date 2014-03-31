@@ -68,6 +68,8 @@ class Sale extends CI_Controller {
         $this->data['customer_search_category'][0] = "Select an item";
         $this->data['customer_search_category']['phone'] = "Phone";
         $this->data['customer_search_category']['card_no'] = "Card No";
+        $this->data['customer_search_category']['first_name'] = "First Name";
+        $this->data['customer_search_category']['last_name'] = "Last Name";
 
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";

@@ -69,8 +69,12 @@ class Attendance_model extends Ion_auth_model {
         $end_date = date('Y-m-d', strtotime('+1 day', strtotime($end_date)));
         $this->db->where('login_date >=', $start_date);
         $this->db->where('login_date <=', $end_date);
-        $this->db->where('shop_id', $shop_id);        
-        $this->response = $this->db->get($this->tables['attendance']);
-        return $this;
+        //$this->response = $this->db->get($this->tables['attendance']);
+        //return $this;
+        return $this->db->select($this->tables['attendance'].'.*,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name')
+                    ->from($this->tables['attendance'])
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['attendance'].'.user_id')
+                    ->where($this->tables['attendance'].'.shop_id',$shop_id)
+                    ->get();
     }
 }

@@ -120,6 +120,7 @@ function startclock()
         ?>
         <td >{%= sale_info.salesman_first_name%} {%=sale_info.salesman_last_name %}</td>
         <td >{%= sale_info.card_no%}</td>
+        <td ><?php echo '<a href="'.base_url().'payment/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
@@ -164,18 +165,18 @@ function startclock()
                     </td> 
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Total Sale Price : 
+                            Total Expense : 
                         </label>
-                        <label id="label_total_sale_price" class="col-md-4 control-label requiredField">
-                            <?php echo $total_sale_price;?> 
+                        <label id="label_total_expense" class="col-md-4 control-label requiredField">
+                            <?php echo $total_expense;?>
                         </label>
                     </td>
                     <td>                        
                         <label class="col-md-8 control-label requiredField">
-                            Total Due <a href="<?php echo base_url().'payment/show_total_due'?>">View</a> : 
+                            Total Due Collect <a href="<?php echo base_url().'payment/show_due_collect'?>">View</a> : 
                         </label>
-                        <label id="label_total_due" class="col-md-4 control-label requiredField">
-                            <?php echo $total_due;?>
+                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
+                            <?php echo $total_due_collect;?>
                         </label>
                     </td>
                 </tr>
@@ -190,10 +191,36 @@ function startclock()
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Total Expense : 
+                            Total Due <a href="<?php echo base_url().'payment/show_total_due'?>">View</a> : 
                         </label>
-                        <label id="label_total_expense" class="col-md-4 control-label requiredField">
-                            <?php echo $total_expense;?>
+                        <label id="label_total_due" class="col-md-4 control-label requiredField">
+                            <?php echo $total_due;?>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="col-md-8 control-label requiredField">
+                            Suppliers total returned balance <a href="<?php echo base_url().'payment/show_suppliers_returned_payment_list'?>">View</a> : 
+                        </label>
+                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
+                            <?php echo $suppliers_total_returned_payment_today;?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="col-md-6 control-label requiredField">
+                            Total Sale Price : 
+                        </label>
+                        <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
+                            <?php echo $total_sale_price;?> 
+                        </label>
+                    </td>
+                    <td>
+                        <label class="col-md-8 control-label requiredField">
+                            Customers total returned balance <a href="<?php echo base_url().'payment/show_customers_returned_payment_list'?>">View</a> : 
+                        </label>
+                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
+                            <?php echo $customers_total_returned_payment_today;?>
                         </label>
                     </td>
                     <td>
@@ -223,15 +250,10 @@ function startclock()
                                     echo $total_profit;
                                 }
                             ?>
-                        </label>                        
+                        </label> 
                     </td>
                     <td>
-                        <label class="col-md-8 control-label requiredField">
-                            Total Due Collect <a href="<?php echo base_url().'payment/show_due_collect'?>">View</a> : 
-                        </label>
-                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
-                            <?php echo $total_due_collect;?>
-                        </label>                        
+                                              
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
@@ -240,27 +262,6 @@ function startclock()
                         <label id="label_total_net_balance" class="col-md-4 control-label requiredField">
                             <?php echo $current_balance?>
                         </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                                              
-                    </td>
-                    <td>
-                        <label class="col-md-8 control-label requiredField">
-                            Suppliers total returned balance <a href="<?php echo base_url().'payment/show_suppliers_returned_payment_list'?>">View</a> : 
-                        </label>
-                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
-                            <?php echo $suppliers_total_returned_payment_today;?>
-                        </label>                        
-                    </td>
-                    <td>
-                        <label class="col-md-8 control-label requiredField">
-                            Customers total returned balance <a href="<?php echo base_url().'payment/show_customers_returned_payment_list'?>">View</a> : 
-                        </label>
-                        <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
-                            <?php echo $customers_total_returned_payment_today;?>
-                        </label>     
                     </td>
                 </tr>
             </tbody>  
@@ -287,6 +288,7 @@ function startclock()
                     ?> 
                     <th>Sale by Staff</th>
                     <th>Card No</th>
+                    <th>Transactions</th>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
@@ -319,7 +321,8 @@ function startclock()
                             }                            
                         ?>
                         <td><?php echo $sale_info['salesman_first_name'].' '.$sale_info['salesman_last_name'];?></td>
-                        <td><?php echo $sale_info['card_no'];?></td>  
+                        <td><?php echo $sale_info['card_no'];?></td>
+                        <td><?php echo '<a href="'.base_url().'payment/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>'?></td> 
                         <?php 
                             if($this->session->userdata('user_type') != SALESMAN)
                             {                                    

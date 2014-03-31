@@ -846,9 +846,9 @@ class User extends CI_Controller {
         $this->template->load(null, 'customer/show_all_customers', $this->data);
     }
     
-    public function update_customer($user_id = '')
+    public function update_customer($customer_id = 0)
     {
-        if(empty($user_id))
+        if($customer_id == 0)
         {
             redirect("user/show_all_customers","refresh");
         }
@@ -860,7 +860,7 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
         
         $customer_info = array();
-        $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
+        $customer_info_array = $this->ion_auth->get_customer(0, $customer_id)->result_array();
         if(empty($customer_info_array))
         {
             redirect("user/show_all_customers","refresh");
@@ -891,10 +891,10 @@ class User extends CI_Controller {
                 {
                     $additional_data['profession_id'] = $this->input->post('profession_list');
                 }
-                if( $this->ion_auth->update($user_id, $additional_data) )
+                if( $this->ion_auth->update($customer_info['user_id'], $additional_data) )
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    redirect("user/update_customer/".$customer_info['user_id'],"refresh");
+                    redirect("user/update_customer/".$customer_id,"refresh");
                 }
                 else
                 {
@@ -968,16 +968,16 @@ class User extends CI_Controller {
         $this->template->load(null, 'customer/update_customer',$this->data);
     }
     
-    public function show_customer($user_id)
+    public function show_customer($customer_id)
     {
-        if(empty($user_id))
+        if(empty($customer_id))
         {
             redirect("user/show_all_customers","refresh");
         }
         $this->data['message'] = '';       
         
         $customer_info = array();
-        $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
+        $customer_info_array = $this->ion_auth->get_customer(0, $customer_id)->result_array();
         if(empty($customer_info_array))
         {
             redirect("user/show_all_customers","refresh");
@@ -1180,20 +1180,36 @@ class User extends CI_Controller {
         $this->template->load(null, 'supplier/create_supplier',$this->data);
     }
     
-    public function show_all_suppliers()
+    public function show_all_suppliers($limit, $offset = 0)
     {
         $this->data['supplier_list'] = array();
-        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+        //list the users
+        if ($limit == 0) {
+            $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+            $limit = PAGINATION_SUPPLIER_LIST_LIMIT;
+        } else {
+            $supplier_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_suppliers()->result_array();
+        }
         if( !empty($supplier_list_array) )
         {
             $this->data['supplier_list'] = $supplier_list_array;
-        } 
+        }
+        
+        $total_users = count($this->ion_auth->get_all_suppliers()->result_array());
+        $this->load->library('pagination');
+        $config['base_url'] = base_url() . 'user/show_all_suppliers/' . $limit;
+        $config['total_rows'] = $total_users;
+        $config['uri_segment'] = 4;
+        $config['per_page'] = PAGINATION_SUPPLIER_LIST_LIMIT;
+        $this->pagination->initialize($config);
+        $this->data['pagination'] = $this->pagination->create_links();
+         
         $this->template->load(null, 'supplier/show_all_suppliers', $this->data);
     }
     
-    public function update_supplier($user_id = '')
+    public function update_supplier($supplier_id = 0)
     {
-        if(empty($user_id))
+        if($supplier_id == 0)
         {
             redirect("user/show_all_supplierss","refresh");
         }
@@ -1205,7 +1221,7 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('company', 'Company', 'xss_clean');
         
         $supplier_info = array();
-        $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+        $supplier_info_array = $this->ion_auth->get_supplier(0, $supplier_id)->result_array();
         if(empty($supplier_info_array))
         {
             redirect("user/show_all_suppliers","refresh");
@@ -1228,10 +1244,10 @@ class User extends CI_Controller {
                     'address' => $this->input->post('address'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
-                if( $this->ion_auth->update($user_id, $additional_data) )
+                if( $this->ion_auth->update($supplier_info['user_id'], $additional_data) )
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    redirect("user/update_supplier/".$supplier_info['user_id'],"refresh");
+                    redirect("user/update_supplier/".$supplier_info['supplier_id'],"refresh");
                 }
                 else
                 {
@@ -1291,16 +1307,12 @@ class User extends CI_Controller {
         $this->template->load(null, 'supplier/update_supplier',$this->data);
     }
     
-    public function show_supplier($user_id)
+    public function show_supplier($supplier_id)
     {
-        if(empty($user_id))
-        {
-            redirect("user/show_all_suppliers","refresh");
-        }
         $this->data['message'] = '';       
         
         $supplier_info = array();
-        $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+        $supplier_info_array = $this->ion_auth->get_supplier(0, $supplier_id)->result_array();
         if(empty($supplier_info_array))
         {
             redirect("user/show_all_suppliers","refresh");
@@ -1394,6 +1406,9 @@ class User extends CI_Controller {
     {
         $this->data['message'] = '';
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
+        $this->form_validation->set_rules('email', 'Email', 'xss_clean');
+        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
@@ -1405,9 +1420,9 @@ class User extends CI_Controller {
             if ($this->form_validation->run() == true) 
             {
                 //$user_name = $this->input->post('phone');
-                $user_name = '';
+                $user_name = $this->input->post('username');
                 $password = $this->input->post('password');
-                $email = "dummy@dummy.com";
+                $email = $this->input->post('email');
                 $additional_data = array(
                     'account_status_id' => $this->account_status_list['active_id'],
                     'first_name' => $this->input->post('first_name'),
@@ -1443,6 +1458,18 @@ class User extends CI_Controller {
             'id' => 'phone',
             'type' => 'text',
             'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['username'] = array(
+            'name' => 'username',
+            'id' => 'username',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('username'),
+        );
+        $this->data['email'] = array(
+            'name' => 'email',
+            'id' => 'email',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('email'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',

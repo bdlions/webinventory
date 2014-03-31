@@ -1,6 +1,6 @@
 <h3>Update Supplier</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("user/update_supplier/".$supplier_info['user_id'], array('id' => 'form_update_supplier', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("user/update_supplier/".$supplier_info['supplier_id'], array('id' => 'form_update_supplier', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2">
             <div class ="row">

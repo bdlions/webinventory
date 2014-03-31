@@ -114,7 +114,9 @@
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Company</th>
-                                        <th>Details</th>
+                                        <th>Update</th>
+                                        <th>Show</th>
+                                        <th>Transactions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_supplier_list">
@@ -125,7 +127,9 @@
                                             <td id="<?php echo $supplier['supplier_id'] ?>"><?php echo $supplier['first_name'] . ' ' . $supplier['last_name'] ?></td>
                                             <td id="<?php echo $supplier['supplier_id'] ?>"><?php echo $supplier['phone'] ?></td>
                                             <td id="<?php echo $supplier['supplier_id'] ?>"><?php echo $supplier['company'] ?></td>
-                                            <td><a target="_blank" href="<?php echo base_url() . "user/show_supplier/" . $supplier['supplier_id']; ?>">view</a></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "user/update_supplier/" . $supplier['supplier_id']; ?>">Update</a></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "user/show_supplier/" . $supplier['supplier_id']; ?>">Show</a></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "payment/show_supplier_transactions/" . $supplier['supplier_id']; ?>">Show</a></td>
                                         </tr>
                                         <?php
                                     }
@@ -134,10 +138,12 @@
                                     {% var i=0, supplier_info = ((o instanceof Array) ? o[i++] : o); %}
                                     {% while(supplier_info){ %}
                                     <tr>
-                                    <td id="<?php echo '{%= supplier_info.supplier_id%}'; ?>"><?php echo '{%= supplier_info.first_name%}' . ' ' . '{%= supplier_info.last_name%}'; ?></td>
-                                    <td id="<?php echo '{%= supplier_info.supplier_id%}'; ?>"><?php echo '{%= supplier_info.phone%}'; ?></td>
-                                    <td id="<?php echo '{%= supplier_info.supplier_id%}'; ?>"><?php echo '{%= supplier_info.company%}'; ?></td>
-                                    <td><a target="_blank" href="<?php echo base_url() . "user/show_supplier/" . '{%= supplier_info.supplier_id%}'; ?>">view</a></td>
+                                        <td id="<?php echo '{%= supplier_info.supplier_id%}'; ?>"><?php echo '{%= supplier_info.first_name%}' . ' ' . '{%= supplier_info.last_name%}'; ?></td>
+                                        <td id="<?php echo '{%= supplier_info.supplier_id%}'; ?>"><?php echo '{%= supplier_info.phone%}'; ?></td>
+                                        <td id="<?php echo '{%= supplier_info.supplier_id%}'; ?>"><?php echo '{%= supplier_info.company%}'; ?></td>
+                                        <td><a target="_blank" href="<?php echo base_url() . "user/update_supplier/" . '{%= supplier_info.supplier_id%}'; ?>">Update</a></td>
+                                        <td><a target="_blank" href="<?php echo base_url() . "user/show_supplier/" . '{%= supplier_info.supplier_id%}'; ?>">Show</a></td>
+                                        <td><a target="_blank" href="<?php echo base_url() . "payment/show_supplier_transactions/" . '{%= supplier_info.supplier_id%}'; ?>">Show</a></td>            
                                     </tr>
                                     {% supplier_info = ((o instanceof Array) ? o[i++] : null); %}
                                     {% } %}

@@ -106,7 +106,9 @@
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Card No</th>
-                                        <th>Details</th>
+                                        <th>Update</th>
+                                        <th>Show</th>
+                                        <th>Transactions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_customer_list">
@@ -117,7 +119,9 @@
                                             <td id="<?php echo $customer['customer_id'] ?>"><?php echo $customer['first_name'] . ' ' . $customer['last_name'] ?></td>
                                             <td id="<?php echo $customer['customer_id'] ?>"><?php echo $customer['phone'] ?></td>
                                             <td id="<?php echo $customer['customer_id'] ?>"><?php echo $customer['card_no'] ?></td>
-                                            <td><a target="_blank" href="<?php echo base_url() . "user/show_customer/" . $customer['customer_id']; ?>">view</a></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "user/update_customer/" . $customer['customer_id']; ?>">Update</a></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "user/show_customer/" . $customer['customer_id']; ?>">Show</a></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "payment/show_customer_transactions/" . $customer['customer_id']; ?>">Show</a></td>
                                         </tr>
                                         <?php
                                     }
@@ -126,10 +130,12 @@
                                     {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
                                     {% while(customer_info){ %}
                                     <tr>
-                                    <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.first_name%}' . ' ' . '{%= customer_info.last_name%}'; ?></td>
-                                    <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.phone%}'; ?></td>
-                                    <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.card_no%}'; ?></td>
-                                    <td><a target="_blank" href="<?php echo base_url() . "user/show_customer/" . '{%= customer_info.customer_id%}'; ?>">view</a></td>
+                                        <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.first_name%}' . ' ' . '{%= customer_info.last_name%}'; ?></td>
+                                        <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.phone%}'; ?></td>
+                                        <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.card_no%}'; ?></td>
+                                        <td><a target="_blank" href="<?php echo base_url() . "user/update_customer/" . '{%= customer_info.customer_id%}'; ?>">Update</a></td>
+                                        <td><a target="_blank" href="<?php echo base_url() . "user/show_customer/" . '{%= customer_info.customer_id%}'; ?>">Show</a></td>
+                                        <td><a target="_blank" href="<?php echo base_url() . "payment/show_customer_transactions/" . '{%= customer_info.customer_id%}'; ?>">Show</a></td>            
                                     </tr>
                                     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
                                     {% } %}

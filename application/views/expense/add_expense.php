@@ -1,56 +1,63 @@
 <script type="text/javascript">
+    $(document).ready(function() {
+        set_items();
+    });
     $(function() {
         $("#expense_categories").on("change", function() {            
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "expense/getItems",
-                data: {
-                    expense_type_id: $("#expense_categories").val()
-                },
-                success: function(data) {
-                    var result = JSON.parse(data);
-                    if( $("#expense_categories").val() === '<?php echo $expense_type_list['shop']?>' )
-                    {
-                        $("#item_list").html("");
-                        var shop_list = result['shop_list'];
-                        var options = "";
-                        for (var counter = 0; counter < shop_list.length; counter++)
-                        {
-                            options += "<option value=\"" + shop_list[counter]['id'] + "\">" + shop_list[counter]['value'] + "</option>";
-                        }                        
-                        $("#item_list").html(options);
-                    }
-                    else if( $("#expense_categories").val() === '<?php echo $expense_type_list['supplier']?>' )
-                    {
-                        $("#item_list").html("");
-                        var supplier_list = result['supplier_list'];
-                        var options = "";
-                        for (var counter = 0; counter < supplier_list.length; counter++)
-                        {
-                            options += "<option value=\"" + supplier_list[counter]['id'] + "\">" + supplier_list[counter]['value'] + "</option>";
-                        }                        
-                        $("#item_list").html(options);
-                    }
-                    else if( $("#expense_categories").val() === '<?php echo $expense_type_list['user']?>' )
-                    {
-                        $("#item_list").html("");
-                        var user_list = result['user_list'];
-                        var options = "";
-                        for (var counter = 0; counter < user_list.length; counter++)
-                        {
-                            options += "<option value=\"" + user_list[counter]['id'] + "\">" + user_list[counter]['value'] + "</option>";
-                        }                        
-                        $("#item_list").html(options);
-                    }
-                    else
-                    {
-                        $("#item_list").html("");
-                    }
-                    
-                }
-            });
+            set_items();
         });
     });
+    function set_items()
+    {
+        $.ajax({
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + "expense/getItems",
+            data: {
+                expense_type_id: $("#expense_categories").val()
+            },
+            success: function(data) {
+                var result = JSON.parse(data);
+                if( $("#expense_categories").val() === '<?php echo $expense_type_list['shop']?>' )
+                {
+                    $("#item_list").html("");
+                    var shop_list = result['shop_list'];
+                    var options = "";
+                    for (var counter = 0; counter < shop_list.length; counter++)
+                    {
+                        options += "<option value=\"" + shop_list[counter]['id'] + "\">" + shop_list[counter]['value'] + "</option>";
+                    }                        
+                    $("#item_list").html(options);
+                }
+                else if( $("#expense_categories").val() === '<?php echo $expense_type_list['supplier']?>' )
+                {
+                    $("#item_list").html("");
+                    var supplier_list = result['supplier_list'];
+                    var options = "";
+                    for (var counter = 0; counter < supplier_list.length; counter++)
+                    {
+                        options += "<option value=\"" + supplier_list[counter]['id'] + "\">" + supplier_list[counter]['value'] + "</option>";
+                    }                        
+                    $("#item_list").html(options);
+                }
+                else if( $("#expense_categories").val() === '<?php echo $expense_type_list['user']?>' )
+                {
+                    $("#item_list").html("");
+                    var user_list = result['user_list'];
+                    var options = "";
+                    for (var counter = 0; counter < user_list.length; counter++)
+                    {
+                        options += "<option value=\"" + user_list[counter]['id'] + "\">" + user_list[counter]['value'] + "</option>";
+                    }                        
+                    $("#item_list").html(options);
+                }
+                else
+                {
+                    $("#item_list").html("");
+                }
+
+            }
+        });
+    }
 </script>
 
 <h3>Add Expense</h3>
@@ -66,7 +73,7 @@
                 Select Type
             </label>
             <div class ="col-md-6">
-                <?php echo form_dropdown('expense_categories', $expense_categories, '','class="form-control" id="expense_categories"'); ?>
+                <?php echo form_dropdown('expense_categories', $expense_categories, $selected_expense_category, 'class="form-control" id="expense_categories"'); ?>
             </div> 
         </div>
         <div class="form-group">

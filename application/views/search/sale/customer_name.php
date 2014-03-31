@@ -31,6 +31,7 @@
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.sale_unit_price%}'; ?></td>
+        <td ><?php echo '<a href="'.base_url().'payment/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
@@ -141,6 +142,7 @@
                     <th>Sale Unit Price</th>
                     <th>Total Purchase Price</th>
                     <th>Total Sale Price</th>
+                    <th>Transactions</th>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    

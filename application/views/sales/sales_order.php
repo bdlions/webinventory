@@ -9,8 +9,6 @@
         $("#total_sale_price").val(0);
         $("#previous_due").val(0);
         $("#cash_paid_amount").val(0);
-        $("#check_paid_amount").val(0);
-        $("#check_description").val('');
         $("#current_due").val(0);
     });
 </script>
@@ -48,7 +46,7 @@
             success: function(data) {
                 $("#previous_due").val(data);
                 
-                var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+                var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() + +$("#previous_due").val();
                 $("#current_due").val(current_due);
             }
         });
@@ -91,7 +89,7 @@
                 alert('Incorrect Order #');
                 return;
             }
-            if ( +$("#total_sale_price").val() < (+$("#cash_paid_amount").val() + +$("#check_paid_amount").val()) )
+            if ( +$("#total_sale_price").val() < (+$("#cash_paid_amount").val()) )
             {
                 alert('Please click on Due Collect to pay previous due.');
                 return;
@@ -160,8 +158,8 @@
                 sale_info.setCreatedBy($("#salesman_list").val());
                 sale_info.setTotal($("#total_sale_price").val());
                 sale_info.setCashPaid($("#cash_paid_amount").val());
-                sale_info.setCheckPaid($("#check_paid_amount").val());
-                sale_info.setCheckDescription($("#check_description").val());
+                sale_info.setCheckPaid('0');
+                sale_info.setCheckDescription('');
                 $.ajax({
                     type: "POST",
                     url: '<?php echo base_url(); ?>' + "sale/add_sale",
@@ -186,8 +184,6 @@
                             $("#total_sale_price").val(0);
                             $("#previous_due").val(0);
                             $("#cash_paid_amount").val(0);
-                            $("#check_paid_amount").val(0);
-                            $("#check_description").val('');
                             $("#current_due").val(0);
                         }
                         else if (response['status'] === '0')
@@ -279,15 +275,11 @@
                 }
             });
             $("#total_sale_price").val(total_sale_price);
-            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() + +$("#previous_due").val();
             $("#current_due").val(current_due);
         });
         $("#cash_paid_amount").on("change", function() {
-            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
-            $("#current_due").val(current_due);
-        });
-        $("#check_paid_amount").on("change", function() {
-            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() - +$("#check_paid_amount").val() + +$("#previous_due").val();
+            var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() + +$("#previous_due").val();
             $("#current_due").val(current_due);
         });
     });
@@ -433,22 +425,6 @@
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
                         <?php echo form_input(array('name' => 'cash_paid_amount', 'id' => 'cash_paid_amount', 'class' => 'form-control')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="check_paid_amount" class="col-md-2 control-label requiredField">
-                        Check Payment
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'check_paid_amount', 'id' => 'check_paid_amount', 'class' => 'form-control')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="check_description" class="col-md-2 control-label requiredField">
-                        Check Description
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'check_description', 'id' => 'check_description', 'class' => 'form-control')); ?>
                     </div> 
                 </div>
                 <div class="form-group">

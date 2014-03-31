@@ -46,7 +46,7 @@ class Search extends CI_Controller {
         $result_array = array();
         $search_category_name = $_POST['search_category_name'];
         $search_category_value = $_POST['search_category_value'];
-        $customer_list_array = $this->ion_auth->search_customer($search_category_name, $search_category_value)->result_array();
+        $customer_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_CUSTOMER_SALE_ORDER_LIMIT)->search_customer($search_category_name, $search_category_value)->result_array();
         if( count($customer_list_array) > 0)
         {
             $result_array = $customer_list_array;
@@ -64,7 +64,7 @@ class Search extends CI_Controller {
         $result_array = array();
         $search_category_name = $_POST['search_category_name'];
         $search_category_value = $_POST['search_category_value'];
-        $supplier_list_array = $this->ion_auth->search_supplier($search_category_name, $search_category_value)->result_array();
+        $supplier_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_SUPPLIER_PURCHASE_ORDER_LIMIT)->search_supplier($search_category_name, $search_category_value)->result_array();
         if( count($supplier_list_array) > 0)
         {
             $result_array = $supplier_list_array;
@@ -621,28 +621,77 @@ class Search extends CI_Controller {
     {
         $total_purchased = $_POST['total_purchased'];
         $customer_list = array();
-        $customer_list_array = $this->sale_library->get_customers_by_total_purchased()->result_array();
-        foreach($customer_list_array as $customer_info)
+        $card_no_customer_id_map = array();
+        $card_no_total_products_map = array();
+        $customer_id_array = array();
+        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
+        foreach($sale_list_array as $sale_info)
         {
-            if($customer_info['total_quantity'] == $total_purchased)
+            if(!array_key_exists($sale_info['card_no'], $card_no_customer_id_map))
             {
-                $customer_list[] = $customer_info;
+                $card_no_customer_id_map[$sale_info['card_no']] = $sale_info['customer_id'];
+            }
+            if(!array_key_exists($sale_info['card_no'], $card_no_total_products_map))
+            {
+                $card_no_total_products_map[$sale_info['card_no']] = $sale_info['total_sale'];
+            }
+            else
+            {
+                $card_no_total_products_map[$sale_info['card_no']] = $card_no_total_products_map[$sale_info['card_no']] + $sale_info['total_sale'];
             }
         }
-        $result_array['customer_list'] = $customer_list;  
+        foreach($card_no_total_products_map as $card_no => $total_products)
+        {
+            if($total_products == $total_purchased)
+            {
+                $customer_id_array[] = $card_no_customer_id_map[$card_no];
+            }
+        }
+        if(!empty($customer_id_array))
+        {
+            $customer_list = $this->ion_auth->get_customers($customer_id_array)->result_array(); 
+        }
+        $result_array['customer_list'] =  $customer_list;
         echo json_encode($result_array);
     }
     public function download_search_customers_total_purchased()
     {
         $content = '';
         $total_purchased = $this->input->post('total_purchased');
-        $customer_list_array = $this->sale_library->get_customers_by_total_purchased()->result_array();
-        foreach($customer_list_array as $customer_info)
+        $customer_list = array();
+        $card_no_customer_id_map = array();
+        $card_no_total_products_map = array();
+        $customer_id_array = array();
+        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
+        foreach($sale_list_array as $sale_info)
         {
-            if($customer_info['total_quantity'] == $total_purchased)
+            if(!array_key_exists($sale_info['card_no'], $card_no_customer_id_map))
             {
-                $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
-            }            
+                $card_no_customer_id_map[$sale_info['card_no']] = $sale_info['customer_id'];
+            }
+            if(!array_key_exists($sale_info['card_no'], $card_no_total_products_map))
+            {
+                $card_no_total_products_map[$sale_info['card_no']] = $sale_info['total_sale'];
+            }
+            else
+            {
+                $card_no_total_products_map[$sale_info['card_no']] = $card_no_total_products_map[$sale_info['card_no']] + $sale_info['total_sale'];
+            }
+        }
+        foreach($card_no_total_products_map as $card_no => $total_products)
+        {
+            if($total_products == $total_purchased)
+            {
+                $customer_id_array[] = $card_no_customer_id_map[$card_no];
+            }
+        }
+        if(!empty($customer_id_array))
+        {
+            $customer_list = $this->ion_auth->get_customers($customer_id_array)->result_array(); 
+        }
+        foreach($customer_list as $customer_info)
+        {
+            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";           
         }        
         $file_name = now();
         header("Content-Type:text/plain");
@@ -659,7 +708,7 @@ class Search extends CI_Controller {
         $this->data['button_search_customer'] = array(
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
-            'type' => 'reset',
+            'type' => 'button',
             'value' => 'Search',
         );
         $this->data['button_download_customer'] = array(

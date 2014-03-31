@@ -472,7 +472,7 @@ CREATE TABLE `expense_type` (
 INSERT INTO `expense_type` (`id`, `description`) VALUES
 (1, 'Shop'),
 (2, 'Supplier'),
-(3, 'User'),
+(3, 'Staff'),
 (4, 'Other');  
 CREATE TABLE IF NOT EXISTS `expense_info` (
 	`id` int NOT NULL AUTO_INCREMENT,

@@ -718,7 +718,10 @@ class Ion_auth_model extends CI_Model {
      * @author Mathew
      * */
     public function register($username, $password, $email, $additional_data = array(), $groups = array()) {
-        $username = rand(1,99999999999999);
+        if(!isset($username))
+        {
+            $username = rand(1,99999999999999);
+        }        
         $this->trigger_events('pre_register');
         $this->db->trans_begin();
         $manual_activation = $this->config->item('manual_activation', 'ion_auth');
@@ -2025,12 +2028,28 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $this->db->order_by($this->tables['customers'].'.card_no','asc');
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                     ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
                     ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
+    }
+    public function get_customers($customer_id_array = array())
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        if(!empty($customer_id_array))
+        {
+            $this->db->where_in($this->tables['customers'].'.id', $customer_id_array);
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address,'.$this->tables['customers'].'.institution_id,'.$this->tables['customers'].'.profession_id')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get(); 
+        
     }
     public function get_customer($user_id = 0, $customer_id = 0)
     {
@@ -2053,6 +2072,11 @@ class Ion_auth_model extends CI_Model {
         if(empty($shop_id))
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if (isset($this->_ion_limit)) {
+            $this->db->limit($this->_ion_limit);
+
+            $this->_ion_limit = NULL;
         }
         $this->db->like($key, $value); 
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
@@ -2153,6 +2177,12 @@ class Ion_auth_model extends CI_Model {
     
     public function get_all_suppliers($shop_id = 0, $supplier_id_list = array())
     {
+        if (isset($this->_ion_limit) && isset($this->_ion_offset)) {
+            $this->db->limit($this->_ion_limit, $this->_ion_offset);
+
+            $this->_ion_limit = NULL;
+            $this->_ion_offset = NULL;
+        }
         if( $shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
@@ -2187,11 +2217,15 @@ class Ion_auth_model extends CI_Model {
     }
     public function search_supplier($key, $value, $shop_id = '')
     {
+        if (isset($this->_ion_limit)) {
+            $this->db->limit($this->_ion_limit);
+
+            $this->_ion_limit = NULL;
+        }
         if(empty($shop_id))
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        $this->db->where($this->tables['suppliers'].'.shop_id',$shop_id);
         $this->db->like($key, $value); 
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
                     ->from($this->tables['users'])

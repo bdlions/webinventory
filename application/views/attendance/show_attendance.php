@@ -35,10 +35,11 @@
     {% var i=0, attendance_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(attendance_info){ %}
     <tr>
-    <td><?php echo '{%= attendance_info.login_date%}'; ?></td>
-    <td><?php echo '{%= attendance_info.login_time%}'; ?></td>
-    <td><?php echo '{%= attendance_info.logout_time%}'; ?></td>
-    <td><?php echo '{%= attendance_info.attendance_comment%}'; ?></td>
+    <td>{%= attendance_info.first_name%} {%= attendance_info.last_name%}</td>
+    <td>{%= attendance_info.login_date%}</td>
+    <td>{%= attendance_info.login_time%}</td>
+    <td>{%= attendance_info.logout_time%}</td>
+    <td>{%= attendance_info.attendance_comment%}</td>
     </tr>
     {% attendance_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -105,6 +106,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Date</th>
                         <th>In Time</th>
                         <th>Out Time</th>
@@ -114,6 +116,7 @@
                 <tbody id="tbody_attendance_list">                    
                     <?php foreach ($attendance_list as $attendance_info){?>
                         <tr>
+                            <td><?php echo $attendance_info['first_name'].' '.$attendance_info['last_name']; ?></td>
                             <td><?php echo $attendance_info['login_date']; ?></td>
                             <td><?php echo $attendance_info['login_time']; ?></td>
                             <td><?php echo $attendance_info['logout_time']; ?></td>

@@ -1,6 +1,6 @@
 <h3>Update Customer</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("user/update_customer/".$customer_info['user_id'], array('id' => 'form_update_customer', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("user/update_customer/".$customer_info['customer_id'], array('id' => 'form_update_customer', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
             <div class ="row">

@@ -33,7 +33,7 @@
         <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return Purchase Order</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/create_supplier");?>">add new supplier</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_suppliers");?>">Supplier List</a></li>
+        <li><a href="<?php echo base_url("./user/show_all_suppliers/".PAGINATION_SUPPLIER_LIST_LIMIT);?>">Supplier List</a></li>
     </ul>
 </div>
 <div class="btn-group">
