@@ -1532,6 +1532,8 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
         
         $salesman_info = array();
@@ -1557,6 +1559,10 @@ class User extends CI_Controller {
                     'address' => $this->input->post('address'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
+                if( $this->input->post('password') !== PSD_DUMMY)
+                {
+                    $additional_data['password'] = $this->input->post('password');
+                }
                 if( $this->ion_auth->update($user_id, $additional_data) )
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -1596,6 +1602,18 @@ class User extends CI_Controller {
             'type' => 'text',
             'value' => $salesman_info['last_name'],
         );
+        $this->data['password'] = array(
+            'name' => 'password',
+            'id' => 'password',
+            'type' => 'password',
+            'value' => PSD_DUMMY,
+        );
+        $this->data['password_confirm'] = array(
+            'name' => 'password_confirm',
+            'id' => 'password_confirm',
+            'type' => 'password',
+            'value' => PSD_DUMMY,
+        );
         $this->data['address'] = array(
             'name' => 'address',
             'id' => 'address',
@@ -1616,6 +1634,8 @@ class User extends CI_Controller {
     {
         $this->data['message'] = '';
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
+        $this->form_validation->set_rules('email', 'Email', 'xss_clean');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
@@ -1628,9 +1648,9 @@ class User extends CI_Controller {
             if ($this->form_validation->run() == true) 
             {
                 //$user_name = $this->input->post('phone');
-                $user_name = '';
+                $user_name = $this->input->post('username');
                 $password = $this->input->post('password');
-                $email = "dummy@dummy.com";
+                $email = $this->input->post('email');
                 $additional_data = array(
                     'account_status_id' => $this->account_status_list['active_id'],
                     'first_name' => $this->input->post('first_name'),
@@ -1666,6 +1686,18 @@ class User extends CI_Controller {
             'id' => 'phone',
             'type' => 'text',
             'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['username'] = array(
+            'name' => 'username',
+            'id' => 'username',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('username'),
+        );
+        $this->data['email'] = array(
+            'name' => 'email',
+            'id' => 'email',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('email'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
@@ -1728,6 +1760,8 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
         
         $manager_info = array();
@@ -1753,6 +1787,10 @@ class User extends CI_Controller {
                     'address' => $this->input->post('address'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
+                if( $this->input->post('password') !== PSD_DUMMY)
+                {
+                    $additional_data['password'] = $this->input->post('password');
+                }
                 if( $this->ion_auth->update($user_id, $additional_data) )
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -1790,6 +1828,18 @@ class User extends CI_Controller {
             'id' => 'last_name',
             'type' => 'text',
             'value' => $manager_info['last_name'],
+        );
+        $this->data['password'] = array(
+            'name' => 'password',
+            'id' => 'password',
+            'type' => 'password',
+            'value' => PSD_DUMMY,
+        );
+        $this->data['password_confirm'] = array(
+            'name' => 'password_confirm',
+            'id' => 'password_confirm',
+            'type' => 'password',
+            'value' => PSD_DUMMY,
         );
         $this->data['address'] = array(
             'name' => 'address',

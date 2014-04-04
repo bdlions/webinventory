@@ -32,6 +32,22 @@
                 </div> 
             </div>
             <div class="form-group">
+                <label for="password" class="col-md-6 control-label requiredField">
+                    Password
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($password+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="password_confirm" class="col-md-6 control-label requiredField">
+                    Confirm Password
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($password_confirm+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Address
                 </label>

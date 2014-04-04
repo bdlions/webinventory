@@ -1,6 +1,7 @@
 <?php
 include './constants/account_status.php';
 include './constants/pagination.php';
+include './constants/registration.php';
 include './constants/stock.php';
 include './constants/user_group.php';
 /***************** Custom constant **********************/

@@ -4,6 +4,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>User Name</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Phone</th>
@@ -16,6 +17,7 @@
                 foreach ($salesman_list as $salesman_info) {
                 ?>
                     <tr>
+                        <td><?php echo $salesman_info['username'] ?></td>
                         <td><?php echo $salesman_info['first_name'] ?></td>
                         <td><?php echo $salesman_info['last_name'] ?></td>
                         <td><?php echo $salesman_info['phone'] ?></td>
