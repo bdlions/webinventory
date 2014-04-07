@@ -16,6 +16,7 @@
                 <div class="col-md-6">
                     <div class="row pull-right">
                         <a class="login-text" href="<?php echo base_url()?>user/salesman_login">Login</a>
+                        <a class="login-text" href="<?php echo base_url()?>user/admin_signup">Signup</a>
                     </div>
                 </div>
             </div>
