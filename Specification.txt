@@ -1,0 +1,28 @@
+1. Register new user from landing page/site main page.
+	-- User type will be admin?
+	-- Finalize form fields for registration.
+2. Send SMS notification after registration.
+	-- Send a security code and user name by sms. Use that security code to activate the account?
+3. Send email notification after registration.
+	-- Send an email to the user
+4. Initialization after registration
+	- After login assign shop name and category for the first time?
+5. Search customers, suppliers and products.
+	- Use twitter typeahead library (http://twitter.github.io/typeahead.js/)
+6. Multiple product selection.
+	- During purchase or sale user will be able to select multiple products at a time.
+7. Remove selected product.
+	- User will be able to remove products after selection.
+8. Manage product unit 
+	- Add an interface to create new product unit category i.e. liter, kg, piece for each shop
+	- User will select product unit category from a dropdown during creating a product.
+9. Parse file to upload product list.
+	- User will upload a file with product list.
+	- Use txt file to upload product list?
+10. Upload cover photo for shop
+	- We will move down current menu items and place cover photo on top of menu.
+11. Export customer info
+	- admin/staff will be able to download name or phone or both of customers.
+12. Notebook.
+	- Finalize design and purpose of this feature.
+13. Message customization for each shop
