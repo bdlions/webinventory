@@ -1,8 +1,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var customer_data = <?php echo json_encode($customer_list_array) ?>;
+		//alert(customer_data);
         set_customer_list(customer_data);
-
+		//alert(set_customer_list);
         var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
         
@@ -62,6 +63,17 @@
             result += chars[Math.round(Math.random() * (chars.length - 1))];
         return result;
     }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#tbody_selected_product_list").on("click", "button", function(e) {
+            //console.log(this.id);
+            var target = e.target;
+            //console.log(target);
+            $(target).closest('tr').remove();
+        })
+    });
 </script>
 
 <script type="text/javascript">
@@ -372,6 +384,7 @@
                             <th>Quantity</th>
                             <th>Unit Price</th>
                             <th>Sub Total</th>
+                            <th>Delete Row</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_selected_product_list">                        
@@ -385,6 +398,7 @@
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="unit_price" type="text" value=""/></td>
                         <td><input class="input-width-table" name="product_sale_price" type="text" readonly="true" value="0"/></td>
+                        <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>
                         </tr>
                         {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                         {% } %}

@@ -802,9 +802,16 @@ class User extends CI_Controller {
     {
         $content = '';
         $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+        $select_value = $this->input->post('select_option_for_download');
         foreach($customer_list_array as $customer_info)
         {
-            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
+            if( $select_value == 'mobile_no') {
+                $content = $content.$customer_info['phone']."\r\n";
+            } else if($select_value == 'name') {
+                $content = $content.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";
+            } else {
+                $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";
+            }
         }
         
         $file_name = now();

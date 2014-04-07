@@ -14,6 +14,7 @@ class Product extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('org/product/product_library');
         $this->load->helper('url');
+        $this->load->helper('file');
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -406,5 +407,120 @@ class Product extends CI_Controller {
            $response['message'] = $this->product_library->errors_alert();
         }
         echo json_encode($response);
+    }
+    
+    /**
+     * 
+     */
+    public function import_product()
+    {
+        $this->data['message'] = '';
+        $file_content = '';
+        if($this->input->post('submit_upload_file'))
+        {
+            //echo $this->session->userdata('shop_id'); exit("i m here");
+            //$file_content = $this->input->post('submit_upload_file');
+            //echo '<pre>';print_r($file_content);exit;
+            $config['upload_path'] = './upload/';
+            $config['allowed_types'] = 'txt';
+            $config['max_size'] = '5000';
+            $config['file_name'] = $this->session->userdata('shop_id').".txt";
+            $config['overwrite'] = TRUE;
+
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) 
+            {
+                $file_content = $this->upload->display_errors();
+            } 
+            else 
+            {
+                //exit('i m not');
+                $string = read_file('./upload/'.$this->session->userdata('shop_id').'.txt');
+                //print_r($string);exit('here');
+                $file_content = $string;
+            }
+        }
+        if($this->input->post('submit_process_file'))
+        {
+            $content = trim($this->input->post('textarea_details'));
+            $path = './upload/'.$this->session->userdata('shop_id').'.txt';
+            if ( write_file($path, $content) )
+            {
+                 redirect('product/process_product_file/');
+            }
+            
+        }
+        $this->data['textarea_details'] = array(
+            'name'  => 'textarea_details',
+            'id'    => 'textarea_details',
+            'value' => $file_content,
+            'rows'  => '20',
+            'cols'  => '100'
+        );
+        $this->data['submit_upload_file'] = array(
+            'name' => 'submit_upload_file',
+            'id' => 'submit_upload_file',
+            'type' => 'submit',
+            'value' => 'Upload',
+        );
+        $this->data['submit_process_file'] = array(
+            'name' => 'submit_process_file',
+            'id' => 'submit_process_file',
+            'type' => 'submit',
+            'value' => 'Import Product List',
+        );
+        
+        $this->template->load(null, 'product/import_product', $this->data);
+    }
+    
+    public function process_product_file()
+    {
+        $product_list_map = array();
+        $product_list = array();
+        $this->data['message'] = '';
+        $file_content = read_file('./upload/'.$this->session->userdata('shop_id').'.txt');
+        $file_content_array = explode("\n", $file_content);
+        
+        $counter = 0;
+        $total_duplicate = 0;
+        
+        foreach($file_content_array as $line)
+        {
+            if( $line != '' )
+            {
+                $line_array = explode("~", $line);
+                if(count($line_array)> 1)
+                {
+                    $product_name = $line_array[0];
+                    $additional_data = array(
+                        'size' => $line_array[2],
+                        'weight' => $line_array[3],
+                        'warranty' => $line_array[4],
+                        'quality' => $line_array[5],
+                        'unit_price' => $line_array[6],
+                        'brand_name' => $line_array[7],
+                        'remarks' => $line_array[8],
+                    );
+                    $product_id = $this->product_library->create_product($product_name, $additional_data);
+                    if( $product_id !== FALSE )
+                    {
+                        $this->session->set_flashdata('message', $this->product_library->messages());
+                        $counter++;
+                    }
+                    else
+                    {
+                        //echo $this->product_library->errors().' '.$product_name; exit('jjj');
+                        $this->data['message'] = $this->product_library->errors().' '.$product_name;
+                        $total_duplicate++;
+                    }
+                }
+            }               
+        }
+        
+        print_r('Total duplicate product item:'.$total_duplicate);
+        echo '<br>';
+        print_r('Total stored product item:'.$counter); exit;
+     $this->template->load(null, 'product/process_product_file', $this->data);
     }
 }

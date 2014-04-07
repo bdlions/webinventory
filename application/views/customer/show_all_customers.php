@@ -38,13 +38,30 @@
         <div class="col-md-9">
             
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <?php echo form_open("user/download_search_customer", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
+            <div class="form-group">
+                <label for="expense_categories" class="col-md-6 control-label requiredField">
+                    Select Type
+                </label>
+                <div class ="col-md-6">
+                    <?php 
+                        $options = array(
+                              'name'  => 'Name',
+                              'mobile_no'    => 'Mobile No',
+                              'both'   => 'Both'
+                            );
+
+                        echo form_dropdown('select_option_for_download', $options, 'both','class="form-control" id="select_option_for_download"');
+                    ?>
+                </div> 
+            </div>
+            
             <div class="form-group">
                 <label for="button_download_customer" class="col-md-6 control-label requiredField">
 
                 </label>
-                <div class ="col-md-12">
+                <div class ="col-md-6 col-md-offset-6">
                     <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
                 </div> 
             </div>
