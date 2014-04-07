@@ -45,7 +45,7 @@ class User extends CI_Controller {
         $this->login_uri = MANAGER_LOGIN_URI;
         $this->login_template = MANAGER_LOGIN_TEMPLATE;
         $this->login_view = MANAGER_LOGIN_VIEW;
-
+        
         if (!$this->ion_auth->logged_in()) {
             $this->login();
         } else {
@@ -109,6 +109,9 @@ class User extends CI_Controller {
                 //if the login is successful
                 //redirect them back to the home page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
+                if($this->user_type== MANAGER){
+                    
+                }
                 redirect($this->login_success_uri, 'refresh');
             } else {
                 //if the login was un-successful
@@ -1664,6 +1667,7 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
+                    $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code']);
                     $this->session->set_flashdata('message', 'sms sent to your mobile');
                     
                     redirect("user/create_manager","refresh");
@@ -1992,10 +1996,10 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    Sms_library::send_sms($additional_data['phone'],$additional_data['sms_code']);
+                    $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code']);
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     
-                    redirect("user/create_manager","refresh");
+                    redirect("user/manager_login","refresh");
                 }
                 else
                 {
