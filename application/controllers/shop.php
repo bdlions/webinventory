@@ -52,7 +52,8 @@ class Shop extends CI_Controller {
                     'shop_type_id' => $this->input->post('shop_type'),
                     'created_on' => now()
                 );
-                if( $this->shop_library->create_shop($additional_data) !== FALSE)
+                $shop_id = $this->shop_library->create_shop($additional_data);
+                if(  $shop_id !== FALSE)
                 {
                     
                     
@@ -66,7 +67,7 @@ class Shop extends CI_Controller {
                         $shop_no = $this->input->post('shop_no');
                         $user_info_array = $this->ion_auth->get_user_info()->result_array();
                         $user_info = $user_info_array[0];
-                        if($this->ion_auth->add_to_shop($user_info['id'],$shop_no))
+                        if($this->ion_auth->add_to_shop($user_info['id'],$shop_id))
                         {
                             redirect('user/manager_login','refresh');
                         }
@@ -161,7 +162,7 @@ class Shop extends CI_Controller {
         $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
-        $this->form_validation->set_rules('shop_type', 'Shop Type', 'xss_clean');
+        
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
         
         if ($this->input->post('submit_update_shop')) 
@@ -172,7 +173,7 @@ class Shop extends CI_Controller {
                     'shop_no' => $this->input->post('shop_no'),
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
-                    'shop_type' => $this->input->post('shop_type'),
+                 
                     'shop_phone' => $this->input->post('shop_phone'),
                     
                     'modified_date' => date('Y-m-d H:i:s')
@@ -203,19 +204,7 @@ class Shop extends CI_Controller {
         {
             $shop_info = $shop_info_array[0];
         }
-        //echo "<pre>";
-        //print_r($shop_info);
         
-        $shop_type_array = $this->shop_library->get_all_shop_type()->result_array();
-        
-        $this->data['shop_type'] = array();
-        if(!empty($shop_type_array))
-        {
-            foreach ($shop_type_array as $key => $shop_type) {
-                $this->data['shop_type'][$shop_type['id']] = $shop_type['type'];
-            }
-        }
-        $this->data['selected_shop_type']= $shop_info['shop_type_id'];
         $this->data['shop_info'] = $shop_info;
         $this->data['shop_no'] = array(
             'name' => 'shop_no',
