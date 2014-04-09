@@ -30,6 +30,9 @@ define('MANAGER_LOGIN_SUCCESS_TEMPLATE', 'manager/templates/main');
 define('MANAGER_LOGIN_VIEW', 'manager/login');
 define('MANAGER_LOGIN_SUCCESS_VIEW', 'manager/home');
 
+define('ACCOUNT_VALIDATION_SMS_TEMPLATE', 'sms/templates/main');
+define('ACCOUNT_VALIDATION_SMS_VIEW', 'sms/check_sms_validation');
+
 define('CUSTOMER_LOGIN_URI', 'customer');
 define('CUSTOMER_LOGIN_SUCCESS_URI', 'customer');
 define('CUSTOMER_LOGIN_TEMPLATE', 'customer/templates/main');

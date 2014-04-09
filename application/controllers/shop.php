@@ -38,6 +38,7 @@ class Shop extends CI_Controller {
         $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
+        $this->form_validation->set_rules('shop_type','Shop Type','xss_clean|required');
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
         if ($this->input->post('submit_create_shop')) 
         {
@@ -48,12 +49,31 @@ class Shop extends CI_Controller {
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
+                    'shop_type_id' => $this->input->post('shop_type'),
                     'created_on' => now()
                 );
                 if( $this->shop_library->create_shop($additional_data) !== FALSE)
                 {
-                    $this->session->set_flashdata('message', $this->shop_library->messages());
-                    redirect('shop/create_shop','refresh');
+                    
+                    
+                    if($this->ion_auth->is_admin())
+                    {
+                        $this->session->set_flashdata('message', $this->shop_library->messages());
+                        redirect('shop/create_shop','refresh');
+                    }
+                    else{
+                        
+                        $shop_no = $this->input->post('shop_no');
+                        $user_info_array = $this->ion_auth->get_user_info()->result_array();
+                        $user_info = $user_info_array[0];
+                        if($this->ion_auth->add_to_shop($user_info['id'],$shop_no))
+                        {
+                            redirect('user/manager_login','refresh');
+                        }
+                        
+                    }
+                    
+                    
                 }
                 else
                 {
@@ -69,7 +89,19 @@ class Shop extends CI_Controller {
         {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
+        $shop_type_array = $this->shop_library->get_all_shop_type()->result_array();
         
+        
+        //print_r($shop_type_array);
+        //exit('Hi');
+        $this->data['shop_type'] = array();
+        if( !empty($shop_type_array) )
+        {
+            foreach ($shop_type_array as $key => $shop_type) {
+                $this->data['shop_type'][$shop_type['id']] = $shop_type['type'];
+            }
+        }
+      
         $this->data['shop_no'] = array(
             'name' => 'shop_no',
             'id' => 'shop_no',
@@ -94,15 +126,22 @@ class Shop extends CI_Controller {
             'type' => 'text',
             'value' => $this->form_validation->set_value('shop_address'),
         );
+        
         $this->data['submit_create_shop'] = array(
             'name' => 'submit_create_shop',
             'id' => 'submit_create_shop',
             'type' => 'submit',
             'value' => 'Create',
         );
-        $this->template->load(null, 'shop/create_shop',$this->data);
-    }
-    
+        if($this->ion_auth->is_admin())
+        {
+            $this->template->load(null, 'shop/create_shop',$this->data);   
+        }
+        else
+        {
+            $this->template-> load(ACCOUNT_VALIDATION_SMS_TEMPLATE,'shop/create_shop',$this->data);
+        }
+    }    
     public function show_all_shops()
     {
         $this->data['shop_list'] = array();
@@ -122,7 +161,9 @@ class Shop extends CI_Controller {
         $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
+        $this->form_validation->set_rules('shop_type', 'Shop Type', 'xss_clean');
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
+        
         if ($this->input->post('submit_update_shop')) 
         {
             if ($this->form_validation->run() == true) 
@@ -131,7 +172,9 @@ class Shop extends CI_Controller {
                     'shop_no' => $this->input->post('shop_no'),
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
+                    'shop_type' => $this->input->post('shop_type'),
                     'shop_phone' => $this->input->post('shop_phone'),
+                    
                     'modified_date' => date('Y-m-d H:i:s')
                 );
                 if( $this->shop_library->update_shop($shop_id, $data) !== FALSE)
@@ -160,6 +203,19 @@ class Shop extends CI_Controller {
         {
             $shop_info = $shop_info_array[0];
         }
+        //echo "<pre>";
+        //print_r($shop_info);
+        
+        $shop_type_array = $this->shop_library->get_all_shop_type()->result_array();
+        
+        $this->data['shop_type'] = array();
+        if(!empty($shop_type_array))
+        {
+            foreach ($shop_type_array as $key => $shop_type) {
+                $this->data['shop_type'][$shop_type['id']] = $shop_type['type'];
+            }
+        }
+        $this->data['selected_shop_type']= $shop_info['shop_type_id'];
         $this->data['shop_info'] = $shop_info;
         $this->data['shop_no'] = array(
             'name' => 'shop_no',
@@ -185,6 +241,7 @@ class Shop extends CI_Controller {
             'type' => 'text',
             'value' => $shop_info['address'],
         );
+        
         $this->data['submit_update_shop'] = array(
             'name' => 'submit_update_shop',
             'id' => 'submit_update_shop',
@@ -229,4 +286,7 @@ class Shop extends CI_Controller {
         $this->data['select_shop_id'] = $this->session->userdata('shop_id');
         $this->template->load(null, 'shop/set_shop', $this->data);
     }
+    
+    
+    
 }

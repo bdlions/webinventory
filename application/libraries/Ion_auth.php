@@ -257,7 +257,9 @@ class Ion_auth {
      * */
     public function register($username, $password, $email, $additional_data = array(), $group_ids = array()) { //need to test email activation
         $this->ion_auth_model->trigger_events('pre_account_creation');
-
+        //echo '<pre>';print_r($additional_data);
+        //echo $username,$email,$password;exit('HI');
+        
         $email_activation = $this->config->item('email_activation', 'ion_auth');
 
         if (!$email_activation) {
@@ -273,7 +275,8 @@ class Ion_auth {
             }
         } else {
             $id = $this->ion_auth_model->register($username, $password, $email, $additional_data, $group_ids);
-
+            //echo '<pre>';print_r($additional_data);
+            //echo $username,$email,$password;exit('HI');
             if (!$id) {
                 $this->set_error('account_creation_unsuccessful');
                 return FALSE;

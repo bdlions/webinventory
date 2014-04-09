@@ -772,7 +772,6 @@ class Ion_auth_model extends CI_Model {
         $this->db->insert($this->tables['users'], $user_data);
 
         $id = $this->db->insert_id();
-
         if (!empty($groups)) {
             //add to groups
             foreach ($groups as $group) 
@@ -798,6 +797,7 @@ class Ion_auth_model extends CI_Model {
                 $this->add_to_group($group, $id);
             }
         }
+        
 
         //add to default group if not already set
         $default_group = $this->where('name', $this->config->item('default_group', 'ion_auth'))->group()->row();
@@ -805,15 +805,17 @@ class Ion_auth_model extends CI_Model {
             $this->add_to_group($default_group->id, $id);
         }
         
-        //add to shop
         
+        //add to shop
+        //echo add_to_shop($id);
         if( !$this->add_to_shop($id) )
         {
             $this->set_error('account_creation_shop_assignment_error');
             $this->db->trans_rollback();
             return FALSE;
         }
-        
+        //echo '<pre>';print_r($additional_data);
+        //echo $username,$email,$password;exit('HI');
         $this->db->trans_commit();
         $this->trigger_events('post_register');        
         return (isset($id)) ? $id : FALSE;
@@ -1251,7 +1253,14 @@ class Ion_auth_model extends CI_Model {
         if(empty($shop_id))
         {
             //get shop id of currently logged in user
-            $shop_id = $this->session->userdata('shop_id');
+            if($this->session->userdata('shop_id') !== FALSE)
+            {
+                $shop_id = $this->session->userdata('shop_id');
+            }
+            else
+            {
+                return TRUE;
+            }
         }
         $data = array(
             'user_id' => $user_id,
@@ -1379,11 +1388,11 @@ class Ion_auth_model extends CI_Model {
         }
         
         //update customer info
-        if($data['user_group_id'] === $this->user_group_list['customer_id'])
+        if(isset($data['user_group_id']) && $data['user_group_id'] === $this->user_group_list['customer_id'])
         {
             $this->update_customer($id, $data);
         }
-        else if($data['user_group_id'] === $this->user_group_list['supplier_id'])
+        else if(isset($data['user_group_id']) && $data['user_group_id'] === $this->user_group_list['supplier_id'])
         {
             $this->update_supplier($id, $data);
         }
@@ -2309,4 +2318,18 @@ class Ion_auth_model extends CI_Model {
                     ->from($this->tables['users'])
                     ->get(); 
     }
+    
+    public function get_user_info($user_id = 0)
+    {
+        if($user_id == 0)
+        {
+            $user_id = $this->session->userdata('user_id');
+        }
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select("*")
+                    ->from($this->tables['users'])
+                    ->get(); 
+    }
+    
+    
 }

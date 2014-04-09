@@ -51,6 +51,14 @@ class User extends CI_Controller {
         } else {
             //set the
             //set flash data error message if there is one
+            $user_info_array = $this->ion_auth->get_user_info()->result_array();
+            $user_info = $user_info_array[0];
+            $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
+                       
+            if(empty($shop_info))
+            {
+                redirect('shop/create_shop','refresh');
+            }
             $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
             $this->template->load(MANAGER_LOGIN_SUCCESS_TEMPLATE, MANAGER_LOGIN_SUCCESS_VIEW, $this->data);
         }
@@ -110,6 +118,18 @@ class User extends CI_Controller {
                 //redirect them back to the home page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
                 if($this->user_type== MANAGER){
+                    $user_info_array = $this->ion_auth->get_user_info()->result_array();
+                    $user_info = $user_info_array[0];
+                    if( $user_info['sms_code'] != 0)
+                    {
+                        redirect('user/account_validation_sms','refresh');                       
+                    }
+                    $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
+                       
+                    if(empty($shop_info))
+                    {
+                        redirect('shop/create_shop','refresh');
+                    }
                     
                 }
                 redirect($this->login_success_uri, 'refresh');
@@ -136,7 +156,64 @@ class User extends CI_Controller {
             $this->template->load($this->login_template, $this->login_view, $this->data);
         }
     }
+    
+    function account_validation_sms()
+    {
+        //$this->data['title'] = "sms_check";
+        
 
+        //validate form input
+        $this->data['message'] = "";
+        $this->form_validation->set_rules('code', 'Code', 'required');
+        
+        if($this->input->post('submit_sms_code'))
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $code = $this->input->post('code');
+                $user_info_array = $this->ion_auth->get_user_info()->result_array();
+                $user_info = $user_info_array[0];
+                if($code == $user_info['sms_code'])
+                {
+                    $additional_data = array(
+                        'sms_code' => ''
+                    );
+                    if($this->ion_auth->update($user_info['id'], $additional_data))
+                    {
+                       $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
+                       
+                       if(empty($shop_info))
+                       {
+                           redirect('shop/create_shop','refresh');
+                       }
+                       
+                    }
+                    //return;
+                }
+            }
+            $this->data['message'] = "notok";
+            //$this->template->load(ACCOUNT_VALIDATION_SMS_TEMPLATE, ACCOUNT_VALIDATION_SMS_VIEW,  $this->data);
+
+        }
+        else{
+            $this->data['code'] = array(
+                'name' => 'code',
+                'id' => 'code',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('code'),
+            );
+
+            $this->data['submit_sms_code'] = array(
+                'name' => 'submit_sms_code',
+                'id' => 'submit_sms_code',
+                'type' => 'submit',
+                'value' => 'Submit',
+            );
+            //$this->template->load(ACCOUNT_VALIDATION_SMS_TEMPLATE,ACCOUNT_VALIDATION_SMS_VIEW,  $this->data);
+        }
+        $this->template->load(ACCOUNT_VALIDATION_SMS_TEMPLATE, ACCOUNT_VALIDATION_SMS_VIEW,  $this->data);
+    }
+    
     //log the user out
     function logout() {
         $this->data['title'] = "Logout";
@@ -1667,7 +1744,7 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code']);
+                    //$this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code']);
                     $this->session->set_flashdata('message', 'sms sent to your mobile');
                     
                     redirect("user/create_manager","refresh");

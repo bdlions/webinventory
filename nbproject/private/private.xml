@@ -13,13 +13,15 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/webinventory/application/views/manager/create_manager.php</file>
-            <file>file:/C:/wamp/www/webinventory/application/config/ion_auth.php</file>
-            <file>file:/C:/wamp/www/webinventory/webinventory.sql</file>
-            <file>file:/C:/wamp/www/webinventory/application/models/ion_auth_model.php</file>
-            <file>file:/C:/wamp/www/webinventory/application/views/sms/upload_file.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/controllers/shop.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/views/product/update_product.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/controllers/sms.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/views/shop/update_shop.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/views/sms/sms_configuration_shop.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/models/org/shop/shop_model.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/models/org/product/product_model.php</file>
+            <file>file:/C:/wamp/www/webinventory/application/views/shop/create_shop.php</file>
             <file>file:/C:/wamp/www/webinventory/application/libraries/Ion_auth.php</file>
-            <file>file:/C:/wamp/www/webinventory/application/controllers/user.php</file>
         </group>
     </open-files>
 </project-private>

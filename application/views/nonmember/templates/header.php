@@ -21,7 +21,7 @@
                         <a class="login-text" href="<?php echo base_url()?>user/admin_signup"><u>Admin Signup</u></a>
                         -->
                         <button type="button" onclick="window.location.href='user/salesman_login'">Salesman Login</button>
-                        <button type="button" onclick="window.location.href='user/create_admin'">Admin Signup</button>
+                        <button type="button" onclick="window.location.href='user/admin_signup'">Admin Signup</button>
                     </div>
                 </div>
             </div>

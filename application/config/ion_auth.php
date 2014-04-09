@@ -61,7 +61,7 @@ $config['tables']['customer_transaction_info']      = 'customer_transaction_info
 $config['tables']['sms_configuration_shop']         = 'sms_configuration_shop';
 $config['tables']['attendance']                     = 'attendance';
 $config['tables']['operators']                      = 'operators';
-
+$config['tables']['shop_type']                      = 'shop_type';
 
 /*
  | Users table column and Group table column you want to join WITH.
