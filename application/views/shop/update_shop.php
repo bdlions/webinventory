@@ -39,6 +39,7 @@
                     <?php echo form_input($shop_address+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
 
