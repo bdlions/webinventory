@@ -675,4 +675,45 @@ CREATE TABLE IF NOT EXISTS `attendance` (
 ALTER TABLE `attendance`
   ADD CONSTRAINT `fk_attendance_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_attendance_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+--
+-- Table structure for table `message_category`
+--
+CREATE TABLE IF NOT EXISTS `message_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(200) NOT NULL DEFAULT '',
+  `user_id` int(11) NOT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+
+--
+-- Table structure for table `message_info`
+--
+CREATE TABLE IF NOT EXISTS `message_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_description` varchar(200) NOT NULL DEFAULT '',
+  `message_category_id` int(11) DEFAULT NULL,
+  `shop_id` int(11) NOT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Table structure for table `product_unit_category`
+--
+CREATE TABLE IF NOT EXISTS `product_unit_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(200) NOT NULL DEFAULT '',
+  `shop_id` int(11) NOT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_unit_categoty_shop_info1_idx` (`shop_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+
 
