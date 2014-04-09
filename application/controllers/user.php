@@ -1921,7 +1921,7 @@ class User extends CI_Controller {
                         $this->session->set_flashdata('message', $this->ion_auth->messages());
                         redirect("user/manager_login", "refresh");
 
-                        echo 'Signup successful';
+                        //echo 'Signup successful';
                         $this->template->load(NULL, "user/manager_login", 'refresh');
                     } else {
                         $this->data['message'] = $this->ion_auth->errors();
