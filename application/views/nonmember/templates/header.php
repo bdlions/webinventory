@@ -15,13 +15,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row pull-right">
-                        <!--
-                        <a class="login-text" href="<?php echo base_url()?>user/salesman_login"><u>Salesman Login</u></a>
-                        <br>
-                        <a class="login-text" href="<?php echo base_url()?>user/admin_signup"><u>Admin Signup</u></a>
-                        -->
-                        <button type="button" onclick="window.location.href='user/salesman_login'">Salesman Login</button>
-                        <button type="button" onclick="window.location.href='user/create_admin'">Admin Signup</button>
+                        
+                        <button type="button" onclick="window.location.href='user/salesman_login'">Salesman LogIn</button>
+                        <button type="button" onclick="window.location.href='admin/admin_login'">Admin LogIn</button>
+                        <button type="button" onclick="window.location.href='user/create_admin'">Admin SignUp</button>
                     </div>
                 </div>
             </div>
