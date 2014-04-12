@@ -63,7 +63,8 @@ $config['tables']['attendance']                     = 'attendance';
 $config['tables']['operators']                      = 'operators';
 $config['tables']['product_unit_category']          = 'product_unit_category';
 $config['tables']['message_category']               = 'message_category';
-$config['tables']['message_info']               = 'message_info';
+$config['tables']['message_info']                   = 'message_info';
+$config['tables']['supplier_message']                   = 'supplier_message';
 
 
 /*

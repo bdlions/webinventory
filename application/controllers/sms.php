@@ -581,4 +581,172 @@ class Sms extends CI_Controller {
         );
         $this->template->load(null, 'sms/update_message',$this->data);
     }
+    
+    public function add_supplier_message()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('input_add_purchase_supplier', 'Supplier Name', 'xss_clean|required');
+        $this->form_validation->set_rules('editor1', 'Message description', 'xss_clean|required');
+        
+        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+        if( count($supplier_list_array) > 0)
+        {
+            $this->data['supplier_list_array'] = $supplier_list_array;
+        }
+        
+        if ($this->input->post('submit_create_message')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $editor_value = trim($this->input->post('editor1'));  
+                $supplier_data = array(
+                    'message' => $editor_value,
+                    'supplier_id' => $this->input->post('input_add_purchase_supplier_id'),
+                    'created_on' => now(),
+                );
+
+                $id = $this->ion_auth->create_supplier_message($supplier_data);
+                if( $id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("sms/add_supplier_message","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }    
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        $this->data['editor1'] = array(
+            'name'  => 'editor1',
+            'id'    => 'editor1',
+            'value' => $this->form_validation->set_value('editor1'),
+            'rows'  => '10',
+            'cols'  => '80'
+        );
+        $this->data['submit_create_message'] = array(
+            'name' => 'submit_create_message',
+            'id' => 'submit_create_message',
+            'type' => 'submit',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'sms/add_supplier_message',$this->data);
+    }
+    
+    public function all_supplier_message()
+    {
+        $this->data['message_list'] = array();
+        $message_category_list = $this->ion_auth->get_all_supplier_message()->result_array();
+        //echo '<pre/>';print_r($message_category_list);exit('here');
+        if( !empty($message_category_list) )
+        {
+            $this->data['message_list'] = $message_category_list;
+        }
+        $this->template->load(null, 'sms/all_supplier_message', $this->data);
+    }
+    
+    public function update_supplier_message($supplier_msg_id)
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('input_add_purchase_supplier', 'Supplier Name', 'xss_clean|required');
+        $this->form_validation->set_rules('editor1', 'Message description', 'xss_clean|required');
+        
+        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+        if( count($supplier_list_array) > 0)
+        {
+            $this->data['supplier_list_array'] = $supplier_list_array;
+        }
+        
+        if ($this->input->post('submit_update_message')) 
+        {
+            //print_r($this->input->post());
+            if ($this->form_validation->run() == true) 
+            {
+                //echo '<pre / >';print_r($_POST); exit(' gfdg');
+                //exit('POSTED');
+                //$a = $this->input->post();
+                //print_r(htmlspecialchars($this->input->post('editor1`')));
+                        
+                //print_r($_POST['editor1']);
+                $data = array(
+                    'supplier_id' => $this->input->post('input_add_purchase_supplier_id'),
+                    'message' => trim(htmlentities($this->input->post('editortext'))),
+                    'modified_on' => date('Y-m-d H:i:s')
+                );
+                //echo $supplier_msg_id; echo '< pre >';print_r($data);exit('here');
+                if( $this->ion_auth->update_supplier_message_data($supplier_msg_id, $data) !== FALSE)
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    //redirect("sms/update_supplier_message/".$supplier_msg_id,"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $supplier_message_info = array();
+        
+        $message_info_array = $this->ion_auth->get_supplier_message($supplier_msg_id)->result_array();
+        //echo '<pre / >';print_r($message_info_array); exit(' gfdg');
+        if( !empty($message_info_array) )
+        {
+            $supplier_message_info = $message_info_array[0];
+        }
+        //echo '<pre / >';print_r($supplier_message_info);exit(' dsff');
+        
+        $this->data['supplier_message_info'] = $supplier_message_info;
+        
+        //echo '<pre / >';print_r($this->data['supplier_message_info']);exit(' gfdg');
+        //echo $supplier_message_info['message'];
+        //echo "<br/>".html_entity_decode($supplier_message_info['message'], ENT_NOQUOTES, "UTF-8");
+        $this->data['msg_no'] = array(
+            'name' => 'msg_no',
+            'id' => 'msg_no',
+            'type' => 'text',
+            'value' => $supplier_message_info['id'],
+        ); 
+        
+        $this->data['editor1'] = array(
+            'name'  => 'editor1',
+            'id'    => 'editor1',
+            'value' => html_entity_decode(html_entity_decode($supplier_message_info['message'])),
+            'rows'  => '10',
+            'cols'  => '80'
+        );
+        
+        $name = $supplier_message_info['first_name'] . ' ' . $supplier_message_info['last_name'];
+
+        $this->data['name'] =  array( 
+            'value' => $name
+        );
+        $this->data['supplier_id'] =  array( 
+            'value' => $supplier_message_info['supplier_id']
+        );
+        
+        $this->data['submit_update_message'] = array(
+            'name' => 'submit_update_message',
+            'id' => 'submit_update_message',
+            'type' => 'submit',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'sms/update_supplier_message',$this->data);
+    }
 }

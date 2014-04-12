@@ -715,5 +715,17 @@ CREATE TABLE IF NOT EXISTS `product_unit_category` (
   KEY `fk_unit_categoty_shop_info1_idx` (`shop_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
+--
+-- Table structure for table `supplier_message`
+--
 
+CREATE TABLE IF NOT EXISTS `supplier_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message` varchar(200) NOT NULL DEFAULT '',
+  `supplier_id` int(11) NOT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_supplier_message_suppliers1_idx` (`supplier_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

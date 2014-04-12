@@ -2420,7 +2420,7 @@ class Ion_auth_model extends CI_Model {
         }
     }
     
-     //By omar
+    //Written by Omar Faruk for getTypeahed supplier and customer
     public function get_all_supplier_for_typeahed($shop_id = 0)
     {
         if(empty($shop_id))
@@ -2459,6 +2459,60 @@ class Ion_auth_model extends CI_Model {
             return $query->result();
         } else {
             return FALSE;
+        }
+    }
+    
+    public function create_supplier_message($data)
+    {
+        //filter out any data passed that doesnt have a matching column in the message_category table
+        $message_data = $this->_filter_data($this->tables['supplier_message'], $data);
+        $this->db->insert($this->tables['supplier_message'], $message_data);
+        $id = $this->db->insert_id();
+        if( $id > 0)
+        {
+            $this->set_message('create_supplier_message_successful');
+        }
+        else
+        {
+            $this->set_error('create_supplier_message_unsuccessful');
+        }
+        return (isset($id)) ? $id : FALSE;
+    }
+    
+    public function get_all_supplier_message()
+    {
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['supplier_message'].'.*')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['supplier_message'], $this->tables['suppliers'].'.id='.$this->tables['supplier_message'].'.supplier_id')
+                    ->get();
+        
+    }
+    
+    public function get_supplier_message($supplier_msg_id)
+    {
+        //echo $supplier_msg_id;exit;
+        $query = $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['supplier_message'].'.*')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['supplier_message'], $this->tables['suppliers'].'.id='.$this->tables['supplier_message'].'.supplier_id')
+                    ->where($this->tables['supplier_message'].'.id',$supplier_msg_id)
+                    ->get();
+            return $query;
+        //echo $this->db->last_query(); exit(' here');
+        
+    }
+    
+    public function update_supplier_message_data($id, $additional_data)
+    {
+        
+        if($id) {
+            $data = $this->_filter_data($this->tables['supplier_message'], $additional_data);
+            $this->db->update($this->tables['supplier_message'], $data, array('id' => $id));
+            $this->set_message('message_supplier_update_successful');
+            return true;
+        } else {
+            return false;
         }
     }
     

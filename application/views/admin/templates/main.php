@@ -31,7 +31,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-datepicker.js"></script>
         
         <script src="<?php echo base_url() ?>assets/bootstrap3/js/typeahead.js"></script>
-        <script type="text/javascript" src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/bootstrap3/js/hogan.js"></script>
         
         
         <script src="<?php echo base_url(); ?>assets/js/order/common.js"></script>

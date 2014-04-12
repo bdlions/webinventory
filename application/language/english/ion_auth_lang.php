@@ -114,3 +114,7 @@ $lang['create_message_successful']                            = 'Message is crea
 $lang['create_message_unsuccessful']                          = 'Error while creating message .';
 $lang['message_update_successful']                            ='Message is updated successfully.';
 
+$lang['create_supplier_message_successful']                   = 'Supplier Message is created successfully.';
+$lang['create_supplier_message_unsuccessful']                 = 'Error while creating supplier message .';
+$lang['message_supplier_update_successful']                   = 'Supplier Message is updated successfully.';
+
