@@ -48,11 +48,11 @@ class Purchase extends CI_Controller {
             $purchase_order_no = ($purchase_order_no_array[0]['purchase_order_no']+1);
         }
         $this->data['purchase_order_no'] = $purchase_order_no;
-        /*$supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
         if( count($supplier_list_array) > 0)
         {
             $this->data['supplier_list_array'] = $supplier_list_array;
-        }*/
+        }
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
         if( count($product_list_array) > 0)
@@ -70,6 +70,8 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
+       
+        
         $this->template->load(null, 'purchase/purchase_order',$this->data);
     }
     

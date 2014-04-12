@@ -105,3 +105,12 @@ $lang['create_institution_unsuccessful']                       = 'Error while cr
 $lang['create_profession_successful']                         = 'Profession is created successfully.';
 $lang['create_profession_unsuccessful']                       = 'Error while creating profession.';
 
+//Message Category
+$lang['create_message_category_successful']                   = 'Message category is created successfully.';
+$lang['create_message_category_unsuccessful']                 = 'Error while creating message category .';
+$lang['message_category_update_successful']                   = 'Message category is updated successfully.';
+
+$lang['create_message_successful']                            = 'Message is created successfully.';
+$lang['create_message_unsuccessful']                          = 'Error while creating message .';
+$lang['message_update_successful']                            ='Message is updated successfully.';
+

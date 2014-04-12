@@ -47,6 +47,16 @@
                     <?php echo form_input($quality+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            
+            <div class="form-group">
+                <label for="address" class="col-md-6 control-label requiredField">
+                    Product Unit Category
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list+array('' => 'Select'), '', 'class=form-control'); ?>
+                </div> 
+            </div>
+            
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Brand Name

@@ -2309,4 +2309,157 @@ class Ion_auth_model extends CI_Model {
                     ->from($this->tables['users'])
                     ->get(); 
     }
+    
+    //---------------------------------- Message category related query by Omar Faruk ---------------------------------------
+    
+    public function create_message_category($additional_data)
+    {
+        $data = array(
+            'user_id' => $this->session->userdata('user_id')
+        );
+        //filter out any data passed that doesnt have a matching column in the message_category table
+        $message_category_data = array_merge($this->_filter_data($this->tables['message_category'], $additional_data), $data);
+  
+        $this->db->insert($this->tables['message_category'], $message_category_data);
+        $id = $this->db->insert_id();
+        if( $id > 0)
+        {
+            $this->set_message('create_message_category_successful');
+        }
+        else
+        {
+            $this->set_error('create_message_category_unsuccessful');
+        }
+        return (isset($id)) ? $id : FALSE;
+    }
+    public function get_all_message_category()
+    {
+        $this->response = $this->db->get($this->tables['message_category']);
+        return $this;
+    }
+    
+    public function update_message_category($id, $data)
+    {
+        $message_category = $this->get_message_category($id)->row();
+        if(!empty($message_category)) {
+            $data = $this->_filter_data($this->tables['message_category'], $data);
+            $this->db->update($this->tables['message_category'], $data, array('id' => $id));
+            $this->set_message('message_category_update_successful');
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    
+    public function get_message_category($msg_category_id)
+    {
+        $this->db->where('id', $msg_category_id);
+        $this->response = $this->db->get($this->tables['message_category']);
+        return $this;
+        //echo $this->db->last_query();exit;
+    }
+    
+    
+    public function create_message($additional_data, $shop_id = 0)
+    {
+        if( 0 == $shop_id )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $data = array(
+            'shop_id' => $shop_id
+        );
+        //filter out any data passed that doesnt have a matching column in the message_category table
+        $message_data = array_merge($this->_filter_data($this->tables['message_info'], $additional_data), $data);
+        $this->db->insert($this->tables['message_info'], $message_data);
+        $id = $this->db->insert_id();
+        if( $id > 0)
+        {
+            $this->set_message('create_message_successful');
+        }
+        else
+        {
+            $this->set_error('create_message_unsuccessful');
+        }
+        return (isset($id)) ? $id : FALSE;
+    }
+    
+    public function get_all_message()
+    {
+        $this->response = $this->db->select($this->tables['message_info'].'.*,'.$this->tables['message_category'].'.description,')
+                            ->from($this->tables['message_info'])
+                            ->join($this->tables['message_category'], $this->tables['message_category'].'.id='.$this->tables['message_info'].'.message_category_id')
+                            ->get();
+        return $this;
+    }
+    
+    public function get_message($msg_id)
+    {
+        $this->db->where('id', $msg_id);
+        $this->response = $this->db->get($this->tables['message_info']);
+        return $this;
+    }
+    
+    public function update_message_data($id, $additional_data, $shop_id = 0)
+    {
+        if( 0 == $shop_id )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $data = array(
+            'shop_id' => $shop_id
+        );
+        if($id) {
+            $data = array_merge($this->_filter_data($this->tables['message_info'], $additional_data), $data);
+            $this->db->update($this->tables['message_info'], $data, array('id' => $id));
+            $this->set_message('message_update_successful');
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+     //By omar
+    public function get_all_supplier_for_typeahed($shop_id = 0)
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $query = $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();
+        
+        if ($query->num_rows() >= 1) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_all_customers_for_typeahed($shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->order_by($this->tables['customers'].'.card_no','asc');
+        $query = $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();
+        
+        if ($query->num_rows() >= 1) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    
 }

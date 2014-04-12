@@ -72,6 +72,33 @@
             }
             
         });
+        
+        $("#button_add_select_product").on("click", function() {
+            var selected_array = Array();
+            $("#tbody_product_list tr").each(function() {
+                $("td:first input:checkbox", $(this)).each(function() {
+
+                    if (this.checked == true)
+                    {
+                        selected_array.push(this.id);
+                    }
+                });
+            });
+            var p_list = get_product_list();
+            for (var counter = 0; counter < p_list.length; counter++)
+            {
+                var prod_info = p_list[counter];
+                for (var i = 0; i < selected_array.length; i++) {
+                    if (selected_array[i] === prod_info['id'])
+                    {
+                        append_selected_product(prod_info);
+                    }
+                }
+            }
+            $('div[class="clr dropdown open"]').removeClass('open');
+            $('#modal_select_product').modal('hide');
+        });
+        
     });
 
 </script>
@@ -79,6 +106,7 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr>
+    <td><input id="<?php echo '{%= product_info.id%}'; ?>" name="checkbox[]" class="" type="checkbox" /></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
     <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.id%}'; ?>">view</a></td>
     </tr>
@@ -100,24 +128,30 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>Check box</th>
                                         <th>Name</th>
                                         <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_product_list">
-                                <?php
-                                foreach ($product_list_array as $key => $product) {
-                                ?>
-                                    <tr>
-                                        <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
-                                        <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a></td>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
-                                
+                                    <?php
+                                    foreach ($product_list_array as $key => $product) {
+                                    ?>
+                                        <tr>
+                                            <td><input id="<?php echo $product['id'] ?>" name="checkbox[]" class="" type="checkbox" /></td>
+                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
+                                            <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a></td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
+                            <div class ="row form-group">
+                                <div class="col-md-3 pull-right">
+                                        <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     

@@ -61,6 +61,12 @@ class Product extends CI_Controller {
                     'remarks' => $this->input->post('remarks'),
                     'unit_price' => $this->input->post('unit_price')
                 );
+                
+                if($this->input->post('product_unit_category_list'))
+                {
+                    $additional_data['unit_category_id'] = $this->input->post('product_unit_category_list');
+                }
+                
                 $product_name = $this->input->post('name');
                 $product_id = $this->product_library->create_product($product_name, $additional_data);
                 if( $product_id !== FALSE )
@@ -81,6 +87,15 @@ class Product extends CI_Controller {
         else
         {
             $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
+        $this->data['product_unit_category_list'] = array();
+        if( !empty($product_unit_category_list_array) )
+        {
+            foreach ($product_unit_category_list_array as $key => $unit_category) {
+                $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
+            }
         }
         
         $this->data['name'] = array(
@@ -190,6 +205,21 @@ class Product extends CI_Controller {
         {
             $product_info = $product_info_array[0];
         }
+        $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
+        $this->data['product_unit_category_list'] = array();
+        if( !empty($product_unit_category_list_array) )
+        {
+            foreach ($product_unit_category_list_array as $key => $unit_category) {
+                $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
+            }
+        }
+        
+        if($product_info['unit_category_id'] != NULL) {
+            $this->data['selected_unit_category'] = $product_info['unit_category_id'];
+        } else {
+            $this->data['selected_unit_category'] = NULL;
+        }
+
         $this->data['product_info'] = $product_info;
         if ($this->input->post('submit_update_product')) 
         {            
@@ -205,6 +235,12 @@ class Product extends CI_Controller {
                     'remarks' => $this->input->post('remarks'),
                     'unit_price' => $this->input->post('unit_price')
                 );
+                
+                if($this->input->post('product_unit_category_list'))
+                {
+                    $additional_data['unit_category_id'] = $this->input->post('product_unit_category_list');
+                }
+                
                 if( $this->product_library->update_product($product_id, $additional_data) )
                 {
                     $this->session->set_flashdata('message', $this->product_library->messages());
@@ -409,8 +445,9 @@ class Product extends CI_Controller {
         echo json_encode($response);
     }
     
-    /**
-     * 
+    /*
+     * This method will upload product list
+     * @author Omar Faruk on Aprial 2014
      */
     public function import_product()
     {
@@ -435,9 +472,7 @@ class Product extends CI_Controller {
             } 
             else 
             {
-                //exit('i m not');
                 $string = read_file('./upload/'.$this->session->userdata('shop_id').'.txt');
-                //print_r($string);exit('here');
                 $file_content = $string;
             }
         }
@@ -474,6 +509,10 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/import_product', $this->data);
     }
     
+     /*
+     * This method will import uploaded product list
+     * @author Omar Faruk on Aprial 2014
+     */
     public function process_product_file()
     {
         $product_list_map = array();
@@ -510,7 +549,6 @@ class Product extends CI_Controller {
                     }
                     else
                     {
-                        //echo $this->product_library->errors().' '.$product_name; exit('jjj');
                         $this->data['message'] = $this->product_library->errors().' '.$product_name;
                         $total_duplicate++;
                     }
@@ -522,5 +560,57 @@ class Product extends CI_Controller {
         echo '<br>';
         print_r('Total stored product item:'.$counter); exit;
      $this->template->load(null, 'product/process_product_file', $this->data);
+    }
+    
+     /*
+     * This method for create product unit category
+     * @author Omar Faruk on Aprial 2014
+     */
+    public function create_product_unit_category()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('unit_name', 'Product Unit Category Name', 'xss_clean|required');
+        if ($this->input->post('submit_create_unit')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $unit_name = $this->input->post('unit_name');
+                $data = array(
+                    'description' => $unit_name,
+                    'created_on' => now()
+                );
+                $id = $this->product_library->create_product_unit_category($data);
+                if( $id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', 'Product Unit Category is created successfully.');
+                    redirect("product/create_product_unit_category","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        $this->data['unit_name'] = array(
+            'name' => 'unit_name',
+            'id' => 'unit_name',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('unit_name'),
+        );
+        $this->data['submit_create_unit'] = array(
+            'name' => 'submit_create_unit',
+            'id' => 'submit_create_unit',
+            'type' => 'submit',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'product/create_product_unit_category',$this->data);
     }
 }

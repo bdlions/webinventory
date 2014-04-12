@@ -265,6 +265,17 @@
         });
     });
 </script>
+<!--Written By Omar for remove selected product -->
+<script type="text/javascript">
+    $(function () {
+        $("#tbody_selected_product_list").on("click", "button", function(e) {
+            //console.log(this.id);
+            var target = e.target;
+            //console.log(target);
+            $(target).closest('tr').remove();
+        })
+    });
+</script>
 
 <h3>Purchase Order</h3>
 <div class ="row top-bottom-padding form-background">
@@ -339,6 +350,7 @@
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
                         <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
+                            <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>
                         </tr>
                         {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                         {% } %}

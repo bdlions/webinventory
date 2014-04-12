@@ -982,4 +982,31 @@ class Search extends CI_Controller {
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
     }
     
+    //omar
+    public function get_supplier() {
+        $suppliers = $this->ion_auth->get_all_supplier_for_typeahed();
+        $temp_supplier = array();
+        
+        foreach ($suppliers as  $supplier) {
+            $supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
+            //$supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
+            array_push($temp_supplier, $supplier);
+        }
+        echo json_encode($temp_supplier);
+    }
+    
+    public function get_customer()
+    {
+        $customers = $this->ion_auth->get_all_customers_for_typeahed();
+        $temp_customer = array();
+        
+        foreach ($customers as  $customer) {
+            $customer -> value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
+            array_push($temp_customer, $customer);
+        }
+        echo json_encode($temp_customer);
+    }
+    
+    
+    
 }

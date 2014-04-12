@@ -154,4 +154,39 @@ class Product_model extends Ion_auth_model
         $this->db->like($key, $value); 
         return $this->db->get($this->tables['product_info']); 
     }
+    
+    public function create_product_unit_category($additional_data)
+    {
+        //echo $this->session->userdata('shop_id');
+        //$this->trigger_events('pre_create_unit');
+        $data = array(
+            'shop_id' => $this->session->userdata('shop_id')
+        );
+        //echo '<pre />';print_r($additional_data); exit('here');
+        //filter out any data passed that doesnt have a matching column in the unit table
+        $unit_data = array_merge($this->_filter_data($this->tables['product_unit_category'], $additional_data), $data);
+        $this->db->insert($this->tables['product_unit_category'], $unit_data);
+        $id = $this->db->insert_id();
+        if( $id > 0)
+        {
+            $this->set_message('create_unit_successful');
+        }
+        else
+        {
+            $this->set_error('create_unit_unsuccessful');
+        }        
+        //$this->trigger_events('post_create_unit');
+        return (isset($id)) ? $id : FALSE;
+    }
+    
+    public function get_all_product_unit_category($shop_id = 0)
+    {
+        if( $shop_id == 0 )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id',$shop_id);
+        $this->response = $this->db->get($this->tables['product_unit_category']);
+        return $this;
+    }
 }

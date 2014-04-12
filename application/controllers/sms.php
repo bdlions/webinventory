@@ -15,6 +15,7 @@ class Sms extends CI_Controller {
         $this->load->library('org/common/operators');
         $this->load->library('org/common/sms_configuration');
         $this->load->library('org/shop/shop_library');
+        $this->load->library('org/product/product_library');
         $this->load->library('sms_library');
         $this->load->helper('url');
         $this->load->helper('file');
@@ -122,7 +123,7 @@ class Sms extends CI_Controller {
             if (!$this->upload->do_upload()) 
             {
                 $file_content = $this->upload->display_errors();
-            } 
+            }
             else 
             {
                 $string = read_file('./upload/'.$this->session->userdata('user_id').'.txt');
@@ -278,5 +279,306 @@ class Sms extends CI_Controller {
         header("Content-Type:text/plain");
         header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
         echo $content;
+    }
+    
+    public function create_message_category()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('message_category_name', 'SMS category name', 'xss_clean|required');
+        if ($this->input->post('submit_create_categoty_message')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $message_category_name = $this->input->post('message_category_name');
+                $data = array(
+                    'description' => $message_category_name,
+                    'created_on' => now()
+                );
+                $id = $this->ion_auth->create_message_category($data);
+                if( $id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("sms/create_message_category","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+        $this->data['message_category_name'] = array(
+            'name' => 'message_category_name',
+            'id' => 'message_category_name',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('message_category_name'),
+        );
+        $this->data['submit_create_categoty_message'] = array(
+            'name' => 'submit_create_categoty_message',
+            'id' => 'submit_create_categoty_message',
+            'type' => 'submit',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'sms/create_message_category',$this->data);
+    }
+    
+    public function all_message_category()
+    {
+        $this->data['message_category_list'] = array();
+        $message_category_list = $this->ion_auth->get_all_message_category()->result_array();
+        if( !empty($message_category_list) )
+        {
+            $this->data['message_category_list'] = $message_category_list;
+        }
+        $this->template->load(null, 'sms/show_all_message_category', $this->data);
+    }
+    
+    public function update_message_category($message_cetagory_id) 
+    {
+        //check whether shop id valid or not
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('message_category_name', 'SMS category name', 'xss_clean|required');
+        if ($this->input->post('submit_update_categoty_message')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $data = array(
+                    'description' => $this->input->post('message_category_name'),
+                    'modified_on' => date('Y-m-d H:i:s')
+                );
+                if( $this->ion_auth->update_message_category($message_cetagory_id, $data) !== FALSE)
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("sms/update_message_category/".$message_cetagory_id,"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+                
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $message_category_info = array();
+        $message_category_info_array = $this->ion_auth->get_message_category($message_cetagory_id)->result_array();
+        
+        if( !empty($message_category_info_array) )
+        {
+            $message_category_info = $message_category_info_array[0];
+        }
+        //echo '<pre / >';print_r($message_category_info);exit(' dsff');
+        
+        $this->data['message_category_info'] = $message_category_info;
+        
+        $this->data['msg_cat_no'] = array(
+            'name' => 'msg_cat_no',
+            'id' => 'msg_cat_no',
+            'type' => 'text',
+            'value' => $message_category_info['id'],
+        );
+        
+        $this->data['message_category_name'] = array(
+            'name' => 'message_category_name',
+            'id' => 'message_category_name',
+            'type' => 'text',
+            'value' => $message_category_info['description'],
+        );
+        $this->data['submit_update_categoty_message'] = array(
+            'name' => 'submit_update_categoty_message',
+            'id' => 'submit_update_categoty_message',
+            'type' => 'submit',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'sms/update_message_category',$this->data);
+    }
+    
+    public function create_message()
+    {
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('message_description', 'Message description', 'xss_clean|required');
+        if ($this->input->post('submit_create_message')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $message_description = trim($this->input->post('message_description'));
+                $message_category_id = $this->input->post('message_category_list');
+                $data = array(
+                    'message_category_id' => $message_category_id,
+                    'message_description' => $message_description,
+                    'created_on' => now()
+                );
+                $id = $this->ion_auth->create_message($data);
+                if( $id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("sms/create_message","refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+       
+        
+        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+        $this->data['message_category_list'] = array();
+        if( !empty($message_category_list_array) )
+        {
+            foreach ($message_category_list_array as $key => $message_category) {
+                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
+            }
+        }
+        
+        /*$this->data['message_description'] = array(
+            'name' => 'message_description',
+            'id' => 'message_description',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('message_description'),
+        );*/
+        
+         $this->data['message_description'] = array(
+            'name'  => 'message_description',
+            'id'    => 'message_description',
+            'value' => $this->form_validation->set_value('message_description'),
+            'rows'  => '4',
+            'cols'  => '10'
+        );
+        
+        $this->data['submit_create_message'] = array(
+            'name' => 'submit_create_message',
+            'id' => 'submit_create_message',
+            'type' => 'submit',
+            'value' => 'Create',
+        );
+        $this->template->load(null, 'sms/create_message',$this->data);
+    }
+    
+    public function all_message()
+    {
+        $this->data['message_list'] = array();
+        $message_list = $this->ion_auth->get_all_message()->result_array();
+        //echo '<pre/>';print_r($message_list);exit('here');
+        if( !empty($message_list) )
+        {
+            $this->data['message_list'] = $message_list;
+        }
+        $this->template->load(null, 'sms/show_all_message', $this->data);
+    }
+    
+    public function update_message($message_id) 
+    {
+        //check whether shop id valid or not
+        $this->data['message'] = '';
+        $this->form_validation->set_rules('message_description', 'Message Description', 'xss_clean|required');
+        
+        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+        $this->data['message_category_list'] = array();
+        if( !empty($message_category_list_array) )
+        {
+            foreach ($message_category_list_array as $key => $message_category) {
+                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
+            }
+        }
+        
+        if ($this->input->post('submit_update_message')) 
+        {
+            if ($this->form_validation->run() == true) 
+            {
+                $data = array(
+                    'message_category_id' => $this->input->post('selected_message_category'),
+                    'message_description' => trim($this->input->post('message_description')),
+                    'modified_on' => date('Y-m-d H:i:s')
+                );
+                //echo $message_id; echo '< pre >';print_r($data);exit('here');
+                if( $this->ion_auth->update_message_data($message_id, $data) !== FALSE)
+                {
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    redirect("sms/update_message/".$message_id,"refresh");
+                }
+                else
+                {
+                    $this->data['message'] = $this->ion_auth->errors();
+                }
+            }
+            else
+            {
+                $this->data['message'] = validation_errors();
+            }
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $message_info = array();
+        $message_info_array = $this->ion_auth->get_message($message_id)->result_array();
+        
+        if( !empty($message_info_array) )
+        {
+            $message_info = $message_info_array[0];
+        }
+        //echo '<pre / >';print_r($message_info);exit(' dsff');
+        
+        if($message_info['message_category_id'] != NULL) {
+            $this->data['selected_message_category'] = $message_info['message_category_id'];
+        } else {
+            $this->data['selected_message_category'] = NULL;
+        }
+        
+        $this->data['message_info'] = $message_info;
+        
+        $this->data['msg_no'] = array(
+            'name' => 'msg_no',
+            'id' => 'msg_no',
+            'type' => 'text',
+            'value' => $message_info['id'],
+        );
+        
+        /*$this->data['message_description'] = array(
+            'name' => 'message_description',
+            'id' => 'message_description',
+            'type' => 'text',
+            'value' => $message_info['message_description'],
+        );*/
+        
+        $this->data['message_description'] = array(
+            'name'  => 'message_description',
+            'id'    => 'message_description',
+            'value' => $message_info['message_description'],
+            'rows'  => '4',
+            'cols'  => '10'
+        );
+        
+        $this->data['submit_update_message'] = array(
+            'name' => 'submit_update_message',
+            'id' => 'submit_update_message',
+            'type' => 'submit',
+            'value' => 'Update',
+        );
+        $this->template->load(null, 'sms/update_message',$this->data);
     }
 }

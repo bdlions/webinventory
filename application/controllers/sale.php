@@ -57,7 +57,7 @@ class Sale extends CI_Controller {
         $this->data['customer_list_array'] = array();
         $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
         if (count($customer_list_array) > 0) {
-            //$this->data['customer_list_array'] = $customer_list_array;
+            $this->data['customer_list_array'] = $customer_list_array;
         }
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();

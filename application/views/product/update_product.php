@@ -48,6 +48,18 @@
                 </div> 
             </div>
             <div class="form-group">
+                 <label for="address" class="col-md-6 control-label requiredField">
+                     Product Unit Category
+                 </label>
+                 <div class ="col-md-6">
+                     <?php if($selected_unit_category != NULL) : ?>
+                     <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list, $selected_unit_category,'class=form-control'); ?>
+                     <?php else : ?>
+                     <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list+array('' => 'Select'), '', 'class=form-control'); ?>
+                     <?php endif; ?>
+                 </div> 
+             </div>
+            <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Brand Name
                 </label>

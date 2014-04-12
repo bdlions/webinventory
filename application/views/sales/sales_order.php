@@ -65,6 +65,7 @@
     }
 </script>
 
+<!--Written By Omar for remove selected product -->
 <script type="text/javascript">
     $(function () {
         $("#tbody_selected_product_list").on("click", "button", function(e) {
