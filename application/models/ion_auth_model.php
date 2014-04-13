@@ -1245,13 +1245,21 @@ class Ion_auth_model extends CI_Model {
         return $return;
     }
     
-    public function add_to_shop($user_id, $shop_id = '') {
+    public function add_to_shop($user_id, $shop_id = '') 
+    {
         $this->trigger_events('add_to_shop');
 
         if(empty($shop_id))
         {
             //get shop id of currently logged in user
-            $shop_id = $this->session->userdata('shop_id');
+            if($this->session->userdata('shop_id') !== FALSE)
+            {
+                $shop_id = $this->session->userdata('shop_id');
+            }
+            else
+            {
+                return TRUE;
+            }
         }
         $data = array(
             'user_id' => $user_id,
@@ -1379,11 +1387,11 @@ class Ion_auth_model extends CI_Model {
         }
         
         //update customer info
-        if($data['user_group_id'] === $this->user_group_list['customer_id'])
+        if(isset($data['user_group_id']) && $data['user_group_id'] === $this->user_group_list['customer_id'])
         {
             $this->update_customer($id, $data);
         }
-        else if($data['user_group_id'] === $this->user_group_list['supplier_id'])
+        else if(isset($data['user_group_id']) && $data['user_group_id'] === $this->user_group_list['supplier_id'])
         {
             $this->update_supplier($id, $data);
         }
@@ -2304,6 +2312,18 @@ class Ion_auth_model extends CI_Model {
     }
     public function get_manager($user_id)
     {
+        $this->db->where($this->tables['users'].'.id', $user_id);
+        return $this->db->select("*")
+                    ->from($this->tables['users'])
+                    ->get(); 
+    }
+    
+    public function get_user_info($user_id = 0)
+    {
+        if($user_id == 0)
+        {
+            $user_id = $this->session->userdata('user_id');
+        }
         $this->db->where($this->tables['users'].'.id', $user_id);
         return $this->db->select("*")
                     ->from($this->tables['users'])

@@ -65,7 +65,7 @@ $config['tables']['product_unit_category']          = 'product_unit_category';
 $config['tables']['message_category']               = 'message_category';
 $config['tables']['message_info']                   = 'message_info';
 $config['tables']['supplier_message']                   = 'supplier_message';
-
+$config['tables']['shop_type']                      = 'shop_type';
 
 /*
  | Users table column and Group table column you want to join WITH.

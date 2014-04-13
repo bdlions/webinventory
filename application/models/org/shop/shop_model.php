@@ -116,5 +116,21 @@ class Shop_model extends Ion_auth_model {
     {
         $this->response = $this->db->get($this->tables['shop_info']);
         return $this;
-    }    
+    }
+    
+    /**
+     * Shop Type
+     * 
+     * @return shop type
+     * @author Redwan on 9th April 2013
+     */
+    
+    public function get_all_shop_type(){
+        
+        $this->response = $this->db->select("*")
+                                ->from($this->tables['shop_type'])
+                                ->get();
+        return $this;
+    }
+
 }
