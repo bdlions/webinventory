@@ -15,10 +15,19 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row pull-right">
-                        
-                        <button type="button" onclick="window.location.href='<?php echo base_url() ?>user/salesman_login'">Salesman LogIn</button>
-                        <button type="button" onclick="window.location.href='<?php echo base_url() ?>user/manager_login'">Manager LogIn</button>
-                        <button type="button" onclick="window.location.href='<?php echo base_url() ?>user/admin_signup'">Admin SignUp</button>
+                      
+                        <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/salesman_login'">
+						 <span class="glyphicon glyphicon-hand-right"> </span>	
+						 Salesman LogIn
+						</button>
+                        <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/manager_login'">
+						 <span class="glyphicon glyphicon-hand-right"> </span>	
+						Manager LogIn
+						</button>
+                        <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/admin_signup'">
+						 <span class="glyphicon glyphicon-hand-right"> </span>	
+						Admin SignUp
+						</button>
                     </div>
                 </div>
             </div>

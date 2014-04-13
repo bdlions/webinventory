@@ -192,5 +192,8 @@
     top: 47%;
     }
   }
+  .custom-col{color:#C3D7E4; }
+  .custom-col:hover{background-color:#7FCB8E; }
+  .custom-col:active{background-color:#E5D92B; }
 
 /*******************************************************************************************/
