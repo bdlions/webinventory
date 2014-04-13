@@ -40,7 +40,7 @@
                         set_customer_list(c_list);
                         alert('New customer is added successfully.');
                         var customer_info = data['customer_info'];
-                        $("#tbody_customer_list").html($("#tbody_customer_list").html()+tmpl("tmpl_customer_list", customer_info));
+                        //$("#tbody_customer_list").html($("#tbody_customer_list").html()+tmpl("tmpl_customer_list", customer_info));
                         update_fields_selected_customer(customer_info);
                         $('#modal_select_customer').modal('hide');
                     }
@@ -156,7 +156,7 @@
                         <br>
                         <br>
                     
-                    <div class="row col-md-11">
+                    <!--<div class="row col-md-11">
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
                         </div>                      
-                    </div>
+                    </div>-->
                     <div class ="row col-md-11">
                         <div class ="col-md-5">
                             <h3>Add New</h3>

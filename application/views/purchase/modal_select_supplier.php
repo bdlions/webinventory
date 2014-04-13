@@ -41,7 +41,7 @@
                         set_supplier_list(s_list);
                         alert('New supplier is added successfully.');
                         var supplier_info = data['supplier_info'];
-                        $("#tbody_supplier_list").html($("#tbody_supplier_list").html()+tmpl("tmpl_supplier_list", supplier_info));
+                        //$("#tbody_supplier_list").html($("#tbody_supplier_list").html()+tmpl("tmpl_supplier_list", supplier_info));
                         update_fields_selected_supplier(supplier_info);
                         $('#modal_select_supplier').modal('hide');
                     }
@@ -182,7 +182,7 @@
                         <br>
                         <br>
                     
-                    <div class="row col-md-11">
+                    <!-- <div class="row col-md-11">
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -227,27 +227,27 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>                                        
-                    <div class ="row col-md-11 top-bottom-padding">
+                    </div> -->                                        
+                    <!-- <div class ="row col-md-11 top-bottom-padding">
                         <div class ="col-md-4">
                             <h3>Search</h3>
                         </div>
                         <div class ="col-md-4">
-                            <?php echo form_dropdown('dropdown_search_supplier', $supplier_search_category, '0', 'id="dropdown_search_supplier"'); ?>
+                            <?php //echo form_dropdown('dropdown_search_supplier', $supplier_search_category, '0', 'id="dropdown_search_supplier"'); ?>
                         </div>
                         <div class ="col-md-4">
                             <div class="row form-group">
                                 <div class="col-md-12">
-                                    <?php echo form_input(array('name' => 'input_search_supplier', 'id' => 'input_search_supplier', 'class' => 'form-control')); ?>
+                                    <?php //echo form_input(array('name' => 'input_search_supplier', 'id' => 'input_search_supplier', 'class' => 'form-control')); ?>
                                 </div>
                             </div>                            
                             <div class ="row form-group">
                                 <div class="col-md-12">
-                                    <?php echo form_button(array('name' => 'button_search_supplier', 'class' => 'form-control btn btn-success', 'id' => 'button_search_supplier', 'content' => 'Search')); ?>
+                                    <?php //echo form_button(array('name' => 'button_search_supplier', 'class' => 'form-control btn btn-success', 'id' => 'button_search_supplier', 'content' => 'Search')); ?>
                                 </div>
                             </div>
                         </div>                      
-                    </div>
+                    </div> -->
 
                     <div class ="row col-md-11">
                         <div class ="col-md-5">

@@ -38,7 +38,7 @@ window.onload = function()
         var supplier_data = <?php echo json_encode($supplier_list_array) ?>;
         set_supplier_list(supplier_data);
         
-        $("#form_create_ckeditor").on("submit", function(){
+        $("#all_supplier_message_form").on("submit", function(){
             $("#editortext").val(jQuery('<div />').text(CKEDITOR.instances.editor1.getData()).html());
             //return false;
         });
@@ -46,7 +46,7 @@ window.onload = function()
 </script>
 <h3>Add Supplier Message</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("sms/all_supplier_message", array('id' => 'all_supplier_message_form', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("sms/add_supplier_message", array('id' => 'all_supplier_message_form', 'class' => 'form-horizontal')); ?>
     <div class ="col-md-7 col-md-offset-2">
         <div class ="row">
             <div class="col-md-4"></div>
