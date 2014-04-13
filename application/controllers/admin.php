@@ -96,7 +96,7 @@ class Admin extends CI_Controller {
                 $shop_info_array = $this->shop_library->get_shop()->result_array();
                 if(is_array($shop_info_array) && count($shop_info_array) > 0){
                     $shop_info = $shop_info_array[0];
-                    $num = $shop_info['picutre'];
+                    $num = $shop_info['picture'];
                     $logoaddress = base_url().'/assets/images/'.$num.'.png';
                     $this->session->set_userdata(array('logoaddress' => $logoaddress));
                 }
