@@ -1955,14 +1955,13 @@ class Ion_auth_model extends CI_Model {
     protected function _filter_data($table, $data) {
         $filtered_data = array();
         $columns = $this->db->list_fields($table);
-
+        
         if (is_array($data)) {
             foreach ($columns as $column) {
                 if (array_key_exists($column, $data))
                     $filtered_data[$column] = $data[$column];
             }
         }
-
         return $filtered_data;
     }
 
@@ -2509,6 +2508,18 @@ class Ion_auth_model extends CI_Model {
         
     }
     
+    public function get_all_supplier_message_after_search($start_time = 0, $end_time = 0)
+    {
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['supplier_message'].'.*')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['supplier_message'], $this->tables['suppliers'].'.id='.$this->tables['supplier_message'].'.supplier_id')
+                    ->where($this->tables['supplier_message'].'.created_on >=', $start_time)
+                    ->where($this->tables['supplier_message'].'.created_on >=', $end_time)
+                    ->get();
+        //echo $this->db->last_query();exit;
+    }
+    
     public function get_supplier_message($supplier_msg_id)
     {
         //echo $supplier_msg_id;exit;
@@ -2528,6 +2539,8 @@ class Ion_auth_model extends CI_Model {
         
         if($id) {
             $data = $this->_filter_data($this->tables['supplier_message'], $additional_data);
+            //echo '</pre>'; print_r($data);exit('ddd');
+            
             $this->db->update($this->tables['supplier_message'], $data, array('id' => $id));
             $this->set_message('message_supplier_update_successful');
             return true;

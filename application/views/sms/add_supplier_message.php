@@ -37,11 +37,16 @@ window.onload = function()
     $(document).ready(function() {
         var supplier_data = <?php echo json_encode($supplier_list_array) ?>;
         set_supplier_list(supplier_data);
+        
+        $("#form_create_ckeditor").on("submit", function(){
+            $("#editortext").val(jQuery('<div />').text(CKEDITOR.instances.editor1.getData()).html());
+            //return false;
+        });
     });
 </script>
 <h3>Add Supplier Message</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("sms/add_supplier_message", array('id' => 'form_create_ckeditor', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("sms/all_supplier_message", array('id' => 'all_supplier_message_form', 'class' => 'form-horizontal')); ?>
     <div class ="col-md-7 col-md-offset-2">
         <div class ="row">
             <div class="col-md-4"></div>
@@ -73,7 +78,8 @@ window.onload = function()
             <div class ="col-md-8">
                 <?php echo form_input(array('name' => 'input_add_purchase_supplier_id', 'id' => 'input_add_purchase_supplier_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
                 <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_supplier')); ?>
-            </div> 
+            </div>
+            <input type="hidden" name="editortext" id="editortext"></input>
         </div>
         
         <div class="form-group">

@@ -11,6 +11,7 @@ class Sms extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->library('session');
         $this->load->library('form_validation');
         $this->load->library('org/common/operators');
         $this->load->library('org/common/sms_configuration');
@@ -19,6 +20,7 @@ class Sms extends CI_Controller {
         $this->load->library('sms_library');
         $this->load->helper('url');
         $this->load->helper('file');
+        $this->load->library('org/common/utils');
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -558,13 +560,6 @@ class Sms extends CI_Controller {
             'value' => $message_info['id'],
         );
         
-        /*$this->data['message_description'] = array(
-            'name' => 'message_description',
-            'id' => 'message_description',
-            'type' => 'text',
-            'value' => $message_info['message_description'],
-        );*/
-        
         $this->data['message_description'] = array(
             'name'  => 'message_description',
             'id'    => 'message_description',
@@ -598,7 +593,8 @@ class Sms extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
-                $editor_value = trim($this->input->post('editor1'));  
+                // after chnaging the test using javascript value is pick in hidden field editortext
+                $editor_value = trim(htmlentities($this->input->post('editortext')));
                 $supplier_data = array(
                     'message' => $editor_value,
                     'supplier_id' => $this->input->post('input_add_purchase_supplier_id'),
@@ -643,9 +639,29 @@ class Sms extends CI_Controller {
     
     public function all_supplier_message()
     {
+        $this->data['message'] = '';
         $this->data['message_list'] = array();
-        $message_category_list = $this->ion_auth->get_all_supplier_message()->result_array();
-        //echo '<pre/>';print_r($message_category_list);exit('here');
+        
+        if ($this->input->post('button_search_supplier_message')){
+            $start_date = $_POST['start_date'];
+            $end_date = $_POST['end_date'];
+            
+            $start_time = $this->utils->get_human_to_unix($start_date);
+            $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
+            $presend_date = date("Y-m-d");
+
+            if( ($start_date > $presend_date) || ($start_date > $end_date)) {
+                $this->session->set_flashdata('message', 'Start date can not be getter then End date or present date');
+                redirect("sms/all_supplier_message/","refresh");
+            } else { 
+                $message_category_list = $this->ion_auth->get_all_supplier_message_after_search($start_time, $end_time)->result_array();
+            }
+           
+        } else {
+            $message_category_list = $this->ion_auth->get_all_supplier_message()->result_array();
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+
         if( !empty($message_category_list) )
         {
             $this->data['message_list'] = $message_category_list;
@@ -667,25 +683,18 @@ class Sms extends CI_Controller {
         
         if ($this->input->post('submit_update_message')) 
         {
-            //print_r($this->input->post());
             if ($this->form_validation->run() == true) 
             {
-                //echo '<pre / >';print_r($_POST); exit(' gfdg');
-                //exit('POSTED');
-                //$a = $this->input->post();
-                //print_r(htmlspecialchars($this->input->post('editor1`')));
-                        
-                //print_r($_POST['editor1']);
                 $data = array(
                     'supplier_id' => $this->input->post('input_add_purchase_supplier_id'),
                     'message' => trim(htmlentities($this->input->post('editortext'))),
-                    'modified_on' => date('Y-m-d H:i:s')
+                    'modified_on' => now()
                 );
-                //echo $supplier_msg_id; echo '< pre >';print_r($data);exit('here');
+
                 if( $this->ion_auth->update_supplier_message_data($supplier_msg_id, $data) !== FALSE)
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    //redirect("sms/update_supplier_message/".$supplier_msg_id,"refresh");
+                    redirect("sms/update_supplier_message/".$supplier_msg_id,"refresh");
                 }
                 else
                 {
@@ -705,18 +714,15 @@ class Sms extends CI_Controller {
         $supplier_message_info = array();
         
         $message_info_array = $this->ion_auth->get_supplier_message($supplier_msg_id)->result_array();
-        //echo '<pre / >';print_r($message_info_array); exit(' gfdg');
+
         if( !empty($message_info_array) )
         {
             $supplier_message_info = $message_info_array[0];
         }
-        //echo '<pre / >';print_r($supplier_message_info);exit(' dsff');
+
         
         $this->data['supplier_message_info'] = $supplier_message_info;
         
-        //echo '<pre / >';print_r($this->data['supplier_message_info']);exit(' gfdg');
-        //echo $supplier_message_info['message'];
-        //echo "<br/>".html_entity_decode($supplier_message_info['message'], ENT_NOQUOTES, "UTF-8");
         $this->data['msg_no'] = array(
             'name' => 'msg_no',
             'id' => 'msg_no',
