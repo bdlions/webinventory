@@ -22,6 +22,7 @@ class Admin extends CI_Controller {
         $this->load->library('sms_library');
         $this->load->helper('url');
         $this->load->library('session');
+        $this->load->library('org/shop/Shop_library');
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
