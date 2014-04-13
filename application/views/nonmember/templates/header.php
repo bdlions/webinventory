@@ -21,7 +21,7 @@
 						
 						</button>
                         <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/manager_login'">
-							 <span class="glyphicon glyphicon-hand-right"> </span>	Manager LogIn
+							 <span class="glyphicon glyphicon-hand-right"> </span>	Admin LogIn
 						
 						</button>
                         <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/admin_signup'">
