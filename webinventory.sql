@@ -4,6 +4,24 @@
 
 -- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
+--
+-- Table structure for table `shop_type`
+--
+
+CREATE TABLE IF NOT EXISTS `shop_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `shop_type`
+--
+
+INSERT INTO `shop_type` (`id`, `type`) VALUES
+(1, 'small'),
+(2, 'medium');
+
 CREATE TABLE `shop_info` (
 	`id` int NOT NULL auto_increment,
 	`shop_no` varchar(200) NOT NULL default '',	
@@ -13,8 +31,14 @@ CREATE TABLE `shop_info` (
     `picture` varchar(500) default '',
 	`created_on` int(11) unsigned DEFAULT NULL,
 	`modified_on` int(11) unsigned DEFAULT NULL,
-	PRIMARY KEY  (`id`)
+	`shop_type_id` int(11) DEFAULT NULL,
+	PRIMARY KEY  (`id`),
+	KEY `shop_type_id` (`shop_type_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+ALTER TABLE `shop_info`
+  ADD CONSTRAINT `shop_info_ibfk_1` FOREIGN KEY (`shop_type_id`) REFERENCES `shop_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 INSERT INTO `shop_info` (`id`, `shop_no`, `name`) VALUES
 (1, 1, 'Apurbo');
 
@@ -135,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `phone` varchar(20) DEFAULT '',
   `address` varchar(500) DEFAULT '',
   `account_status_id` int NOT NULL,
+  `sms_code` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;
 ALTER TABLE `users`
