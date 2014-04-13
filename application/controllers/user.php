@@ -8,6 +8,7 @@ class User extends CI_Controller {
      * 
      * $var array
      */
+
     protected $user_group;
     protected $account_status_list;
     public $user_type;
@@ -20,6 +21,7 @@ class User extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('sms_library');
+        $this->load->library('org/shop/shop_library');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -54,7 +56,6 @@ class User extends CI_Controller {
             $user_info_array = $this->ion_auth->get_user_info()->result_array();
             $user_info = $user_info_array[0];
             $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
-
             if (empty($shop_info)) {
                 redirect('shop/create_shop', 'refresh');
             }
@@ -62,7 +63,7 @@ class User extends CI_Controller {
             $this->template->load(MANAGER_LOGIN_SUCCESS_TEMPLATE, MANAGER_LOGIN_SUCCESS_VIEW, $this->data);
         }
     }
-    
+
     function salesman_login() {
 
         $this->user_type = SALESMAN;
@@ -127,7 +128,12 @@ class User extends CI_Controller {
                     if (empty($shop_info)) {
                         redirect('shop/create_shop', 'refresh');
                     }
+				$shop_info_array = $this->shop_library->get_shop()->result_array();
+                $shop_info = $shop_info_array[0];
+                $logoaddress = base_url().'/assets/images/'.$shop_info['picture'].'.png';
+                $this->session->set_userdata(array('logoaddress' => $logoaddress));
                 }
+                
                 redirect($this->login_success_uri, 'refresh');
             } else {
                 //if the login was un-successful
@@ -210,6 +216,8 @@ class User extends CI_Controller {
 
         //redirect them to the login page
         $this->session->set_flashdata('message', $this->ion_auth->messages());
+        $logoaddress = base_url().'/assets/images/logo.png';
+        $this->session->set_userdata(array('logoaddress' => $logoaddress));
         redirect('nonmember', 'refresh');
     }
 

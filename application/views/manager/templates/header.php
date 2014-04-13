@@ -13,6 +13,7 @@
                 <div class="col-md-6 logo-text">
                     <img class="logo" src="<?php echo $this->session->userdata('logoaddress') ?>" />
                 </div>
+                
             </div>
         </div>
     </div>

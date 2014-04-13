@@ -7,8 +7,7 @@
 |
 | In order to keep the framework as light-weight as possible only the
 | absolute minimal resources are loaded by default. For example,
-| the database is not connected to automatically
- *  since no assumption
+| the database is not connected to automatically since no assumption
 | is made regarding whether you intend to use it.  This file lets
 | you globally define which systems you would like loaded with every
 | request.
@@ -64,7 +63,6 @@ $autoload['libraries'] = array('template', 'ion_auth');
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-
 
 $autoload['helper'] = array('language', 'recaptchalib');
 

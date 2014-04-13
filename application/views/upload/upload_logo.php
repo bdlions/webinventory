@@ -1,11 +1,11 @@
-<h3>Process File</h3>
+<h3>Upload a logo or cover photo for your shop...</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
     <?php echo form_open_multipart("upload/upload_logo", array('name' => 'form_upload_logo', 'class' => 'form-horizontal')); ?>
     <div class="row">                
         <div class="col-md-3">
             <div class="form-group">
                 <label for="file" class="col-md-6 control-label requiredField">
-                    Browse
+                    Browse Photo
                 </label>
                 <div class ="col-md-6">
                     <input class="form-control" type="file" name="userfile"/>
@@ -19,7 +19,7 @@
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($submit_upload_logo+array('class'=>'form-control btn-success')); ?>
-                </div> 
+                </div>
             </div>
         </div> 
     </div>

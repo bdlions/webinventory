@@ -273,7 +273,8 @@ class Ion_auth {
             }
         } else {
             $id = $this->ion_auth_model->register($username, $password, $email, $additional_data, $group_ids);
-
+            //echo '<pre>';print_r($additional_data);
+            //echo $username,$email,$password;exit('HI');
             if (!$id) {
                 $this->set_error('account_creation_unsuccessful');
                 return FALSE;

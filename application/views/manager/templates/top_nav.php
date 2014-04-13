@@ -79,6 +79,7 @@
         Tools<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./upload/upload_cover");?>">Upload Cover</a></li>
         <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>

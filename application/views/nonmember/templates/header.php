@@ -11,13 +11,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 logo-text">
-                    <img class="logo" src="<?php echo base_url() ?>/assets/images/logo.png" />Apurbo Group
+                    <img class="logo" src="<?php echo base_url() ?>/assets/images/logo.png" />
                 </div>
                 <div class="col-md-6">
                     <div class="row pull-right">
-                        <a class="login-text" href="<?php echo base_url()?>user/salesman_login"><u>Salesman Login</u></a>
-                        <br>
-                        <a class="login-text" href="<?php echo base_url()?>user/admin_signup"><u>Admin Signup</u></a>
+                        
+                        <button type="button" onclick="window.location.href='<?php echo base_url() ?>user/salesman_login'">Salesman LogIn</button>
+                        <button type="button" onclick="window.location.href='<?php echo base_url() ?>user/manager_login'">Manager LogIn</button>
+                        <button type="button" onclick="window.location.href='<?php echo base_url() ?>user/admin_signup'">Admin SignUp</button>
                     </div>
                 </div>
             </div>

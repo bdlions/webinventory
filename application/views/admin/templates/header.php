@@ -10,8 +10,10 @@
     <div class="collapse navbar-collapse" id="open-collapse">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 logo-text">
-                    <img class="logo" src="<?php echo base_url() ?>/assets/images/logo.png" />Apurbo Group
+                <div class="col-md-6 logo-text container">
+                    
+                    <img src="<?php echo base_url(); ?>/assets/images/adminlogo.png" />
+                    
                 </div>
             </div>
         </div>
