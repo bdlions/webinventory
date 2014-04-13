@@ -17,16 +17,16 @@
                     <div class="row pull-right">
                       
                         <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/salesman_login'">
-						 <span class="glyphicon glyphicon-hand-right"> </span>	
-						 Salesman LogIn
+							 <span class="glyphicon glyphicon-hand-right"> </span>  Salesman LogIn	
+						
 						</button>
                         <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/manager_login'">
-						 <span class="glyphicon glyphicon-hand-right"> </span>	
-						Manager LogIn
+							 <span class="glyphicon glyphicon-hand-right"> </span>	Manager LogIn
+						
 						</button>
                         <button type="button" class="btn btn-primary custom-col" onclick="window.location.href='<?php echo base_url() ?>user/admin_signup'">
-						 <span class="glyphicon glyphicon-hand-right"> </span>	
-						Admin SignUp
+							 <span class="glyphicon glyphicon-hand-right"> </span>	Admin SignUp
+						
 						</button>
                     </div>
                 </div>
