@@ -94,10 +94,12 @@ class Admin extends CI_Controller {
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
                 
                 $shop_info_array = $this->shop_library->get_shop()->result_array();
-                $shop_info = $shop_info_array[0];
-                $num = $shop_info['picutre'];
-                $logoaddress = base_url().'/assets/images/'.$num.'.png';
-                $this->session->set_userdata(array('logoaddress' => $logoaddress));
+                if(is_array($shop_info_array) && count($shop_info_array) > 0){
+                    $shop_info = $shop_info_array[0];
+                    $num = $shop_info['picutre'];
+                    $logoaddress = base_url().'/assets/images/'.$num.'.png';
+                    $this->session->set_userdata(array('logoaddress' => $logoaddress));
+                }
                 
                 
                 
