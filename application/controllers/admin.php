@@ -21,6 +21,7 @@ class Admin extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('sms_library');
         $this->load->helper('url');
+        $this->load->library('session');
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -90,6 +91,15 @@ class Admin extends CI_Controller {
                 //if the login is successful
                 //redirect them back to the home page
                 $this->session->set_flashdata('message', $this->ion_auth->messages());
+                
+                $shop_info_array = $this->shop_library->get_shop()->result_array();
+                $shop_info = $shop_info_array[0];
+                $num = $shop_info['picutre'];
+                $logoaddress = base_url().'/assets/images/'.$num.'.png';
+                $this->session->set_userdata(array('logoaddress' => $logoaddress));
+                
+                
+                
                 redirect($this->login_success_uri, 'refresh');
             } else {
                 //if the login was un-successful
