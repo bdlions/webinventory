@@ -65,23 +65,27 @@ class Sms_library {
         return get_instance()->$var;
     }
     
-    public function send_sms($phoneNumber, $message)
+    public function send_sms($phoneNumber, $message, $check_configuration = true)
     {
-        $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop()->result_array();
-        if(!empty($sms_configuration_shop_array))
+        if( $check_configuration == true)
         {
-            $status = $sms_configuration_shop_array[0]['status'];
-            if($status == 0)
+            $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop()->result_array();
+            if(!empty($sms_configuration_shop_array))
             {
-                //print_r('configuraion disabled');
-                return 0;                
+                $status = $sms_configuration_shop_array[0]['status'];
+                if($status == 0)
+                {
+                    //print_r('configuraion disabled');
+                    return 0;                
+                }
+            }
+            else
+            {
+                //print_r('configuraion not configured');
+                return 0;            
             }
         }
-        else
-        {
-            //print_r('configuraion not configured');
-            return 0;            
-        }
+        
         //print_r('sending');
         //return;
         /*if($phoneNumber == "" || $message == ""){

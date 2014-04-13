@@ -2075,7 +2075,7 @@ class User extends CI_Controller {
                     $groups = array('id' => $this->user_group['manager_id']);
                     $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                     if ($user_id !== FALSE) {
-                        $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code']);
+                        $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code'], false);
                         $this->session->set_flashdata('message', $this->ion_auth->messages());
                         redirect("user/manager_login", "refresh");
 
