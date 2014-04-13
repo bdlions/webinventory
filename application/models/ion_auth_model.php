@@ -2515,7 +2515,7 @@ class Ion_auth_model extends CI_Model {
                     ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->join($this->tables['supplier_message'], $this->tables['suppliers'].'.id='.$this->tables['supplier_message'].'.supplier_id')
                     ->where($this->tables['supplier_message'].'.created_on >=', $start_time)
-                    ->where($this->tables['supplier_message'].'.created_on >=', $end_time)
+                    ->where($this->tables['supplier_message'].'.created_on <=', $end_time)
                     ->get();
         //echo $this->db->last_query();exit;
     }

@@ -647,7 +647,8 @@ class Sms extends CI_Controller {
             $end_date = $_POST['end_date'];
             
             $start_time = $this->utils->get_human_to_unix($start_date);
-            $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
+            $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
+
             $presend_date = date("Y-m-d");
 
             if( ($start_date > $presend_date) || ($start_date > $end_date)) {
