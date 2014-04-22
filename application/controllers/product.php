@@ -533,13 +533,12 @@ class Product extends CI_Controller {
                 {
                     $product_name = $line_array[0];
                     $additional_data = array(
-                        'size' => $line_array[2],
-                        'weight' => $line_array[3],
-                        'warranty' => $line_array[4],
-                        'quality' => $line_array[5],
-                        'unit_price' => $line_array[6],
-                        'brand_name' => $line_array[7],
-                        'remarks' => $line_array[8],
+                        'size' => $line_array[1],
+                        'weight' => $line_array[2],
+                        'warranty' => $line_array[3],
+                        'quality' => $line_array[4],
+                        'brand_name' => $line_array[5],
+                        'unit_price' => $line_array[6]                        
                     );
                     $product_id = $this->product_library->create_product($product_name, $additional_data);
                     if( $product_id !== FALSE )
@@ -559,7 +558,7 @@ class Product extends CI_Controller {
         print_r('Total duplicate product item:'.$total_duplicate);
         echo '<br>';
         print_r('Total stored product item:'.$counter); exit;
-     $this->template->load(null, 'product/process_product_file', $this->data);
+        redirect('product/show_all_products','refresh');
     }
     
      /*

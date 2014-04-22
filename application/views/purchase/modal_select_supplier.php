@@ -31,7 +31,8 @@
                     first_name: $("#input_first_name").val(),
                     last_name: $("#input_last_name").val(),
                     phone_no: $("#input_phone_no").val(),
-                    company: $("#input_company").val()
+                    company: $("#input_company").val(),
+                    message_category_id: $("#message_category_list").val()
                 },
                 success: function(data) {
                     if (data['status'] === '1')
@@ -285,6 +286,14 @@
                                     </label>
                                     <div class ="col-md-8">
                                         <?php echo form_input(array('name' => 'input_company', 'id' => 'input_company', 'class' => 'form-control')); ?>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="address" class="col-md-4 control-label requiredField">
+                                        Message Category
+                                    </label>
+                                    <div class ="col-md-8">
+                                        <?php echo form_dropdown('message_category_list', $message_category_list+array('' => 'Select'), '', 'class=form-control id="message_category_list"'); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">

@@ -74,6 +74,15 @@ class Sale extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
+        
+        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+        $this->data['message_category_list'] = array();
+        if( !empty($message_category_list_array) )
+        {
+            foreach ($message_category_list_array as $key => $message_category) {
+                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
+            }
+        }
 
         $this->template->load(null, 'sales/sales_order', $this->data);
     }

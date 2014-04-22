@@ -2333,11 +2333,8 @@ class Ion_auth_model extends CI_Model {
     
     public function create_message_category($additional_data)
     {
-        $data = array(
-            'user_id' => $this->session->userdata('user_id')
-        );
         //filter out any data passed that doesnt have a matching column in the message_category table
-        $message_category_data = array_merge($this->_filter_data($this->tables['message_category'], $additional_data), $data);
+        $message_category_data = $this->_filter_data($this->tables['message_category'], $additional_data);
   
         $this->db->insert($this->tables['message_category'], $message_category_data);
         $id = $this->db->insert_id();
@@ -2351,8 +2348,13 @@ class Ion_auth_model extends CI_Model {
         }
         return (isset($id)) ? $id : FALSE;
     }
-    public function get_all_message_category()
+    public function get_all_message_category($shop_id = 0)
     {
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
         $this->response = $this->db->get($this->tables['message_category']);
         return $this;
     }
@@ -2371,8 +2373,13 @@ class Ion_auth_model extends CI_Model {
         
     }
     
-    public function get_message_category($msg_category_id)
+    public function get_message_category($msg_category_id, $shop_id = 0)
     {
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
         $this->db->where('id', $msg_category_id);
         $this->response = $this->db->get($this->tables['message_category']);
         return $this;
@@ -2412,7 +2419,17 @@ class Ion_auth_model extends CI_Model {
                             ->get();
         return $this;
     }
-    
+    public function get_message_from_category($message_category_id, $shop_id = 0)
+    {
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('message_category_id', $message_category_id);
+        $this->response = $this->db->get($this->tables['message_info']);
+        return $this;
+    }
     public function get_message($msg_id)
     {
         $this->db->where('id', $msg_id);

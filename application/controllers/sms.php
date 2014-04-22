@@ -294,6 +294,7 @@ class Sms extends CI_Controller {
                 $message_category_name = $this->input->post('message_category_name');
                 $data = array(
                     'description' => $message_category_name,
+                    'shop_id' => $this->session->userdata('shop_id'),
                     'created_on' => now()
                 );
                 $id = $this->ion_auth->create_message_category($data);

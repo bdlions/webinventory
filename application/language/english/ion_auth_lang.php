@@ -66,6 +66,7 @@ $lang['shop_update_successful']                     = 'Shop is updated successfu
 $lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';
 $lang['email_new_password_subject']          = 'New Password';
 $lang['email_activation_subject']            = 'Account Activation';
+$lang['email_registration_success_subject']            = 'Account Registered';
 
 // Product
 $lang['product_creation_successful'] 	  	   = 'Product Successfully Created.';

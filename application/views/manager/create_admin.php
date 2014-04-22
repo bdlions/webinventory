@@ -73,7 +73,7 @@
             <div class ="form-group">
                 <div class="col-md-8 pull-right">
                     <?php 
-                        $publickey = "6Lf8YfESAAAAACkRrO7ktX-fFk27bUbtmZEt5HvO";
+                        $publickey = "6LctLfISAAAAAEWmA7GBCAJC7SL4bzFc5jZuDA0O";
                         echo recaptcha_get_html($publickey); 
                     ?>
                 </div>

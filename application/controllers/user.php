@@ -127,13 +127,12 @@ class User extends CI_Controller {
 
                     if (empty($shop_info)) {
                         redirect('shop/create_shop', 'refresh');
-                    }
-				$shop_info_array = $this->shop_library->get_shop()->result_array();
+                    }                    
+                }
+                $shop_info_array = $this->shop_library->get_shop()->result_array();
                 $shop_info = $shop_info_array[0];
                 $logoaddress = base_url().'/assets/images/'.$shop_info['picture'].'.png';
                 $this->session->set_userdata(array('logoaddress' => $logoaddress));
-                }
-                
                 redirect($this->login_success_uri, 'refresh');
             } else {
                 //if the login was un-successful
@@ -798,8 +797,16 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
+                    $message_category_id = $this->input->post('message_category_list');
+                    $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+                    $message = '';
+                    if(!empty($message_info_array))
+                    {
+                        $message_info = $message_info_array[0];
+                        $message = $message_info['message_description'];
+                    }
                     $customer_name = $this->input->post('first_name').' '.$this->input->post('last_name');
-                    $this->sms_library->send_sms($this->input->post('phone'),"Dear, ".$customer_name." Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market");
+                    $this->sms_library->send_sms($this->input->post('phone'),"Dear, ".$customer_name.' '.$message);
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/create_customer","refresh");
                 }
@@ -832,6 +839,14 @@ class User extends CI_Controller {
         {
             foreach ($profession_list_array as $key => $profession) {
                 $this->data['profession_list'][$profession['id']] = $profession['description'];
+            }
+        }
+        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+        $this->data['message_category_list'] = array();
+        if( !empty($message_category_list_array) )
+        {
+            foreach ($message_category_list_array as $key => $message_category) {
+                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
             }
         }
         $this->data['card_no'] = array(
@@ -1131,7 +1146,8 @@ class User extends CI_Controller {
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
-        $card_no = $_POST['card_no'];;
+        $card_no = $_POST['card_no'];
+        $message_category_id = $_POST['message_category_id'];
         //$user_name = $_POST['phone_no'];
         $user_name = '';
         $password = "password";
@@ -1156,6 +1172,13 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['customer_info'] = $customer_info;
+            $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+            $message = '';
+            if(!empty($message_info_array))
+            {
+                $message_info = $message_info_array[0];
+                $message = $message_info['message_description'];
+            }
             $customer_name = $first_name.' '.$last_name;
             $this->sms_library->send_sms($phone_no,"Dear, ".$customer_name." Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market");
         } 
@@ -1200,8 +1223,16 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
+                    $message_category_id = $this->input->post('message_category_list');
+                    $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+                    $message = '';
+                    if(!empty($message_info_array))
+                    {
+                        $message_info = $message_info_array[0];
+                        $message = $message_info['message_description'];
+                    }
                     $supplier_name = $this->input->post('first_name').' '.$this->input->post('last_name');
-                    $this->sms_library->send_sms($this->input->post('phone'), "Dear, ".$supplier_name." We hope that we can establish a good business relationship with you. Thanks, APURBO brand Bangladesh. Chandrima market, New market");
+                    $this->sms_library->send_sms($this->input->post('phone'), "Dear, ".$supplier_name.' '.$message);
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/create_supplier","refresh");
                 }
@@ -1219,7 +1250,14 @@ class User extends CI_Controller {
         {
             $this->data['message'] = $this->session->flashdata('message');
         }
-        
+        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+        $this->data['message_category_list'] = array();
+        if( !empty($message_category_list_array) )
+        {
+            foreach ($message_category_list_array as $key => $message_category) {
+                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
+            }
+        }
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
@@ -1447,7 +1485,8 @@ class User extends CI_Controller {
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
-        $company = $_POST['company'];;
+        $company = $_POST['company'];
+        $message_category_id = $_POST['message_category_id'];
         //$user_name = $_POST['phone_no'];
         $user_name = '';
         $password = "password";
@@ -1472,8 +1511,15 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['supplier_info'] = $supplier_info;
+            $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+            $message = '';
+            if(!empty($message_info_array))
+            {
+                $message_info = $message_info_array[0];
+                $message = $message_info['message_description'];
+            }
             $supplier_name = $first_name.' '.$last_name;
-            $this->sms_library->send_sms($phone_no,"Dear, ".$supplier_name." We hope that we can establish a good business relationship with you. Thanks, APURBO brand Bangladesh. Chandrima market, New market");
+            $this->sms_library->send_sms($phone_no,"Dear, ".$supplier_name.' '.$message);
         } 
         else
         {
@@ -2051,7 +2097,8 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
         if ($this->input->post('submit_create_manager')) {
-            $privatekey = "6Lf8YfESAAAAAHAsDzHvv0ESHdrFIe0k0pIDa542";
+            //$privatekey = "6Lf8YfESAAAAAHAsDzHvv0ESHdrFIe0k0pIDa542";
+            $privatekey = "6LctLfISAAAAAP_6q1pftugclrynNTLprwXFIXOD";//bdlions@gmail.com
             $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 
             if ($resp->is_valid) 
@@ -2075,6 +2122,7 @@ class User extends CI_Controller {
                     $groups = array('id' => $this->user_group['manager_id']);
                     $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                     if ($user_id !== FALSE) {
+                        $this->ion_auth->admin_registration_email(array(), $email);
                         $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code'], false);
                         $this->session->set_flashdata('message', $this->ion_auth->messages());
                         redirect("user/manager_login", "refresh");

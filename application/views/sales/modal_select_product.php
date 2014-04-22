@@ -122,7 +122,7 @@
             <div class="modal-body">
                 <div class ="row col-md-offset-1">
                     <div class="row col-md-11">
-                        <div class="table-responsive">
+                        <div class="row table-responsive pre-scrollable">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -155,11 +155,11 @@
                                     {% } %}
                                 </script>
                                 </tbody>
-                            </table>
-                            <div class ="row form-group">
-                                <div class="col-md-3 pull-right">
-                                        <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
-                                </div>
+                            </table>                            
+                        </div>
+                        <div class ="row form-group">
+                            <div class="col-md-3 pull-right">
+                                    <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
                             </div>
                         </div>
                     </div>
@@ -183,31 +183,6 @@
                             </div>
                         </div>                      
                     </div>
-                    <div class ="row col-md-11">
-                        <div class ="col-md-3">
-                            <h3>Add New</h3>
-                        </div>
-                        <div class ="col-md-9">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="input_product_name" class="col-md-4 control-label requiredField">
-                                        Product Name
-                                    </label>
-                                    <div class ="col-md-8">
-                                        <?php echo form_input(array('name' => 'input_product_name', 'id' => 'input_product_name', 'class' => 'form-control')); ?>
-                                    </div> 
-                                </div>
-                                <div class="form-group">
-                                    <label for="button_add_product" class="col-md-4 control-label requiredField">
-                                    </label>
-                                    <div class ="col-md-8">
-                                        <?php echo form_button(array('name' => 'button_add_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_product', 'content' => 'Submit')); ?>
-                                    </div> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <div class="modal-footer">

@@ -323,6 +323,23 @@ class Ion_auth {
             return FALSE;
         }
     }
+    
+    public function admin_registration_email($data, $email)
+    {
+        if ($this->config->item('admin_email', 'ion_auth')) 
+        {
+            $message = $this->load->view($this->config->item('admin_email_templates', 'ion_auth') . $this->config->item('admin_email_registration_success', 'ion_auth'), $data, true);
+            $this->email->clear();
+            $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+            $this->email->to($email);
+            $this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_registration_success_subject'));
+            $this->email->message($message);
+
+            if ($this->email->send() == TRUE) {
+                //
+            }
+        }
+    }
 
     public function login($identity, $password, $user_type, $remember = FALSE){
         $user = $this->ion_auth_model->login($identity, $password);

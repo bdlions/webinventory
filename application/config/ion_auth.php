@@ -142,8 +142,8 @@ $config['max_rounds']     = 9;
  | The controller should check this function and act
  | appropriately. If this variable set to 0, there is no maximum.
  */
-$config['site_title']                 = "Example.com";       // Site Title, example.com
-$config['admin_email']                = "admin@example.com"; // Admin Email, admin@example.com
+$config['site_title']                 = "Apurbobrand.com";       // Site Title, example.com
+$config['admin_email']                = "info@apurbobrand.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['customer_group']             = 'customer';             // Default administrators group, use name
@@ -161,6 +161,10 @@ $config['maximum_login_attempts']     = 3;                   // The maximum numb
 $config['lockout_time']               = 600;                 // The number of seconds to lockout an account due to exceeded attempts
 $config['forgot_password_expiration'] = 0;                   // The number of miliseconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire.
 $config['sms_sender_server_url']      = "http://dev2-64.xpressfiler.com/SendMSG";       
+
+$config['admin_email']                = TRUE;
+$config['admin_email_templates']      = 'manager/email/';
+$config['admin_email_registration_success'] = 'registration_success.tpl.php';
 
 /*
  | -------------------------------------------------------------------------

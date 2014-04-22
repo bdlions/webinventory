@@ -86,7 +86,23 @@
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>        
+        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>  
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        SMS<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./sms/all_message_category");?>">Show All Message Category</a></li>
+        <li><a href="<?php echo base_url("./sms/create_message_category");?>">Create new configure Message</a></li>
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("./sms/all_message");?>">All Message</a></li>
+        <li><a href="<?php echo base_url("./sms/create_message");?>">Create New Message</a></li>
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
+        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>
+        <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
     </ul>
 </div>
