@@ -29,7 +29,8 @@
         <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-1.10.2.min.js"></script>
         <script src="<?php echo base_url() ?>assets/bootstrap3/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-datepicker.js"></script>
-        
+        <script src="<?php echo base_url() ?>assets/bootstrap3/js/typeahead.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/bootstrap3/js/hogan.js"></script>
         
         <script src="<?php echo base_url(); ?>assets/js/order/common.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/product.js"></script>

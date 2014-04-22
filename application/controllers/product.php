@@ -482,7 +482,7 @@ class Product extends CI_Controller {
             $path = './upload/'.$this->session->userdata('shop_id').'.txt';
             if ( write_file($path, $content) )
             {
-                 redirect('product/process_product_file/');
+                 redirect('product/process_product_file/','refresh');
             }
             
         }
@@ -555,9 +555,9 @@ class Product extends CI_Controller {
             }               
         }
         
-        print_r('Total duplicate product item:'.$total_duplicate);
-        echo '<br>';
-        print_r('Total stored product item:'.$counter); exit;
+        //print_r('Total duplicate product item:'.$total_duplicate);
+        //echo '<br>';
+        //print_r('Total stored product item:'.$counter);
         redirect('product/show_all_products','refresh');
     }
     

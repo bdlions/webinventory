@@ -41,11 +41,11 @@
         Inventory<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("product/create_product_unit_category");?>">create new product unit category</a></li>
         <li><a href="<?php echo base_url("./product/create_product");?>">add new product</a></li>
         <li><a href="<?php echo base_url("./product/show_all_products");?>">Product List</a></li>
         <li><a href="<?php echo base_url("./product/import_product");?>">Product List Import</a></li>
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("product/create_product_unit_category");?>">create new product unit category</a></li>
+        <li class="divider"></li>        
         <li><a href="<?php echo base_url("stock/show_all_stocks");?>">show current stock</a></li> 
     </ul>
 </div>
