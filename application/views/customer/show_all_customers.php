@@ -1,6 +1,24 @@
 <h3>Customer List</h3>
+
 <div class ="row form-background top-bottom-padding">
     <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-5">
+                <div class=" input-group search-box">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                    <div style="position: relative;" class="twitter-typeahead">
+                        <input type="text" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; background: none repeat scroll 0% 0% rgb(255, 255, 255);" class="tt-hint form-control" autocomplete="off" spellcheck="off" disabled="">
+                        <div class="twitter-typeahead" style="position: relative;"><input type="text" disabled="" spellcheck="off" autocomplete="off" class="tt-hint form-control" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; background: none repeat scroll 0% 0% transparent;"><input type="text" dir="auto" style="position: relative; vertical-align: top; background-color: transparent;" spellcheck="false" autocomplete="off" id="search_box" class="form-control tt-query" placeholder="Search for customer"><div style="position: absolute; left: -9999px; visibility: hidden; white-space: nowrap; font-family: Calibri,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;"></div><div class="tt-dropdown-menu dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none;"></div></div>
+                        <div style="position: absolute; left: -9999px; visibility: hidden; white-space: nowrap; font-family: Calibri,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;">
+
+                        </div>
+                        <div style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none;" class="tt-dropdown-menu dropdown-menu">
+
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div><br>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -74,3 +92,43 @@
         }
     ?>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var customer_data = <?php echo json_encode($customer_list) ?>;
+        set_customer_list(customer_data);
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#search_box").typeahead([
+            {
+                name:"search_customer",
+                valuekey:"first_name",
+                prefetch:{
+                            url: '<?php echo base_url()?>search/get_customer',
+                            ttl: 0
+                        },
+                header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Customer</div>',
+                template: [
+                    '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{card_no}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
+                  ].join(''),
+                engine: Hogan
+            }
+    ]).on('typeahead:selected', function (obj, datum) {
+           if(datum.first_name)
+            {
+                var c_list = get_customer_list();
+                for (var counter = 0; counter < c_list.length; counter++)
+                {
+                    var cust_info = c_list[counter];
+                    if (datum.customer_id === cust_info['customer_id'])
+                    {
+                        update_fields_selected_customer(cust_info);
+                        $('#modal_select_customer').modal('hide');
+                        return;
+                    }
+                }
+            }
+        });
+    });
+</script>
