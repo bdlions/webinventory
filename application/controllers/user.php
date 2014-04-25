@@ -912,18 +912,24 @@ class User extends CI_Controller {
     
     public function show_all_customers($limit, $offset = 0)
     {
+        //all customers of the system.
+        $all_customers = array();
+        //customer list of current view page
         $this->data['customer_list'] = array();
         //list the users
         if ($limit == 0) {
             $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
             $limit = PAGINATION_CUSTOMER_LIST_LIMIT;
+            $all_customers = $customer_list_array;
         } else {
             $customer_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_customers()->result_array();
+            $all_customers = $this->ion_auth->get_all_customers()->result_array();
         }
         if( !empty($customer_list_array) )
         {
             $this->data['customer_list'] = $customer_list_array;
         } 
+        $this->data['all_customers'] = $all_customers;
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
@@ -1302,18 +1308,22 @@ class User extends CI_Controller {
     
     public function show_all_suppliers($limit, $offset = 0)
     {
+        $all_suppliers = array();
         $this->data['supplier_list'] = array();
         //list the users
         if ($limit == 0) {
             $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
             $limit = PAGINATION_SUPPLIER_LIST_LIMIT;
+            $all_suppliers = $supplier_list_array;
         } else {
             $supplier_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_suppliers()->result_array();
+            $all_suppliers = $this->ion_auth->get_all_suppliers()->result_array();
         }
         if( !empty($supplier_list_array) )
         {
             $this->data['supplier_list'] = $supplier_list_array;
         }
+        $this->data['all_suppliers'] = $all_suppliers;
         
         $total_users = count($this->ion_auth->get_all_suppliers()->result_array());
         $this->load->library('pagination');

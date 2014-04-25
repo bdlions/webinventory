@@ -33,7 +33,7 @@
                     <th>Transactions</th>
                 </tr>
             </thead>
-            <tbody id="tbody_product_list">
+            <tbody id="tbody_supplier_list">
                 <?php
                 foreach ($supplier_list as $key => $supplier_info) {
                 ?>
@@ -59,7 +59,12 @@
         }
     ?>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        var supplier_data = <?php echo json_encode($all_suppliers) ?>;
+        set_supplier_list(supplier_data);
+    });
+</script>
 <script type="text/javascript">
     $(function(){
         $("#search_box").typeahead([
@@ -85,12 +90,26 @@
                     var sup_info = s_list[counter];
                     if (datum.supplier_id === sup_info['supplier_id'])
                     {
-                        update_fields_selected_supplier(sup_info);
-                        $('#modal_select_supplier').modal('hide');
-                        return;
+                        $("#tbody_supplier_list").html(tmpl("tmpl_supplier_list",  sup_info));
                     }
                 }
             }
         });  
     });
+</script>
+<script type="text/x-tmpl" id="tmpl_supplier_list">
+    {% var i=0, supplier_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(supplier_info){ %}
+    <tr>
+        <td>{%= supplier_info.first_name%}</td>
+        <td>{%= supplier_info.last_name%}</td>
+        <td>{%= supplier_info.phone%}</td>
+        <td>{%= supplier_info.address%}</td>
+        <td>{%= supplier_info.company%}</td>
+        <td><a href="<?php echo base_url()."user/update_supplier/{%= supplier_info.supplier_id%}"; ?>">Update</a></td>
+        <td><a href="<?php echo base_url()."user/show_supplier/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
+        <td><a href="<?php echo base_url()."payment/show_supplier_transactions/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
+    </tr>
+    {% supplier_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
 </script>

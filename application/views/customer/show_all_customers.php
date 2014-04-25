@@ -32,7 +32,7 @@
                     <th>Transactions</th>
                 </tr>
             </thead>
-            <tbody id="tbody_product_list">
+            <tbody id="tbody_customer_list">
                 <?php
                 foreach ($customer_list as $key => $customer_info) {
                 ?>
@@ -94,7 +94,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        var customer_data = <?php echo json_encode($customer_list) ?>;
+        var customer_data = <?php echo json_encode($all_customers) ?>;
         set_customer_list(customer_data);
     });
 </script>
@@ -115,7 +115,7 @@
                 engine: Hogan
             }
     ]).on('typeahead:selected', function (obj, datum) {
-           if(datum.first_name)
+        if(datum.customer_id)
             {
                 var c_list = get_customer_list();
                 for (var counter = 0; counter < c_list.length; counter++)
@@ -123,12 +123,26 @@
                     var cust_info = c_list[counter];
                     if (datum.customer_id === cust_info['customer_id'])
                     {
-                        update_fields_selected_customer(cust_info);
-                        $('#modal_select_customer').modal('hide');
-                        return;
+                        $("#tbody_customer_list").html(tmpl("tmpl_customer_list",  cust_info));
                     }
                 }
             }
         });
     });
+</script>
+<script type="text/x-tmpl" id="tmpl_customer_list">
+    {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(customer_info){ %}
+    <tr>
+        <td>{%= customer_info.first_name%}</td>
+        <td>{%= customer_info.last_name%}</td>
+        <td>{%= customer_info.phone%}</td>
+        <td>{%= customer_info.address%}</td>
+        <td>{%= customer_info.card_no%}</td>
+        <td><a href="<?php echo base_url()."user/update_customer/{%= customer_info.customer_id%}"; ?>">Update</a></td>
+        <td><a href="<?php echo base_url()."user/show_customer/{%= customer_info.customer_id%}"; ?>">Show</a></td>
+        <td><a href="<?php echo base_url()."payment/show_customer_transactions/{%= customer_info.customer_id%}"; ?>">Show</a></td>
+    </tr>
+    {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% } %}
 </script>
