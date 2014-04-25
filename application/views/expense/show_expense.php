@@ -76,6 +76,7 @@
                 url: '<?php echo base_url(); ?>' + "expense/get_expense",
                 data: {
                     expense_type_id: $("#expense_categories").val(),
+                    reference_id: $("#item_list").val(),
                     start_date: $("#show_expense_start_date").val(),
                     end_date: $("#show_expense_end_date").val()
                 },

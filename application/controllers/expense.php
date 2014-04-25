@@ -213,6 +213,10 @@ class Expense extends CI_Controller {
                     'value' => $supplier_info['first_name'].' '.$supplier_info['last_name']
                 );
             }
+            $supplier_list[] = array(
+                'id' => 0,
+                'value' => 'All'
+            );
             $result_array['supplier_list'] = $supplier_list;            
         }
         else if( $expense_type_id == $this->expense_type_list['user'])
@@ -227,6 +231,10 @@ class Expense extends CI_Controller {
                     'value' => $user_info['first_name'].' '.$user_info['last_name']
                 );
             }
+            $user_list[] = array(
+                'id' => 0,
+                'value' => 'All'
+            );
             $result_array['user_list'] = $user_list;
         }
         echo json_encode($result_array);
@@ -235,6 +243,7 @@ class Expense extends CI_Controller {
     public function get_expense()
     {
         $expense_type_id = $_POST['expense_type_id'];
+        $reference_id = $_POST['reference_id'];
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
         $start_time = $this->utils->get_human_to_unix($start_date);
@@ -242,7 +251,7 @@ class Expense extends CI_Controller {
         $expense_list_array = array();
         if($expense_type_id > 0)
         {
-            $expense_list_array = $this->expenses->get_expenses($expense_type_id, $start_time, $end_time);
+            $expense_list_array = $this->expenses->get_expenses($expense_type_id, $reference_id, $start_time, $end_time);
         }
         else
         {

@@ -212,11 +212,15 @@ class Expense_model extends Ion_auth_model {
         return TRUE;
     }
     
-    public function get_expenses($expense_type_id, $start_time, $end_time, $shop_id = 0)
+    public function get_expenses($expense_type_id, $reference_id, $start_time, $end_time, $shop_id = 0)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if($reference_id != 0)
+        {
+            $this->db->where('reference_id', $reference_id);
         }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('expense_date >=', $start_time);

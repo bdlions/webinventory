@@ -93,7 +93,7 @@ class Upload extends CI_Controller {
                 
                 if($this->shop_library->update_shop($shop_id, $additional_data))
                 {
-                    redirect('upload/upload_logo','refresh');
+                    redirect('upload/upload_cover','refresh');
                     echo 'doneasdasdasdhasdbcsHBDZcbnozhxoiuvzxhfovbhpofhxzxdfnvzipdohnjf';
                 }
                 else

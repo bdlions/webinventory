@@ -81,10 +81,10 @@ class Expenses {
         return get_instance()->$var;
     }
     
-    public function get_expenses($expense_type_id, $start_time, $end_time)
+    public function get_expenses($expense_type_id, $reference_id, $start_time, $end_time)
     {
         $expense_list = array();
-        $expense_list_array = $this->expense_model->get_expenses($expense_type_id, $start_time, $end_time)->result_array();
+        $expense_list_array = $this->expense_model->get_expenses($expense_type_id, $reference_id, $start_time, $end_time)->result_array();
         foreach($expense_list_array as $expense_info)
         {
             $expense_info['expense_date'] = $this->utils->process_time($expense_info['expense_date']);
