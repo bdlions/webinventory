@@ -81,7 +81,8 @@
                     end_date: $("#show_expense_end_date").val()
                 },
                 success: function(data) {
-                    $("#tbody_expense_list").html(tmpl("tmpl_expense_list", data));
+                    $("#tbody_expense_list").html(tmpl("tmpl_expense_list", data.expense_list));
+                    $("#label_total_expense").html(data.total_expense);
                 }
             });
         });
@@ -159,6 +160,14 @@
                                 <div class ="col-md-6">
                                     <?php echo form_input($show_expense_end_date+array('class'=>'form-control')); ?>
                                 </div> 
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-6 control-label requiredField">
+                                    Total Expenses : 
+                                </label>
+                                <label id="label_total_expense" name="label_total_expense" class="col-md-6 control-label requiredField">
+                                    <?php echo $total_expense;?>
+                                </label>
                             </div>
                         </div>
                     </div>
