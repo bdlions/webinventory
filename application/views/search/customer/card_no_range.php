@@ -36,7 +36,6 @@
             <div class ="col-md-12 form-horizontal">
                 <div class="row">
                     <div class ="col-md-6 margin-top-bottom">
-                        <?php echo form_open("search/download_search_customer_by_card_no_range", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
                         <div class="form-group">
                             <label for="start_card_no" class="col-md-6 control-label requiredField">
                                 Start Card No
@@ -61,6 +60,7 @@
                                 <?php echo form_input($button_search_customer+array('class'=>'form-control btn-success')); ?>
                             </div> 
                         </div>
+                        <?php echo form_open("search/download_search_customer_by_card_no_range", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
                         <div class="form-group">
                             <label for="button_download_customer" class="col-md-6 control-label requiredField">
 

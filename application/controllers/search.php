@@ -926,7 +926,7 @@ class Search extends CI_Controller {
         $end_card_no = $_POST['end_card_no'];
         
         $customer_list = array();
-        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range()->result_array();
         foreach($customer_list_array as $customer_info)
         {
             if( $start_card_no+0 <= $customer_info['card_no']+0 && $customer_info['card_no']+0 <= $end_card_no+0)
