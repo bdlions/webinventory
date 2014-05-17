@@ -39,8 +39,8 @@ CREATE TABLE `shop_info` (
 ALTER TABLE `shop_info`
   ADD CONSTRAINT `shop_info_ibfk_1` FOREIGN KEY (`shop_type_id`) REFERENCES `shop_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-INSERT INTO `shop_info` (`id`, `shop_no`, `name`) VALUES
-(1, 1, 'Apurbo');
+INSERT INTO `shop_info` (`id`, `shop_no`, `name`, `shop_type_id`) VALUES
+(1, 1, 'Apurbo', 1);
 
 CREATE TABLE `profession` (
 	`id` int NOT NULL auto_increment,

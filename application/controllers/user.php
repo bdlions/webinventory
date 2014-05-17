@@ -767,7 +767,13 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
-        
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
         if ($this->input->post('submit_create_customer')) 
         {
             if ($this->form_validation->run() == true) 

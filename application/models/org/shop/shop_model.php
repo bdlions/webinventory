@@ -103,7 +103,9 @@ class Shop_model extends Ion_auth_model {
             $shop_id = $this->session->userdata('shop_id');
         }
         $this->db->where('id', $shop_id);
-        $this->response = $this->db->get($this->tables['shop_info']);
+        $this->response = $this->db->select($this->tables['shop_info'].".*,".$this->tables['shop_info'].'.id as shop_id')
+                                ->from($this->tables['shop_info'])
+                                ->get();
         return $this;
     }
     /**
