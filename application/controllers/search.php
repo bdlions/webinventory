@@ -106,6 +106,8 @@ class Search extends CI_Controller {
     {
         $product_id = $_POST['product_id'];
         $result = $this->process_daily_sale($product_id);
+        //print_r($result);
+        //echo '<pre/>';print_r($result);exit('hi');
         echo json_encode($result);
     }
     
@@ -245,11 +247,29 @@ class Search extends CI_Controller {
     }*/
     public function process_daily_sale($product_id = 0)
     {
+        
         $time = $this->utils->get_current_date_start_time();
         $result = array();
         $shop_id = $this->session->userdata('shop_id');
         $product_list = array();
         $product_list_array = $this->product_library->get_all_products($shop_id)->result_array();
+        
+        if($product_id!=0)
+        {
+            foreach($product_list_array as $row)
+            {
+                if($row['product_id']==$product_id)
+                {
+                    $result['category_name'] = $row['category_unit'];
+                    break;
+                }
+            }
+        }
+        else
+        {
+            $result['category_name'] = '';
+        }
+        
         if( !empty($product_list_array) )
         {
             foreach($product_list_array as $product_info)
@@ -257,7 +277,10 @@ class Search extends CI_Controller {
                 $product_list[$product_info['id']] = $product_info['name'];
             }
         }
+        //echo '<pre/>';print_r($product_list);exit;
         $result['product_list'] = $product_list;
+        
+        
         
         $total_product_sold = 0;
         $total_profit = 0;
@@ -279,6 +302,8 @@ class Search extends CI_Controller {
                 }                
             }
         }
+        
+        //echo '<pre/>';print_r($sale_list);exit;
         $result['sale_list'] = $sale_list;
         $result['total_product_sold'] = $total_product_sold;
         if($this->session->userdata('user_type') != SALESMAN)

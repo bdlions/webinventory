@@ -88,8 +88,9 @@ function startclock()
                     product_id: $("#product_list").val()
                 },
                 success: function(data) {
+                    
                     $("#tbody_daily_sale_list").html(tmpl("tmpl_daily_sale_list", data['sale_list'])); 
-                    $("#label_total_product_sold").html(data['total_product_sold']+" pieces");
+                    $("#label_total_product_sold").html(data['total_product_sold']+" "+data['category_name']);
                     if(data['total_profit'])
                     {
                         $("#label_total_profit").html(data['total_profit']);
@@ -186,7 +187,7 @@ function startclock()
                             Total Product Sold : 
                         </label>
                         <label id="label_total_product_sold" class="col-md-6 control-label requiredField">
-                            <?php echo $total_product_sold;?> pieces 
+                            <?php echo $total_product_sold;?> 
                         </label>                        
                     </td>
                     <td>
@@ -278,6 +279,7 @@ function startclock()
                     <th>Lot No</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
+                    <th>Product Unit</th>
                     <th>Sale Unit Price</th>
                     <th>Sub Total</th>
                     <?php 
@@ -310,6 +312,7 @@ function startclock()
                         <td><?php echo $sale_info['purchase_order_no'];?></td>
                         <td><?php echo $sale_info['product_name'];?></td>
                         <td><?php echo $sale_info['total_sale'];?></td>
+                        <td><?php echo $sale_info['category_unit'];?></td>
                         <td><?php echo $sale_info['sale_unit_price'];?></td>
                         <td><?php echo $sale_info['total_sale']*$sale_info['sale_unit_price'];?></td>
                         <?php 

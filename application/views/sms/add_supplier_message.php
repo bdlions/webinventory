@@ -44,6 +44,7 @@ window.onload = function()
         });
     });
 </script>
+
 <h3>Add Supplier Message</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
     <?php echo form_open("sms/add_supplier_message", array('id' => 'all_supplier_message_form', 'class' => 'form-horizontal')); ?>
@@ -71,17 +72,6 @@ window.onload = function()
             </div>
         </div>
         
-        <div class="form-group" >
-            <label for="input_add_purchase_supplier" class="col-md-3 control-label requiredField">
-                Supplier Name
-            </label> 
-            <div class ="col-md-8">
-                <?php echo form_input(array('name' => 'input_add_purchase_supplier_id', 'id' => 'input_add_purchase_supplier_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
-                <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_supplier')); ?>
-            </div>
-            <input type="hidden" name="editortext" id="editortext"></input>
-        </div>
-        
         <div class="form-group">
             <label for="supplier_message" class="col-md-3 control-label requiredField">
                 Message
@@ -101,6 +91,8 @@ window.onload = function()
     </div>
     <?php echo form_close(); ?>
 </div>
+
+<?php $this->load->view("sms/modal_select_message"); ?>
 
 <script type="text/javascript">
     $(function(){

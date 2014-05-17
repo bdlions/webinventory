@@ -76,7 +76,7 @@
         $("#button_save_purchase_order").on("click", function() {
             //validation checking of purchase order
             //checking whether supplier is selected or not
-            if ($("#input_add_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
+            if ($("#input_a dd_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
             {
                 alert('Please select a supplier');
                 return;
@@ -336,18 +336,21 @@
                         <tr>
                             <th>Product Name</th>
                             <th>Quantity</th>
+                            <th>Product Unit</th>
                             <th>Unit Price</th>
                             <th>Sub Total</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_selected_product_list">                        
                     </tbody>
+                    <?php //echo '<pre/>'; print_r($product_list_array);exit;?>
                     <script type="text/x-tmpl" id="tmpl_selected_product_info">
                         {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                         {% while(product_info){ %}
                         <tr>
                         <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
+                        <td><?php echo '{%= product_info.category_unit%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
                         <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
                             <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>
