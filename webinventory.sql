@@ -763,3 +763,12 @@ CREATE TABLE IF NOT EXISTS `supplier_message` (
 ALTER TABLE `supplier_message`
   ADD CONSTRAINT `fk_supplier_message_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- Message feature created, modified and used by admin  
+CREATE TABLE IF NOT EXISTS `custom_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message` varchar(200) NOT NULL DEFAULT '',
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
