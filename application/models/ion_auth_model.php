@@ -2007,10 +2007,17 @@ class Ion_auth_model extends CI_Model {
     public function create_customer($additional_data)
     {
         $this->trigger_events('pre_create_customer');
-        if ($this->customer_identity_column == 'card_no' && $this->customer_identity_check($additional_data['card_no'])) {
-            $this->set_error('customer_creation_duplicate_card_no');
-            return FALSE;
-        }   
+        if (array_key_exists('shop_type_id', $additional_data))
+        {
+            if ($this->customer_identity_column == 'card_no' && $this->customer_identity_check($additional_data['card_no']))
+            {
+                $this->set_error('customer_creation_duplicate_card_no');
+                return FALSE;
+            }
+        }
+
+
+
         //filter out any data passed that doesnt have a matching column in the users table
         $customer_data = $this->_filter_data($this->tables['customers'], $additional_data);
         

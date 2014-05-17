@@ -38,6 +38,12 @@
                 <?php echo form_input($address+array('class'=>'form-control')); ?>
             </div> 
         </div>
+        
+        
+        
+        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL
+                ){?>
+        
         <div class="form-group">
             <label for="card_no" class="col-md-6 control-label requiredField">
                 Card No
@@ -62,6 +68,11 @@
                 <?php echo form_dropdown('profession_list', $profession_list+array('' => 'Select'), '', 'class=form-control'); ?>
             </div> 
         </div>
+        
+        <?php }?>
+        
+        
+        
         <div class="form-group">
             <label for="address" class="col-md-6 control-label requiredField">
                 Message Category
