@@ -76,7 +76,7 @@
         $("#button_save_purchase_order").on("click", function() {
             //validation checking of purchase order
             //checking whether supplier is selected or not
-            if ($("#input_a dd_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
+            if ($("#input_add_purchase_supplier_id").val().length === 0 || $("#input_add_purchase_supplier_id").val() < 0)
             {
                 alert('Please select a supplier');
                 return;
