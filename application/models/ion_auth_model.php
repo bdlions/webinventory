@@ -2573,6 +2573,7 @@ class Ion_auth_model extends CI_Model {
         }
     }
     
+
     public function get_shop_info($shop_id = 0)
     {
         if( $shop_id == 0 )
@@ -2585,5 +2586,6 @@ class Ion_auth_model extends CI_Model {
                                 ->get();
         return $this;
     }
+
     
 }

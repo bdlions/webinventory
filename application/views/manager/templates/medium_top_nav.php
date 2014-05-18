@@ -81,7 +81,8 @@
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>  
+        <li><a href="<?php echo base_url("./message/create_cutom_message");?>">Create New Custom Message</a></li>  
+        <li><a href="<?php echo base_url("./message/update_cutom_message");?>">Update Custom Message</a></li>  
     </ul>
 </div>
 <div class="btn-group">

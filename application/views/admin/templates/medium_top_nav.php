@@ -110,7 +110,8 @@
         <li><a href="<?php echo base_url("./sms/create_message");?>">Create New Message</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>
+        <li><a href="<?php echo base_url("./message/create_cutom_message");?>">Create New Custom Message</a></li>  
+        <li><a href="<?php echo base_url("./message/update_cutom_message");?>">Update Custom Message</a></li> 
         <li class="divider"></li>
         <li><a href="<?php echo base_url()?>message/create_custom_message">Create Messages</a></li>
         <li><a href="<?php echo base_url()?>message/search_custom_message">Search Messages</a></li>
