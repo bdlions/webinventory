@@ -28,7 +28,7 @@
         <td >{%= sale_info.product_name%}</td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
-        <td ><?php echo '{%= sale_info.unit_category_name%}'; ?></td>
+        <td ><?php echo '{%= sale_info.unit_category%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>

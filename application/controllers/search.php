@@ -492,6 +492,7 @@ class Search extends CI_Controller {
         
         $product_list = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
+        //echo '<pre/>';print_r($product_list_array);exit;
         if( !empty($product_list_array) )
         {
             foreach($product_list_array as $key => $product_info)
@@ -691,6 +692,7 @@ class Search extends CI_Controller {
         $total_profit= 0;
         $sale_list = array();
         $sale_list_array = $this->sale_library->get_user_sales_by_phone($phone)->result_array();
+        //echo '<pre/>';print_r($sale_list_array);exit;
         if( !empty($sale_list_array) )
         {
             foreach($sale_list_array as $sale_info)
@@ -705,6 +707,7 @@ class Search extends CI_Controller {
         $result_array['total_sale_price'] = $total_sale_price;  
         $result_array['total_quantity'] = $total_quantity;  
         $result_array['total_profit'] = $total_profit;
+        //echo '<pre/>';print_r($result_array);exit;
         echo json_encode($result_array);
     }
     public function search_sales_customer_phone()

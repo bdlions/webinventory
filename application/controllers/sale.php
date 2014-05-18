@@ -290,6 +290,7 @@ class Sale extends CI_Controller {
             }
         }        
         $sale_product_list_array = $this->sale_library->get_sale_product_list($sale_order_no)->result_array();
+       // echo '<pre/>';print_r($sale_product_list_array);exit;
         if(!empty($sale_product_list_array))
         {
             $sale_product_list = $sale_product_list_array;            
