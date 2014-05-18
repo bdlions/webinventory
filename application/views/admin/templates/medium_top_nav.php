@@ -17,8 +17,6 @@
         <li><a href="<?php echo base_url("sale/return_sale_order");?>">return sale</a></li>
         <li><a href="<?php echo base_url("sale/delete_sale");?>">Delete Sale</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/create_institution");?>">add new institution</a></li>
-        <li><a href="<?php echo base_url("./user/create_profession");?>">add new profession</a></li>
         <li><a href="<?php echo base_url("./user/create_customer");?>">add new customer </a></li>
         <li><a href="<?php echo base_url("./user/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT);?>">Customer List</a></li>
     </ul>
@@ -65,16 +63,11 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("search/daily_sales");?>">Daily Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
-        <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_name");?>">Search Customer Sales by Name</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_phone");?>">Search Customer Sales by Phone</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("search/search_customer_profession");?>">Search Customer by Profession</a></li>
-        <li><a href="<?php echo base_url("search/search_customer_institution");?>">Search Customer by Institution</a></li>
         <li><a href="<?php echo base_url("search/search_customers_total_purchased");?>">Search Customer by Total Purchased</a></li>
-        <li><a href="<?php echo base_url("search/search_customer_card_no");?>">Search Customer by Card No</a></li>
-        <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>
-        <li><a href="<?php echo base_url("search/search_customer_card_no_range");?>">Search Customer by Card No Range</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>        
     </ul>
 </div>
 <div class="btn-group">
