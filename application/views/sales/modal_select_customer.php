@@ -253,6 +253,8 @@
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
+                                
+                                <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                                 <div class="form-group">
                                     <label for="input_card_no" class="col-md-4 control-label requiredField">
                                         Card No
@@ -261,6 +263,8 @@
                                         <?php echo form_input(array('name' => 'input_card_no', 'id' => 'input_card_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
+                                <?php }?>
+                                
                                 <div class="form-group">
                                     <label for="address" class="col-md-4 control-label requiredField">
                                         Message Category

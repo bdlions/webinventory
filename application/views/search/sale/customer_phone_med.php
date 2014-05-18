@@ -4,9 +4,9 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_sales_by_customer_name",
+                url: '<?php echo base_url(); ?>' + "search/search_sales_by_customer_phone",
                 data: {
-                    name: $("#name").val()
+                    phone: $("#phone").val()
                 },
                 success: function(data) {
                     $("#label_total_sale_price").html(data['total_sale_price']);
@@ -23,11 +23,11 @@
     {% while(sale_info){ %}
     <tr>
         <td >{%= sale_info.customer_first_name%} {%= sale_info.customer_last_name%}</td>
-        <td >{%= sale_info.card_no%}</td>
+        <td >{%= sale_info.customer_phone%}</td>
         <td >{%= sale_info.product_name%}</td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
-        <td ><?php echo '{%= sale_info.category_unit%}'; ?></td>
+        <td ><?php echo '{%= sale_info.unit_category_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
@@ -61,18 +61,18 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer sale by Customer Name</h3>
+<h3>Search Customer sale by Mobile No</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <tbody>
                 <tr>
                     <td>
-                        <label for="name" class="col-md-6 control-label requiredField">
-                            Name
+                        <label for="phone" class="col-md-6 control-label requiredField">
+                            Phone
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_input($name+array('class'=>'form-control')); ?>
+                            <?php echo form_input($phone+array('class'=>'form-control')); ?>
                         </div> 
                     </td> 
                     <td>
@@ -135,7 +135,7 @@
             <thead>
                 <tr>
                     <th>Customer Name</th>
-                    <th>Card No</th>
+                    <th>Phone</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>

@@ -39,30 +39,6 @@
             </div> 
         </div>
         <div class="form-group">
-            <label for="card_no" class="col-md-6 control-label requiredField">
-                Card No
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($card_no+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="address" class="col-md-6 control-label requiredField">
-                Institution
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_dropdown('institution_list', $institution_list+array('' => 'Select'), '','class=form-control'); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="address" class="col-md-6 control-label requiredField">
-                Profession
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_dropdown('profession_list', $profession_list+array('' => 'Select'), '', 'class=form-control'); ?>
-            </div> 
-        </div>
-        <div class="form-group">
             <label for="address" class="col-md-6 control-label requiredField">
                 Message Category
             </label>

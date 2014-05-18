@@ -23,7 +23,6 @@
     {% while(sale_info){ %}
     <tr>
         <td >{%= sale_info.customer_first_name%} {%= sale_info.customer_last_name%}</td>
-        <td >{%= sale_info.card_no%}</td>
         <td >{%= sale_info.product_name%}</td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
@@ -135,7 +134,6 @@
             <thead>
                 <tr>
                     <th>Customer Name</th>
-                    <th>Card No</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>

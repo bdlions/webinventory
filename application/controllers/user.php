@@ -904,7 +904,8 @@ class User extends CI_Controller {
             'type' => 'submit',
             'value' => 'Create',
         );
-        $this->template->load(null, 'customer/create_customer',$this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'customer/create_customer',$this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'customer/create_customer_med',$this->data);}
     }
     
     public function download_search_customer()
@@ -931,6 +932,13 @@ class User extends CI_Controller {
     
     public function show_all_customers($limit, $offset = 0)
     {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
         //all customers of the system.
         $all_customers = array();
         //customer list of current view page
@@ -965,7 +973,8 @@ class User extends CI_Controller {
         $this->pagination->initialize($config);
         $this->data['pagination'] = $this->pagination->create_links();
         
-        $this->template->load(null, 'customer/show_all_customers', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'customer/show_all_customers', $this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'customer/show_all_customers_med', $this->data);}
     }
     
     public function update_customer($customer_id = 0)

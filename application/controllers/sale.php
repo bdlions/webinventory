@@ -19,6 +19,7 @@ class Sale extends CI_Controller {
         $this->load->library('org/common/payments');
         $this->load->library('org/product/product_library');
         $this->load->library('org/sale/sale_library');
+        $this->load->library('org/shop/shop_library');
         $this->load->library('org/stock/stock_library');
         $this->load->library('org/purchase/purchase_library');
         $this->load->helper('url');
@@ -40,6 +41,14 @@ class Sale extends CI_Controller {
     }
 
     function sale_order() {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
+        
         $salesman_list = array();
         $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
         if (!empty($salesman_list_array)) {
@@ -67,7 +76,7 @@ class Sale extends CI_Controller {
         $this->data['customer_search_category'] = array();
         $this->data['customer_search_category'][0] = "Select an item";
         $this->data['customer_search_category']['phone'] = "Phone";
-        $this->data['customer_search_category']['card_no'] = "Card No";
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->data['customer_search_category']['card_no'] = "Card No";}
         $this->data['customer_search_category']['first_name'] = "First Name";
         $this->data['customer_search_category']['last_name'] = "Last Name";
 
@@ -84,7 +93,8 @@ class Sale extends CI_Controller {
             }
         }
 
-        $this->template->load(null, 'sales/sales_order', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {$this->template->load(null, 'sales/sales_order', $this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) {$this->template->load(null, 'sales/sales_order_med', $this->data);}
     }
     
     function add_sale() {
@@ -291,6 +301,13 @@ class Sale extends CI_Controller {
     }
 
     public function return_sale_order($sale_order_no = '') {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
         $salesman_list = array();
         $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
         if (!empty($salesman_list_array)) {
@@ -310,7 +327,8 @@ class Sale extends CI_Controller {
             $this->data['product_list_array'] = $product_list_array;
         }
         $this->data['sale_order_no'] = $sale_order_no;
-        $this->template->load(null, 'sales/return_sale_order', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'sales/return_sale_order', $this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'sales/return_sale_order_med', $this->data);}
     }
     /*
      * Ajax Call
