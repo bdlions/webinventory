@@ -524,6 +524,71 @@ class Search extends CI_Controller {
     /*
      * Ajax Call
      */
+    public function search_sales_by_purchase_order_no()
+    {
+        $purchase_order_no = $_POST['purchase_order_no'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+        $start_time = $this->utils->get_human_to_unix($start_date);
+        $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
+        
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $total_profit= 0;
+        
+        $this->data['sale_list'] = array();
+        
+        $sale_list = array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_purchase_order_no($start_time, $end_time, $purchase_order_no)->result_array();
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);                
+                $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                $total_quantity = $total_quantity + $sale_info['total_sale'];
+                $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result_array['sale_list'] = $sale_list;  
+        $result_array['total_sale_price'] = $total_sale_price;  
+        $result_array['total_quantity'] = $total_quantity;  
+        $result_array['total_profit'] = $total_profit;  
+        echo json_encode($result_array);
+    }
+    public function search_sales_purchase_order_no()
+    {
+        $this->data['purchase_order_no'] = array(
+            'name' => 'purchase_order_no',
+            'id' => 'purchase_order_no',
+            'type' => 'text'
+        );
+        $date = date('Y-m-d');
+        $this->data['start_date'] = array(
+            'name' => 'start_date',
+            'id' => 'start_date',
+            'type' => 'text',
+            'value' => $date
+        );
+        $this->data['end_date'] = array(
+            'name' => 'end_date',
+            'id' => 'end_date',
+            'type' => 'text',
+            'value' => $date
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/purchase_order_no', $this->data);
+    }
+    
+    /*
+     * Ajax Call
+     */
     public function search_sales_by_customer_card_no()
     {
         $card_no = $_POST['card_no'];

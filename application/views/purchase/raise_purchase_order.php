@@ -329,7 +329,7 @@
                         <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
                         {% if(product_info.readonly == 'true') { %}
-                        <td><?php echo '{%= product_info.category_unit}'; ?></td>
+                        <td><?php echo '{%= product_info.category_unit %}'; ?></td>
                         <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
                         {% }else{ %} 
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
