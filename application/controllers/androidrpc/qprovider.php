@@ -37,20 +37,49 @@ class QProvider extends JsonRPCServer{
                     "id": "3",
                     "name": "Q3",
                     "noOfMsgs": "10"
-                  },
-                  {
-                    "id": "4",
-                    "name": "Q4",
-                    "noOfMsgs": "50"
                   }
                 ]
             }';
         
      }
      
-     function getQ(){
+     function getQ($q_id){
+	 if($q_id == 1)
          return '{
             "id": "1",
+            "name": "Q1",
+            "customer": [
+              {
+                "id": "1",
+                "name": "Alamgir",
+                "country": {
+                  "name": "Bangladesh",
+                  "code": "88"
+                },
+                "phone": {
+                  "phoneNo": "01556898372",
+                  "dial": {
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "callCount": "1"
+                  },
+                  "message": {
+                        "content":"This is first",
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "sMSCount": "1"
+                  }
+                }
+              }
+            ]
+        }';
+		else if($q_id == 2){
+		return '{
+            "id": "2",
             "name": "Q1",
             "customer": [
               {
@@ -61,18 +90,18 @@ class QProvider extends JsonRPCServer{
                   "code": "88"
                 },
                 "phone": {
-                  "phoneNo": "01556898372",
+                  "phoneNo": "01725724068",
                   "dial": {
                     "status": "0",
-                    "statusText": "N/A",
+                    "statusText": "PENDING",
                     "errorCode": "0",
                     "errorText": "N/A",
                     "callCount": "1"
                   },
                   "message": {
-                        "content":"This is my first message",
+                        "content":"This is to you",
                     "status": "0",
-                    "statusText": "N/A",
+                    "statusText": "PENDING",
                     "errorCode": "0",
                     "errorText": "N/A",
                     "sMSCount": "1"
@@ -90,7 +119,7 @@ class QProvider extends JsonRPCServer{
                   "phoneNo": "01718239477",
                   "dial": {
                     "status": "0",
-                    "statusText": "N/A",
+                    "statusText": "PENDING",
                     "errorCode": "0",
                     "errorText": "N/A",
                     "callCount": "1"
@@ -98,7 +127,92 @@ class QProvider extends JsonRPCServer{
                   "message": {
                     "content":"This is test message1",
                     "status": "0",
-                    "statusText": "N/A",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "sMSCount": "1"
+                  }
+                }
+              }
+            ]
+        }';
+     }else
+		return '{
+            "id": "2",
+            "name": "Q1",
+            "customer": [
+              {
+                "id": "1",
+                "name": "Alamgir Kabir",
+                "country": {
+                  "name": "Bangladesh",
+                  "code": "88"
+                },
+                "phone": {
+                  "phoneNo": "01671800187",
+                  "dial": {
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "callCount": "1"
+                  },
+                  "message": {
+                        "content":"This is my second message",
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "sMSCount": "1"
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "name": "Omar farukh",
+                "country": {
+                  "name": "Bangladesh",
+                  "code": "88"
+                },
+                "phone": {
+                  "phoneNo": "01718239477",
+                  "dial": {
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "callCount": "1"
+                  },
+                  "message": {
+                    "content":"This is test message1",
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "sMSCount": "1"
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "name": "Omar farukh",
+                "country": {
+                  "name": "Bangladesh",
+                  "code": "88"
+                },
+                "phone": {
+                  "phoneNo": "01718239477",
+                  "dial": {
+                    "status": "0",
+                    "statusText": "PENDING",
+                    "errorCode": "0",
+                    "errorText": "N/A",
+                    "callCount": "1"
+                  },
+                  "message": {
+                    "content":"This is test message1",
+                    "status": "0",
+                    "statusText": "PENDING",
                     "errorCode": "0",
                     "errorText": "N/A",
                     "sMSCount": "1"
