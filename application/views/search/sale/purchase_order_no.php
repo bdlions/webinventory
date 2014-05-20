@@ -18,10 +18,9 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_by_sales",
+                url: '<?php echo base_url(); ?>' + "search/search_sales_by_purchase_order_no",
                 data: {
-                    user_id: $("#employee_list").val(),
-                    product_id: $("#product_list").val(),
+                    purchase_order_no: $("#purchase_order_no").val(),
                     start_date: $("#start_date").val(),
                     end_date: $("#end_date").val()
                 },
@@ -43,7 +42,7 @@
         <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
-        <td ><?php echo '{%= sale_info.category_unit %}'; ?></td>
+        <td ><?php echo '{%= sale_info.category_unit%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
@@ -84,11 +83,11 @@
             <tbody>
                 <tr>
                     <td>
-                        <label for="employee_list" class="col-md-6 control-label requiredField">
-                            Select User
+                        <label for="card_no" class="col-md-6 control-label requiredField">
+                            Lot No
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '0','class="form-control" id="employee_list"'); ?>
+                            <?php echo form_input($purchase_order_no+array('class'=>'form-control')); ?>
                         </div> 
                     </td> 
                     <td>
@@ -110,11 +109,11 @@
                 </tr>
                 <tr>
                     <td>
-                        <label for="product_list" class="col-md-6 control-label requiredField">
-                            Select Product
+                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
+
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
+                            <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
                         </div>                        
                     </td>
                     <td>
@@ -136,12 +135,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
-
-                        </label>
-                        <div class ="col-md-6">
-                            <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
-                        </div>                        
+                                               
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">

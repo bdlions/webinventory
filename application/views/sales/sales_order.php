@@ -383,6 +383,7 @@
                             <th>Product Name</th>
                             <th>Lot No</th>
                             <th>Quantity</th>
+                            <th>Product Unit</th>
                             <th>Unit Price</th>
                             <th>Sub Total</th>
                             <th>Delete Row</th>
@@ -390,6 +391,7 @@
                     </thead>
                     <tbody id="tbody_selected_product_list">                        
                     </tbody>
+                    <?php //echo '<pre/>';print_r($product_list_array);exit;?>
                     <script type="text/x-tmpl" id="tmpl_selected_product_info">
                         {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                         {% while(product_info){ %}
@@ -397,6 +399,7 @@
                         <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
+                        <td><?php echo '{%= product_info.category_unit%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="unit_price" type="text" value=""/></td>
                         <td><input class="input-width-table" name="product_sale_price" type="text" readonly="true" value="0"/></td>
                         <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>

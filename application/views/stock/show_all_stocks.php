@@ -28,6 +28,7 @@
         <td>{%= stock_info.product_name %}</td>
         <td>{%= stock_info.purchase_order_no %}</td>
         <td>{%= stock_info.current_stock %}</td>
+        <td>{%= stock_info.unit_category %}</td>
         <td>{%= stock_info.unit_price %}</td>
         <td>{%= stock_info.current_stock*stock_info.unit_price %}</td>
     </tr>
@@ -101,6 +102,7 @@
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>
+                    <th>Product Unit</th>
                     <th>Purchase Unit Price</th>
                     <th>Total Purchase Price</th>
 
@@ -115,6 +117,7 @@
                         <td><?php echo $stock_info['product_name'] ?></td>
                         <td><?php echo $stock_info['purchase_order_no'] ?></td>
                         <td><?php echo $stock_info['current_stock'] ?></td>
+                        <td><?php echo $stock_info['unit_category'] ?></td>
                         <td><?php echo $stock_info['unit_price'] ?></td>
                         <td><?php echo $stock_info['current_stock']*$stock_info['unit_price'] ?></td>
 

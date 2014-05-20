@@ -55,6 +55,7 @@ class Purchase extends CI_Controller {
         }
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
+        //echo '<pre/>';print_r($product_list_array);exit;
         if( count($product_list_array) > 0)
         {
             $this->data['product_list_array'] = $product_list_array;

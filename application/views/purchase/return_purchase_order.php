@@ -326,6 +326,7 @@
                         <tr>
                             <th>Product Name</th>
                             <th>Quantity</th>
+                            <th>Product Unit</th>
                             <th>Unit Price</th>
                             <th>Sub Total</th>
                         </tr>
@@ -338,6 +339,7 @@
                         <tr>
                         <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
+                        <td><?php echo '{%= product_info.category_unit %}'; ?></td>
                         <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
                         <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
                         </tr>

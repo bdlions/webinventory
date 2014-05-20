@@ -162,7 +162,14 @@ class Expense extends CI_Controller {
         $start_time = $this->utils->get_current_date_start_time();
         $end_time = $start_time + 86400;
         $expense_list = $this->expenses->get_all_expenses($start_time, $end_time);
+        $total_expense = 0;
+        foreach($expense_list as $expense_info)
+        {
+            $total_expense = $total_expense + $expense_info['expense_amount'];
+        }
         $this->data['expense_list'] = $expense_list;
+        
+        $this->data['total_expense'] = $total_expense;
         
         $this->data['show_expense_start_date'] = array(
             'name' => 'show_expense_start_date',
@@ -257,7 +264,16 @@ class Expense extends CI_Controller {
         {
             $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time);
         }
-        echo json_encode($expense_list_array);
+        $total_expense = 0;
+        foreach($expense_list_array as $expense_info)
+        {
+            $total_expense = $total_expense + $expense_info['expense_amount'];
+        }
+        $result = array(
+            'total_expense' => $total_expense,
+            'expense_list' => $expense_list_array
+        );
+        echo json_encode($result);
     }
     
     public function delete_expense($expense_id)

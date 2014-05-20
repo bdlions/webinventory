@@ -43,7 +43,6 @@
                     $("#input_return_sale_customer_id").val(customer_info.customer_id);
                     $("#input_return_sale_customer").val(customer_info.first_name+' '+customer_info.last_name);
                     $("#input_return_sale_phone").val(customer_info.phone);
-                    $("#input_return_sale_card_no").val(customer_info.card_no);
                     $('#input_return_sale_product').attr('type', 'text');
                     $("#total_return_sale_price").val('');
                     $("#previous_due").val(customer_due);
@@ -55,7 +54,6 @@
                     $("#input_return_sale_customer_id").val('');
                     $("#input_return_sale_customer").val('');
                     $("#input_return_sale_phone").val('');
-                    $("#input_return_sale_card_no").val('');
                     $('#input_return_sale_product').attr('type', 'hidden');
                     $("#total_return_sale_price").val('');
                     $("#previous_due").val('');
@@ -168,7 +166,6 @@
                             $("#input_return_sale_customer_id").val('');
                             $("#input_return_sale_customer").val('');
                             $("#input_return_sale_phone").val('');
-                            $("#input_return_sale_card_no").val('');
                             $('#input_return_sale_product').attr('type', 'hidden');
                             $("#total_return_sale_price").val('');
                             $("#previous_due").val('');
@@ -290,14 +287,6 @@
                     </div> 
                 </div>
                 <div class="form-group">
-                    <label for="input_return_sale_card_no" class="col-md-3 control-label requiredField">
-                        Card No.
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'input_return_sale_card_no', 'id' => 'input_return_sale_card_no', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
                     <label for="input_return_sale_product" class="col-md-3 control-label requiredField">
                         Product
                     </label>
@@ -347,7 +336,7 @@
                         <td id="{%= product_info.product_id%}"><input name="name" type="hidden" value="{%= product_info.product_name%}"/>{%= product_info.product_name%}</td>
                         <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="purchase_order_no" type="text" value="{%= product_info.purchase_order_no%}"/></td>
                         <td><input class="input-width-table" id="{%= product_info.product_id%}" name="quantity" type="text" value=""/></td>
-                        <td><?php echo '{%= product_info.categort_unit %}'; ?></td>
+                        <td><?php echo '{$=product_info.categort_unit%}'; ?></td>
                         <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="unit_price" type="text" value="{%= product_info.unit_price%}"/></td>
                         <td><input readonly="readonly" class="input-width-table" name="product_sale_price" type="text" value="0"/></td>
                         </tr>

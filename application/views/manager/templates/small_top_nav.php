@@ -55,6 +55,7 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("search/daily_sales");?>">Daily Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
+        <li><a href="<?php echo base_url("search/search_sales_purchase_order_no");?>">Search Customer Sales by Lot No</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_name");?>">Search Customer Sales by Name</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_phone");?>">Search Customer Sales by Phone</a></li>
@@ -87,8 +88,8 @@
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">mathanosto</a></li>  
+        <li><a href="<?php echo base_url("./message/create_custom_message");?>">Create New Custom Message</a></li>  
+        <li><a href="<?php echo base_url("./message/update_custom_message");?>">Update Custom Message</a></li>  
     </ul>
 </div>
 <div class="btn-group">

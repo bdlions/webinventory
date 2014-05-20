@@ -437,6 +437,18 @@ class Ion_auth {
     public function get_current_user_type(){
         return $this->session->userdata('user_type');
     }
+    
+    public function get_current_shop_type()
+    {
+       $shop_type_id = 0;
+       $shop_info_array = $this->ion_auth_model->get_shop_info()->result_array();
+       if(!empty($shop_info_array))
+       {
+           $shop_info = $shop_info_array[0];
+           $shop_type_id = $shop_info['shop_type_id'];
+       }
+       return $shop_type_id;
+    }
 
     /**
      * in_group

@@ -314,12 +314,14 @@
                         <tr>
                             <th>Product Name</th>
                             <th>Quantity</th>
+                            <th>Product Unit</th>
                             <th>Unit Price</th>
                             <th>Sub Total</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_selected_product_list">                        
                     </tbody>
+                    <?php //echo '<pre/>';print_r($product_list_array);exit;?>
                     <script type="text/x-tmpl" id="tmpl_selected_product_info">
                         {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                         {% while(product_info){ %}
@@ -327,6 +329,7 @@
                         <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
                         {% if(product_info.readonly == 'true') { %}
+                        <td><?php echo '{%= product_info.category_unit %}'; ?></td>
                         <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
                         {% }else{ %} 
                         <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>

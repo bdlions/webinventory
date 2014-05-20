@@ -46,7 +46,14 @@
             </div>
             <div class="row">
                 <!-- Menu Items -->
-                <?php $this->load->view("manager/templates/top_nav"); ?>
+                <?php
+                $CI = &get_instance();
+                if ($CI->ion_auth->get_current_shop_type() == SHOP_TYPE_SMALL){
+                    $this->load->view("manager/templates/small_top_nav");
+                } else if ($CI->ion_auth->get_current_shop_type() == SHOP_TYPE_MEDIUM) {
+                    $this->load->view("manager/templates/medium_top_nav");
+                }
+                ?>
                 <?php echo $contents ?>
             </div>
             <div class ="row">

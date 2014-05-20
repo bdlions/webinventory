@@ -27,6 +27,7 @@
         <td >{%= sale_info.product_name%}</td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
+        <td ><?php echo '{%= sale_info.category_unit%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
@@ -60,7 +61,7 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer sale by Card No</h3>
+<h3>Search Customer sale by Customer Name</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -138,6 +139,7 @@
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>
+                    <th>Product Unit</th>
                     <th>Purchase Unit Price</th>
                     <th>Sale Unit Price</th>
                     <th>Total Purchase Price</th>

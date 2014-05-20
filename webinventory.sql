@@ -39,8 +39,8 @@ CREATE TABLE `shop_info` (
 ALTER TABLE `shop_info`
   ADD CONSTRAINT `shop_info_ibfk_1` FOREIGN KEY (`shop_type_id`) REFERENCES `shop_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-INSERT INTO `shop_info` (`id`, `shop_no`, `name`) VALUES
-(1, 1, 'Apurbo');
+INSERT INTO `shop_info` (`id`, `shop_no`, `name`, `shop_type_id`) VALUES
+(1, 1, 'Apurbo', 1);
 
 CREATE TABLE `profession` (
 	`id` int NOT NULL auto_increment,
@@ -762,4 +762,13 @@ CREATE TABLE IF NOT EXISTS `supplier_message` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `supplier_message`
   ADD CONSTRAINT `fk_supplier_message_suppliers1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Message feature created, modified and used by admin  
+CREATE TABLE IF NOT EXISTS `custom_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message` varchar(200) NOT NULL DEFAULT '',
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

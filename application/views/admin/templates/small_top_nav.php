@@ -1,5 +1,15 @@
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Shop<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./shop/set_shop");?>">Change Shop</a></li>
+        <li><a href="<?php echo base_url("./shop/create_shop");?>">Create Shop</a></li>
+        <li><a href="<?php echo base_url("./shop/show_all_shops");?>">Shop List</a></li>  
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Sales<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -35,7 +45,7 @@
         <li><a href="<?php echo base_url("./product/create_product");?>">add new product</a></li>
         <li><a href="<?php echo base_url("./product/show_all_products");?>">Product List</a></li>
         <li><a href="<?php echo base_url("./product/import_product");?>">Product List Import</a></li>
-        <li class="divider"></li>
+        <li class="divider"></li>        
         <li><a href="<?php echo base_url("stock/show_all_stocks");?>">show current stock</a></li> 
     </ul>
 </div>
@@ -55,6 +65,7 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("search/daily_sales");?>">Daily Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
+        <li><a href="<?php echo base_url("search/search_sales_purchase_order_no");?>">Search Customer Sales by Lot No</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_name");?>">Search Customer Sales by Name</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_phone");?>">Search Customer Sales by Phone</a></li>
@@ -87,8 +98,8 @@
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">mathanosto</a></li>  
+        <li><a href="<?php echo base_url("./message/create_custom_message");?>">Create New Custom Message</a></li>  
+        <li><a href="<?php echo base_url("./message/update_custom_message");?>">Update Custom Message</a></li>
     </ul>
 </div>
 <div class="btn-group">
@@ -96,6 +107,12 @@
         SMS<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./sms/sms_configuration_shop");?>">Configure SMS</a></li>
+        <li><a href="<?php echo base_url("./sms/sms_status");?>">SMS Status</a></li>
+        <li><a href="<?php echo base_url("./operator/create_operator");?>">Create Operator</a></li>
+        <li><a href="<?php echo base_url("./operator/show_all_operators");?>">Show All Operators</a></li>
+        <li><a href="<?php echo base_url("./sms/upload_file");?>">Process File</a></li>
+        <li class="divider"></li>
         <li><a href="<?php echo base_url("./sms/all_message_category");?>">Show All Message Category</a></li>
         <li><a href="<?php echo base_url("./sms/create_message_category");?>">Create new configure Message</a></li>
         <li class="divider"></li>
@@ -103,7 +120,7 @@
         <li><a href="<?php echo base_url("./sms/create_message");?>">Create New Message</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>
+        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>        
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
     </ul>

@@ -1,6 +1,7 @@
 var customer_list = new Array();
 var supplier_list = new Array();
 var product_list = new Array();
+var message_list = new Array();
 var purchased_product_list = new Array();
 
 var modal_confirmation_category_id                         = "";
@@ -96,3 +97,14 @@ function get_purchased_product_list()
 {
     return purchased_product_list;
 }
+
+function set_supplier_message_list(m_list)
+{
+    message_list = m_list;
+}
+
+function get_supplier_message_list()
+{
+    return message_list;
+}
+

@@ -96,8 +96,16 @@ class Search extends CI_Controller {
      */
     public function daily_sales()
     {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
         $this->data = $this->process_daily_sale();
-        $this->template->load(null, 'search/sale/daily_sales', $this->data);
+        $this->data['shop_info'] = $shop_info;
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/daily_sales', $this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/daily_sales_med', $this->data);}
     }
     /*
      * Ajax call
@@ -106,6 +114,8 @@ class Search extends CI_Controller {
     {
         $product_id = $_POST['product_id'];
         $result = $this->process_daily_sale($product_id);
+        //print_r($result);
+        //echo '<pre/>';print_r($result);exit('hi');
         echo json_encode($result);
     }
     
@@ -245,11 +255,29 @@ class Search extends CI_Controller {
     }*/
     public function process_daily_sale($product_id = 0)
     {
+        
         $time = $this->utils->get_current_date_start_time();
         $result = array();
         $shop_id = $this->session->userdata('shop_id');
         $product_list = array();
         $product_list_array = $this->product_library->get_all_products($shop_id)->result_array();
+        
+        if($product_id!=0)
+        {
+            foreach($product_list_array as $row)
+            {
+                if($row['product_id']==$product_id)
+                {
+                    $result['category_name'] = $row['category_unit'];
+                    break;
+                }
+            }
+        }
+        else
+        {
+            $result['category_name'] = '';
+        }
+        
         if( !empty($product_list_array) )
         {
             foreach($product_list_array as $product_info)
@@ -257,7 +285,10 @@ class Search extends CI_Controller {
                 $product_list[$product_info['id']] = $product_info['name'];
             }
         }
+        //echo '<pre/>';print_r($product_list);exit;
         $result['product_list'] = $product_list;
+        
+        
         
         $total_product_sold = 0;
         $total_profit = 0;
@@ -279,6 +310,8 @@ class Search extends CI_Controller {
                 }                
             }
         }
+        
+        //echo '<pre/>';print_r($sale_list);exit;
         $result['sale_list'] = $sale_list;
         $result['total_product_sold'] = $total_product_sold;
         if($this->session->userdata('user_type') != SALESMAN)
@@ -459,6 +492,7 @@ class Search extends CI_Controller {
         
         $product_list = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
+        //echo '<pre/>';print_r($product_list_array);exit;
         if( !empty($product_list_array) )
         {
             foreach($product_list_array as $key => $product_info)
@@ -488,6 +522,71 @@ class Search extends CI_Controller {
         );
         $this->template->load(null, 'search/sale/search_sales', $this->data);
     }
+    /*
+     * Ajax Call
+     */
+    public function search_sales_by_purchase_order_no()
+    {
+        $purchase_order_no = $_POST['purchase_order_no'];
+        $start_date = $_POST['start_date'];
+        $end_date = $_POST['end_date'];
+        $start_time = $this->utils->get_human_to_unix($start_date);
+        $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
+        
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $total_profit= 0;
+        
+        $this->data['sale_list'] = array();
+        
+        $sale_list = array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_purchase_order_no($start_time, $end_time, $purchase_order_no)->result_array();
+        if( !empty($sale_list_array) )
+        {
+            foreach($sale_list_array as $sale_info)
+            {
+                $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);                
+                $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                $total_quantity = $total_quantity + $sale_info['total_sale'];
+                $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                $sale_list[] = $sale_info;
+            }
+        }
+        $result_array['sale_list'] = $sale_list;  
+        $result_array['total_sale_price'] = $total_sale_price;  
+        $result_array['total_quantity'] = $total_quantity;  
+        $result_array['total_profit'] = $total_profit;  
+        echo json_encode($result_array);
+    }
+    public function search_sales_purchase_order_no()
+    {
+        $this->data['purchase_order_no'] = array(
+            'name' => 'purchase_order_no',
+            'id' => 'purchase_order_no',
+            'type' => 'text'
+        );
+        $date = date('Y-m-d');
+        $this->data['start_date'] = array(
+            'name' => 'start_date',
+            'id' => 'start_date',
+            'type' => 'text',
+            'value' => $date
+        );
+        $this->data['end_date'] = array(
+            'name' => 'end_date',
+            'id' => 'end_date',
+            'type' => 'text',
+            'value' => $date
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/purchase_order_no', $this->data);
+    }
+    
     /*
      * Ajax Call
      */
@@ -560,6 +659,13 @@ class Search extends CI_Controller {
     }
     public function search_sales_customer_name()
     {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
         $this->data['name'] = array(
             'name' => 'name',
             'id' => 'name',
@@ -571,7 +677,8 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
-        $this->template->load(null, 'search/sale/customer_name', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/customer_name', $this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_name_med', $this->data);}
     }
     
     /*
@@ -585,6 +692,7 @@ class Search extends CI_Controller {
         $total_profit= 0;
         $sale_list = array();
         $sale_list_array = $this->sale_library->get_user_sales_by_phone($phone)->result_array();
+        //echo '<pre/>';print_r($sale_list_array);exit;
         if( !empty($sale_list_array) )
         {
             foreach($sale_list_array as $sale_info)
@@ -599,10 +707,18 @@ class Search extends CI_Controller {
         $result_array['total_sale_price'] = $total_sale_price;  
         $result_array['total_quantity'] = $total_quantity;  
         $result_array['total_profit'] = $total_profit;
+        //echo '<pre/>';print_r($result_array);exit;
         echo json_encode($result_array);
     }
     public function search_sales_customer_phone()
     {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
@@ -614,7 +730,8 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
-        $this->template->load(null, 'search/sale/customer_phone', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/customer_phone', $this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_phone_med', $this->data);}
     }
     
     public function search_customers_by_total_purchased()
@@ -897,6 +1014,13 @@ class Search extends CI_Controller {
     
     public function search_customer_phone()
     {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
@@ -914,7 +1038,8 @@ class Search extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
-        $this->template->load(null, 'search/customer/phone',$this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/customer/phone',$this->data);}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/customer/phone_med',$this->data);}
     }
     
     /*
@@ -926,7 +1051,7 @@ class Search extends CI_Controller {
         $end_card_no = $_POST['end_card_no'];
         
         $customer_list = array();
-        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range()->result_array();
         foreach($customer_list_array as $customer_info)
         {
             if( $start_card_no+0 <= $customer_info['card_no']+0 && $customer_info['card_no']+0 <= $end_card_no+0)
