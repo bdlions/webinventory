@@ -116,8 +116,13 @@ class Shop_model extends Ion_auth_model {
      * */
     public function get_all_shops()
     {
-        $this->response = $this->db->get($this->tables['shop_info']);
-        return $this;
+//        $this->response = $this->db->get($this->tables['shop_info']);
+//        return $this;
+        
+        return $this->db->select($this->tables['shop_info'].'.*,'.$this->tables['shop_type'].'.type as shop_type')
+                    ->from($this->tables['shop_info'])
+                    ->join($this->tables['shop_type'],  $this->tables['shop_type'].'.id = '.$this->tables['shop_info'].'.shop_type_id')
+                    ->get();
     }
     
     /**

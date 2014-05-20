@@ -769,8 +769,8 @@ class User extends CI_Controller {
         }
         $this->data['shop_info'] = $shop_info;
         $this->data['message'] = '';
-        if($shop_info == SHOP_TYPE_SMALL)
-            {$this->form_validation->set_rules('card_no', 'Card No', 'xss_clean|required');}
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL)
+        {$this->form_validation->set_rules('card_no', 'Card No', 'xss_clean|required');}
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
@@ -791,7 +791,7 @@ class User extends CI_Controller {
                     'address' => $this->input->post('address'),
                     'created_date' => date('Y-m-d H:i:s')
                 );
-
+                $additional_data['shop_type_id'] = $shop_info['shop_type_id'];
                 if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL)
                 {
                     $additional_data['card_no'] = $this->input->post('card_no');
@@ -1177,23 +1177,35 @@ class User extends CI_Controller {
     public function create_customer_sale_order()
     {
         $response = array();
+        
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
-        $card_no = $_POST['card_no'];
         $message_category_id = $_POST['message_category_id'];
         //$user_name = $_POST['phone_no'];
         $user_name = '';
         $password = "password";
         $email = "dummy@dummy.com";
         $additional_data = array(
-            'card_no' => $card_no,
             'account_status_id' => $this->account_status_list['active_id'],
             'first_name' => $first_name,
             'last_name' => $last_name,
             'phone' => $phone_no,
             'created_date' => date('Y-m-d H:i:s')
         );
+        $additional_data['shop_type_id'] = $shop_info['shop_type_id'];
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL)
+        {
+            $additional_data['card_no'] = $_POST['card_no'];
+        }
+        
         $groups = array('id' => USER_GROUP_CUSTOMER);
         $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
         if( $user_id !== FALSE )

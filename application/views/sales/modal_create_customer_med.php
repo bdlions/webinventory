@@ -17,11 +17,6 @@
                 alert("Phone is required.");
                 return;
             }
-            else if ($("#input_card_no").val().length == 0)
-            {
-                alert("Card No is required.");
-                return;
-            }
             $.ajax({
                 dataType: 'json',    
                 type: "POST",
@@ -30,7 +25,6 @@
                     first_name: $("#input_first_name").val(),
                     last_name: $("#input_last_name").val(),
                     phone_no: $("#input_phone_no").val(),
-                    card_no: $("#input_card_no").val(),
                     message_category_id: $("#message_category_list").val()
                 },
                 success: function(data) {
@@ -106,7 +100,7 @@
                         },
                 header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Customer</div>',
                 template: [
-                    '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{card_no}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
+                    '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
                   ].join(''),
                 engine: Hogan
             }
@@ -257,18 +251,6 @@
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
-                                
-                                <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
-                                <div class="form-group">
-                                    <label for="input_card_no" class="col-md-4 control-label requiredField">
-                                        Card No
-                                    </label>
-                                    <div class ="col-md-8">
-                                        <?php echo form_input(array('name' => 'input_card_no', 'id' => 'input_card_no', 'class' => 'form-control')); ?>
-                                    </div> 
-                                </div>
-                                <?php }?>
-                                
                                 <div class="form-group">
                                     <label for="address" class="col-md-4 control-label requiredField">
                                         Message Category

@@ -2007,7 +2007,7 @@ class Ion_auth_model extends CI_Model {
     public function create_customer($additional_data)
     {
         $this->trigger_events('pre_create_customer');
-        if (array_key_exists('shop_type_id', $additional_data))
+        if($additional_data['shop_type_id'] == SHOP_TYPE_SMALL)
         {
             if ($this->customer_identity_column == 'card_no' && $this->customer_identity_check($additional_data['card_no']))
             {
