@@ -728,12 +728,16 @@ CREATE TABLE IF NOT EXISTS `message_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(200) NOT NULL DEFAULT '',
   `shop_id` int(11) NOT NULL,
+  `type_id` int(11) DEFAULT NULL,
   `created_on` int(11) unsigned NOT NULL,
   `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ALTER TABLE `message_category`
   ADD CONSTRAINT `fk_message_category_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+INSERT INTO `message_category` (`id`, `description`, `shop_id`, `type_id`) VALUES
+(1, 'Customer registration', 1, 1),
+(2, 'Supplier registration', 1, 2);
 
 CREATE TABLE IF NOT EXISTS `message_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -746,7 +750,9 @@ CREATE TABLE IF NOT EXISTS `message_info` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `message_info`
   ADD CONSTRAINT `fk_message_info_message_category1` FOREIGN KEY (`message_category_id`) REFERENCES `message_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
+INSERT INTO `message_info` (`id`, `message_description`, `message_category_id`, `shop_id`) VALUES
+(1, 'Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market', 1, 1),
+(2, 'We hope that we can establish a good business relationship with you. Thanks, APURBO brand Bangladesh. Chandrima market, New market', 2, 1);
 --
 -- Table structure for table `supplier_message`
 --

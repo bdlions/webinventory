@@ -5,6 +5,7 @@ include './constants/registration.php';
 include './constants/stock.php';
 include './constants/user_group.php';
 include './constants/shop.php';
+include './constants/sms.php';
 /***************** Custom constant **********************/
 date_default_timezone_set('Asia/Dacca');
 
