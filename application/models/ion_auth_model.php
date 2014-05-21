@@ -2380,6 +2380,7 @@ class Ion_auth_model extends CI_Model {
         
     }
     
+    //Not sure about the use
     public function get_message_category($msg_category_id, $shop_id = 0)
     {
         if( $shop_id == 0)

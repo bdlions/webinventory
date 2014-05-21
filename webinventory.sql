@@ -772,11 +772,14 @@ ALTER TABLE `supplier_message`
 -- Message feature created, modified and used by admin  
 CREATE TABLE IF NOT EXISTS `custom_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shop_id` int(11) NOT NULL,
   `message` varchar(200) NOT NULL DEFAULT '',
   `created_on` int(11) unsigned NOT NULL,
   `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+ALTER TABLE `custom_message`
+  ADD CONSTRAINT `fk_custom_message_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Message table for adroid --
 CREATE TABLE IF NOT EXISTS `queue_manage` (

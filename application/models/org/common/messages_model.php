@@ -56,22 +56,51 @@ class Messages_model extends Ion_auth_model {
      * @Param $message_id_list, message id list. If the list is empty then this method will return all messages
      * @Author Nazmul on 17th May 2014
      */
-    public function get_messages($message_id_list = array())
+    public function get_messages($message_id_list = array(), $shop_id = 0)
     {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         if(!empty($message_id_list))
         {
             $this->db->where_in($this->tables['custom_message'].'.id',$message_id_list);
         }
-        
+        $this->db->where($this->tables['custom_message'].'.shop_id',$shop_id);
         return $this->db->select('*')
                     ->from($this->tables['custom_message'])
                     ->get();
     }
     
-    public function get_all_custom_message_for_typeahed()
+    public function get_all_custom_message_for_typeahed($shop_id=0)
     {
+        if($shop_id!=0)
+        {
+            $this->db->where($this->tables['custom_message'].'.shop_id',$shop_id);
+        }
+        
         return $this->db->select("*")
                     ->from($this->tables['custom_message'])
+                    ->get();
+    }
+    
+    public function get_sms_message_category($shop_id,$type_id)
+    {
+        $this->db->where($this->tables['message_category'].'.shop_id',$shop_id);
+        $this->db->where($this->tables['message_category'].'.type_id',$type_id);
+        
+        return $this->db->select('*')
+                    ->from($this->tables['message_category'])
+                    ->get();
+    }
+    
+    public function get_sms_message($message_category_id,$shop_id=0)
+    {
+        $this->db->where($this->tables['message_info'].'.message_category_id',$message_category_id);
+        $this->db->where($this->tables['message_info'].'.shop_id',$shop_id);
+        
+        return $this->db->select('*')
+                    ->from($this->tables['message_info'])
                     ->get();
     }
 }

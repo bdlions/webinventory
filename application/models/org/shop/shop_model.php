@@ -57,6 +57,8 @@ class Shop_model extends Ion_auth_model {
     public function create_shop($additional_data)
     {
         $this->trigger_events('pre_create_shop');
+        $this->db->trans_begin();
+        
         if ($this->shop_identity_column == 'name' && $this->shop_identity_check($additional_data[$this->shop_identity_column])) 
         {
             $this->set_error('shop_creation_duplicate_shop');
@@ -65,9 +67,112 @@ class Shop_model extends Ion_auth_model {
         //filter out any data passed that doesnt have a matching column in the users table
         $additional_data = $this->_filter_data($this->tables['shop_info'], $additional_data);
         $this->db->insert($this->tables['shop_info'], $additional_data);
-        $id = $this->db->insert_id();
+        $shop_id = $this->db->insert_id();
+        
+        if($shop_id != FALSE)
+        {
+            $data = array(
+                'shop_id' => $shop_id,
+                'type_id' => SMS_MESSAGE_CATEGORY_CUSTOMER_REGISTRATION_TYPE_ID,
+                'description' => SMS_MESSAGE_CATEGORY_CUSTOMER_REGISTRATION_DESCRIPTION,
+                'created_on' => now()
+            );
+            
+            $message_category_id = $this->create_sms_message_category($data);
+            
+            if($message_category_id != FALSE)
+            {
+                $data = array(
+                    'shop_id' => $shop_id,
+                    'message_category_id' => $message_category_id,
+                    'message_description' => SMS_CUSTOMER_REGISTRATION_MESSAGE,
+                    'created_on' => now()
+                );
+                
+                $id = $this->create_sms_message($data, $shop_id);
+                if($id == FALSE)
+                {
+                    $this->db->trans_rollback();
+                    return FALSE;
+                }
+            }
+            else
+            {
+                $this->db->trans_rollback();
+                return FALSE;
+            }
+            
+            $data = array(
+                'shop_id' => $shop_id,
+                'type_id' => SMS_MESSAGE_CATEGORY_SUPPLIER_REGISTRATION_TYPE_ID,
+                'description' => SMS_MESSAGE_CATEGORY_SUPPLIER_REGISTRATION_DESCRIPTION,
+                'created_on' => now()
+            );
+            
+            $message_category_id = $this->create_sms_message_category($data);
+            
+            if($message_category_id != FALSE)
+            {
+                $data = array(
+                    'shop_id' => $shop_id,
+                    'message_category_id' => $message_category_id,
+                    'message_description' => SMS_SUPPLIER_REGISTRATION_MESSAGE,
+                    'created_on' => now()
+                );
+                
+                $id = $this->create_sms_message($data, $shop_id);
+                if($id == FALSE)
+                {
+                    $this->db->trans_rollback();
+                    return FALSE;
+                }
+            }
+            else
+            {
+                $this->db->trans_rollback();
+                return FALSE;
+            }
+        }
+        else
+        {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+        
+        $this->db->trans_commit();
         $this->set_message('shop_create_successful');
         $this->trigger_events('post_create_shop');
+        return (isset($shop_id)) ? $shop_id : FALSE;
+    }
+    
+    /*
+     * 
+     */
+    public function create_sms_message_category($additional_data)
+    {
+        //filter out any data passed that doesnt have a matching column in the message_category table
+        $message_category_data = $this->_filter_data($this->tables['message_category'], $additional_data);
+  
+        $this->db->insert($this->tables['message_category'], $message_category_data);
+        $id = $this->db->insert_id();
+        return (isset($id)) ? $id : FALSE;
+    }
+    /*
+     * 
+     */
+    public function create_sms_message($additional_data, $shop_id = 0)
+    {
+        if( 0 == $shop_id )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $data = array(
+            'shop_id' => $shop_id
+        );
+        //filter out any data passed that doesnt have a matching column in the message_category table
+        $message_data = array_merge($this->_filter_data($this->tables['message_info'], $additional_data), $data);
+        $this->db->insert($this->tables['message_info'], $message_data);
+        $id = $this->db->insert_id();
         return (isset($id)) ? $id : FALSE;
     }
     /**

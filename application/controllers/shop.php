@@ -55,6 +55,7 @@ class Shop extends CI_Controller {
                 $shop_id = $this->shop_library->create_shop($additional_data);
                 if( $shop_id !== FALSE)
                 {
+                    
                     if($this->ion_auth->is_admin())
                      {
                          $this->session->set_flashdata('message', $this->shop_library->messages());

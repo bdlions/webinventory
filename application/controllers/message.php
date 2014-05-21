@@ -45,7 +45,9 @@ class Message extends CI_Controller {
             {
                 // after chnaging the test using javascript value is pick in hidden field editortext
                 $editor_value = trim(htmlentities($this->input->post('editortext')));
+                $shop_id = 
                 $data = array(
+                    'shop_id' => $this->session->userdata('shop_id'),
                     'message' => $editor_value,
                     'created_on' => now(),
                 );
@@ -150,8 +152,12 @@ class Message extends CI_Controller {
         
     }
     
-    public function get_custom_message()
+    public function get_custom_message($shop_id=0)
     {
+        if($shop_id==0)
+        {
+            $shop_id = $this->session->userdate('shop_id');
+        }
         $messages = $this->messages->get_all_custom_message_for_typeahed()->result();
         $temp_messages = array();
         foreach ($messages as  $message) {

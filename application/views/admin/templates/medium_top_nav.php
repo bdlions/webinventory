@@ -108,9 +108,6 @@
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./sms/all_message");?>">All Message</a></li>
         <li><a href="<?php echo base_url("./sms/create_message");?>">Create New Message</a></li>
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("./sms/all_supplier_message");?>">All Supplier Messages</a></li>
-        <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li> 
         
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 

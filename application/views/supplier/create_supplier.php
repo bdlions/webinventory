@@ -47,14 +47,14 @@
                     <?php echo form_input($company+array('class'=>'form-control')); ?>
                 </div> 
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Message Category
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_dropdown('message_category_list', $message_category_list+array('' => 'Select'), '', 'class=form-control'); ?>
+                    <?php //echo form_dropdown('message_category_list', $message_category_list+array('' => 'Select'), '', 'class=form-control'); ?>
                 </div> 
-            </div>
+            </div>-->
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
 

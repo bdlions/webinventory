@@ -22,6 +22,7 @@ class User extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('sms_library');
         $this->load->library('org/shop/shop_library');
+        $this->load->library('org/common/messages');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -811,8 +812,14 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $message_category_id = $this->input->post('message_category_list');
-                    $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+                    $message_type_id = SMS_MESSAGE_CATEGORY_CUSTOMER_REGISTRATION_TYPE_ID;
+                    $message_category_id = $this->messages->get_sms_message_category($shop_info['shop_id'],$message_type_id)->result_array();
+                    if(!empty($message_category_id)){
+                        $message_category_id = $message_category_id[0];
+                        $message_category_id = $message_category_id['id'];
+                    }
+
+                    $message_info_array = $this->messages->get_sms_message($message_category_id,$shop_info['id'])->result_array();
                     $message = '';
                     if(!empty($message_info_array))
                     {
@@ -860,14 +867,14 @@ class User extends CI_Controller {
         }
         
         
-        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
-        $this->data['message_category_list'] = array();
-        if( !empty($message_category_list_array) )
-        {
-            foreach ($message_category_list_array as $key => $message_category) {
-                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
-            }
-        }
+//        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+//        $this->data['message_category_list'] = array();
+//        if( !empty($message_category_list_array) )
+//        {
+//            foreach ($message_category_list_array as $key => $message_category) {
+//                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
+//            }
+//        }
         $this->data['card_no'] = array(
             'name' => 'card_no',
             'id' => 'card_no',
@@ -1242,6 +1249,14 @@ class User extends CI_Controller {
     public function create_supplier()
     {
         $this->data['message'] = '';
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
+        
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
@@ -1269,8 +1284,14 @@ class User extends CI_Controller {
                 $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                 if( $user_id !== FALSE )
                 {
-                    $message_category_id = $this->input->post('message_category_list');
-                    $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+                    $message_type_id = SMS_MESSAGE_CATEGORY_SUPPLIER_REGISTRATION_TYPE_ID;
+                    $message_category_id = $this->messages->get_sms_message_category($shop_info['shop_id'],$message_type_id)->result_array();
+                    if(!empty($message_category_id)){
+                        $message_category_id = $message_category_id[0];
+                        $message_category_id = $message_category_id['id'];
+                    }
+
+                    $message_info_array = $this->messages->get_sms_message($message_category_id,$shop_info['id'])->result_array();
                     $message = '';
                     if(!empty($message_info_array))
                     {
@@ -1296,14 +1317,14 @@ class User extends CI_Controller {
         {
             $this->data['message'] = $this->session->flashdata('message');
         }
-        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
-        $this->data['message_category_list'] = array();
-        if( !empty($message_category_list_array) )
-        {
-            foreach ($message_category_list_array as $key => $message_category) {
-                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
-            }
-        }
+//        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
+//        $this->data['message_category_list'] = array();
+//        if( !empty($message_category_list_array) )
+//        {
+//            foreach ($message_category_list_array as $key => $message_category) {
+//                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
+//            }
+//        }
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
