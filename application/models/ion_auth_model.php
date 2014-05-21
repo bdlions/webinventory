@@ -2009,10 +2009,11 @@ class Ion_auth_model extends CI_Model {
         $this->trigger_events('pre_create_customer');
         if($additional_data['shop_type_id'] == SHOP_TYPE_SMALL)
         {
-            if ($this->customer_identity_column == 'card_no' && $this->customer_identity_check($additional_data['card_no']))
-            {
-                $this->set_error('customer_creation_duplicate_card_no');
-                return FALSE;
+            if ($additional_data['shop_type_id'] == SHOP_TYPE_SMALL) {
+                if ($this->customer_identity_column == 'card_no' && $this->customer_identity_check($additional_data['card_no'])) {
+                    $this->set_error('customer_creation_duplicate_card_no');
+                    return FALSE;
+                }
             }
         }
 

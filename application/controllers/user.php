@@ -108,6 +108,16 @@ class User extends CI_Controller {
         //validate form input
         $this->form_validation->set_rules('identity', 'Identity', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
+        
+        //new for sign_up
+        $this->form_validation->set_rules('first_name', 'First Name', 'required');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('phone', 'Phone Number', 'required');
+        $this->form_validation->set_rules('username', 'User Name', 'required');
+        $this->form_validation->set_rules('new_password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+        //new
 
         if ($this->form_validation->run() == true) {
             //check to see if the user is logging in
@@ -155,7 +165,18 @@ class User extends CI_Controller {
                 'id' => 'password',
                 'type' => 'password',
             );
+            
+            $this->data['first_name'] = array('type' => 'text', 'name' => 'first_name', 'id' => 'first_name', 'value' => $this->input->post('first_name'));
+            $this->data['last_name'] = array('type' => 'text', 'name' => 'last_name', 'id' => 'last_name', 'value' => $this->input->post('last_name'));
+            $this->data['email'] = array('type' => 'email', 'name' => 'email', 'id' => 'email', 'value' => $this->input->post('email'));
+            $this->data['phone'] = array('type' => 'text', 'name' => 'phone', 'id' => 'phone', 'value' => $this->input->post('phone'));
+            $this->data['username'] = array('type' => 'text', 'name' => 'username', 'id' => 'username', 'value' => $this->input->post('username'));
+            $this->data['new_password'] = array('type' => 'new_password', 'name' => 'new_password', 'id' => 'new_password');
+            $this->data['password_confirm'] = array('type' => 'password', 'name' => 'password_confirm', 'id' => 'password_confirm');
+            $this->data['submit_create_manager'] = array('type' => 'submit', 'name' => 'submit_create_manager', 'id' => 'submit_create_manager', 'value' => 'Register');
+            
             $this->template->load($this->login_template, $this->login_view, $this->data);
+            
         }
     }
     
@@ -2147,9 +2168,72 @@ class User extends CI_Controller {
     {
         $this->sms_library->send_sms('12345','hello');
     }
+    
+    public function manager_signup()
+    {
+        $this->form_validation->set_rules('first_name', 'First Name', 'required');
+        $this->form_validation->set_rules('last_name', 'Last Name', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('phone', 'Phone Number', 'required');
+        $this->form_validation->set_rules('username', 'User Name', 'required');
+        $this->form_validation->set_rules('new_password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+
+        if ($this->input->post('submit_create_manager')) {
+            //$privatekey = "6Lf8YfESAAAAAHAsDzHvv0ESHdrFIe0k0pIDa542";
+            $privatekey = "6LctLfISAAAAAP_6q1pftugclrynNTLprwXFIXOD";//bdlions@gmail.com
+            $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+
+            if ($resp->is_valid) 
+            {
+                if ($this->form_validation->run() == true) 
+                {
+                    // call functions when verification is successfull
+                    //$this->template->load(NULL, "manager/create_admin", $this->data);
+                    $user_name = $this->input->post('username');
+                    $email = $this->input->post('email');
+                    $password = $this->input->post('password');
+                    $additional_data = array(
+                        'account_status_id' => $this->account_status_list['active_id'],
+                        'first_name' => $this->input->post('first_name'),
+                        'last_name' => $this->input->post('last_name'),
+                        'phone' => $this->input->post('phone'),
+                        'address' => $this->input->post('address'),
+                        'created_date' => date('Y-m-d H:i:s'),
+                        'sms_code' => rand(1, 999999999)
+                    );
+                    $groups = array('id' => $this->user_group['manager_id']);
+                    $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+                    if ($user_id !== FALSE) {
+                        $this->ion_auth->admin_registration_email(array(), $email);
+                        $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code'], false);
+                        $this->session->set_flashdata('message', $this->ion_auth->messages());
+                        redirect("user/manager_login", "refresh");
+
+                        echo 'Signup successful';
+                        $this->template->load(NULL, "user/manager_login", 'refresh');
+                    } else {
+                        $this->data['message'] = $this->ion_auth->errors();
+                    }
+                } 
+                else 
+                {
+                    $this->data['message'] = validation_errors();
+                }
+            } 
+            else 
+            {
+                $this->data['message'] = 'Invalid captcha.';
+            }
+        } else {
+            $this->data['message'] = $this->session->flashdata('message');
+        }
+    }
+    
     public function admin_signup()
     {
         $this->data['message'] = '';
+// <editor-fold defaultstate="collapsed">
 //        $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
 //        $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
 //        $this->form_validation->set_rules('email', 'Email', 'xss_clean');
@@ -2159,6 +2243,7 @@ class User extends CI_Controller {
 //        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
 //        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 //        
+        // </editor-fold>
         $this->form_validation->set_rules('first_name', 'First Name', 'required');
         $this->form_validation->set_rules('last_name', 'Last Name', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required');
@@ -2224,8 +2309,8 @@ class User extends CI_Controller {
         $this->data['password'] = array('type' => 'password', 'name' => 'password', 'id' => 'password');
         $this->data['password_confirm'] = array('type' => 'password', 'name' => 'password_confirm', 'id' => 'password_confirm');
         $this->data['submit_create_manager'] = array('type' => 'submit', 'name' => 'submit_create_manager', 'id' => 'submit_create_manager', 'value' => 'Register');
-
-
+// <editor-fold defaultstate="collapsed">
+        
 //        $this->data['phone'] = array(
 //            'name' => 'phone',
 //            'id' => 'phone',
@@ -2281,6 +2366,8 @@ class User extends CI_Controller {
 //            'value' => 'Create',
 //        );
 //        $this->template->load(null,'manager/create_admin',$this->data);
+
+// </editor-fold>
         $this->template->load(NULL, "manager/create_admin", $this->data);
     }
 }

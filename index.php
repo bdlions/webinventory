@@ -25,11 +25,13 @@ define('SALESMAN_LOGIN_SUCCESS_TEMPLATE', 'salesman/templates/main');
 define('SALESMAN_LOGIN_VIEW', 'salesman/login');
 define('SALESMAN_LOGIN_SUCCESS_VIEW', 'salesman/home');
 
+define('MANAGER_SIGNUP_URI', 'user/manager_signup');
 define('MANAGER_LOGIN_URI', 'user/manager_login');
 define('MANAGER_LOGIN_SUCCESS_URI', 'user/manager_login');
 define('MANAGER_LOGIN_TEMPLATE', 'manager/templates/login');
 define('MANAGER_LOGIN_SUCCESS_TEMPLATE', 'manager/templates/main');
-define('MANAGER_LOGIN_VIEW', 'manager/login');
+//define('MANAGER_LOGIN_VIEW', 'manager/login');
+define('MANAGER_LOGIN_VIEW', 'liggin');
 define('MANAGER_LOGIN_SUCCESS_VIEW', 'manager/home');
 
 define('ACCOUNT_VALIDATION_SMS_TEMPLATE', 'sms/templates/main');
