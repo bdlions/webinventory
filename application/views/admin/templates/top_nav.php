@@ -121,6 +121,8 @@
         <li class="divider"></li>
         <li><a href="<?php echo base_url()?>message/create_custom_message">Create Messages</a></li>
         <li><a href="<?php echo base_url()?>message/search_custom_message">Search Messages</a></li>
+        <li><a href="<?php echo base_url()?>queue">Queue</a></li>
+        
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
     </ul>
