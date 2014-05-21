@@ -772,3 +772,24 @@ CREATE TABLE IF NOT EXISTS `custom_message` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- Message table for adroid --
+CREATE TABLE IF NOT EXISTS `queue_manage` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `no_of_queues` int(11) DEFAULT NULL,
+  `queue_list` text,
+  `global_message` varchar(300),
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `modified_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `queue_table` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `number_of_message` int(11) DEFAULT NULL,
+  `message_list` text,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `modified_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+

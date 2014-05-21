@@ -86,10 +86,7 @@
         <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("./message/create_custom_message");?>">Create New Custom Message</a></li>  
-        <li><a href="<?php echo base_url("./message/update_custom_message");?>">Update Custom Message</a></li>  
+        <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li> 
     </ul>
 </div>
 <div class="btn-group">
@@ -107,5 +104,14 @@
         <li><a href="<?php echo base_url("./sms/add_supplier_message");?>">Create New Supplier Message</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Notebook<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+       <li><a href="<?php echo base_url("./message/create_custom_message");?>">Create New Custom Message</a></li>  
+       <li><a href="<?php echo base_url("./message/update_custom_message");?>">Update Custom Message</a></li>
     </ul>
 </div>
