@@ -97,7 +97,7 @@ class Sms extends CI_Controller {
             'id' => 'submit_sms_configuration_shop',
             'type' => 'submit',
             'value' => 'Update',
-        );        
+        );
         $this->template->load(null, 'sms/sms_configuration_shop', $this->data);
     }
     

@@ -19,6 +19,7 @@ class Queue extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->load->library('org/manage_queue/manage_queue_library');
 
         $this->user_type = CUSTOMER;
         $this->user_group = $this->config->item('user_group', 'ion_auth');
@@ -55,9 +56,10 @@ class Queue extends CI_Controller {
         {
             $content = trim($this->input->post('textarea_details'));
             $path = './upload/'.'queue_'.$this->session->userdata('user_id').'.txt';
+            
             if ( write_file($path, $content) )
             {
-                 redirect('queue/process_file/');
+                redirect('queue/process_file');
             }
             
         }
@@ -85,34 +87,43 @@ class Queue extends CI_Controller {
     
     public function process_file()
     {
-        $number_name_map = array();
+        $name_map = array();
         $number_list = array();
         $this->data['message'] = '';
         $file_content = read_file('./upload/'.'queue_'.$this->session->userdata('user_id').'.txt');
+        
         $file_content_array = explode("\n", $file_content);
+        //echo count($file_content_array);
+        //echo '<pre/>' ; print_r($file_content_array);exit;
+        $count = 0;
         foreach($file_content_array as $line)
         {
             if( $line != '' )
             {
-                $line_array = explode("-", $line);
+                $line_array = explode("~", $line);
                 if(count($line_array)> 1)
                 {
-                    $number_name_map[$line_array[0]] = $line_array[1];                              
-                }  
-                else
-                {
-                    $number_name_map[$line_array[0]] = '';
+                    $data = array(
+                        'name' => $line_array[0],
+                        'phone_number' => $line_array[1],
+                        'status_id' => 1,
+                        'created_on' => now()
+                    ); 
+                    
+                    $flag = $this->manage_queue_library->insert_phone_numbers($data);
+                    if($flag !== FALSE) {
+                        $count++;
+                    }
                 }
-                $number_list[] = $line_array[0];
             }               
         }
-        $result = array_count_values($number_list);
-        arsort($result);
         
-        $this->template->load(null, 'queue/process_file', $this->data);
+        redirect('queue/config_queue/'.$count);
+        
+        //$this->template->load(null, 'queue/process_file', $this->data);
     }
             
-    function config_queue() {
+    function config_queue($total_number = 0) {
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('total_number', 'Total Number', 'xss_clean|required');
@@ -122,13 +133,28 @@ class Queue extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
+                //echo '<pre/>';print_r($this->input->post());exit();
+                $total_no = $this->input->post('total_number');
+                $no_of_queue = $this->input->post('total_no_of_queue');
+                $eaqually_distribute = $this->input->post('eaqually_distribute');
+                //echo $total_no . ' '. $total_no_of_queue .' '.$eaqually_distribute ;exit;
+                if((int) $eaqually_distribute == 1){
+                    die('here');
+                    $ed = 1;
+                    redirect('queue/config_queue/'.$no_of_queue.'/'.$total_no.'/'.$ed,'refresh');
+                } else {
+                    die('thre');
+                    redirect('queue/config_queue/','refresh');
+                }
                 $additional_data = array(
                     'total_number' => $this->input->post('total_number'),
                     'total_no_of_queue' => $this->input->post('total_no_of_queue'),
                     'global_message' => $this->input->post('global_message'),
                     'created_on' => now()
                 );
-                if( 1 == FALSE)
+                
+                redirect('queue/config_queue?','refresh');
+                /*if( 1 == FALSE)
                 {
                     $this->session->set_flashdata('message', $this->operators->messages());
                     redirect('queue/config_queue','refresh');
@@ -136,7 +162,7 @@ class Queue extends CI_Controller {
                 else
                 {
                     $this->data['message'] = $this->operators->errors();
-                }
+                }*/
             }
             else
             {
@@ -148,12 +174,16 @@ class Queue extends CI_Controller {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
         
+        //$this->data['total_number'] = $total_number;
+        
         $this->data['total_number'] = array(
             'name' => 'total_number',
             'id' => 'total_number',
             'type' => 'text',
+            'readonly' => 'true',
             'onkeydown' =>'validateNumberAllowDecimal(event, false)',
-            'value' => $this->form_validation->set_value('total_number'),
+            //'value' => $this->form_validation->set_value('total_number'),
+            'value' => $total_number,
         );
         
         $this->data['total_no_of_queue'] = array(

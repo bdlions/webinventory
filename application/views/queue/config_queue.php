@@ -1,6 +1,6 @@
 <h3>Configure your Queue</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("queue/index", array('id' => 'form_create_operator', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("queue/config_queue", array('id' => 'form_create_operator', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
             <div class ="row">

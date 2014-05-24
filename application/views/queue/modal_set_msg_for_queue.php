@@ -2,7 +2,9 @@
 <script type="text/javascript">
     function openModal(val,id) {
         var message = {name:"John", phoneNo:533333450, msg:"bluesdf sf fsd "};
-        var messageList = [message, message, message];
+        var message1 = {name:"Omar", phoneNo:533333777, msg:"Ths is your sf fsd "};
+        var message2 = {name:"John", phoneNo:533333111, msg:"here is my code sf fsd "};
+        var messageList = [message, message1, message2];
         $("#tbody_list").html(tmpl("tmpl_message_list",  messageList));
         $('#modal_set_message_for_queue').modal('show');
     }
@@ -34,7 +36,7 @@
                                     <tr>
                                         <td><input type="text" name="name_of_customer_{%= i%}" id="name_of_customer_{%= i%}" value="{%=messageInfo.name%}"></td>
                                         <td><input type="text" name="phone_no_{%= i%}" id="phone_no_{%= i%}" onkeydown = "validateNumberAllowDecimal(event, false)" value="{%=messageInfo.phoneNo%}"></td>
-                                        <td><textarea type="text" name="msg_{%= i%}" id="msg_{%= i%}" value="{%=messageInfo.msg%}"></textarea></td>
+                                        <td><textarea type="text" name="msg_{%= i%}" id="msg_{%= i%}" value="{%=messageInfo.msg%}">{%=messageInfo.msg%}</textarea></td>
                                     </tr>
                                     {% messageInfo = ((o instanceof Array) ? o[i++] : null); %}
                                     {% } %}

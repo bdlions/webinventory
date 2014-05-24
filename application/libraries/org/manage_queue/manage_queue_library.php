@@ -57,7 +57,7 @@ class Manage_queue_library {
      *
      * */
     public function __call($method, $arguments) {
-        if (!method_exists($this->mange_queue_model, $method)) {
+        if (!method_exists($this->manage_queue_model, $method)) {
             throw new Exception('Undefined method Expense::' . $method . '() called');
         }
 
