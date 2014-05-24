@@ -21,6 +21,7 @@ class Manage_queue_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;
     }
     
+
     public function get_all_phoneno() {
         return $this->db->select("*")
                     ->from($this->tables['phone_directory'])
@@ -32,6 +33,20 @@ class Manage_queue_model extends Ion_auth_model {
         $id = $this->db->insert_id();
         
         return (isset($id)) ? $id : FALSE;
+    }
+
+    public function update_phone_directory($id,$data)
+    {
+        $data = $this->_filter_data($this->tables['phone_directory'], $data);
+        
+        $this->db->where('id',$id);
+        
+        $this->db->update($this->tables['phone_directory'],$data);
+    }
+    
+    public function create_queue()
+    {
+        
     }
     
 }

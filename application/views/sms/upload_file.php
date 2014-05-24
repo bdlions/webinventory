@@ -31,7 +31,7 @@
                     <?php echo form_input($submit_upload_file+array('class'=>'form-control btn-success')); ?>
                 </div> 
             </div>
-        </div>        
+        </div> 
         <div class="col-md-5">
             <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">

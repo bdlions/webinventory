@@ -44,4 +44,16 @@
         </div>        
     </div>
     <?php echo form_close(); ?>
+    <?php echo form_open("product/download_sample_file", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="phone" class="col-md-6 control-label requiredField">
+                    &nbsp;
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($download_sample_file+array('class'=>'form-control btn-success')); ?>
+                </div> 
+            </div>
+        </div>
+    <?php echo form_close(); ?>
 </div>

@@ -156,6 +156,8 @@ class Sms extends CI_Controller {
             'type' => 'submit',
             'value' => 'Upload',
         );
+        
+        
         $this->data['submit_process_file'] = array(
             'name' => 'submit_process_file',
             'id' => 'submit_process_file',

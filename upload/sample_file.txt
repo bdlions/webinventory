@@ -1,0 +1,1 @@
+Name~Size~weight~warranty~quality~unit_categroy_id~brand_name~unit_price

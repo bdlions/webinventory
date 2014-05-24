@@ -7,6 +7,7 @@
                     <th>Product Name</th>
                     <th>Product Size</th>
                     <th>Product Weight</th>
+                    <th>Product Unit</th>
                     <th>Product Warranty</th>
                     <th>Product Quality</th>
                     <th>Brand Name</th>
@@ -21,6 +22,7 @@
                         <td><?php echo $product_info['name'] ?></td>
                         <td><?php echo $product_info['size'] ?></td>
                         <td><?php echo $product_info['weight'] ?></td>
+                        <td><?php echo $product_info['category_unit'] ?></td>
                         <td><?php echo $product_info['warranty'] ?></td>
                         <td><?php echo $product_info['quality'] ?></td>
                         <td><?php echo $product_info['brand_name'] ?></td>

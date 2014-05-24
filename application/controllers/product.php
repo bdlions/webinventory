@@ -506,6 +506,12 @@ class Product extends CI_Controller {
             'value' => 'Import Product List',
         );
         
+        $this->data['download_sample_file'] = array(
+            'name' => 'download_file',
+            'id' => 'download_file',
+            'type' => 'submit',
+            'value' => 'Download Sample file',
+        );
         $this->template->load(null, 'product/import_product', $this->data);
     }
     
@@ -532,14 +538,35 @@ class Product extends CI_Controller {
                 if(count($line_array)> 1)
                 {
                     $product_name = $line_array[0];
+                    $category_name = $line_array[5];
+                    $shop_id = $this->session->userdata('shop_id');
+                    $product_unit = $this->product_library->get_all_product_unit_category($shop_id)->result_array();
+                    $i=0;
+                    for(;$i<count($product_unit);$i++){
+                        if($product_unit[$i]['description']==$category_name)
+                        {
+                            $category_name = $product_unit[$i]['id'];
+                            break;
+                        }
+                    }
+                    if($i==count($product_unit)){
+                        $data = array(
+                            'description' => $category_name,
+                            'created_on' => now()
+                        );
+                        $category_name = $this->product_library->create_product_unit_category($data);
+                    }
                     $additional_data = array(
                         'size' => $line_array[1],
                         'weight' => $line_array[2],
                         'warranty' => $line_array[3],
                         'quality' => $line_array[4],
-                        'brand_name' => $line_array[5],
-                        'unit_price' => $line_array[6]                        
+                        'unit_category_id' => $category_name,
+                        'brand_name' => $line_array[6],
+                        'unit_price' => $line_array[7]                        
                     );
+                    
+                    //echo '<pre/>';print_r($product_name);print_r($additional_data);exit;
                     $product_id = $this->product_library->create_product($product_name, $additional_data);
                     if( $product_id !== FALSE )
                     {
@@ -611,5 +638,13 @@ class Product extends CI_Controller {
             'value' => 'Create',
         );
         $this->template->load(null, 'product/create_product_unit_category',$this->data);
+    }
+    
+    public function download_sample_file()
+    {
+        $file_read = read_file('./upload/sample_file.txt');
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=sample_file.txt");
+        echo $file_read;
     }
 }

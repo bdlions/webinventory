@@ -73,7 +73,7 @@ class Product_model extends Ion_auth_model
         //filter out any data passed that doesnt have a matching column in the users table
         //and merge the product data and the additional data
         $additional_data = array_merge($this->_filter_data($this->tables['product_info'], $additional_data), $data);
-        
+        //print_r($additional_data);exit('HI');
         $this->db->insert($this->tables['product_info'], $additional_data);
 
         $id = $this->db->insert_id();
