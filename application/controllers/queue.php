@@ -137,32 +137,34 @@ class Queue extends CI_Controller {
                 $total_no = $this->input->post('total_number');
                 $no_of_queue = $this->input->post('total_no_of_queue');
                 $eaqually_distribute = $this->input->post('eaqually_distribute');
+                $global_message_chcecked = $this->input->post('global_message_chcecked');
                 //echo $total_no . ' '. $total_no_of_queue .' '.$eaqually_distribute ;exit;
-                if((int) $eaqually_distribute == 1){
-                    die('here');
-                    $ed = 1;
-                    redirect('queue/config_queue/'.$no_of_queue.'/'.$total_no.'/'.$ed,'refresh');
-                } else {
-                    die('thre');
-                    redirect('queue/config_queue/','refresh');
-                }
                 $additional_data = array(
-                    'total_number' => $this->input->post('total_number'),
-                    'total_no_of_queue' => $this->input->post('total_no_of_queue'),
+                    'no_of_queues' => $this->input->post('total_no_of_queue'),
                     'global_message' => $this->input->post('global_message'),
                     'created_on' => now()
                 );
                 
-                redirect('queue/config_queue?','refresh');
-                /*if( 1 == FALSE)
+                $id = $this->manage_queue_library->create_manage_queue($additional_data);
+                
+                if( $id == TRUE)
                 {
-                    $this->session->set_flashdata('message', $this->operators->messages());
-                    redirect('queue/config_queue','refresh');
+                    $ed = 0;
+                    $gb_msg = 0;
+                    if((int) $eaqually_distribute == 1){
+                        $ed = 1;
+                        if((int) $global_message_chcecked == 1) {
+                            $gb_msg = 1;
+                        }
+                    }
+                    $this->session->set_flashdata('message', 'Manage queue is set for this list of number');
+                    redirect('queue/manage_queue/'.$id.'/'.$total_no.'/'.$no_of_queue.'/'.$ed.'/'.$gb_msg,'refresh');
                 }
                 else
                 {
-                    $this->data['message'] = $this->operators->errors();
-                }*/
+                    $this->data['message'] = $this->manage_queue_library->errors();
+                }
+               
             }
             else
             {
@@ -224,13 +226,16 @@ class Queue extends CI_Controller {
         $this->template->load(null, 'queue/config_queue', $this->data);
     }
     
-    public function manage_queue($no_of_queue = 5,$euqally = 1,$total_no=100, $global_msg = 0)
+    public function manage_queue($id, $total_no, $no_of_queue ,$euqally = 0, $global_msg = 0)
     {
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name_of_queue', 'Name', 'xss_clean|required');
         $this->form_validation->set_rules('no_of_msg', 'Number of message', 'xss_clean|required');
         
+        $results = $this->manage_queue_library->get_all_phoneno()->result_array();
+        $this->data['all_phone_record'] = $results;
+        //echo '<pre/>';print_r($results);exit('here');
         $msg_in_each_queue = 0;
         $this->data['no_of_queue'] = $no_of_queue;
         $this->data['euqally'] = $euqally;

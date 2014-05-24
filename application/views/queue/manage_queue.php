@@ -40,7 +40,13 @@
                                 Total No of Message:
                             </td>
                             <td>
-                                <?php echo $total_no; ?>
+                                <span id="total_no" ><?php echo $total_no; ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" class="form-control btn-success" id="submit_final_queue" value="Final Submit" name="submit_final_queue">
                             </td>
                         </tr>
                     </table>
@@ -68,6 +74,10 @@
         });
        if(parseInt(total_no_of_msg) < sum ) {
            $('#show_error_message').html("you are crossing the total number of message").css({ 'color': 'red', 'font-size': '100%' });
+           $('#submit_final_queue').hide();
+       } else {
+           $('#show_error_message').html("");
+           $('#submit_final_queue').show();
        }
     }
     

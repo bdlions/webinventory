@@ -1,6 +1,8 @@
 <!-- Written by Omar -->
 <script type="text/javascript">
     function openModal(val,id) {
+        var all_data = <?php echo json_encode($all_phone_record); ?>;
+        alert(all_data);
         var message = {name:"John", phoneNo:533333450, msg:"bluesdf sf fsd "};
         var message1 = {name:"Omar", phoneNo:533333777, msg:"Ths is your sf fsd "};
         var message2 = {name:"John", phoneNo:533333111, msg:"here is my code sf fsd "};

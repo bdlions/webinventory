@@ -71,6 +71,9 @@
             if($(this).prop('checked') === true){
                 $('#show_global_message').show();
             }else{
+                $('textarea#global_message').focus(function() {
+                   $(this).val('');
+                });
                 $('#show_global_message').hide();
             }
         });
