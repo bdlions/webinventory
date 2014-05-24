@@ -802,3 +802,12 @@ CREATE TABLE IF NOT EXISTS `queue_table` (
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `phone_directory`(
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `phone_number` varchar(100),
+  `status_id` int(11) DEFAULT NULL,
+  `created_on` int(11) DEFAULT NULL,
+  PRIMARY KEY(`id`)
+)AUTO_INCREMENT=1;
+
