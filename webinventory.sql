@@ -781,35 +781,38 @@ CREATE TABLE IF NOT EXISTS `custom_message` (
 ALTER TABLE `custom_message`
   ADD CONSTRAINT `fk_custom_message_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- Message table for adroid --
-CREATE TABLE IF NOT EXISTS `queue_manage` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `no_of_queues` int(11) DEFAULT NULL,
-  `fresh_queue_list` text,
-  `processed_queue_list` text,
-  `unprocessed_queue_list` text,
-  `global_message` varchar(300),
-  `created_on` int(11) unsigned DEFAULT NULL,
-  `modified_on` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY(`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `queue_table` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL DEFAULT '',
-  `number_of_message` int(11) DEFAULT NULL,
-  `message_list` text,
-  `created_on` int(11) unsigned DEFAULT NULL,
-  `modified_on` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY(`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+-- sms processing andorid app
 CREATE TABLE IF NOT EXISTS `phone_directory`(
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
   `phone_number` varchar(100),
-  `status_id` int(11) DEFAULT NULL,
-  `created_on` int(11) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY(`id`)
 )AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `phone_upload_list`(
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `number_list` text,
+  `global_msg` varchar(1000) DEFAULT '',
+  `created_on` int(11) unsigned NOT NULL,
+  `modified_on` int(11) unsigned NOT NULL,
+  PRIMARY KEY(`id`)
+)AUTO_INCREMENT=1;
+CREATE TABLE IF NOT EXISTS `queue_table` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `phone_upload_list_id` int(11) unsigned NOT NULL,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `unprocess_list` text,
+  `is_processing` boolean DEFAULT FALSE,
+  `success_list` text,
+  `failed_list` text,
+  `created_on` int(11) unsigned DEFAULT NULL,
+  `modified_on` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+ALTER TABLE `queue_table`
+  ADD CONSTRAINT `fk_queue_table_phone_upload_list1` FOREIGN KEY (`phone_upload_list_id`) REFERENCES `phone_upload_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 

@@ -119,3 +119,5 @@ $lang['create_supplier_message_successful']                   = 'Supplier Messag
 $lang['create_supplier_message_unsuccessful']                 = 'Error while creating supplier message .';
 $lang['message_supplier_update_successful']                   = 'Supplier Message is updated successfully.';
 
+$lang['duplicate_phoneno']                   = 'Phone no Duplicate';
+

@@ -69,7 +69,7 @@ $config['tables']['supplier_message']               = 'supplier_message';
 $config['tables']['shop_type']                      = 'shop_type';
 $config['tables']['custom_message']                 = 'custom_message';
 $config['tables']['phone_directory']                = 'phone_directory';
-$config['tables']['queue_manage']                   = 'queue_manage';
+$config['tables']['phone_upload_list']              = 'phone_upload_list';
 $config['tables']['queue_table']                    = 'queue_table';
 
 
@@ -109,6 +109,8 @@ $config['payment_type']['check_id']                         = '2';
 
 $config['payment_category']['sale_payment_id']              = '1';
 $config['payment_category']['due_collect_id']               = '2';
+
+$config['queue_list_phone_number_identity_column']          = 'phone_number';
 
 /*
  | -------------------------------------------------------------------------

@@ -78,4 +78,6 @@ class Manage_queue_library {
     public function __get($var) {
         return get_instance()->$var;
     }
+    
+    
 }

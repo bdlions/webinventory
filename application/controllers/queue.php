@@ -95,7 +95,8 @@ class Queue extends CI_Controller {
         $file_content_array = explode("\n", $file_content);
         //echo count($file_content_array);
         //echo '<pre/>' ; print_r($file_content_array);exit;
-        $count = 0;
+        $counter = 0;
+        $list = array();
         foreach($file_content_array as $line)
         {
             if( $line != '' )
@@ -106,65 +107,79 @@ class Queue extends CI_Controller {
                     $data = array(
                         'name' => $line_array[0],
                         'phone_number' => $line_array[1],
-                        'status_id' => 1,
                         'created_on' => now()
-                    ); 
+                    );
                     
                     $flag = $this->manage_queue_library->insert_phone_numbers($data);
                     if($flag !== FALSE) {
-                        $count++;
+                        $phone_list = new stdClass();
+                        $phone_list->number = $line_array[1];
+                        array_push($list,$phone_list);
+                        $counter++;
                     }
                 }
             }               
         }
         
-        redirect('queue/config_queue/'.$count);
-        
-        //$this->template->load(null, 'queue/process_file', $this->data);
+        if($counter > 0) {
+            $new_list = json_encode($list);
+            $additional_data = array(
+                            'number_list' => $new_list,
+                            'created_on' => now()
+                            );
+            $id = $this->manage_queue_library->create_phone_list($additional_data);
+            if($id !== FALSE) {
+                redirect('queue/config_queue/'. $id.'/'.$counter);
+            } else {
+                redirect('queue/index');
+            }
+        }
     }
             
-    function config_queue($total_number = 0) {
+    function config_queue($id, $total_number = 0) {
+        
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('total_number', 'Total Number', 'xss_clean|required');
         $this->form_validation->set_rules('total_no_of_queue', 'Total number of queue', 'xss_clean|required');
+        $this->data['phone_upload_list_id'] = $id;
+        
+        $phone_upload_list = $this->manage_queue_library->get_phone_upload_list($id)->result_array();
+        
+        //echo '<pre>';print_r($phone_upload_list);exit('here');
         
         if ($this->input->post('submit_ok')) 
         {
+            //echo '<pre>';print_r($_POST);exit('here');
             if ($this->form_validation->run() == true) 
             {
-                //echo '<pre/>';print_r($this->input->post());exit();
                 $total_no = $this->input->post('total_number');
                 $no_of_queue = $this->input->post('total_no_of_queue');
                 $eaqually_distribute = $this->input->post('eaqually_distribute');
                 $global_message_chcecked = $this->input->post('global_message_chcecked');
-                //echo $total_no . ' '. $total_no_of_queue .' '.$eaqually_distribute ;exit;
-                $additional_data = array(
-                    'no_of_queues' => $this->input->post('total_no_of_queue'),
-                    'global_message' => $this->input->post('global_message'),
-                    'created_on' => now()
-                );
+                $global_message = $this->input->post('global_message');
                 
-                $id = $this->manage_queue_library->create_manage_queue($additional_data);
+                $ed = 0;
+                $gb_msg = 0;
                 
-                if( $id == TRUE)
-                {
-                    $ed = 0;
-                    $gb_msg = 0;
-                    if((int) $eaqually_distribute == 1){
-                        $ed = 1;
-                        if((int) $global_message_chcecked == 1) {
-                            $gb_msg = 1;
-                        }
-                    }
-                    $this->session->set_flashdata('message', 'Manage queue is set for this list of number');
-                    redirect('queue/manage_queue/'.$id.'/'.$total_no.'/'.$no_of_queue.'/'.$ed.'/'.$gb_msg,'refresh');
+                if((int) $eaqually_distribute == 1){
+                    $ed = 1;
                 }
-                else
-                {
-                    $this->data['message'] = $this->manage_queue_library->errors();
+
+                if((int) $global_message_chcecked == 1) {
+                    //echo $global_message; exit('gg');
+                    $gb_msg = 1;
+                    $data = array(
+                        'global_msg' => $global_message,
+                        'modified_on' => now()
+                    );
+
+                    $flag = $this->manage_queue_library->update_phone_upload_list_for_global_msg($id, $data);
                 }
-               
+
+                $this->session->set_flashdata('message', 'Manage queue is set for this list of number');
+                redirect('queue/manage_queue/'.$id .'/' .$total_no.'/'.$no_of_queue.'/'.$ed.'/'.$gb_msg,'refresh');
+                               
             }
             else
             {
@@ -232,10 +247,28 @@ class Queue extends CI_Controller {
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name_of_queue', 'Name', 'xss_clean|required');
         $this->form_validation->set_rules('no_of_msg', 'Number of message', 'xss_clean|required');
+        $this->data['phone_upload_list_id'] = $id;
+        $global_message ='';
+        $number_list = NULL;
+        $phone_upload_list = $this->manage_queue_library->get_phone_upload_list($id)->result_array();
+        //echo '<pre>';print_r($phone_upload_list[0]['number_list']);exit('here');
         
-        $results = $this->manage_queue_library->get_all_phoneno()->result_array();
-        $this->data['all_phone_record'] = $results;
+        if(count($phone_upload_list) > 0) {
+           $phone_upload_list = $phone_upload_list[0];
+           if(!empty($phone_upload_list['global_msg'])) {
+               $global_message = $phone_upload_list['global_msg'];
+           }
+         $number_list = $phone_upload_list['number_list'];
+         //echo '<pre>';print_r(json_decode($number_list));exit('here');  
+        }
+        $this->data['all_phone_record'] = json_decode($number_list);
+        $this->data['global_message'] = $global_message;
+        
+        //$results = $this->manage_queue_library->get_all_phoneno()->result_array();
+        //$this->data['all_phone_record'] = $results;
         //echo '<pre/>';print_r($results);exit('here');
+        
+        
         $msg_in_each_queue = 0;
         $this->data['no_of_queue'] = $no_of_queue;
         $this->data['euqally'] = $euqally;

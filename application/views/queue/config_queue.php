@@ -1,7 +1,8 @@
 <h3>Configure your Queue</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("queue/config_queue", array('id' => 'form_create_operator', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("queue/config_queue/".$phone_upload_list_id, array('id' => 'form_create_operator', 'class' => 'form-horizontal')); ?>
     <div class="row">
+        <div class="col-md-offset-5 col-md-4" id="show_error_message"></div>
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
             <div class ="row">
                 <div class="col-md-4"></div>
@@ -71,10 +72,25 @@
             if($(this).prop('checked') === true){
                 $('#show_global_message').show();
             }else{
-                $('textarea#global_message').focus(function() {
+                /*$('textarea#global_message').focus(function() {
                    $(this).val('');
                 });
-                $('#show_global_message').hide();
+                $('#show_global_message').hide();*/
+            }
+        });
+        
+        $('#eaqually_distribute').change(function(){
+            if($(this).prop('checked') === true){
+                var total_number = parseInt($('#total_number').val(),10);
+                var total_no_of_queue = parseInt($('#total_no_of_queue').val(),10);
+
+                if(total_number % total_no_of_queue != 0) {
+                    $('#show_error_message').html("you can not divide equally").css({ 'color': 'red', 'font-size': '100%' });
+                    $('#eaqually_distribute').attr('checked', false); 
+                } else {
+                     $('#show_error_message').html("");
+                }
+            }else{
             }
         });
         

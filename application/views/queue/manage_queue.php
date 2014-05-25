@@ -1,3 +1,4 @@
+
 <h3>Mange your Queue</h3>
 <div class ="row form-horizontal form-background top-bottom-padding">
     <div class="row">
@@ -23,11 +24,12 @@
                                         <input style="text-align: center;" type="text" name="queue_name_<?php echo $i; ?>" id="queue_name_<?php echo $i; ?>" value="Q<?php echo $i; ?>">
                                     </td>
                                     <td>
-                                        <input <?php echo ($euqally != 1) ? '' : 'readonly'; ?> style="text-align: center;" type="text" onchange="add_msg_number();" name="no_of_msg_<?php echo $i; ?>" onkeydown = "validateNumberAllowDecimal(event, false)" id="no_of_queue_<?php echo $i; ?>" value="<?php echo $msg_in_each_queue; ?>">
+                                        <input <?php echo ($euqally != 1) ? '' : 'readonly'; ?> style="text-align: center;" type="text" onchange="add_msg_number();" name="no_of_queue_<?php echo $i; ?>" onkeydown = "validateNumberAllowDecimal(event, false)" id="no_of_queue_<?php echo $i; ?>" value="<?php echo $msg_in_each_queue; ?>">
+                                        <input type="hidden" name="global_message" id="global_message" value="<?php echo $global_message; ?>" >
                                     </td>
                                     <?php if($global_msg != 1): ?>
                                         <td>
-                                            <button id="set_msg_for_q_<?php echo $i; ?>" class="form-control btn-success" type="button" name="set_msg_for_q_<?php echo $i; ?>" onclick="openModal('set_msg_for_q_<?php echo $i;?>','<?php echo $msg_in_each_queue; ?>')">
+                                            <button id="set_msg_for_q_<?php echo $i; ?>" class="form-control btn-success" type="button" name="set_msg_for_q_<?php echo $i; ?>" onclick="openModal('set_msg_for_q_<?php echo $i;?>','<?php echo $i; ?>')">
                                                 Set Message
                                             </button>
                                         </td>
@@ -65,6 +67,7 @@
     });
     
     function add_msg_number () {
+        
         var total_no_of_msg = $('#total_no_of_msg').val();
         var sum = parseInt(0);
         //var tdList = $('#tbody_queue_list tr').eq(1);
