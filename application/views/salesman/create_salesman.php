@@ -2,7 +2,7 @@
 <div class ="row form-horizontal form-background top-bottom-padding">
     <?php echo form_open("user/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
     <div class="row">
-        <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
+        <div class ="col-md-5">
             <div class ="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-8"><?php echo $message; ?></div>
@@ -32,6 +32,24 @@
                 </div> 
             </div>
             <div class="form-group">
+                <label for="address" class="col-md-6 control-label requiredField">
+                    Address
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($address+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+        </div>
+        <div class ="col-md-5">
+            <div class="form-group">
+                <label for="phone" class="col-md-6 control-label requiredField">
+                    Phone No
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($phone+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
                 <label for="email" class="col-md-6 control-label requiredField">
                     Email
                 </label>
@@ -53,22 +71,6 @@
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($password_confirm+array('class'=>'form-control')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="phone" class="col-md-6 control-label requiredField">
-                    Phone No
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($phone+array('class'=>'form-control')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="address" class="col-md-6 control-label requiredField">
-                    Address
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($address+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">

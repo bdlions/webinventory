@@ -110,7 +110,10 @@
             //console.log(selected_array);
         });
     });
-
+    $('#modal_select_product').on('hidden', function() {
+    $(this).data('modal_select_product').$element.removeData();
+})
+    
 </script>
 <div class="modal fade" id="modal_select_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
