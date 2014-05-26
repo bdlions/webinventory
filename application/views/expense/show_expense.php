@@ -184,10 +184,10 @@
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Category</th>   
+                    <th>Category</th>
                     <th>Name</th>
+                    <th>Amount</th>
+                    <th>Description</th>  
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -195,10 +195,10 @@
                 <?php foreach($expense_list as $expense_info) { ?>
                     <tr>
                         <td><?php echo $expense_info['expense_date'];?></td>
-                        <td><?php echo $expense_info['expense_amount'];?></td>
-                        <td><?php echo $expense_info['description'];?></td>
                         <td><?php echo $expense_info['category_title'];?></td>
                         <td><?php echo $expense_info['category_description'];?></td>
+                        <td><?php echo $expense_info['expense_amount'];?></td>
+                        <td><?php echo $expense_info['description'];?></td>
                         <td><a href="<?php echo base_url("./expense/delete_expense/" . $expense_info['id']); ?>">Delete</a></td>
                     </tr>
                 <?php } ?>

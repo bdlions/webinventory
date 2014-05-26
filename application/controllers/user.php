@@ -1669,7 +1669,7 @@ class User extends CI_Controller {
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
         $company = $_POST['company'];
-        $message_category_id = $_POST['message_category_id'];
+        //$message_category_id = $_POST['message_category_id'];
         //$user_name = $_POST['phone_no'];
         $user_name = '';
         $password = "password";

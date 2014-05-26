@@ -106,8 +106,8 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Name</th>
                         <th>Date</th>
+                        <th>Name</th>
                         <th>In Time</th>
                         <th>Out Time</th>
                         <th>Comments</th>
@@ -116,8 +116,8 @@
                 <tbody id="tbody_attendance_list">                    
                     <?php foreach ($attendance_list as $attendance_info){?>
                         <tr>
-                            <td><?php echo $attendance_info['first_name'].' '.$attendance_info['last_name']; ?></td>
                             <td><?php echo $attendance_info['login_date']; ?></td>
+                            <td><?php echo $attendance_info['first_name'].' '.$attendance_info['last_name']; ?></td>
                             <td><?php echo $attendance_info['login_time']; ?></td>
                             <td><?php echo $attendance_info['logout_time']; ?></td>
                             <td><?php echo $attendance_info['attendance_comment']; ?></td>
