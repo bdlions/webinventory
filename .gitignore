@@ -192,6 +192,7 @@ $RECYCLE.BIN/
 # Packages
 *.egg
 *.egg-info
+nbproject/private/private.xml
 dist/
 build/
 eggs/
