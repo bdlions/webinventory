@@ -223,9 +223,13 @@ class User extends CI_Controller {
                     //if the login was un-successful
                     //redirect them back to the login page
                     $this->session->set_flashdata('message', $this->ion_auth->errors());
-                    redirect($this->login_uri, 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
+                    redirect(LOGIN_URI, 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
                 }
             } 
+        }
+        else if($this->input->post('submit_create_manager'))
+        {
+            
         }
         else {
             //the user is not logging in so display the login page

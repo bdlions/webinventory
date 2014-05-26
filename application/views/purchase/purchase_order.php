@@ -142,7 +142,7 @@
                 var purchase_info = new Purchase();
                 purchase_info.setOrderNo($("#purchase_order_no").val());
                 purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
-                purchase_info.setRemarks($("#purchase_remarks").val());
+                purchase_info.setRemarks($("#remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
                 purchase_info.setPaid($("#paid_amount").val());
                 $.ajax({
@@ -168,7 +168,7 @@
                             $("#input_add_purchase_company").val('');
                             $("#input_add_purchase_phone").val('');
                             $("#purchase_order_no").val('');
-                            $("#purchase_remarks").val('');
+                            $("#remarks").val('');
                             $("#total_purchase_price").val(0);
                             $("#previous_due").val(0);
                             $("#paid_amount").val(0);

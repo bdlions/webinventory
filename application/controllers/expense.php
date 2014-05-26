@@ -149,13 +149,13 @@ class Expense extends CI_Controller {
         
         $shop_list_array = $this->shop_library->get_all_shops()->result_array();
         $shop_list = array();
-        foreach($shop_list_array as $key => $shop_info)
+        /*foreach($shop_list_array as $key => $shop_info)
         {
             if( $this->session->userdata('shop_id') == $shop_info['id'])
             {
                $shop_list[$shop_info['id']] = $shop_info['name']; 
             }            
-        }
+        }*/
         $this->data['item_list'] = $shop_list;
         $date = date('Y-m-d');    
         

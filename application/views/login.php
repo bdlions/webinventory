@@ -68,7 +68,7 @@
     <div class="row">
         <div class="content clr col-md-12">
             <div class="body_form col-md-offset-6 col-md-4">
-                <?php echo form_open(MANAGER_SIGNUP_URI, array('id' => 'form_create_admin', 'class' => 'form-horizontal')); ?>
+                <?php echo form_open(LOGIN_URI, array('id' => 'form_create_admin', 'class' => 'form-horizontal')); ?>
                     <h1> Sign Up </h1>
                                         
                     <div class="form-group">

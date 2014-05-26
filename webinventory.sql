@@ -22,7 +22,7 @@ INSERT INTO `shop_type` (`id`, `type`) VALUES
 (1, 'small'),
 (2, 'medium');
 
-CREATE TABLE `shop_info` (
+CREATE TABLE IF NOT EXISTS `shop_info` (
 	`id` int NOT NULL auto_increment,
 	`shop_no` varchar(200) NOT NULL default '',	
 	`name` varchar(200) NOT NULL default '',
@@ -42,7 +42,7 @@ ALTER TABLE `shop_info`
 INSERT INTO `shop_info` (`id`, `shop_no`, `name`, `shop_type_id`) VALUES
 (1, 1, 'Apurbo', 1);
 
-CREATE TABLE `profession` (
+CREATE TABLE IF NOT EXISTS `profession` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	`shop_id` int NOT NULL,
@@ -63,7 +63,7 @@ INSERT INTO `profession` (`id`, `description`, `shop_id`) VALUES
 (7, 'Lawyear', 1),
 (8, 'job', 1);
 
-CREATE TABLE `institution` (
+CREATE TABLE IF NOT EXISTS `institution` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	`shop_id` int NOT NULL,	
@@ -269,7 +269,7 @@ INSERT INTO `product_unit_category` (`description`, `shop_id`) VALUES
 ('piece', 1), 
 ('liter', 1);
  
- CREATE TABLE `product_info` (
+ CREATE TABLE IF NOT EXISTS `product_info` (
 	`id` int NOT NULL auto_increment,
 	`name` varchar(200) NOT NULL,
 	`code` varchar(200)  DEFAULT '',
@@ -317,7 +317,7 @@ INSERT INTO `product_info` (`id`, `name`, `shop_id`, `unit_category_id`) VALUES
 (16, '1450', 1, 1),
 (17, '1550', 1, 1);
  
- CREATE TABLE `product_image_info` (
+ CREATE TABLE IF NOT EXISTS `product_image_info` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,
 	`image_name` varchar(500),
@@ -335,7 +335,7 @@ ALTER TABLE `product_image_info`
   ADD CONSTRAINT `fk_product_image_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_image_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
  
-CREATE TABLE `purchase_order_status` (
+CREATE TABLE IF NOT EXISTS `purchase_order_status` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	
 	PRIMARY KEY  (`id`)
@@ -347,7 +347,7 @@ INSERT INTO `purchase_order_status` (`id`, `description`) VALUES
 (4, 'Paid'),
 (5, 'Cancelled');
 
-CREATE TABLE `purchase_order` (	
+CREATE TABLE IF NOT EXISTS `purchase_order` (	
 	`id` int NOT NULL auto_increment,
 	`purchase_order_no` varchar(200),
 	`shop_id` int NOT NULL,
@@ -376,7 +376,7 @@ ALTER TABLE `purchase_order`
   ADD CONSTRAINT `fk_purchase_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_purchase_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
-CREATE TABLE `product_purchase_order` (
+CREATE TABLE IF NOT EXISTS `product_purchase_order` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,	
 	`purchase_order_no` varchar(200),
@@ -399,7 +399,7 @@ ALTER TABLE `product_purchase_order`
   ADD CONSTRAINT `fk_product_purchase_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_purchase_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
  
-CREATE TABLE `sale_order_status` (
+CREATE TABLE IF NOT EXISTS `sale_order_status` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	
 	PRIMARY KEY  (`id`)
@@ -412,7 +412,7 @@ INSERT INTO `sale_order_status` (`id`, `description`) VALUES
 (5, 'Invoiced'),
 (6, 'Paid'),
 (7, 'Cancelled');
-CREATE TABLE `sale_order` (
+CREATE TABLE IF NOT EXISTS `sale_order` (
 	`id` int NOT NULL auto_increment,
 	`sale_order_no` varchar(200),
 	`shop_id` int NOT NULL,
@@ -440,7 +440,7 @@ ALTER TABLE `sale_order`
   ADD CONSTRAINT `fk_sale_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `product_sale_order` (
+CREATE TABLE IF NOT EXISTS `product_sale_order` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,	
 	`sale_order_no` varchar(200),
@@ -466,7 +466,7 @@ ALTER TABLE `product_sale_order`
   ADD CONSTRAINT `fk_product_sale_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_sale_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `stock_transaction_category` (
+CREATE TABLE IF NOT EXISTS `stock_transaction_category` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	
 	PRIMARY KEY  (`id`)
@@ -479,7 +479,7 @@ INSERT INTO `stock_transaction_category` (`id`, `description`) VALUES
 (5, 'Sale In'),
 (6, 'Sale partial Out'),
 (7, 'Sale Delete'); 
- CREATE TABLE `stock_info` (
+ CREATE TABLE IF NOT EXISTS `stock_info` (
 	`id` int NOT NULL auto_increment,
 	`shop_id` int NOT NULL,
 	`purchase_order_no` varchar(200) DEFAULT NULL,
@@ -511,7 +511,7 @@ ALTER TABLE `stock_info`
   ADD CONSTRAINT `fk_stock_info_stock_transaction_category1` FOREIGN KEY (`transaction_category_id`) REFERENCES `stock_transaction_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
   
   
-CREATE TABLE `expense_type` (
+CREATE TABLE IF NOT EXISTS `expense_type` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	
 	PRIMARY KEY  (`id`)
@@ -559,7 +559,7 @@ CREATE TABLE IF NOT EXISTS `operators` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  
 
 -- ---------------------------------Supplier payment record ---------------------------
-CREATE TABLE `supplier_payment_category_info` (
+CREATE TABLE IF NOT EXISTS `supplier_payment_category_info` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	PRIMARY KEY  (`id`)
@@ -626,7 +626,7 @@ ALTER TABLE `supplier_transaction_info`
  
 
 -- --------------------------------Customer payment record ---------------------------
-CREATE TABLE `customer_payment_type_info` (
+CREATE TABLE IF NOT EXISTS `customer_payment_type_info` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	PRIMARY KEY  (`id`)
@@ -634,7 +634,7 @@ CREATE TABLE `customer_payment_type_info` (
 INSERT INTO `customer_payment_type_info` (`id`, `description`) VALUES
 (1, 'Cash'),
 (2, 'Check');
-CREATE TABLE `customer_payment_category_info` (
+CREATE TABLE IF NOT EXISTS `customer_payment_category_info` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	PRIMARY KEY  (`id`)
@@ -799,6 +799,7 @@ CREATE TABLE IF NOT EXISTS `phone_upload_list`(
   `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY(`id`)
 )AUTO_INCREMENT=1;
+
 CREATE TABLE IF NOT EXISTS `queue_table` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `phone_upload_list_id` int(11) unsigned NOT NULL,
@@ -812,7 +813,7 @@ CREATE TABLE IF NOT EXISTS `queue_table` (
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `queue_table`
-  ADD CONSTRAINT `fk_queue_table_phone_upload_list1` FOREIGN KEY (`phone_upload_list_id`) REFERENCES `phone_upload_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_q_t_p_u_l1` FOREIGN KEY (`phone_upload_list_id`) REFERENCES `phone_upload_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 
