@@ -97,31 +97,39 @@ class Queue extends CI_Controller {
         //echo '<pre/>' ; print_r($file_content_array);exit;
         $counter = 0;
         $list = array();
+        $extra_array = array();
         foreach($file_content_array as $line)
         {
             if( $line != '' )
             {
                 $line_array = explode("~", $line);
+                
                 if(count($line_array)> 1)
                 {
                     $data = array(
                         'name' => $line_array[0],
-                        'phone_number' => $line_array[1],
+                        'phone_number' => trim($line_array[1]),
                         'created_on' => now()
                     );
                     
                     $flag = $this->manage_queue_library->insert_phone_numbers($data);
-                    if($flag !== FALSE) {
+                    echo $line_array[1].' Hi '.in_array($line_array[1],$extra_array ).'<br>';
+                    if($flag !== FALSE && !in_array($line_array[1],$extra_array )) {
                         $phone_list = new stdClass();
                         $phone_list->number = $line_array[1];
                         array_push($list,$phone_list);
+                        array_push($extra_array,$line_array[1]);
                         $counter++;
                     }
                 }
-            }               
+            }
         }
         
+        echo '<pre>';print_r($extra_array);die();
+        
         if($counter > 0) {
+            //$new_list = json_encode(array_unique($list));
+            //echo count($new_list);exit;
             $new_list = json_encode($list);
             $additional_data = array(
                             'number_list' => $new_list,
@@ -300,5 +308,36 @@ class Queue extends CI_Controller {
         );
         
         $this->template->load(null, 'queue/manage_queue', $this->data);
+    }
+    
+    public function create_queue()
+    {
+        $response = array();
+        $news_category_name = $this->input->post['news_category_name'];
+        $news_category_name = $this->input->post['news_category_name'];
+        $news_category_name = $this->input->post['news_category_name'];
+
+        $additional_data = array(
+            'application_id' => APPLICATION_NEWS_APP_ID
+        );    
+        
+        $id = $this->admin_news->create_news_category($news_category_name, $additional_data);
+        if($id !== FALSE)
+        {
+            $response['status'] = 1;
+            $response['message'] = 'News Category is added successfully.';
+            $news_category_info_array = $this->admin_news->get_news_category_info($id);
+            if(!empty($news_category_info_array))
+            {
+                $response['news_category_info'] = $news_category_info_array;
+                
+            }
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['message'] = $this->admin_news->errors_alert();
+        }
+        echo json_encode($response);
     }
 }

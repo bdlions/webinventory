@@ -63,7 +63,8 @@
 
 <script type="text/javascript">
     $(function (){
-        
+        var all_data = <?php echo json_encode($all_phone_record); ?>;
+        set_phone_list(all_data);
     });
     
     function add_msg_number () {

@@ -4,20 +4,20 @@
 <!-- Written by Omar -->
 <script type="text/javascript">
     function openModal(val,id) {
-
+        current_modal_id = id;
         var selected_queue_value = $('#no_of_queue_'+id).val();
         //alert(selected_queue_value);
-        var all_data = <?php echo json_encode($all_phone_record); ?>;
-        set_phone_list(all_data);
+        no_of_msg_in_current_queue = selected_queue_value;
         //console.log(get_phone_list());
-        
         //var message = {name:"John", phoneNo:533333450, msg:"bluesdf sf fsd "};
         //var message1 = {name:"Omar", phoneNo:533333777, msg:"Ths is your sf fsd "};
         //var message2 = {name:"John", phoneNo:533333111, msg:"here is my code sf fsd "};
         //var messageList = [message, message1, message2];
         
-        var messageList = get_phone_list();
-        $("#tbody_list").html(tmpl("tmpl_message_list",  messageList));
+        phone_list_under_queue = get_phone_list();
+        //console.log(phone_list_under_queue);
+        $('#modal_message').html('');
+        $("#tbody_list").html(tmpl("tmpl_message_list",  phone_list_under_queue));
         $('#modal_set_message_for_queue').modal('show');
     }
 </script>
@@ -26,58 +26,54 @@
     $(function() {
         $("#set_in_queue").on("click", function() {
             var selected_array = Array();
-            var phone_no;
+            var counter = 0;
             $("#tbody_list tr").each(function() {
                 $("td:first input:checkbox", $(this)).each(function() {
                     if (this.checked == true)
                     {
                         selected_array.push(this.value.trim());
-                        phone_no = this.value;
+                        counter ++;
                     }
                 });
             });
             
-            //console.log(selected_array);
-            var new_temp_phone_list = [];
-            var temp_phone_list = get_phone_list();
-            //console.log(temp_phone_list);
-            for(var i = 0; i< temp_phone_list.length; i++) {
-                var temp = temp_phone_list[i].number.trim();
-                if(selected_array.indexOf(temp) != -1 ) {
-                    //console.log('hy');
-                    temp_phone_list.splice(i, 1);
-                } else {
-                    //console.log(i);
-                    //new_temp_phone_list.push({number: temp_phone_list[i].number,});
+            //console.log(no_of_msg_in_current_queue+'hlo');
+            
+            if(parseInt(counter) === parseInt(no_of_msg_in_current_queue)) {
+               newArr = [];
+               insetArr = [];
+                var temp_phone_list = get_phone_list();
+                //console.log(temp_phone_list);
+                for(var i = 0; i< temp_phone_list.length; i++) {
+                    var temp = temp_phone_list[i].number.trim();
+                    if(selected_array.indexOf(temp) == -1 ) {
+                         newArr.push(temp_phone_list[i]);
+                    }else {
+                        insetArr.push(temp_phone_list[i]);
+                    }
                 }
+                
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "queue/create_queue",
+                    data: {},
+                    success: function(data) {
+                     alert(data['message']);
+                      if (data['status'] === 1)
+                      {
+                         //location.reload();
+                         set_phone_list(newArr);
+                        phone_list_under_queue = get_phone_list(newArr);
+                        $('#modal_message').html('');
+                        $('#set_msg_for_q_'+current_modal_id).hide();
+                        $('#modal_set_message_for_queue').modal('hide');
+                      }
+                    }
+                });
+            } else {
+                $('#modal_message').html('you can select only '+ no_of_msg_in_current_queue + ' number of message for this queue.').css({ 'color': 'red', 'font-size': '100%' });
             }
-            
-            console.log(temp_phone_list.length);
-            //set_phone_list(new_temp_phone_list);
-            
-            /*
-             //console.log(selected_array);
-            var new_temp_phone_list = [];
-            var temp_phone_list = Array();
-            var temp_phone_list = get_phone_list();
-            console.log(temp_phone_list);
-            for(var i = 0; i< temp_phone_list.length; i++) {
-                var temp = temp_phone_list[i].number.trim();
-                if(selected_array.indexOf(temp_phone_list[i].number) != -1 ) {
-                    //temp_phone_list.splice(i, 1);
-                    console.log('hy');
-                    
-                } else {
-                    new_temp_phone_list.push({
-                        number: temp_phone_list[i].number,
-                    });
-                }
-            }
-            //console.log(new_temp_phone_list);
-            //set_phone_list(new_temp_phone_list);
-             */
-            
-            
         });
     });
 </script>
@@ -87,6 +83,10 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Set Message</h4>
+            </div>
+            <div class ="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8" id="modal_message"></div>
             </div>
             <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
                 <div class="row">
@@ -114,8 +114,7 @@
                             <tr>
                                 <td class="noBorder">Global Message: </td>
                                 <td class="noBorder">
-                                    <textarea type="text" name="msg_for_queue" id="msg_for_queue" value="">
-                                    </textarea>
+                                    <textarea type="text" name="msg_for_queue" id="msg_for_queue" value=""></textarea>
                                 </td>
                             </tr>
                         </table>
