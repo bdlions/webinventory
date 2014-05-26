@@ -113,8 +113,8 @@ class Queue extends CI_Controller {
                     );
                     
                     $flag = $this->manage_queue_library->insert_phone_numbers($data);
-                    echo $line_array[1].' Hi '.in_array($line_array[1],$extra_array ).'<br>';
-                    if($flag !== FALSE && !in_array($line_array[1],$extra_array )) {
+
+                    if($flag !== FALSE) {
                         $phone_list = new stdClass();
                         $phone_list->number = $line_array[1];
                         array_push($list,$phone_list);
@@ -124,8 +124,6 @@ class Queue extends CI_Controller {
                 }
             }
         }
-        
-        echo '<pre>';print_r($extra_array);die();
         
         if($counter > 0) {
             //$new_list = json_encode(array_unique($list));
@@ -154,8 +152,7 @@ class Queue extends CI_Controller {
         
         $phone_upload_list = $this->manage_queue_library->get_phone_upload_list($id)->result_array();
         
-        //echo '<pre>';print_r($phone_upload_list);exit('here');
-        
+        $this->data['uploaded_phone_list_id'] = $id;
         if ($this->input->post('submit_ok')) 
         {
             //echo '<pre>';print_r($_POST);exit('here');
@@ -255,7 +252,7 @@ class Queue extends CI_Controller {
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name_of_queue', 'Name', 'xss_clean|required');
         $this->form_validation->set_rules('no_of_msg', 'Number of message', 'xss_clean|required');
-        $this->data['phone_upload_list_id'] = $id;
+        $this->data['uploaded_phone_list_id'] = $id;
         $global_message ='';
         $number_list = NULL;
         $phone_upload_list = $this->manage_queue_library->get_phone_upload_list($id)->result_array();
@@ -271,11 +268,7 @@ class Queue extends CI_Controller {
         }
         $this->data['all_phone_record'] = json_decode($number_list);
         $this->data['global_message'] = $global_message;
-        
-        //$results = $this->manage_queue_library->get_all_phoneno()->result_array();
-        //$this->data['all_phone_record'] = $results;
-        //echo '<pre/>';print_r($results);exit('here');
-        
+
         
         $msg_in_each_queue = 0;
         $this->data['no_of_queue'] = $no_of_queue;
@@ -313,25 +306,28 @@ class Queue extends CI_Controller {
     public function create_queue()
     {
         $response = array();
-        $news_category_name = $this->input->post['news_category_name'];
-        $news_category_name = $this->input->post['news_category_name'];
-        $news_category_name = $this->input->post['news_category_name'];
+        $uploaded_phone_list_id = $this->input->post('uploaded_phone_list_id');
+        $queue_name = $this->input->post('queue_name');
+        $unprocess_phone_list = $this->input->post('unprocess_phone_list');
+        $msg_for_queue = $this->input->post('msg_for_queue');
 
-        $additional_data = array(
-            'application_id' => APPLICATION_NEWS_APP_ID
-        );    
+        //echo $msg_for_queue;
+        for($i=0;$i<count($unprocess_phone_list);$i++){
+           $unprocess_phone_list[$i]['message'] = $msg_for_queue;
+        }
         
-        $id = $this->admin_news->create_news_category($news_category_name, $additional_data);
+        $additional_data = array(
+            'phone_upload_list_id' => $uploaded_phone_list_id,
+            'name' => $queue_name,
+            'unprocess_list' => json_encode($unprocess_phone_list),
+            'created_on' => now()
+        );
+        
+        $id = $this->manage_queue_library->create_queue($additional_data);
         if($id !== FALSE)
         {
             $response['status'] = 1;
-            $response['message'] = 'News Category is added successfully.';
-            $news_category_info_array = $this->admin_news->get_news_category_info($id);
-            if(!empty($news_category_info_array))
-            {
-                $response['news_category_info'] = $news_category_info_array;
-                
-            }
+            $response['message'] = 'Queue is added successfully.';
         }
         else
         {

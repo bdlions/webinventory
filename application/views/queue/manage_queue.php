@@ -39,19 +39,28 @@
                         </tbody>
                         <tr>
                             <td>
+                                Inserted Number:
+                            </td>
+                            <td>
+                                <span id="total_no" ><?php echo '0'; ?></span>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
                                 Total No of Message:
                             </td>
                             <td>
-                                <span id="total_no" ><?php echo $total_no; ?></span>
+                                <span id="" ><?php echo $total_no; ?></span>
                             </td>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <td></td>
                             <td>
                                 <input type="submit" class="form-control btn-success" id="submit_final_queue" value="Final Submit" name="submit_final_queue">
                             </td>
-                        </tr>
+                        </tr>-->
                     </table>
+                     <input type="hidden" name="uploaded_phone_list_id" id="uploaded_phone_list_id" value="<?php echo $uploaded_phone_list_id; ?>">
                 </div>
             </div>
         </div>
@@ -80,6 +89,7 @@
            $('#show_error_message').html("you are crossing the total number of message").css({ 'color': 'red', 'font-size': '100%' });
            $('#submit_final_queue').hide();
        } else {
+           update_inserted_sum = sum;
            $('#show_error_message').html("");
            $('#submit_final_queue').show();
        }

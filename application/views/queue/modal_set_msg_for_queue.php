@@ -37,13 +37,12 @@
                 });
             });
             
-            //console.log(no_of_msg_in_current_queue+'hlo');
-            
-            if(parseInt(counter) === parseInt(no_of_msg_in_current_queue)) {
+            //console.log(temp_phone_list);
+            if(parseInt(counter) === parseInt(no_of_msg_in_current_queue) && ( parseInt(counter)!==0 && parseInt(no_of_msg_in_current_queue)!==0 ) ) {
                newArr = [];
                insetArr = [];
                 var temp_phone_list = get_phone_list();
-                //console.log(temp_phone_list);
+                console.log(temp_phone_list);
                 for(var i = 0; i< temp_phone_list.length; i++) {
                     var temp = temp_phone_list[i].number.trim();
                     if(selected_array.indexOf(temp) == -1 ) {
@@ -52,27 +51,38 @@
                         insetArr.push(temp_phone_list[i]);
                     }
                 }
+                var msg = $('#msg_for_queue').val();
+                if(msg !== '') {
+                    $.ajax({
+                        dataType: 'json',
+                        type: "POST",
+                        url: '<?php echo base_url(); ?>' + "queue/create_queue",
+                        data: {
+                            uploaded_phone_list_id: $('#uploaded_phone_list_id').val(),
+                            queue_name: $('#queue_name_'+current_modal_id).val(),
+                            unprocess_phone_list : insetArr,
+                            msg_for_queue: msg
+                        },
+                        success: function(data) {
+                            alert(data['message']);
+                            if (data['status'] === 1)
+                            {
+                                //location.reload();
+                                $('#total_no').text(update_inserted_sum);
+                                set_phone_list(newArr);
+                                phone_list_under_queue = get_phone_list(newArr);
+                                $('#modal_message').html('');
+                                $('#set_msg_for_q_'+current_modal_id).hide();
+                                $('#modal_set_message_for_queue').modal('hide');
+                            }
+                        }
+                    });
+                } else {
+                    $('#modal_message').html('Please type a message for your queue').css({ 'color': 'red', 'font-size': '100%' });
+                } 
                 
-                $.ajax({
-                    dataType: 'json',
-                    type: "POST",
-                    url: '<?php echo base_url(); ?>' + "queue/create_queue",
-                    data: {},
-                    success: function(data) {
-                     alert(data['message']);
-                      if (data['status'] === 1)
-                      {
-                         //location.reload();
-                         set_phone_list(newArr);
-                        phone_list_under_queue = get_phone_list(newArr);
-                        $('#modal_message').html('');
-                        $('#set_msg_for_q_'+current_modal_id).hide();
-                        $('#modal_set_message_for_queue').modal('hide');
-                      }
-                    }
-                });
             } else {
-                $('#modal_message').html('you can select only '+ no_of_msg_in_current_queue + ' number of message for this queue.').css({ 'color': 'red', 'font-size': '100%' });
+                $('#modal_message').html('You can select only '+ no_of_msg_in_current_queue + ' number of message for this queue.').css({ 'color': 'red', 'font-size': '100%' });
             }
         });
     });
