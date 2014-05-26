@@ -1215,7 +1215,7 @@ class User extends CI_Controller {
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $phone_no = $_POST['phone_no'];
-        $message_category_id = $_POST['message_category_id'];
+//        $message_category_id = $_POST['message_category_id'];
         //$user_name = $_POST['phone_no'];
         $user_name = '';
         $password = "password";
@@ -1233,9 +1233,10 @@ class User extends CI_Controller {
         {
             $additional_data['card_no'] = $_POST['card_no'];
         }
-        
+
         $groups = array('id' => USER_GROUP_CUSTOMER);
         $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
+
         if( $user_id !== FALSE )
         {
             $customer_info_array = $this->ion_auth->get_customer($user_id)->result_array();
@@ -1246,7 +1247,7 @@ class User extends CI_Controller {
             }
             $response['status'] = '1';
             $response['customer_info'] = $customer_info;
-            $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+            /*$message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
             $message = '';
             if(!empty($message_info_array))
             {
@@ -1254,7 +1255,23 @@ class User extends CI_Controller {
                 $message = $message_info['message_description'];
             }
             $customer_name = $first_name.' '.$last_name;
-            $this->sms_library->send_sms($phone_no,"Dear, ".$customer_name." Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market");
+            $this->sms_library->send_sms($phone_no,"Dear, ".$customer_name." Congratulation for successfully registration for lifetime discount card. thanks, APURBO brand Bangladesh. Chandrima market, New market");*/
+            $message_type_id = SMS_MESSAGE_CATEGORY_CUSTOMER_REGISTRATION_TYPE_ID;
+            $message_category_id = $this->messages->get_sms_message_category($shop_info['shop_id'],$message_type_id)->result_array();
+            if(!empty($message_category_id)){
+                $message_category_id = $message_category_id[0];
+                $message_category_id = $message_category_id['id'];
+            }
+
+            $message_info_array = $this->messages->get_sms_message($message_category_id,$shop_info['id'])->result_array();
+            $message = '';
+            if(!empty($message_info_array))
+            {
+                $message_info = $message_info_array[0];
+                $message = $message_info['message_description'];
+            }
+            $customer_name = $this->input->post('first_name').' '.$this->input->post('last_name');
+            $this->sms_library->send_sms($this->input->post('phone'),"Dear ".$customer_name.', '.$message);
         } 
         else
         {

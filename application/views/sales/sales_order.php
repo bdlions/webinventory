@@ -359,14 +359,6 @@
                 </div>
                 <div class="form-group">
                     <label for="status" class="col-md-4 control-label requiredField">
-                        Select Staff
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="status" class="col-md-4 control-label requiredField">
                         &nbsp;
                     </label>
                     <div class ="col-md-8">
@@ -451,6 +443,14 @@
                     </label>
                     <div class ="col-md-3 col-md-offset-5">
                         <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="status" class="col-md-2 control-label requiredField">
+                        Select Staff
+                    </label>
+                    <div class ="col-md-3 col-md-offset-5">
+                        <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
                     </div> 
                 </div>
                 <div class="form-group">

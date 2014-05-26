@@ -43,7 +43,7 @@
                 <img src="images/logo.png">
             </div>
             <div class="login pull-right col-md-6">
-                <?php echo form_open(MANAGER_SIGNUP_URI, array('id' => 'admin-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
+                <?php echo form_open(MANAGER_LOGIN_URI, array('id' => 'admin-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
                 <div class="row col-md-12">
                     <div class="col-md-4">
                         <label> <span class="login-color1"><?php echo lang('login_identity_label', 'identity'); ?><br> </span> </label>
@@ -68,7 +68,7 @@
     <div class="row">
         <div class="content clr col-md-12">
             <div class="body_form col-md-offset-6 col-md-4">
-                <?php echo form_open("user/admin_signup", array('id' => 'form_create_admin', 'class' => 'form-horizontal')); ?>
+                <?php echo form_open(MANAGER_SIGNUP_URI, array('id' => 'form_create_admin', 'class' => 'form-horizontal')); ?>
                     <h1> Sign Up </h1>
                                         
                     <div class="form-group">

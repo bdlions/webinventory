@@ -777,7 +777,7 @@ class Ion_auth_model extends CI_Model {
             //add to groups
             foreach ($groups as $group) 
             {
-                if( $group === USER_GROUP_CUSTOMER && array_key_exists('card_no', $additional_data) )
+                if( $group === USER_GROUP_CUSTOMER)
                 {
                     $additional_data['user_id'] = $id;
                     if( $this->create_customer($additional_data) === FALSE)
