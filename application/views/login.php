@@ -43,7 +43,7 @@
                 <img src="images/logo.png">
             </div>
             <div class="login pull-right col-md-6">
-                <?php echo form_open(MANAGER_LOGIN_URI, array('id' => 'admin-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
+                <?php echo form_open(LOGIN_URI, array('id' => 'admin-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
                 <div class="row col-md-12">
                     <div class="col-md-4">
                         <label> <span class="login-color1"><?php echo lang('login_identity_label', 'identity'); ?><br> </span> </label>
@@ -57,7 +57,7 @@
                         <span class="login-color2"><a href="#">Forgot your password? </a></span>
                     </div>
                     <div class="col-md-4">
-                        <input type="submit" value="Login" name="submit" class="login-button">
+                        <input type="submit" value="Login" name="login_submit_btn" id="login_submit_btn" class="login-button">
                     </div>
                 </div>
                 <?php echo form_close(); ?>

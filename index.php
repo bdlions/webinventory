@@ -51,6 +51,10 @@ define('ADMIN_LOGIN_TEMPLATE', 'admin/templates/login');
 define('ADMIN_LOGIN_VIEW', 'admin/login');
 define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'admin/templates/main');
 define('ADMIN_LOGIN_SUCCESS_VIEW', 'admin/home');
+
+define('LOGIN_TEMPLATE', 'templates/login');
+define('LOGIN_VIEW', 'login');
+define('LOGIN_URI', 'user/login');
 /***************** Custom constant End **********************/
 
 /*

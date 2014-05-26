@@ -341,10 +341,30 @@ class Ion_auth {
         }
     }
 
-    public function login($identity, $password, $user_type, $remember = FALSE){
+    public function login($identity, $password, $remember = FALSE){
         $user = $this->ion_auth_model->login($identity, $password);
-        if($user != FALSE && $this->in_group($user_type, $user->id)){
-            $user->user_type = $user_type;
+        if($user != FALSE){
+            if($this->in_group(ADMIN, $user->id))
+            {
+                $user->user_type = ADMIN;
+            }
+            if($this->in_group(MANAGER, $user->id))
+            {
+                $user->user_type = MANAGER;
+            }
+            if($this->in_group(SALESMAN, $user->id))
+            {
+                $user->user_type = SALESMAN;
+            }
+            if($this->in_group(CUSTOMER, $user->id))
+            {
+                $user->user_type = CUSTOMER;
+            }
+            if($this->in_group(SUPPLIER, $user->id))
+            {
+                $user->user_type = SUPPLIER;
+            }
+            
             $this->ion_auth_model->set_session($user);
 
             $this->ion_auth_model->update_last_login($user->id);

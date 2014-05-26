@@ -102,7 +102,7 @@ class User extends CI_Controller {
         }
     }
 
-    public function login() {
+    /*public function login() {
         $this->data['title'] = "Login";
 
         //validate form input
@@ -178,6 +178,80 @@ class User extends CI_Controller {
             $this->template->load($this->login_template, $this->login_view, $this->data);
             
         }
+    }*/
+    
+    public function login() {
+        
+        if ($this->input->post('login_submit_btn')) 
+        {
+            //validate form input
+            $this->form_validation->set_rules('identity', 'Identity', 'required');
+            $this->form_validation->set_rules('password', 'Password', 'required');
+            if ($this->form_validation->run() == true) {
+                //check to see if the user is logging in
+                //check for "remember me"
+                $remember = (bool) $this->input->post('remember');
+                if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember)) {
+                    //if the login is successful
+                    //redirect them back to the home page
+                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    $this->user_type = $this->ion_auth->get_current_user_type();
+                    if ($this->user_type == SALESMAN) 
+                    {
+                        $this->login_success_uri = SALESMAN_LOGIN_SUCCESS_URI;
+                        
+                    }
+                    else if ($this->user_type == MANAGER) {
+                        $this->login_success_uri = MANAGER_LOGIN_SUCCESS_URI;
+                        $user_info_array = $this->ion_auth->get_user_info()->result_array();
+                        $user_info = $user_info_array[0];
+                        if ($user_info['sms_code'] != 0) {
+                            redirect('user/account_validation_sms', 'refresh');
+                        }
+                        $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
+
+                        if (empty($shop_info)) {
+                            redirect('shop/create_shop', 'refresh');
+                        }                    
+                    }
+                    $shop_info_array = $this->shop_library->get_shop()->result_array();
+                    $shop_info = $shop_info_array[0];
+                    $logoaddress = base_url().'/assets/images/'.$shop_info['picture'].'.png';
+                    $this->session->set_userdata(array('logoaddress' => $logoaddress));
+                    redirect($this->login_success_uri, 'refresh');
+                } else {
+                    //if the login was un-successful
+                    //redirect them back to the login page
+                    $this->session->set_flashdata('message', $this->ion_auth->errors());
+                    redirect($this->login_uri, 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
+                }
+            } 
+        }
+        else {
+            //the user is not logging in so display the login page
+            //set the flash data error message if there is one
+            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+        }
+        $this->data['identity'] = array('name' => 'identity',
+            'id' => 'identity',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('identity'),
+        );
+        $this->data['password'] = array('name' => 'password',
+            'id' => 'password',
+            'type' => 'password'
+        );
+        
+        $this->data['first_name'] = array('type' => 'text', 'name' => 'first_name', 'id' => 'first_name', 'value' => $this->input->post('first_name'));
+        $this->data['last_name'] = array('type' => 'text', 'name' => 'last_name', 'id' => 'last_name', 'value' => $this->input->post('last_name'));
+        $this->data['email'] = array('type' => 'email', 'name' => 'email', 'id' => 'email', 'value' => $this->input->post('email'));
+        $this->data['phone'] = array('type' => 'text', 'name' => 'phone', 'id' => 'phone', 'value' => $this->input->post('phone'));
+        $this->data['username'] = array('type' => 'text', 'name' => 'username', 'id' => 'username', 'value' => $this->input->post('username'));
+        $this->data['new_password'] = array('type' => 'new_password', 'name' => 'new_password', 'id' => 'new_password');
+        $this->data['password_confirm'] = array('type' => 'password', 'name' => 'password_confirm', 'id' => 'password_confirm');
+        $this->data['submit_create_manager'] = array('type' => 'submit', 'name' => 'submit_create_manager', 'id' => 'submit_create_manager', 'value' => 'Register');
+
+        $this->template->load(LOGIN_TEMPLATE, LOGIN_VIEW, $this->data);
     }
     
     function account_validation_sms() {
@@ -239,7 +313,7 @@ class User extends CI_Controller {
         $this->session->set_flashdata('message', $this->ion_auth->messages());
         $logoaddress = base_url().'/assets/images/logo.png';
         $this->session->set_userdata(array('logoaddress' => $logoaddress));
-        redirect('nonmember', 'refresh');
+        redirect('user/login', 'refresh');
     }
 
     //create a new user
