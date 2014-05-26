@@ -1612,23 +1612,41 @@ class User extends CI_Controller {
         $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
         if( $user_id !== FALSE )
         {
-            $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
-            $supplier_info = array();
-            if( count($supplier_info_array) > 0 )
-            {
-                $supplier_info = $supplier_info_array[0];
+            $message_type_id = SMS_MESSAGE_CATEGORY_SUPPLIER_REGISTRATION_TYPE_ID;
+            $message_category_id = $this->messages->get_sms_message_category($shop_info['shop_id'],$message_type_id)->result_array();
+            if(!empty($message_category_id)){
+                $message_category_id = $message_category_id[0];
+                $message_category_id = $message_category_id['id'];
             }
-            $response['status'] = '1';
-            $response['supplier_info'] = $supplier_info;
-            $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+
+            $message_info_array = $this->messages->get_sms_message($message_category_id,$shop_info['id'])->result_array();
             $message = '';
             if(!empty($message_info_array))
             {
                 $message_info = $message_info_array[0];
                 $message = $message_info['message_description'];
             }
-            $supplier_name = $first_name.' '.$last_name;
-            $this->sms_library->send_sms($phone_no,"Dear, ".$supplier_name.' '.$message);
+            $supplier_name = $this->input->post('first_name').' '.$this->input->post('last_name');
+            $this->sms_library->send_sms($this->input->post('phone'), "Dear, ".$supplier_name.' '.$message);
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
+            
+//            $supplier_info_array = $this->ion_auth->get_supplier($user_id)->result_array();
+//            $supplier_info = array();
+//            if( count($supplier_info_array) > 0 )
+//            {
+//                $supplier_info = $supplier_info_array[0];
+//            }
+//            $response['status'] = '1';
+//            $response['supplier_info'] = $supplier_info;
+//            $message_info_array = $this->ion_auth->get_message_from_category($message_category_id)->result_array();
+//            $message = '';
+//            if(!empty($message_info_array))
+//            {
+//                $message_info = $message_info_array[0];
+//                $message = $message_info['message_description'];
+//            }
+//            $supplier_name = $first_name.' '.$last_name;
+//            $this->sms_library->send_sms($phone_no,"Dear, ".$supplier_name.' '.$message);
         } 
         else
         {

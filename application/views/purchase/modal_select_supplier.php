@@ -288,14 +288,14 @@
                                         <?php echo form_input(array('name' => 'input_company', 'id' => 'input_company', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
-                                <div class="form-group">
+<!--                                <div class="form-group">
                                     <label for="address" class="col-md-4 control-label requiredField">
                                         Message Category
                                     </label>
                                     <div class ="col-md-8">
                                         <?php echo form_dropdown('message_category_list', $message_category_list+array('' => 'Select'), '', 'class=form-control id="message_category_list"'); ?>
                                     </div> 
-                                </div>
+                                </div>-->
                                 <div class="form-group">
                                     <label for="button_add_supplier" class="col-md-4 control-label requiredField">
                                     </label>

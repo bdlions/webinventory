@@ -542,8 +542,10 @@ class Product extends CI_Controller {
                     $shop_id = $this->session->userdata('shop_id');
                     $product_unit = $this->product_library->get_all_product_unit_category($shop_id)->result_array();
                     $i=0;
+                    $category_name_lower = strtolower($category_name);
                     for(;$i<count($product_unit);$i++){
-                        if($product_unit[$i]['description']==$category_name)
+                        $product_unit[$i]['description'] = strtolower($product_unit[$i]['description']);
+                        if($product_unit[$i]['description']==$category_name_lower)
                         {
                             $category_name = $product_unit[$i]['id'];
                             break;
