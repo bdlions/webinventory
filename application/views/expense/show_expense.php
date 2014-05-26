@@ -116,7 +116,7 @@
                                     Select Type
                                 </label>
                                 <div class ="col-md-6">
-                                    <?php echo form_dropdown('expense_categories', $expense_categories+ array('0' => 'All'), '','class="form-control" id="expense_categories"'); ?>
+                                    <?php echo form_dropdown('expense_categories', $expense_categories+ array('0' => 'All'), '0','class="form-control" id="expense_categories"'); ?>
                                 </div> 
                             </div>
                             <div class="form-group">
