@@ -159,6 +159,7 @@ class Message extends CI_Controller {
             $shop_id = $this->session->userdate('shop_id');
         }
         $messages = $this->messages->get_all_custom_message_for_typeahed()->result();
+        echo '<pre/>';print_r($messages);exit;
         $temp_messages = array();
         foreach ($messages as  $message) {
             $message -> message = strip_tags(html_entity_decode(html_entity_decode($message -> message)));
@@ -166,6 +167,7 @@ class Message extends CI_Controller {
             
             array_push($temp_messages, $message);
         }
+        
         echo json_encode($temp_messages);
     }
 }

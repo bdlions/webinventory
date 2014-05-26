@@ -40,6 +40,7 @@ class Manage_queue_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;
     }
     
+    
     public function update_phone_directory($id,$data)
     {
         $data = $this->_filter_data($this->tables['phone_directory'], $data);
@@ -83,9 +84,14 @@ class Manage_queue_model extends Ion_auth_model {
 
     
     
-    public function create_queue()
+    public function create_queue($data)
     {
+        $data = $this->_filter_data($this->tables['queue_table'], $data);
+        $this->db->insert($this->tables['queue_table'],$data);
         
+        $id = $this->db->insert_id();
+        
+        return isset($id)?$id:FALSE;
     }
     
     // written by omar faruk
