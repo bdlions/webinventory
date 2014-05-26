@@ -156,7 +156,7 @@ class Message extends CI_Controller {
     {
         if($shop_id==0)
         {
-            $shop_id = $this->session->userdate('shop_id');
+            $shop_id = $this->session->userdata('shop_id');
         }
         $messages = $this->messages->get_all_custom_message_for_typeahed()->result();
         echo '<pre/>';print_r($messages);exit;
