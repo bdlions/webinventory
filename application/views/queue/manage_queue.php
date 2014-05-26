@@ -27,13 +27,13 @@
                                         <input <?php echo ($euqally != 1) ? '' : 'readonly'; ?> style="text-align: center;" type="text" onchange="add_msg_number();" name="no_of_queue_<?php echo $i; ?>" onkeydown = "validateNumberAllowDecimal(event, false)" id="no_of_queue_<?php echo $i; ?>" value="<?php echo $msg_in_each_queue; ?>">
                                         <input type="hidden" name="global_message" id="global_message" value="<?php echo $global_message; ?>" >
                                     </td>
-                                    <?php if($global_msg != 1): ?>
+                                    <?php //if($global_message != 1): ?>
                                         <td>
                                             <button id="set_msg_for_q_<?php echo $i; ?>" class="form-control btn-success" type="button" name="set_msg_for_q_<?php echo $i; ?>" onclick="openModal('set_msg_for_q_<?php echo $i;?>','<?php echo $i; ?>')">
                                                 Set Message
                                             </button>
                                         </td>
-                                    <?php endif; ?>
+                                    <?php //endif; ?>
                                 </tr>
                             <?php endfor; ?>
                         </tbody>
@@ -87,11 +87,11 @@
         });
        if(parseInt(total_no_of_msg) < sum ) {
            $('#show_error_message').html("you are crossing the total number of message").css({ 'color': 'red', 'font-size': '100%' });
-           $('#submit_final_queue').hide();
+           //$('#submit_final_queue').hide();
        } else {
            update_inserted_sum = sum;
            $('#show_error_message').html("");
-           $('#submit_final_queue').show();
+           //$('#submit_final_queue').show();
        }
     }
     
