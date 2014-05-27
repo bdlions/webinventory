@@ -100,7 +100,6 @@
         });
         
     });
-
 </script>
 <script type="text/x-tmpl" id="tmpl_product_list">
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}

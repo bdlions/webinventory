@@ -45,10 +45,13 @@
                     <th>Purchase Unit Price</th>
                     <th>Sub Total</th>
                     <th>Payment Status</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody id="tbody_product_list">
                 <?php
+                $i=0;
+                $length = count($customer_transaction_list);
                 foreach ($customer_transaction_list as $key => $customer_transaction) {
                 ?>
                     <tr>
@@ -59,8 +62,10 @@
                         <td><?php echo $customer_transaction['unit_price'] ?></td>
                         <td><?php echo $customer_transaction['sub_total'] ?></td>
                         <td><?php echo $customer_transaction['payment_status'] ?></td>
+                        <td><?php if($i+1<$length && $customer_transaction_list[$i]['remarks']!='' && $customer_transaction_list[$i+1]['remarks']==''){echo $customer_transaction['remarks'];} ?></td>
                     </tr>
                 <?php
+                    $i++;
                 }
                 ?>
             </tbody>

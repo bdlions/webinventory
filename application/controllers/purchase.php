@@ -104,8 +104,11 @@ class Purchase extends CI_Controller {
         
         $supplier_transaction_info_array = array();
         
+        $total_products = count($selected_product_list);
+        $product_counter = 0;
         foreach($selected_product_list as $key => $prod_info)
         {
+            $product_counter++;
             $supplier_transaction_info = array(
                 'shop_id' => $shop_id,
                 'supplier_id' => $purchase_info['supplier_id'],
@@ -117,6 +120,14 @@ class Purchase extends CI_Controller {
                 'sub_total' => $prod_info['sub_total'],
                 'payment_status' => ''
             );
+            if($product_counter == $total_products)
+            {
+                $supplier_transaction_info['remarks'] = $purchase_info['remarks'];
+            }
+            else
+            {
+                $supplier_transaction_info['remarks'] = '';
+            }
             $supplier_transaction_info_array[] = $supplier_transaction_info;
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
@@ -146,7 +157,8 @@ class Purchase extends CI_Controller {
             'quantity' => '',
             'unit_price' => '',
             'sub_total' => ($current_due+$purchase_info['paid']),
-            'payment_status' => 'Total due'
+            'payment_status' => 'Total due',
+            'remarks' => ''
         );
         $supplier_transaction_info_array[] = $supplier_transaction_info;
         if( $purchase_info['paid'] > 0)
@@ -160,7 +172,8 @@ class Purchase extends CI_Controller {
                 'quantity' => '',
                 'unit_price' => '',
                 'sub_total' => $purchase_info['paid'],
-                'payment_status' => 'Payment(Cash)'
+                'payment_status' => 'Payment(Cash)',
+                'remarks' => ''
             );
             $supplier_transaction_info_array[] = $supplier_transaction_info;
             if( $current_due > 0)
@@ -174,7 +187,8 @@ class Purchase extends CI_Controller {
                     'quantity' => '',
                     'unit_price' => '',
                     'sub_total' => $current_due,
-                    'payment_status' => 'Total due'
+                    'payment_status' => 'Total due',
+                    'remarks' => ''
                 );
                 $supplier_transaction_info_array[] = $supplier_transaction_info;
             }

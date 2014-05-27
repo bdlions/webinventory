@@ -45,10 +45,12 @@
                     <th>Purchase Unit Price</th>
                     <th>Sub Total</th>
                     <th>Payment Status</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody id="tbody_product_list">
                 <?php
+                $length = count($supplier_transaction_list);$i=0;
                 foreach ($supplier_transaction_list as $key => $supplier_transaction) {
                 ?>
                     <tr>
@@ -59,8 +61,10 @@
                         <td><?php echo $supplier_transaction['unit_price'] ?></td>
                         <td><?php echo $supplier_transaction['sub_total'] ?></td>
                         <td><?php echo $supplier_transaction['payment_status'] ?></td>
+                        <td><?php echo $supplier_transaction['remarks'] ?></td>
                     </tr>
                 <?php
+                    $i++;
                 }
                 ?>
             </tbody>

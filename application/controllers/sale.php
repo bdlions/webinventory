@@ -112,7 +112,10 @@ class Sale extends CI_Controller {
             $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no']] = $stock_info['current_stock'];
         }
         $customer_transaction_info_array = array();
+        $total_products = count($selected_product_list);
+        $product_counter=0;
         foreach ($selected_product_list as $key => $prod_info) {
+            $product_counter++;
             $customer_transaction_info = array(
                 'sale_order_no' => $sale_info['sale_order_no'],
                 'shop_id' => $shop_id,
@@ -124,8 +127,17 @@ class Sale extends CI_Controller {
                 'unit_price' => $prod_info['unit_price'],
                 'sub_total' => $prod_info['sub_total'],
                 'payment_status' => '',
-                'profit' => ''
+                'profit' => '',
+                'remarks' => $sale_info['remarks']
             );
+            if($product_counter == $total_products)
+            {
+                $customer_transaction_info['remarks'] = $sale_info['remarks'];
+            }
+            else
+            {
+                $customer_transaction_info['remarks'] = '';
+            }
             $customer_transaction_info_array[] = $customer_transaction_info;            
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
@@ -167,7 +179,8 @@ class Sale extends CI_Controller {
             'unit_price' => '',
             'sub_total' => ($current_due + $sale_info['cash_paid'] + $sale_info['check_paid']),
             'payment_status' => 'Total due',
-            'profit' => ''
+            'profit' => '',
+            'remarks' => ''
         );
         $customer_transaction_info_array[] = $customer_transaction_info;
         if ($sale_info['cash_paid'] + $sale_info['check_paid'] > 0) {
@@ -183,7 +196,8 @@ class Sale extends CI_Controller {
                     'unit_price' => '',
                     'sub_total' => $sale_info['cash_paid'],
                     'payment_status' => 'Payment(Cash)',
-                    'profit' => ''
+                    'profit' => '',
+                    'remarks' => ''
                 );
                 $customer_transaction_info_array[] = $customer_transaction_info;
             }
@@ -199,7 +213,8 @@ class Sale extends CI_Controller {
                     'unit_price' => '',
                     'sub_total' => $sale_info['check_paid'],
                     'payment_status' => 'Payment(Check)',
-                    'profit' => ''
+                    'profit' => '',
+                    'remarks' => ''
                 );
                 $customer_transaction_info_array[] = $customer_transaction_info;
             }
@@ -215,7 +230,8 @@ class Sale extends CI_Controller {
                     'unit_price' => '',
                     'sub_total' => $current_due,
                     'payment_status' => 'Total due',
-                    'profit' => ''
+                    'profit' => '',
+                    'remarks' => ''
                 );
                 $customer_transaction_info_array[] = $customer_transaction_info;
             }

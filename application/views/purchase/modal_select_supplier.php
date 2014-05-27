@@ -40,7 +40,7 @@
                         var s_list = get_supplier_list();
                         s_list[s_list.length] = data['supplier_info'];
                         set_supplier_list(s_list);
-                        alert('New supplier is added successfully.');
+                        alert(data.message);
                         var supplier_info = data['supplier_info'];
                         //$("#tbody_supplier_list").html($("#tbody_supplier_list").html()+tmpl("tmpl_supplier_list", supplier_info));
                         update_fields_selected_supplier(supplier_info);
