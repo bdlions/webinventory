@@ -12,10 +12,10 @@
 
 
     .login-color1{ color: white; font-family:verdana; font-size:12px; }
-    .login-color2{ color: #a2b5db; font-size:12px; }
-    .login-color2 a { color: #a2b5db; font-size:12px; } 
+    .login-color2{ color: #a2b5db; font-size:14px; vertical-align: top;}
+    .login-color2 a { color: #a2b5db; font-size:14px; } 
 
-    .login-button{  background-color:#607cad; color:white;  border: 1px solid #5D6477; box-shadow:inset; text-align:center; width:48px; height: 20px; margin-top: 20px;}
+    .login-button{  background-color:#607cad; color:white;  border: 1px solid #5D6477; box-shadow:inset; text-align:center; width:48px; height: 20px; margin-top: 26px;}
     .login-button a { text-decoration:none ; color: white; }
     .content{ background-color: #edf0f5;}
     .empty2{ width: 500px; float:left;} 
@@ -40,23 +40,23 @@
     <div class="row">
         <div class="header col-md-12">
             <div class="ribbon_logo col-md-4 pull-left">
-                <img src="images/logo.png">
+                <img src="<?php echo base_url();?>resources/images/webinventory.png">
             </div>
             <div class="login pull-right col-md-6">
                 <?php echo form_open(LOGIN_URI, array('id' => 'admin-login', 'role' => 'form', 'class' => 'form-horizontal')); ?>
                 <div class="row col-md-12">
-                    <div class="col-md-4">
+                    <div class="row col-md-4">
                         <label> <span class="login-color1"><?php echo lang('login_identity_label', 'identity'); ?><br> </span> </label>
-                        <?php echo form_input($identity); ?> <br>
+                        <?php echo form_input($identity); ?><br>
                         <input type="checkbox">
-                        <span class="login-color2" > keep me logged in</span>
+                        <span class="login-color2"> keep me logged in</span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="row col-md-4">
                         <label> <span class="login-color1"> <?php echo lang('login_password_label', 'password'); ?><br> </span> </label>
                         <?php echo form_input($password); ?><br>
                         <span class="login-color2"><a href="#">Forgot your password? </a></span>
                     </div>
-                    <div class="col-md-4">
+                    <div class="row col-md-4">
                         <input type="submit" value="Login" name="login_submit_btn" id="login_submit_btn" class="login-button">
                     </div>
                 </div>
