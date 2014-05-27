@@ -3,7 +3,7 @@
     *{margin:0 ; padding: 0 ; }
     *img{ border:0; } 
 
-    .header{ background-color:#3b5999;}
+    .header{ background-color:#75B3E6;}
     .ribbon_logo{ float:left; padding: 20px; }
     .ribbon_logo img{ float: left; }
     .login{ float: left; padding: 20px; } 
@@ -11,9 +11,10 @@
     .empty1{ width: 150px; float:left;} 
 
 
+    .login-color{ color: red; font-family:verdana; font-size:12px; }
     .login-color1{ color: white; font-family:verdana; font-size:12px; }
-    .login-color2{ color: #a2b5db; font-size:14px; vertical-align: top;}
-    .login-color2 a { color: #a2b5db; font-size:14px; } 
+    .login-color2{ color: white; font-size:14px; vertical-align: top;}
+    .login-color2 a { color: white; font-size:14px; } 
 
     .login-button{  background-color:#607cad; color:white;  border: 1px solid #5D6477; box-shadow:inset; text-align:center; width:48px; height: 20px; margin-top: 26px;}
     .login-button a { text-decoration:none ; color: white; }
@@ -60,7 +61,7 @@
                         <input type="submit" value="Login" name="login_submit_btn" id="login_submit_btn" class="login-button">
                     </div>
                 </div>
-                <div class="row"><?php echo $message2; ?></div>
+                <div class="row col-md-12 login-color1"><?php echo $message1; ?></div>
                 <?php echo form_close(); ?>
             </div>
             <br style="clear: both;">
@@ -71,7 +72,7 @@
             <div class="body_form col-md-offset-6 col-md-4">
                 <?php echo form_open(LOGIN_URI, array('id' => 'form_create_admin', 'class' => 'form-horizontal')); ?>
                     <h1> Sign Up </h1>
-                    <div class="row"><?php echo $message2; ?></div>
+                    <div class="row col-md-12 login-color"><?php echo $message2; ?></div>
                     <div class="form-group">
                         <div class ="col-md-12">
                             <?php echo form_input($first_name + array('class' => 'form-control', 'placeholder'=>'First Name')); ?>
