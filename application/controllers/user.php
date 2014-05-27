@@ -218,11 +218,13 @@ class User extends CI_Controller {
                     $this->session->set_userdata(array('logoaddress' => $logoaddress));
                     redirect($this->login_success_uri, 'refresh');
                 } else {
-                    //if the login was un-successful
-                    //redirect them back to the login page
                     $this->session->set_flashdata('message1', $this->ion_auth->errors());
                     redirect(LOGIN_URI, 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
                 }
+            }
+            else
+            {
+                $this->data['message1'] = validation_errors();
             }
         } else if ($this->input->post('submit_create_manager')) {
             $this->data['message2'] = '';
@@ -354,10 +356,12 @@ class User extends CI_Controller {
 //        $this->template->load(null,'manager/create_admin',$this->data);
 // </editor-fold>
             $this->template->load(NULL, "manager/create_admin", $this->data);
-        } else {
+        } 
+        else {
             //the user is not logging in so display the login page
             //set the flash data error message if there is one
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $this->data['message1'] = $this->session->flashdata('message1');
+            $this->data['message2'] = $this->session->flashdata('message2');            
         }
         $this->data['identity'] = array('name' => 'identity',
             'id' => 'identity',
