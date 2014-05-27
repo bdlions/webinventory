@@ -5,7 +5,13 @@
     <div class ="col-md-7 col-md-offset-2">
         <div class ="row">
             <div class="col-md-4"></div>
-            <div class="col-md-8"><?php echo $message; ?></div>
+            <div class="col-md-8" style="color:red;"><?php echo $message; ?></div>
+        </div>
+        <div class ="row">
+            <div class="col-md-12"></div>
+        </div>
+        <div class ="row">
+            <div class="col-md-12"></div>
         </div>
         
         <div class="form-group">
@@ -47,13 +53,17 @@
         <input type="hidden" name="editortext" id="editortext"></input>
         <input type="hidden" name="message_id" id="message_id"></input>
         <div class="form-group">
-            <label for="address" class="col-md-3 control-label requiredField">
+<!--            <label for="address" class="col-md-3 control-label requiredField">
 
-            </label>
-            <div class ="col-md-offset-6 col-md-2">
+            </label>-->
+            <div class ="col-md-offset-3 col-md-2">
                 <?php echo form_input($submit_update_message+array('class'=>'form-control btn-success')); ?>
+            </div>
+            <div class ="col-md-offset-4 col-md-2">
+                <?php echo form_input($submit_create_message+array('class'=>'form-control btn-success')); ?>
             </div> 
         </div>
+        
         <?php echo form_close(); ?>
     </div>
     
