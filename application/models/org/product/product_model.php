@@ -163,7 +163,6 @@ class Product_model extends Ion_auth_model
         $data = array(
             'shop_id' => $this->session->userdata('shop_id')
         );
-        //echo '<pre />';print_r($additional_data); exit('here');
         //filter out any data passed that doesnt have a matching column in the unit table
         $unit_data = array_merge($this->_filter_data($this->tables['product_unit_category'], $additional_data), $data);
         $this->db->insert($this->tables['product_unit_category'], $unit_data);
@@ -189,5 +188,13 @@ class Product_model extends Ion_auth_model
         $this->db->where('shop_id',$shop_id);
         $this->response = $this->db->get($this->tables['product_unit_category']);
         return $this;
+    }
+    
+    public function get_product_unit_category_info($id)
+    {
+        $this->db->where('id',$id);
+        return $this->db->select("*")
+                    ->from($this->tables['product_unit_category'])
+                    ->get();
     }
 }

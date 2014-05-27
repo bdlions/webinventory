@@ -48,8 +48,7 @@ class Message extends CI_Controller {
                 
                 if($id ==''){
                     $this->data['message'] = 'To update at first you have to search and select a message';
-                    //$this->data['message'] = 'To update at first you have to search and select a message';
-                    $this->session->set_flashdata('message', 'To update at first you have to search and select a message');
+                    
                     redirect("message/update_custom_message","refresh");
                 }
                 $data = array(

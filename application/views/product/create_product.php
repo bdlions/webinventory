@@ -52,11 +52,21 @@
                 <label for="address" class="col-md-6 control-label requiredField">
                     Product Unit Category
                 </label>
-                <div class ="col-md-6">
-                    <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list+array('' => 'Select'), '', 'class=form-control'); ?>
+                <div class ="col-md-6" id="unit_dropdown">
+                    <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list+array('' => 'Select'), '', 'class=form-control id=dropdown'); ?>
                 </div> 
             </div>
-            
+            <div class="form-group">
+                <label for="address" class="col-md-6 control-label requiredField">
+                    New Unit
+                </label>
+                <div class ="col-md-3">
+                    <input type="text" class="form-control" id="unit_name"/>
+                </div>
+                <div class ="col-md-3">
+                    <button type="submit" name="create" class="form-control btn-success" id="unit_create">Create</button>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Brand Name
@@ -85,3 +95,29 @@
     </div>
     <?php echo form_close(); ?>
 </div>
+<script type="text/javascript">
+    $(function() {
+        $("#unit_create").on("click", function() {
+            if ($("#unit_name").val().length == 0)
+            {
+                alert("Unit name is required.");
+                return;
+            }
+            
+            var unit_name = $("#unit_name").val();
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "product/create_product_unit",
+                data: {
+                    unit_name: unit_name
+                },
+                success: function(data) {
+                    console.log(data);
+                    $('#dropdown').append(data);
+                }
+            });
+            //alert('Hello');
+        });
+    });
+</script>

@@ -642,6 +642,32 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/create_product_unit_category',$this->data);
     }
     
+    public function create_product_unit(){
+        
+        $unit_name = $this->input->post('unit_name');
+        
+        $product_unit = $this->product_library->get_all_product_unit_category()->result_array();
+        $unit_name_lower = strtolower($unit_name);
+        for($i=0;$i<count($product_unit);$i++){
+            $name = strtolower($product_unit[$i]['description']);
+            if($name == $unit_name_lower){
+                //echo json_encode($product_unit);
+                return;
+            }
+        }
+        
+        $data = array(
+                'description' => $unit_name,
+                'created_on' => now()
+            );
+        $id = $this->product_library->create_product_unit_category($data);
+        
+        $data = $this->product_library->get_product_unit_category_info($id)->result_array();
+        print_r($data);
+        echo json_encode($data[0]);
+    }
+
+
     public function download_sample_file()
     {
         $file_read = read_file('./upload/sample_file.txt');
@@ -649,4 +675,6 @@ class Product extends CI_Controller {
         header("Content-Disposition: 'attachment'; filename=sample_file.txt");
         echo $file_read;
     }
+    
+    
 }
