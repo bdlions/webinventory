@@ -616,6 +616,7 @@ CREATE TABLE IF NOT EXISTS `supplier_transaction_info` (
   `unit_price` varchar(200) DEFAULT '',
   `sub_total` varchar(200) DEFAULT '',
   `payment_status` varchar(200) DEFAULT '',
+  `remarks` varchar(500),
   PRIMARY KEY (`id`),
   KEY `fk_supplier_transaction_info_shop_info1_idx` (`shop_id`),
   KEY `fk_supplier_transaction_info_suppliers1_idx` (`supplier_id`)
@@ -698,6 +699,7 @@ CREATE TABLE IF NOT EXISTS `customer_transaction_info` (
   `sub_total` varchar(200) DEFAULT '',
   `payment_status` varchar(200) DEFAULT '',
   `profit` varchar(200) DEFAULT '',
+  `remarks` varchar(500),
   PRIMARY KEY (`id`),
   KEY `fk_customer_transaction_info_shop_info1_idx` (`shop_id`),
   KEY `fk_customer_transaction_info_customers1_idx` (`customer_id`)
