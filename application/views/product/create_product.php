@@ -64,7 +64,7 @@
                     <input type="text" class="form-control" id="unit_name"/>
                 </div>
                 <div class ="col-md-3">
-                    <button type="submit" name="create" class="form-control btn-success" id="unit_create">Create</button>
+                    <button type="button" name="create" class="form-control btn-success" id="unit_create">Create</button>
                 </div>
             </div>
             <div class="form-group">
@@ -109,15 +109,18 @@
                 dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "product/create_product_unit",
-                data: {
-                    unit_name: unit_name
-                },
+                data: { unit_name: unit_name },
                 success: function(data) {
-                    console.log(data);
-                    $('#dropdown').append(data);
+                    alert(data.message);
+                    if (data['status'] === 1)
+                    {
+                        $("#dropdown").append("<option value='"+data['product_category_info'].id+"'>"+data['product_category_info'].description+"</option>");
+                    }
+                    
                 }
             });
             //alert('Hello');
         });
     });
+    
 </script>

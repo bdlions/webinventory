@@ -643,9 +643,7 @@ class Product extends CI_Controller {
     }
     
     public function create_product_unit(){
-        
         $unit_name = $this->input->post('unit_name');
-        
         $product_unit = $this->product_library->get_all_product_unit_category()->result_array();
         $unit_name_lower = strtolower($unit_name);
         for($i=0;$i<count($product_unit);$i++){
@@ -660,11 +658,26 @@ class Product extends CI_Controller {
                 'description' => $unit_name,
                 'created_on' => now()
             );
+        
         $id = $this->product_library->create_product_unit_category($data);
         
-        $data = $this->product_library->get_product_unit_category_info($id)->result_array();
-        print_r($data);
-        echo json_encode($data[0]);
+        if($id !== FALSE)
+        {
+            $response['status'] = 1;
+            $response['message'] = 'Product Unit Category is added successfully.';
+            $data = $this->product_library->get_product_unit_category_info($id)->result_array();
+            if(!empty($data))
+            {
+                $response['product_category_info'] = $data[0];
+            }             
+        }
+        else
+        {
+            $response['status'] = 0;
+            $response['message'] = 'Product Unit Category is duplicate';
+        }
+        
+        echo json_encode($response);
     }
 
 
