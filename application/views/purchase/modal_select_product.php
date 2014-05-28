@@ -177,15 +177,16 @@
                         <div class ="col-md-3">
                             <span class="" style="vertical-align: top; font-size: 24px; line-height: 12px;">Search</span>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9 form-horizontal">
                             <div class="col-md-6">
                                 <?php echo form_dropdown('dropdown_search_product', $product_search_category, '0', 'id="dropdown_search_product"'); ?>
                             </div>
+                            
                             <div class="col-md-6">
-                                <div class="row">
+                                <div class="row form-group">
                                     <?php echo form_input(array('name' => 'input_search_product', 'id' => 'input_search_product', 'class' => 'form-control')); ?>
                                 </div>
-                                <div class="row">
+                                <div class="row form-group">
                                     <?php echo form_button(array('name' => 'button_search_product', 'class' => 'form-control btn btn-success', 'id' => 'button_search_product', 'content' => 'Search')); ?>
                                 </div>
                             </div>
@@ -234,7 +235,7 @@
                             <div class="form-group">
                                 <label class="col-md-5 control-label requiredField" for="button_add_supplier">
                                 </label>
-                                <div class="col-md-7">
+                                <div class="col-md-offset-2 col-md-5">
                                     <button id="button_add_product" class="form-control btn btn-success" type="button" name="button_add_product">Add</button>
                                 </div> 
                             </div>
