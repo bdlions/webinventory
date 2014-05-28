@@ -173,7 +173,38 @@
                                 </div>
                             </div>
                         </div>                      
-                    </div> 
+                    </div>
+                    <div class ="row col-md-11 top-bottom-padding">
+                        <div class ="col-md-3">
+                            <h3>Add New</h3>
+                        </div>
+                    </div>
+                    <div class ="row col-md-11 top-bottom-padding">
+                        <div class ="col-md-12">
+                            <div class="row form-group">
+                                <div class ="col-md-5 col-md-offset-2">
+                                    <h3>Product Name</h3>
+                                </div>
+                                <div class="col-md-offset-7">
+                                    <input name="product_name" class="form-control" />
+                                </div>
+                            </div>
+                            
+                            <div class="row form-group">
+                                <div class ="col-md-5 col-md-offset-2">
+                                    <h3>Product Name</h3>
+                                </div>
+                                <div class="col-md-offset-7">
+                                    <input name="product_name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class ="row form-group">
+                                <div class="col-md-offset-7 col-md-5">
+                                    <button class="form-control btn btn-success">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
