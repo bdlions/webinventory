@@ -109,7 +109,7 @@
           })
         
     });
-
+    
     });
 </script>
 <script type="text/x-tmpl" id="tmpl_product_list">
@@ -155,6 +155,17 @@
                                         <?php
                                     }
                                     ?>
+                                <script type="text/x-tmpl" id="tmpl_product_list">
+                                    {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
+                                    {% while(product_info){ %}
+                                    <tr>
+                                        <td><input id="{%= product_info.id%}" name="checkbox[]" class="" type="checkbox" /></td>
+                                        <td id="{%= product_info.id%}">{%= product_info.name%}</td>
+                                        <td><a target="_blank" href="<?php echo base_url()?> . "product/show_product/" . {%= product_info.id%}">view</a></td>  
+                                    </tr>
+                                    {% product_info = ((o instanceof Array) ? o[i++] : null); %}
+                                    {% } %}
+                                </script>
                                 </tbody>
                             </table>                            
                         </div>
@@ -186,41 +197,47 @@
                                 Add New
                             </span>
                         </div>
-                        <div class="row col-md-8">
-                            <div class="form-group">
-                                <label class="col-md-5 control-label requiredField">
+                        <div class="row col-md-8 form-horizontal">
+                            <div class="row form-group">
+                                <label class="col-md-5 control-label requiredField" for="input_product_name">
                                     Product Name
                                 </label>
-                                <div class ="col-md-7">
-                                    <input name="product_name" class="form-control" />
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" id="input_product_name" value="" name="input_product_name">
                                 </div> 
                             </div>
                             <div class="form-group">
-                                <label class="col-md-5 control-label requiredField">
+                                <label class="col-md-5 control-label requiredField" for="input_product_unit">
                                     Product Unit
                                 </label>
-                                <div class ="col-md-7">
-                                    <?php echo form_dropdown('dropdown_product_unit', $product_search_category, '0', 'id="dropdown_product_unit"'); ?>
-                                </div> 
+                                <div id="unit_dropdown" class="col-md-7">
+                                   <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list+array('' => 'Select'), '', 'class=form-control id=dropdown'); ?>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-5 control-label requiredField">
+                                <label class="col-md-5 control-label requiredField" for="input_new_unit">
                                     New Unit
                                 </label>
-                                <div class ="col-md-7">
-                                    <div class="row">
-                                        <div class ="col-md-12">
-                                            <?php echo form_input(array('name' => 'input_search_product', 'id' => 'input_search_product', 'class' => 'form-control')); ?>
-                                        </div>
-                                        <div class ="col-md-12">
-                                            <button class="form-control btn btn-success">Create</button>
-                                        </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="input_new_unit" value="" name="input_new_unit">
                                     </div>
+                                    <div class="col-md-6">
+                                        <button id="button_add_new_unit" class="form-control btn btn-success" type="button" name="button_add_new_unit">
+                                            Create
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-5 control-label requiredField" for="button_add_supplier">
+                                </label>
+                                <div class="col-md-7">
+                                    <button id="button_add_product" class="form-control btn btn-success" type="button" name="button_add_product">Add</button>
                                 </div> 
                             </div>
-                        </div>
-                        <div class="col-md-3 pull-right">
-                            <button class="form-control btn btn-success">Add</button>
                         </div>
                     </div>
                 </div>
@@ -232,5 +249,67 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<script type="text/javascript">
+    $(function() {
+        // here is new unit category is added
+        $("#button_add_new_unit").on("click", function() {
+            if ($("#input_new_unit").val().length == 0)
+            {
+                alert("Unit name is required.");
+                return;
+            }
+            
+            var unit_name = $("#input_new_unit").val();
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "product/create_product_unit",
+                data: { unit_name: unit_name },
+                success: function(data) {
+                    alert(data.message);
+                    if (data['status'] === 1)
+                    {
+                        $("#dropdown").append("<option value='"+data['product_category_info'].id+"'>"+data['product_category_info'].description+"</option>");
+                    }
+                    
+                }
+            });
+        });
+        
+        // here a product is added
+        $("#button_add_product").on("click", function() {
+            var input_product_name = $("#input_product_name").val();
+            var product_unit_category = $("#dropdown").val();
+            
+            if (input_product_name.length == 0)
+            {
+                alert("product name is required.");
+                return;
+            }
+            
+            if (product_unit_category =='')
+            {
+                alert("please select a product unit.");
+                return;
+            }
+            
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "product/create_product_by_ajax",
+                data: { input_product_name: input_product_name, product_unit_category: product_unit_category},
+                success: function(data) {
+                    alert(data.message);
+                    if (data['status'] === 1)
+                    {
+                        var product_info = data['product_info'];
+                        $("#tbody_product_list").html($("#tbody_product_list").html()+tmpl("tmpl_product_list", product_info)); 
+                    }
+                    
+                }
+            });
+        });
+    });
+    
+</script>
 

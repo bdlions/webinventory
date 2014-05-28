@@ -155,6 +155,36 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/create_product', $this->data);
     }
     
+    public function create_product_by_ajax()
+    {
+        $product_name = $this->input->post('input_product_name');
+        $product_unit_category = $this->input->post('product_unit_category');
+        
+         $data = array(
+                'unit_category_id' => $product_unit_category,
+                'created_on' => now()
+            );
+
+        $product_id = $this->product_library->create_product($product_name, $data);
+        if( $product_id !== FALSE )
+        {
+            $response['status'] = 1;
+            $response['message'] = 'Product is added successfully.';
+            $data = $this->product_library->get_product($product_id)->result_array();
+            if(!empty($data))
+            {
+                $response['product_info'] = $data[0];
+            } 
+        }
+        else
+        {
+            $response['status'] = 0;
+            $this->data['message'] = 'Duplicate product name';
+        }
+        
+        echo json_encode($response);
+    }
+    
     /*
      * This method will dispaly all products of a shop
      * @author Nazmul on 22nd January 2014
