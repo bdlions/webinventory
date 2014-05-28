@@ -99,6 +99,17 @@
             $('#modal_select_product').modal('hide');
         });
 
+        
+        // clear input of modal when modal close
+        $('#modal_select_product').on('hidden.bs.modal', function (e) {
+            $(this).find("input,textarea,select").val('').end()
+              .find("input[type=checkbox], input[type=radio]")
+                 .prop("checked", "")
+                 .end();
+          })
+        
+    });
+
     });
 </script>
 <script type="text/x-tmpl" id="tmpl_product_list">

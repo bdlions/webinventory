@@ -10,6 +10,7 @@ class QProvider extends JsonRPCServer{
      function __construct() {
         parent::__construct();
         $this->load->helper('url');
+        $this->load->library('org/manage_queue/manage_queue_library');
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
                         $this->load->library('mongo_db') :
@@ -17,9 +18,10 @@ class QProvider extends JsonRPCServer{
      }
 
      function index(){
-        
+       exit('here');
      }
      function getQList(){
+         
          return '{
                 "id": "1",
                 "queues": [
@@ -66,7 +68,7 @@ class QProvider extends JsonRPCServer{
                     "callCount": "1"
                   },
                   "message": {
-                        "content":"This is first",
+                    "content":"This is first",
                     "status": "0",
                     "statusText": "PENDING",
                     "errorCode": "0",
@@ -99,7 +101,7 @@ class QProvider extends JsonRPCServer{
                     "callCount": "1"
                   },
                   "message": {
-                        "content":"This is to you",
+                    "content":"This is to you",
                     "status": "0",
                     "statusText": "PENDING",
                     "errorCode": "0",

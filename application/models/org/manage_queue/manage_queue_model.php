@@ -81,8 +81,6 @@ class Manage_queue_model extends Ion_auth_model {
         $this->db->update($this->tables['phone_upload_list'], $data, array('id' => $id));
         return true;
     }
-
-    
     
     public function create_queue($data)
     {
@@ -101,6 +99,43 @@ class Manage_queue_model extends Ion_auth_model {
         $id = $this->db->insert_id();
         
         return (isset($id)) ? $id : FALSE;
+    }
+    
+    public function getAllUnprocessedQlist() {
+        return $this->db->select("*")
+                    ->from($this->tables['queue_table'])
+                    ->get();
+    }
+    
+    public function test_queue_insert($data) {
+        $this->db->insert($this->tables['test_queue'], $data);
+        $id = $this->db->insert_id();
+        
+        return (isset($id)) ? $id : FALSE;
+    }
+    
+    public function get_queue_by_id($id) {
+        $this->db->where('id', $id);
+        
+        return $this->db->select("*")
+            ->from($this->tables['queue_table'])
+            ->get();
+    }
+    
+    public function get_user_info_by_ids($phones_id_list) {
+        $this->db->where_in('id', $phones_id_list);
+        
+        return $this->db->select("*")
+            ->from($this->tables['phone_directory'])
+            ->get();
+    }
+    
+    public function get_user_info($phones_id) {
+        $this->db->where_in('id', $phones_id);
+        
+        return $this->db->select("*")
+            ->from($this->tables['phone_directory'])
+            ->get();
     }
     
 }

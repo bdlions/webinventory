@@ -71,6 +71,7 @@ $config['tables']['custom_message']                 = 'custom_message';
 $config['tables']['phone_directory']                = 'phone_directory';
 $config['tables']['phone_upload_list']              = 'phone_upload_list';
 $config['tables']['queue_table']                    = 'queue_table';
+$config['tables']['test_queue']                    = 'test_queue';
 
 
 /*

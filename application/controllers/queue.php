@@ -116,6 +116,7 @@ class Queue extends CI_Controller {
 
                     if($flag !== FALSE) {
                         $phone_list = new stdClass();
+                        $phone_list->id = $flag;
                         $phone_list->number = $line_array[1];
                         array_push($list,$phone_list);
                         array_push($extra_array,$line_array[1]);
@@ -335,5 +336,36 @@ class Queue extends CI_Controller {
             $response['message'] = $this->admin_news->errors_alert();
         }
         echo json_encode($response);
+    }
+    
+    public function test_q_provider() {
+        
+        $list = array();
+        $results = $this->manage_queue_library->getAllUnprocessedQlist()->result_array();
+        //echo '<pre/>';print_r($results);exit('here');
+         
+        foreach ($results as $key => $value) {
+            $queue_list = new stdClass();
+            $queue_list->id = $value['id'];
+            $queue_list->name = $value['name'];
+            $queue_list->noOfMsgs = count(json_decode($value['unprocess_list']));
+            array_push($list,$queue_list);
+        }
+        
+        $queues = new stdClass();
+        $queues->id = 1;
+        $queues->queues = $list;
+       
+        $data = array('json_data' => json_encode($queues));
+        
+        //return json_encode($queues);
+        $this->manage_queue_library->test_queue_insert($data);
+        
+        //echo '<pre/>'; print_r($queues);exit('i m here');
+    }
+    
+    public function get_queue_by_id($id = 6) {
+       $results = $this->manage_queue_library->get_queue_info_by_id($id);
+       
     }
 }

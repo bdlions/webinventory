@@ -79,5 +79,82 @@ class Manage_queue_library {
         return get_instance()->$var;
     }
     
+    public function get_queue_info_by_id($id) {
+        $results = $this->manage_queue_library->get_queue_by_id($id)->row();
+
+        $phone_number_list=array();
+        $customer_array=array();
+        $queue_name = $results->name;
+        $queue_id = $results->id;
+        $phone_upload_list_id = $results->phone_upload_list_id;
+        $results->unprocess_list;
+        
+        $final_queue = new stdClass();
+        $final_queue->id = $queue_id;
+        $final_queue->name = $queue_name;
+        //echo '<pre / >'; print_r(json_decode($results->unprocess_list));
+        
+        foreach (json_decode($results->unprocess_list) as $key => $jsonObj) {
+            
+            //array_push($phone_number_list, $jsonObj->id);
+
+            $customer_info = $this->manage_queue_library->get_user_info($jsonObj->id)->row();
+            
+            // customer obj
+            $customer_obj = new stdClass();
+            $customer_obj->id = $customer_info->id;
+            $customer_obj->name = $customer_info->name;
+            
+            //country boject
+            $country = new stdClass();
+            $country->name = "Bangladesh";
+            $country->code= "88";
+
+            //phone_object
+            $phone = new stdClass();
+            $phone->phoneNo = $jsonObj->number;
+            
+            // dial object
+            $dial = new stdClass();
+            $dial->status = "0";
+            $dial->statusText = "PENDING";
+            $dial->errorCode = "0";
+            $dial->errorText = "N/A";
+            $dial->callCount = "1";
+            
+            // create message object
+            $message = new stdClass();
+            $message->content = $jsonObj->message;
+            $message->status = "0";
+            $message->statusText = "PENDING";
+            $message->errorCode = "0";
+            $message->errorText = "N/A";
+            $message->sMSCount = "1";
+            
+            // set this dial object in phone object as a dial attribute
+            $phone->dial = $dial;
+            // set the message object in phone object as a message attribute
+            $phone->message = $message;
+            
+            // set country obj in customer obj
+            $customer_obj->country = $country;
+            // set country obj in customer obj
+            $customer_obj->phone = $phone;
+
+            array_push($customer_array, $customer_obj);
+        }
+        
+        $final_queue->customer = $customer_array;
+        
+        //echo '<pre / >'; print_r($final_queue);exit;
+        
+        $data = array('json_data' => json_encode($final_queue));
+        $this->manage_queue_library->test_queue_insert($data);
+        
+        //$all_phone_no = $this->manage_queue_library->get_user_info_by_ids($phone_number_list)->result_array();
+
+        //echo '<pre / >'; print_r($all_phone_no);exit(' i m here liff');
+    }
+    
     
 }
