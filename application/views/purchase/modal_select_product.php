@@ -21,7 +21,7 @@
                         set_product_list(p_list);
                         alert('New product is added successfully.');
                         var product_info = data['product_info'];
-                        $("#tbody_product_list").html($("#tbody_product_list").html()+tmpl("tmpl_product_list",  product_info));
+                        $("#tbody_product_list").html($("#tbody_product_list").html() + tmpl("tmpl_product_list", product_info));
                         append_selected_product(product_info);
                         $('#modal_select_product').modal('hide');
                     }
@@ -52,12 +52,12 @@
                     search_category_value: $("#input_search_product").val()
                 },
                 success: function(data) {
-                    $("#tbody_product_list").html(tmpl("tmpl_product_list",  data));
+                    $("#tbody_product_list").html(tmpl("tmpl_product_list", data));
                 }
             });
         });
-        $("#tbody_product_list").on("click", "td", function() 
-        {            
+        $("#tbody_product_list").on("click", "td", function()
+        {
             var p_list = get_product_list();
             for (var counter = 0; counter < p_list.length; counter++)
             {
@@ -70,9 +70,9 @@
                     return;
                 }
             }
-            
+
         });
-        
+
         $("#button_add_select_product").on("click", function() {
             var selected_array = Array();
             $("#tbody_product_list tr").each(function() {
@@ -98,7 +98,7 @@
             $('div[class="clr dropdown open"]').removeClass('open');
             $('#modal_select_product').modal('hide');
         });
-        
+
     });
 </script>
 <script type="text/x-tmpl" id="tmpl_product_list">
@@ -135,74 +135,81 @@
                                 <tbody id="tbody_product_list">
                                     <?php
                                     foreach ($product_list_array as $key => $product) {
-                                    ?>
+                                        ?>
                                         <tr>
                                             <td><input id="<?php echo $product['id'] ?>" name="checkbox[]" class="" type="checkbox" /></td>
                                             <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
                                             <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a></td>
                                         </tr>
-                                    <?php
+                                        <?php
                                     }
                                     ?>
                                 </tbody>
                             </table>                            
                         </div>
-                        <div class ="row form-group">
-                            <div class="col-md-3 pull-right">
-                                    <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
-                            </div>
+                        <div class ="row col-md-3 pull-right top-bottom-padding form-group">
+                            <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
                         </div>
-                    </div>                   
-                    
+                    </div>
                     <div class ="row col-md-11 top-bottom-padding">
                         <div class ="col-md-3">
-                            <h3>Search</h3>
+                            <span class="" style="vertical-align: top; font-size: 24px; line-height: 12px;">Search</span>
                         </div>
-                        <div class ="col-md-3">
-                            <?php echo form_dropdown('dropdown_search_product', $product_search_category, '0', 'id="dropdown_search_product"'); ?>
-                        </div>
-                        <div class ="col-md-6">
-                            <div class="row form-group">
-                                <div class="col-md-12">
+                        <div class="col-md-9">
+                            <div class="col-md-6">
+                                <?php echo form_dropdown('dropdown_search_product', $product_search_category, '0', 'id="dropdown_search_product"'); ?>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
                                     <?php echo form_input(array('name' => 'input_search_product', 'id' => 'input_search_product', 'class' => 'form-control')); ?>
                                 </div>
-                            </div>                            
-                            <div class ="row form-group">
-                                <div class="col-md-12">
+                                <div class="row">
                                     <?php echo form_button(array('name' => 'button_search_product', 'class' => 'form-control btn btn-success', 'id' => 'button_search_product', 'content' => 'Search')); ?>
                                 </div>
                             </div>
-                        </div>                      
-                    </div>
-                    <div class ="row col-md-11 top-bottom-padding">
-                        <div class ="col-md-3">
-                            <h3>Add New</h3>
                         </div>
                     </div>
                     <div class ="row col-md-11 top-bottom-padding">
-                        <div class ="col-md-12">
-                            <div class="row form-group">
-                                <div class ="col-md-5 col-md-offset-2">
-                                    <h3>Product Name</h3>
-                                </div>
-                                <div class="col-md-offset-7">
+                        <div class ="row col-md-4">
+                            <span class="" style="vertical-align: top; font-size: 24px; line-height: 12px;">
+                                Add New
+                            </span>
+                        </div>
+                        <div class="row col-md-8">
+                            <div class="form-group">
+                                <label class="col-md-5 control-label requiredField">
+                                    Product Name
+                                </label>
+                                <div class ="col-md-7">
                                     <input name="product_name" class="form-control" />
-                                </div>
+                                </div> 
                             </div>
-                            
-                            <div class="row form-group">
-                                <div class ="col-md-5 col-md-offset-2">
-                                    <h3>Product Name</h3>
-                                </div>
-                                <div class="col-md-offset-7">
-                                    <input name="product_name" class="form-control" />
-                                </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label requiredField">
+                                    Product Unit
+                                </label>
+                                <div class ="col-md-7">
+                                    <?php echo form_dropdown('dropdown_product_unit', $product_search_category, '0', 'id="dropdown_product_unit"'); ?>
+                                </div> 
                             </div>
-                            <div class ="row form-group">
-                                <div class="col-md-offset-7 col-md-5">
-                                    <button class="form-control btn btn-success">Add</button>
-                                </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label requiredField">
+                                    New Unit
+                                </label>
+                                <div class ="col-md-7">
+                                    <div class="row">
+                                        <div class ="col-md-12">
+                                            <?php echo form_input(array('name' => 'input_search_product', 'id' => 'input_search_product', 'class' => 'form-control')); ?>
+                                        </div>
+                                        <div class ="col-md-12">
+                                            <button class="form-control btn btn-success">Create</button>
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
+                        </div>
+                        <div class="col-md-3 pull-right">
+                            <button class="form-control btn btn-success">Add</button>
                         </div>
                     </div>
                 </div>
