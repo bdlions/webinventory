@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(function() {
-        $("#button_add_product").on("click", function() {
+        /*$("#button_add_product").on("click", function() {
             if ($("#input_product_name").val().length == 0)
             {
                 alert("Product Name is required.");
@@ -31,7 +31,7 @@
                     }
                 }
             });
-        });
+        });*/
         
         $("#button_search_product").on("click", function() {
             if ($("#dropdown_search_product")[0].selectedIndex == 0)
@@ -86,6 +86,9 @@
                     }
                 });
             });
+            
+            
+            
             var p_list = get_product_list();
             for (var counter = 0; counter < p_list.length; counter++)
             {
@@ -192,6 +195,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class ="row col-md-11 top-bottom-padding">
                         <div class ="row col-md-4">
                             <span class="" style="vertical-align: top; font-size: 24px; line-height: 12px;">
@@ -241,6 +245,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -251,6 +256,7 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+    // written by omar faruk
     $(function() {
         // here is new unit category is added
         $("#button_add_new_unit").on("click", function() {
@@ -268,6 +274,7 @@
                 data: { unit_name: unit_name },
                 success: function(data) {
                     alert(data.message);
+                    
                     if (data['status'] === 1)
                     {
                         $("#dropdown").append("<option value='"+data['product_category_info'].id+"'>"+data['product_category_info'].description+"</option>");
@@ -303,6 +310,9 @@
                     alert(data.message);
                     if (data['status'] === 1)
                     {
+                        var p_list = get_product_list();
+                        p_list[p_list.length] = data['product_info'];
+                        set_product_list(p_list);
                         var product_info = data['product_info'];
                         $("#tbody_product_list").html($("#tbody_product_list").html()+tmpl("tmpl_product_list", product_info)); 
                     }
