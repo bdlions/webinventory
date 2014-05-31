@@ -273,7 +273,7 @@
             var target = e.target;
             //console.log(target);
             $(target).closest('tr').remove();
-        })
+        });
     });
 </script>
 

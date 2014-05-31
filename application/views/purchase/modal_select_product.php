@@ -32,6 +32,7 @@
                 }
             });
         });
+        
         $("#button_search_product").on("click", function() {
             if ($("#dropdown_search_product")[0].selectedIndex == 0)
             {
@@ -56,6 +57,7 @@
                 }
             });
         });
+        
         $("#tbody_product_list").on("click", "td", function()
         {
             var p_list = get_product_list();
@@ -106,10 +108,8 @@
               .find("input[type=checkbox], input[type=radio]")
                  .prop("checked", "")
                  .end();
-          })
+          });
         
-    });
-    
     });
 </script>
 <script type="text/x-tmpl" id="tmpl_product_list">
