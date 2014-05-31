@@ -65,7 +65,7 @@ class Shop extends CI_Controller {
                          
                          $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
                          $shop_info = $shop_info_array[0];
-                         $logoaddress = base_url().'/assets/images/'.$shop_info['picture'].'.png';
+                         $logoaddress = base_url().'/assets/images/'.$shop_info['picture'];
                          $this->session->set_userdata(array('logoaddress' => $logoaddress, 'shop_id' => $shop_id));
                          $user_info_array = $this->ion_auth->get_user_info()->result_array();
                          $user_info = $user_info_array[0];

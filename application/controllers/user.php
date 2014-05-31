@@ -214,7 +214,7 @@ class User extends CI_Controller {
                     }
                     $shop_info_array = $this->shop_library->get_shop()->result_array();
                     $shop_info = $shop_info_array[0];
-                    $logoaddress = base_url() . '/assets/images/' . $shop_info['picture'] . '.png';
+                    $logoaddress = base_url() . '/assets/images/' . $shop_info['picture'];
                     $this->session->set_userdata(array('logoaddress' => $logoaddress));
                     redirect($this->login_success_uri, 'refresh');
                 } else {
@@ -350,8 +350,8 @@ class User extends CI_Controller {
 
         //redirect them to the login page
         $this->session->set_flashdata('message', $this->ion_auth->messages());
-        $logoaddress = base_url() . '/assets/images/logo.png';
-        $this->session->set_userdata(array('logoaddress' => $logoaddress));
+        //$logoaddress = base_url() . '/assets/images/logo.png';
+        //$this->session->set_userdata(array('logoaddress' => $logoaddress));
         redirect('user/login', 'refresh');
     }
 

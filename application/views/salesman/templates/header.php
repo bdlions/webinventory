@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 logo-text">
-                    <img class="logo" src="<?php echo base_url() ?>/assets/images/logo.png" />Apurbo Group
+                    <img class="logo" src="<?php echo $this->session->userdata('logoaddress') ?>" />
                 </div>
             </div>
         </div>

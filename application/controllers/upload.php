@@ -61,7 +61,7 @@ class Upload extends CI_Controller {
     
     public function upload_cover()
     {
-        $this->data['message'] = ''; 
+        /*$this->data['message'] = ''; 
         if($this->input->post('submit_upload_cover'))
         {
             $config['upload_path'] = '././assets/images/';
@@ -110,5 +110,65 @@ class Upload extends CI_Controller {
             'value' => 'Upload',
         );
         $this->template->load(null, 'upload/upload_cover', $this->data);
+         * */
+        $shop_id = $this->session->userdata('shop_id');
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+            $this->data['shop_cover_photo'] = base_url().'assets/images/'.$shop_info['picture'];
+        }
+        if ($this->input->post('submit_shop_cover_photo')) {
+            $shop_cover_photo_name = random_string('unique').".jpg";
+            $config['upload_path'] = '././assets/images/';
+            $config['allowed_types'] = 'gif|jpg|png';
+            $config['max_size'] = '0';
+            $config['max_width'] = '0';
+            $config['overwrite'] = TRUE;
+            $config['max_height'] = '0';
+            $config['file_name'] = $shop_cover_photo_name;
+
+            $this->load->library('upload', $config);
+			
+            if (!$this->upload->do_upload()) {
+                $this->data['message'] = $this->upload->display_errors();
+            } else {
+                $this->data['shop_cover_photo'] = base_url().'assets/images/'.$shop_cover_photo_name."?a=1";                
+            }
+        }
+        $this->data['submit_shop_cover_photo'] = array(
+            'name' => 'submit_shop_cover_photo',
+            'id' => 'submit_shop_cover_photo',
+            'type' => 'submit',
+            'value' => 'Upload',
+        );
+        $this->template->load(null, 'upload/upload_cover', $this->data); 
+    }
+    
+    function save_cover_photo() 
+    {
+        $shop_cover_photo_name = random_string('unique').".jpg";
+        $shop_cover_photo_path = '././assets/images/'.$shop_cover_photo_name;
+        $image_data = $_POST['image_data'];
+        $filteredData=substr($image_data, strpos($image_data, ",")+1);
+        $unencodedData=base64_decode($filteredData);
+        //write_file(FCPATH.$profile_pic_path, $unencodedData);    
+        if ( ! write_file(FCPATH.$shop_cover_photo_path, $unencodedData) )
+        {
+            echo 0;
+        }
+        else
+        {
+            $additional_data = array('picture' => $shop_cover_photo_name);
+            $shop_id = $this->session->userdata('shop_id');
+            if(!$this->shop_library->update_shop($shop_id, $additional_data))
+            {
+                echo 0;
+            }
+            $logoaddress = base_url().'/assets/images/'.$shop_cover_photo_name;
+            $this->session->set_userdata(array('logoaddress' => $logoaddress));
+            echo 1;
+        }
     }
 }

@@ -167,7 +167,7 @@
                             $("#input_add_purchase_supplier").val('');
                             $("#input_add_purchase_company").val('');
                             $("#input_add_purchase_phone").val('');
-                            $("#purchase_order_no").val('');
+                            $("#purchase_order_no").val(+$("#purchase_order_no").val() + 1);
                             $("#remarks").val('');
                             $("#total_purchase_price").val(0);
                             $("#previous_due").val(0);
