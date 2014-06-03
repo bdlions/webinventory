@@ -357,7 +357,7 @@ class Queue extends CI_Controller {
         $queues->queues = $list;
        
         $data = array('json_data' => json_encode($queues));
-        
+        echo '<pre/>'; print_r($data);exit('i m here');
         //return json_encode($queues);
         $this->manage_queue_library->test_queue_insert($data);
         
@@ -366,6 +366,6 @@ class Queue extends CI_Controller {
     
     public function get_queue_by_id($id = 6) {
        $results = $this->manage_queue_library->get_queue_info_by_id($id);
-       
+       echo '<pre/>'; print_r($results);exit('i m here');
     }
 }

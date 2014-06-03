@@ -102,6 +102,7 @@ class Manage_queue_model extends Ion_auth_model {
     }
     
     public function getAllUnprocessedQlist() {
+        $this->db->where('is_processing', 0);
         return $this->db->select("*")
                     ->from($this->tables['queue_table'])
                     ->get();

@@ -81,7 +81,7 @@ class Manage_queue_library {
     
     public function get_queue_info_by_id($id) {
         $results = $this->manage_queue_library->get_queue_by_id($id)->row();
-
+        
         $phone_number_list=array();
         $customer_array=array();
         $queue_name = $results->name;
@@ -145,11 +145,10 @@ class Manage_queue_library {
         }
         
         $final_queue->customer = $customer_array;
-        
+        return $final_queue;
         //echo '<pre / >'; print_r($final_queue);exit;
-        
-        $data = array('json_data' => json_encode($final_queue));
-        $this->manage_queue_library->test_queue_insert($data);
+        //$data = array('json_data' => json_encode($final_queue));
+        //$this->manage_queue_library->test_queue_insert($data);
         
         //$all_phone_no = $this->manage_queue_library->get_user_info_by_ids($phone_number_list)->result_array();
 
