@@ -153,4 +153,16 @@ class Message extends CI_Controller {
         
         echo json_encode($temp_messages);
     }
+    
+    public function view_custom_messages()
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        
+        $result = $this->messages->get_messages(array(),$shop_id)->result_array();
+        $this->data['all_messages'] = $result;
+        $this->data['shop_id'] = $shop_id;
+                
+        $this->template->load(null, 'message/view_custom_messages',$this->data);
+    }
+            
 }
