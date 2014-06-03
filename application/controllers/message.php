@@ -145,12 +145,12 @@ class Message extends CI_Controller {
         $messages = $this->messages->get_all_custom_message_for_typeahed($shop_id)->result();
         $temp_messages = array();
         foreach ($messages as  $message){
-            $message -> message = strip_tags(html_entity_decode(html_entity_decode($message -> message)));
-            $message -> value = strip_tags(html_entity_decode(html_entity_decode($message -> message)));
+            $message -> message = nl2br(strip_tags(html_entity_decode(html_entity_decode($message -> message))));
+            $message -> value = substr(strip_tags(html_entity_decode(html_entity_decode($message -> message))), 0, 10);
             
             array_push($temp_messages, $message);
         }
-        
+
         echo json_encode($temp_messages);
     }
     
