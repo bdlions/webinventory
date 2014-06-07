@@ -402,6 +402,8 @@ class Search extends CI_Controller {
         $result['suppliers_total_returned_payment_today'] = $suppliers_total_returned_payment_today;
         $result['customers_total_returned_payment_today'] = $customers_total_returned_payment_today;
         
+        $result['total_due'] = $result['total_due'] + $result['customers_total_returned_payment_today'];
+        
         $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses;
         $result['current_balance'] = $current_balance;
         

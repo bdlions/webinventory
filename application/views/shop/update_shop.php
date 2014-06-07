@@ -40,14 +40,6 @@
                 </div> 
             </div>
             <div class="form-group">
-                <label for="type" class="col-md-6 control-label requiredField">
-                    Shop Type
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_dropdown('shop_type', $shop_type, $selected_shop_type,'class=form-control'); ?>
-                </div>
-            </div>
-            <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
 
                 </label>
