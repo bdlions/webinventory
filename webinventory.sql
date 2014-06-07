@@ -791,7 +791,7 @@ CREATE TABLE IF NOT EXISTS `phone_directory`(
   `created_on` int(11) unsigned NOT NULL,
   `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY(`id`)
-)AUTO_INCREMENT=1;
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `phone_upload_list`(
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -800,7 +800,7 @@ CREATE TABLE IF NOT EXISTS `phone_upload_list`(
   `created_on` int(11) unsigned NOT NULL,
   `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY(`id`)
-)AUTO_INCREMENT=1;
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `queue_table` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -815,7 +815,7 @@ CREATE TABLE IF NOT EXISTS `queue_table` (
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `queue_table`
-  ADD CONSTRAINT `fk_q_t_p_u_l1` FOREIGN KEY (`phone_upload_list_id`) REFERENCES `phone_upload_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_queue_table1` FOREIGN KEY (`phone_upload_list_id`) REFERENCES `phone_upload_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 

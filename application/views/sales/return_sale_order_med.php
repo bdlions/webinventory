@@ -333,10 +333,10 @@
                         {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                         {% while(product_info){ %}
                         <tr>
-                        <td id="{%= product_info.product_id%}"><input name="name" type="hidden" value="{%= product_info.product_name%}"/>{%= product_info.product_name%}</td>
+                        <td id="{%= product_info.product_id%}"><input name="name" type="hidden" value="{%= product_info.product_name%}"/>{%= product_info.product_name %}</td>
                         <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="purchase_order_no" type="text" value="{%= product_info.purchase_order_no%}"/></td>
                         <td><input class="input-width-table" id="{%= product_info.product_id%}" name="quantity" type="text" value=""/></td>
-                        <td><?php echo '{$=product_info.categort_unit%}'; ?></td>
+                        <td>{%= product_info.categort_unit %}</td>
                         <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="unit_price" type="text" value="{%= product_info.unit_price%}"/></td>
                         <td><input readonly="readonly" class="input-width-table" name="product_sale_price" type="text" value="0"/></td>
                         </tr>

@@ -6,7 +6,7 @@
             for (var counter = 0; counter < p_list.length; counter++)
             {
                 var prod_info = p_list[counter];
-                if ($(this).attr("id") === prod_info['product_id'])
+                if ( $(this).attr("id") === prod_info['product_id'] && $(this).attr("name") === prod_info['purchase_order_no'])
                 {
                     append_selected_product(prod_info);
                     $('div[class="clr dropdown open"]').removeClass('open');
@@ -23,7 +23,7 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr>
-    <td id="<?php echo '{%= product_info.product_id%}'; ?>"><?php echo '{%= product_info.product_name%}'; ?></td>
+    <td id="{%= product_info.product_id%}" name="{%= product_info.purchase_order_no%}">{%= product_info.product_name %}</td>
     <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.product_id%}'; ?>">view</a></td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
