@@ -41,7 +41,7 @@
                 <?php //echo form_input($name+array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_supplier')); ?>
             </div> 
         </div>-->
-        <?php echo form_open("message/update_custom_message", array('id' => 'form_edit_message_1', 'name' => 'form_edit_message_1',  'class' => 'form-horizontal')); ?>
+        <?php echo form_open("message/update_custom_message", array('id' => 'form_edit_message_1', 'name' => 'form_edit_message_1',  'class' => 'form-horizontal', 'onsubmit=return false')); ?>
         <div class="form-group">
             <label for="custom_message" class="col-md-3 control-label requiredField">
                 Message
@@ -74,7 +74,9 @@
         $("#form_edit_message_1").on("submit", function(){
             //alert($("#editortext").val(jQuery('<div />').text(CKEDITOR.instances.editor1.getData()).html()));
             //alert($('#message_id').val(getElementById('message_id')));
-            $("#editortext").val(jQuery('<div />').text(CKEDITOR.instances.editor1.getData()).html());
+            var temp = CKEDITOR.instances.editor1.getData();
+            $("#editortext").val(jQuery('<div />').text(temp).html());
+            
         });
         
         CKEDITOR.replace('editor1', {

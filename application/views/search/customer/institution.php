@@ -12,6 +12,7 @@
                     $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data));
                 }
             });
+            return false;
         });
     });
 </script>

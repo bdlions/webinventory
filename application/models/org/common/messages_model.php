@@ -48,6 +48,9 @@ class Messages_model extends Ion_auth_model {
     {
         $data = $this->_filter_data($this->tables['custom_message'], $data);
         
+        //echo $message_id;
+        //echo '<pre/>';print_r($data);exit('model');
+        
         $this->db->where('id',$message_id);
         $this->db->update($this->tables['custom_message'],$data);
     }

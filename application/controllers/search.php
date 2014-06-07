@@ -1070,7 +1070,8 @@ class Search extends CI_Controller {
         $content = '';
         $start_card_no = $this->input->post('start_card_no');
         $end_card_no = $this->input->post('end_card_no');
-        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($shop_id = '',$start_card_no, $end_card_no)->result_array();
         foreach($customer_list_array as $customer_info)
         {
             $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\n";
@@ -1100,6 +1101,7 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
+        
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',

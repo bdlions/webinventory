@@ -104,11 +104,17 @@ class Search_customer_model extends Ion_auth_model {
                     ->get(); 
     }
     
-    public function search_customer_by_card_no_range($shop_id = '')
+    public function search_customer_by_card_no_range($shop_id = '', $start_card_no=0, $end_card_no=0)
     {
+
         if(empty($shop_id))
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        
+        if($start_card_no!=0 && $end_card_no !=0) {
+            $this->db->where($this->tables['customers'].'.card_no >=', $start_card_no);
+            $this->db->where($this->tables['customers'].'.card_no <=', $end_card_no);
         }
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
                     ->from($this->tables['users'])

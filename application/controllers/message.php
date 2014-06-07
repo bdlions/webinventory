@@ -46,6 +46,8 @@ class Message extends CI_Controller {
             {
                 $id = $this->input->post('message_id');
                 
+                //echo trim(htmlentities($this->input->post('editortext')));
+                
                 if($id ==''){
                     $this->data['message'] = 'To update at first you have to search and select a message';
                     
