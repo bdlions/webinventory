@@ -72,8 +72,6 @@
 <script type="text/javascript">
     $(function(){
         $("#form_edit_message_1").on("submit", function(){
-            //alert($("#editortext").val(jQuery('<div />').text(CKEDITOR.instances.editor1.getData()).html()));
-            //alert($('#message_id').val(getElementById('message_id')));
             var temp = CKEDITOR.instances.editor1.getData();
             $("#editortext").val(jQuery('<div />').text(temp).html());
             
@@ -106,22 +104,23 @@
             { name: 'forms' },
             ]
             }
-        );  
-        
-        
+        );
+
         $("#search_box").typeahead([
                 {
                     name:"search_supplier",
                     valuekey:"first_name",
-                    prefetch:{
+                    // with the prefatch in IE browser does not work so we use local
+                    local:<?php echo $custom_messages;?>,
+                    /*prefetch:{
                                 url: '<?php echo base_url()?>message/get_custom_message',
                                 ttl: 0
-                            },
+                            },*/
                     header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Supplier Message</div>',
                     template: [
                         '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-envelope">{{value}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
                       ].join(''),
-                    engine: Hogan
+                    engine: Hogan,
                 }
         ]).on('typeahead:selected', function (obj, datum) {
             if(datum.value)
@@ -129,11 +128,11 @@
                  update_fields_selected_message(datum);
              }
          });  
+
     });
     
     function update_fields_selected_message(sup_info)
     {
-        
         CKEDITOR.instances.editor1.setData(sup_info['message']);
         $('#editortext').val(sup_info['message']);
         $('#message_id').val(sup_info['id']);

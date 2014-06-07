@@ -125,7 +125,7 @@ class Message extends CI_Controller {
             'type' => 'submit',
             'value' => 'Create',
         );
-        
+        $this->data['custom_messages'] = $this->get_custom_message();
         $this->template->load(null, 'message/update_custom_message',$this->data);
     }
     
@@ -153,7 +153,7 @@ class Message extends CI_Controller {
             array_push($temp_messages, $message);
         }
 
-        echo json_encode($temp_messages);
+        return json_encode($temp_messages);
     }
     
     public function view_custom_messages()
