@@ -182,7 +182,7 @@ class Message extends CI_Controller {
         $this->data['editor1'] = array(
             'name'  => 'editor1',
             'id'    => 'editor1',
-            'value' => $result['message'],
+            'value' => html_entity_decode(html_entity_decode($result['message'])),
             'rows'  => '4',
             'cols'  => '10'
         );
