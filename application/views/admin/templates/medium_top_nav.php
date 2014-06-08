@@ -119,6 +119,7 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./message/update_custom_message");?>">Create/Update Message</a></li>
+        <li><a href="<?php echo base_url("./message/view_custom_messages");?>">View Messages</a></li>
     </ul>
 </div>
 <div class="btn-group">
