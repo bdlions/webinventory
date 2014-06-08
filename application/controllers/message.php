@@ -166,5 +166,30 @@ class Message extends CI_Controller {
                 
         $this->template->load(null, 'message/view_custom_messages',$this->data);
     }
+    public function show_message($message_id)
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        $this->data['message_id'] = $message_id;
+        $result = array();
+        $result = $this->messages->get_message_info($message_id)->result_array();
+        //echo '<pre>'; print_r($result); exit();
+        if(count($result)>0)
+        {
+            $result = $result[0];
+        }
+        $this->data['message_info'] = $result;
+        $this->data['shop_id'] = $shop_id;
+        $this->data['editor1'] = array(
+            'name'  => 'editor1',
+            'id'    => 'editor1',
+            'value' => $result['message'],
+            'rows'  => '4',
+            'cols'  => '10'
+        );
+        
+                
+        $this->template->load(null, 'message/show_message_view',$this->data);
+    }
+    
             
 }
