@@ -34,7 +34,7 @@ class Message extends CI_Controller {
      * This method will update custom message
      * @Author Nazmul on 17th May 2014
      */
-    public function update_custom_message()
+    public function update_custom_message($message_id=0)
     {
         $this->data['message'] = '';
         
@@ -101,13 +101,29 @@ class Message extends CI_Controller {
         }
         
         $message_info_array = $this->messages->get_messages()->result_array();
+        
+        $sup_info = array();        
+        if ($message_id != 0)
+        {
+            $sup_info['id'] = $message_id;
+            $sup_info['message'] = '';
+            foreach ($message_info_array as $msg_data)
+            {
+                if($msg_data['id'] == $message_id)
+                {
+                    $sup_info['message'] = $msg_data['message'];
+                    break;
+                }
+            }
+            $this->data['sup_info'] = $sup_info;
+        }
 
         $this->data['message_info_array'] = $message_info_array;
         
         $this->data['editor1'] = array(
             'name'  => 'editor1',
             'id'    => 'editor1',
-            'value' => '',
+            'value' => isset($sup_info['message'])?html_entity_decode(html_entity_decode($sup_info['message'])):'',
             'rows'  => '10',
             'cols'  => '80'
         );
@@ -126,6 +142,7 @@ class Message extends CI_Controller {
             'value' => 'Create',
         );
         $this->data['custom_messages'] = $this->get_custom_message();
+        
         $this->template->load(null, 'message/update_custom_message',$this->data);
     }
     
