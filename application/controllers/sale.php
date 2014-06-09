@@ -374,7 +374,7 @@ class Sale extends CI_Controller {
         $product_id_quantity_map = array();
         $sale_list_array = $this->sale_library->get_sale_current_product_quantity_list($sale_order_no)->result_array();
         foreach ($sale_list_array as $key => $product_info) {
-            $product_id_quantity_map[$product_info['product_id']] = $product_info['sale_quantity'];
+            $product_id_quantity_map[$product_info['purchase_order_no'].'_'.$product_info['product_id']] = $product_info['sale_quantity'];
         }
 
         $customer_transaction_info_array = array();
@@ -395,7 +395,7 @@ class Sale extends CI_Controller {
                 'profit' => ''
             );
             $customer_transaction_info_array[] = $customer_transaction_info;
-            if ($product_id_quantity_map[$prod_info['product_id']] >= $prod_info['quantity']) {
+            if ($product_id_quantity_map[$prod_info['purchase_order_no'].'_'.$prod_info['product_id']] >= $prod_info['quantity']) {
                 $add_stock_info = array(
                     'product_id' => $prod_info['product_id'],
                     'purchase_order_no' => $prod_info['purchase_order_no'],
@@ -409,7 +409,7 @@ class Sale extends CI_Controller {
             } 
             else {
                 $response['status'] = '0';
-                $response['message'] = 'Returned quantity: '.$prod_info['quantity'].' exceeds sale quantity for the product: ' . $prod_info['name'] . ' and lot no: ' . $prod_info['purchase_order_no'].'. Original sale quantity was: '.$product_id_quantity_map[$prod_info['product_id']];
+                $response['message'] = 'Returned quantity: '.$prod_info['quantity'].' exceeds sale quantity for the product: ' . $prod_info['name'] . ' and lot no: ' . $prod_info['purchase_order_no'].'. Original sale quantity was: '.$product_id_quantity_map[$prod_info['purchase_order_no'].'_'.$prod_info['product_id']];
                 echo json_encode($response);
                 return;
             }
@@ -521,11 +521,11 @@ class Sale extends CI_Controller {
         
         //existing sale list
         $existing_sale_product_price = 0;
-        $product_id_quantity_map = array();
+        //$product_id_quantity_map = array();
         $sale_list_array = $this->sale_library->get_sale_detail($sale_order_no)->result_array();
         foreach ($sale_list_array as $key => $prod_info) {
             $customer_id = $prod_info['customer_id'];
-            $product_id_quantity_map[$prod_info['product_id']] = $prod_info['total_sale'];
+            //$product_id_quantity_map[$prod_info['product_id']] = $prod_info['total_sale'];
             $existing_sale_product_price = $existing_sale_product_price + ($prod_info['total_sale']*$prod_info['unit_price']);
             
             $sub_total = ($prod_info['total_sale']*$prod_info['unit_price']);

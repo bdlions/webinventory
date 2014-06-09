@@ -285,6 +285,16 @@ class Purchase extends CI_Controller {
         {
             $this->data['product_list_array'] = $product_list_array;
         }       
+        
+        $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
+        $this->data['product_unit_category_list'] = array();
+        if( !empty($product_unit_category_list_array) )
+        {
+            foreach ($product_unit_category_list_array as $key => $unit_category) {
+                $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
+            }
+        }
+        
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";

@@ -139,7 +139,7 @@ class Sale_model extends Ion_auth_model
         $this->db->group_by($this->tables['stock_info'].'.sale_order_no');
         $this->db->group_by($this->tables['stock_info'].'.purchase_order_no');
         $this->db->group_by($this->tables['stock_info'].'.product_id');
-        return $this->db->select($this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.sale_order_no, sum(stock_out)-sum(stock_in) as sale_quantity')
+        return $this->db->select($this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.sale_order_no,'.$this->tables['stock_info'].'.purchase_order_no, sum(stock_out)-sum(stock_in) as sale_quantity')
                     ->from($this->tables['stock_info'])
                     ->join($this->tables['sale_order'], $this->tables['sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no')
                     ->join($this->tables['product_sale_order'], $this->tables['product_sale_order'].'.purchase_order_no='.$this->tables['stock_info'].'.purchase_order_no AND '.$this->tables['product_sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no AND '.$this->tables['product_sale_order'].'.product_id='.$this->tables['stock_info'].'.product_id')

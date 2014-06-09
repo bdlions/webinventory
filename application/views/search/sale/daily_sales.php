@@ -109,13 +109,14 @@ function startclock()
         <td >{%= sale_info.purchase_order_no%}</td>
         <td >{%= sale_info.product_name%}</td>
         <td >{%= sale_info.total_sale%}</td>
+        <td >{%= sale_info.category_unit%}</td>
         <td >{%= sale_info.sale_unit_price%}</td>
         <td >{%= sale_info.total_sale*sale_info.sale_unit_price %}</td>        
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
                 echo '<td>';
-                echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.quantity %}'; 
+                echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.total_sale %}'; 
                 echo '</td>';
             }        
         ?>
