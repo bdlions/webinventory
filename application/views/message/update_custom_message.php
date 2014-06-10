@@ -53,9 +53,6 @@
         <input type="hidden" name="editortext" id="editortext"></input>
         <input type="hidden" name="message_id" id="message_id" value="<?php echo isset($sup_info)?$sup_info['id']:'';?>"></input>
         <div class="form-group">
-<!--            <label for="address" class="col-md-3 control-label requiredField">
-
-            </label>-->
             <div class ="col-md-offset-3 col-md-2">
                 <?php echo form_input($submit_update_message+array('class'=>'form-control btn-success')); ?>
             </div>
@@ -66,13 +63,6 @@
         
         <?php echo form_close(); ?>
     </div>
-    <?php
-//    if(array_key_exists('message', $sup_info))
-//    {
-//        var_dump($sup_info);
-//        echo '<script> alert("called1");append_msgg();alert("called3"); </script>';
-//    }
-    ?>
     
 </div>
 
@@ -137,12 +127,6 @@
          });  
 
     });
-    function append_msgg()
-    {
-        var a = <?php echo json_encode($sup_info); ?>;
-        update_fields_selected_message(a);
-        alert("called2");
-    }
     function update_fields_selected_message(sup_info)
     {
         CKEDITOR.instances.editor1.setData(sup_info['message']);
