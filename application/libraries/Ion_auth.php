@@ -326,7 +326,7 @@ class Ion_auth {
     
     public function admin_registration_email($data, $email)
     {
-        if ($this->config->item('admin_email', 'ion_auth')) 
+        if ($this->config->item('send_admin_email', 'ion_auth')) 
         {
             $message = $this->load->view($this->config->item('admin_email_templates', 'ion_auth') . $this->config->item('admin_email_registration_success', 'ion_auth'), $data, true);
             $this->email->clear();

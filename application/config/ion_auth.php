@@ -169,7 +169,7 @@ $config['lockout_time']               = 600;                 // The number of se
 $config['forgot_password_expiration'] = 0;                   // The number of miliseconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire.
 $config['sms_sender_server_url']      = "http://dev2-64.xpressfiler.com/SendMSG";       
 
-$config['admin_email']                = TRUE;
+$config['send_admin_email']                = FALSE;
 $config['admin_email_templates']      = 'manager/email/';
 $config['admin_email_registration_success'] = 'registration_success.tpl.php';
 

@@ -1097,6 +1097,15 @@ class User extends CI_Controller {
         $this->pagination->initialize($config);
         $this->data['pagination'] = $this->pagination->create_links();
 
+        $searched_customers = $this->ion_auth->get_all_customers_for_typeahed();
+        $temp_searched_customer = array();
+        
+        foreach ($searched_customers as  $customer) {
+            $customer -> value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
+            array_push($temp_searched_customer, $customer);
+        }
+        $this->data['searched_customers'] = json_encode($temp_searched_customer);
+        
         if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {
             $this->template->load(null, 'customer/show_all_customers', $this->data);
         }
@@ -1486,6 +1495,16 @@ class User extends CI_Controller {
         $config['per_page'] = PAGINATION_SUPPLIER_LIST_LIMIT;
         $this->pagination->initialize($config);
         $this->data['pagination'] = $this->pagination->create_links();
+        
+        $searched_suppliers = $this->ion_auth->get_all_supplier_for_typeahed();
+        $temp_searched_suppliers = array();
+        
+        foreach ($searched_suppliers as  $supplier) {
+            $supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
+            //$supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
+            array_push($temp_searched_suppliers, $supplier);
+        }
+        $this->data['searched_suppliers'] = json_encode($temp_searched_suppliers);
 
         $this->template->load(null, 'supplier/show_all_suppliers', $this->data);
     }

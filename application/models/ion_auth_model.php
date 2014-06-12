@@ -2482,7 +2482,7 @@ class Ion_auth_model extends CI_Model {
         if ($query->num_rows() >= 1) {
             return $query->result();
         } else {
-            return FALSE;
+            return array();
         }
     }
     
@@ -2503,7 +2503,7 @@ class Ion_auth_model extends CI_Model {
         if ($query->num_rows() >= 1) {
             return $query->result();
         } else {
-            return FALSE;
+            return array();
         }
     }
     

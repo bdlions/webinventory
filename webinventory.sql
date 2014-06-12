@@ -775,7 +775,7 @@ ALTER TABLE `supplier_message`
 CREATE TABLE IF NOT EXISTS `custom_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shop_id` int(11) NOT NULL,
-  `message` varchar(200) NOT NULL DEFAULT '',
+  `message` varchar(5000) NOT NULL DEFAULT '',
   `created_on` int(11) unsigned NOT NULL,
   `modified_on` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
@@ -816,6 +816,5 @@ CREATE TABLE IF NOT EXISTS `queue_table` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `queue_table`
   ADD CONSTRAINT `fk_queue_table1` FOREIGN KEY (`phone_upload_list_id`) REFERENCES `phone_upload_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 
