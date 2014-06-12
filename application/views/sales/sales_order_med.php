@@ -318,7 +318,7 @@
                     </label> 
                     <div class ="col-md-8">
                         <?php echo form_input(array('name' => 'input_add_sale_customer_id', 'id' => 'input_add_sale_customer_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
-                        <?php echo form_input(array('name' => 'input_add_sale_customer', 'id' => 'input_add_sale_customer', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_customer')); ?>
+                        <?php echo form_input(array('name' => 'input_add_sale_customer', 'id' => 'input_add_sale_customer', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_customer_medium')); ?>
                     </div> 
                 </div>
                 <div class="form-group">
@@ -477,6 +477,6 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php $this->load->view("sales/modal_due_collect"); ?>
-<?php // $this->load->view("sales/modal_select_customer"); ?>
-<?php $this->load->view("sales/modal_create_customer_med"); ?>
+<?php $this->load->view("sales/modal_select_customer_medium"); ?>
+<?php //$this->load->view("sales/modal_create_customer_med"); ?>
 <?php $this->load->view("sales/modal_select_product"); ?>

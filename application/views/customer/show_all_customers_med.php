@@ -98,7 +98,7 @@
 </script>
 <script type="text/javascript">
     $(function() {
-        $("#search_box_small").typeahead([
+        /*$("#search_box_small").typeahead([
             {
                 name: "search_customer",
                 valuekey: "first_name",
@@ -125,11 +125,11 @@
                     }
                 }
             }
-        });
+        });*/
 
         $("#search_box_mid").typeahead([
             {
-                name: "search_customer",
+                name: "search_customer_med",
                 valuekey: "first_name",
                 local:<?php echo $searched_customers;?>,
                 /*prefetch: {

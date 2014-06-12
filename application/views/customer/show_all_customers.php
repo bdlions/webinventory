@@ -102,7 +102,7 @@
     $(function(){
         $("#search_box").typeahead([
             {
-                name:"search_customer",
+                name:"search_customer_small",
                 valuekey:"value",
                 local:<?php echo $searched_customers;?>,
                 /*prefetch:{

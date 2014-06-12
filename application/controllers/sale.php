@@ -101,6 +101,14 @@ class Sale extends CI_Controller {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
         }
+        
+        $searched_customers = $this->ion_auth->get_all_customers_for_typeahed();
+        $temp_searched_customer = array();        
+        foreach ($searched_customers as  $customer) {
+            $customer -> value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
+            array_push($temp_searched_customer, $customer);
+        }
+        $this->data['searched_customers'] = json_encode($temp_searched_customer);
 
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {$this->template->load(null, 'sales/sales_order', $this->data);}
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) {$this->template->load(null, 'sales/sales_order_med', $this->data);}
