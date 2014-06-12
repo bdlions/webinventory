@@ -1,5 +1,5 @@
 <h3>Configure SMS</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("sms/sms_configuration_shop/".$selected_shop_id, array('id' => 'form_sms_configuration_shop', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">

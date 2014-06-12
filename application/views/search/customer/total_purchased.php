@@ -29,47 +29,49 @@
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Card No</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <?php echo form_open("search/download_search_customers_total_purchased", array('id' => 'form_download_search_customers_total_purchased', 'class' => 'form-horizontal')); ?>
-                        <div class="form-group">
-                            <label for="total_purchased" class="col-md-6 control-label requiredField">
-                                Total Purchased
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($total_purchased+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="button_search_customer" class="col-md-6 control-label requiredField">
+<h3>Search Customer by Total Purchased</h3>
+<div class ="form-horizontal form-background top-bottom-padding">
+    <div class="row">
+        <div class ="col-md-6">
+            <div class ="row">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="row">
+                        <div class ="col-md-6 margin-top-bottom">
+                            <?php echo form_open("search/download_search_customers_total_purchased", array('id' => 'form_download_search_customers_total_purchased', 'class' => 'form-horizontal')); ?>
+                            <div class="form-group">
+                                <label for="total_purchased" class="col-md-6 control-label requiredField">
+                                    Total Purchased
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($total_purchased+array('class'=>'form-control')); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="button_search_customer" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_search_customer+array('class'=>'form-control btn-success')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="button_download_customer" class="col-md-6 control-label requiredField">
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($button_search_customer+array('class'=>'form-control btn-success')); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="button_download_customer" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
-                            </div> 
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
+                                </div> 
+                            </div>
+                            <?php echo form_close(); ?>
                         </div>
-                        <?php echo form_close(); ?>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
 <h3>Search Result</h3>
-<div class="row form-background top-bottom-padding">
+<div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

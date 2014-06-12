@@ -23,58 +23,61 @@
     {% } %}
 </script>
 <h3>Store Attendance</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">    
-    <?php echo form_open("attendance/store_attendance", array('id' => 'form_store_attendance', 'class' => 'form-horizontal')); ?>
-    <div class ="col-md-3 col-md-offset-1 margin-top-bottom">
-        <div class ="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-8"><?php echo $message; ?></div>
-        </div>
-        <div class="row" id="div_salesman_list">
+<div class ="form-horizontal form-background top-bottom-padding">    
+    <div class="row" style="margin:0px;">
+        <?php echo form_open("attendance/store_attendance", array('id' => 'form_store_attendance', 'class' => 'form-horizontal')); ?>
+        <div class="col-md-1"></div>
+        <div class ="col-md-3 margin-top-bottom">
+            <div class ="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8"><?php echo $message; ?></div>
+            </div>
+            <div class="row" style=margin:0px" id="div_salesman_list">
 
+            </div>
         </div>
-    </div>
-    <div class ="col-md-4 margin-top-bottom">
-        <div class="form-group">
-            <label for="login_date" class="col-md-6 control-label requiredField">
-                Login Date
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($login_date+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="login_time" class="col-md-6 control-label requiredField">
-                In Time
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($login_time+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="logout_time" class="col-md-6 control-label requiredField">
-                Out Time
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($logout_time+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="attendance_comment" class="col-md-6 control-label requiredField">
-                Comment
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($attendance_comment+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="submit_store_attendance" class="col-md-6 control-label requiredField">
+        <div class ="col-md-4 margin-top-bottom">
+            <div class="form-group">
+                <label for="login_date" class="col-md-6 control-label requiredField">
+                    Login Date
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($login_date+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="login_time" class="col-md-6 control-label requiredField">
+                    In Time
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($login_time+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="logout_time" class="col-md-6 control-label requiredField">
+                    Out Time
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($logout_time+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="attendance_comment" class="col-md-6 control-label requiredField">
+                    Comment
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($attendance_comment+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="submit_store_attendance" class="col-md-6 control-label requiredField">
 
-            </label>
-            <div class ="col-md-3 col-md-offset-3">
-                <?php echo form_input($submit_store_attendance+array('class'=>'form-control btn-success')); ?>
-            </div> 
-        </div>
+                </label>
+                <div class ="col-md-3 col-md-offset-3">
+                    <?php echo form_input($submit_store_attendance+array('class'=>'form-control btn-success')); ?>
+                </div> 
+            </div>
+        </div>    
+        <?php echo form_close(); ?>
     </div>    
-    <?php echo form_close(); ?>
 </div>

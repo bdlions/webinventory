@@ -263,146 +263,148 @@
 </script>
 
 <h3>Return Sale Order</h3>
-<div class ="row top-bottom-padding form-background">
-    <div class="col-md-2">        
-    </div>
-    <div class ="col-md-8 form-horizontal">
-        <div class="row">
-            <div class ="col-md-7 form-horizontal margin-top-bottom">
-                <div class="form-group" >
-                    <label for="input_return_sale_customer" class="col-md-3 control-label requiredField">
-                        Customer name
-                    </label> 
-                    <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'input_return_sale_customer_id', 'id' => 'input_return_sale_customer_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
-                        <?php echo form_input(array('name' => 'input_return_sale_customer', 'id' => 'input_return_sale_customer', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="input_return_sale_phone" class="col-md-3 control-label requiredField">
-                        Phone No.
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'input_return_sale_phone', 'id' => 'input_return_sale_phone', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="input_return_sale_product" class="col-md-3 control-label requiredField">
-                        Product
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_input(array('type'=>'hidden', 'name' => 'input_return_sale_product', 'id' => 'input_return_sale_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_sold_product')); ?>
-                    </div> 
-                </div>
-            </div>
-            <div class ="col-md-5 form-horizontal margin-top-bottom">
-                <div class="form-group">
-                    <label for="sale_order_no" class="col-md-4 control-label requiredField">
-                        Sale Order No.
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control', 'value' => $sale_order_no)); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="status" class="col-md-4 control-label requiredField">
-                        Select Staff
-                    </label>
-                    <div class ="col-md-8">
-                        <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
-                    </div> 
-                </div>
-            </div>
+<div class ="form-horizontal top-bottom-padding form-background">
+    <div class="row">
+        <div class="col-md-2">        
         </div>
-        <div class="row col-md-11">
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Lot No</th>
-                            <th>Quantity</th>
-                            <th>Product Unit</th>
-                            <th>Unit Price</th>
-                            <th>Sub Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody_selected_product_list">                        
-                    </tbody>
-                    <script type="text/x-tmpl" id="tmpl_selected_product_info">
-                        {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                        {% while(product_info){ %}
-                        <tr>
-                        <td id="{%= product_info.product_id%}"><input name="name" type="hidden" value="{%= product_info.product_name%}"/>{%= product_info.product_name %}</td>
-                        <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="purchase_order_no" type="text" value="{%= product_info.purchase_order_no%}"/></td>
-                        <td><input class="input-width-table" id="{%= product_info.product_id%}" name="quantity" type="text" value=""/></td>
-                        <td>{%= product_info.categort_unit %}</td>
-                        <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="unit_price" type="text" value="{%= product_info.unit_price%}"/></td>
-                        <td><input readonly="readonly" class="input-width-table" name="product_sale_price" type="text" value="0"/></td>
-                        </tr>
-                        {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                        {% } %}
-                    </script>
-                </table>
-            </div>
-        </div>
-        <div class="row margin-top-bottom">
-            <div class ="col-md-12 form-horizontal">
-                <div class="form-group">
-                    <label for="sale_remarks" class="col-md-2 control-label requiredField">
-                        Remarks
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_textarea(array('name' => 'sale_remarks', 'id' => 'sale_remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
-
-                    </div> 
+        <div class ="col-md-8 form-horizontal">
+            <div class="row">
+                <div class ="col-md-7 form-horizontal margin-top-bottom">
+                    <div class="form-group" >
+                        <label for="input_return_sale_customer" class="col-md-3 control-label requiredField">
+                            Customer name
+                        </label> 
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'input_return_sale_customer_id', 'id' => 'input_return_sale_customer_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
+                            <?php echo form_input(array('name' => 'input_return_sale_customer', 'id' => 'input_return_sale_customer', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="input_return_sale_phone" class="col-md-3 control-label requiredField">
+                            Phone No.
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'input_return_sale_phone', 'id' => 'input_return_sale_phone', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="input_return_sale_product" class="col-md-3 control-label requiredField">
+                            Product
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_return_sale_product', 'id' => 'input_return_sale_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_sold_product')); ?>
+                        </div> 
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="total_return_sale_price" class="col-md-2 control-label requiredField">
-                        Total
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'total_return_sale_price', 'id' => 'total_return_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="previous_due" class="col-md-2 control-label requiredField">
-                        Previous Due
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="current_due" class="col-md-2 control-label requiredField">
-                        Current Due
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="return_balance" class="col-md-2 control-label requiredField">
-                        Return balance
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                    </div> 
-                </div>
-                <div class="form-group">
-                    <label for="update_return_sale_order" class="col-md-2 control-label requiredField">
-
-                    </label>
-                    <div class ="col-md-3 col-md-offset-5">
-                        <?php echo form_button(array('name' => 'update_return_sale_order', 'id' => 'update_return_sale_order', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
-                    </div> 
+                <div class ="col-md-5 form-horizontal margin-top-bottom">
+                    <div class="form-group">
+                        <label for="sale_order_no" class="col-md-4 control-label requiredField">
+                            Sale Order No.
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control', 'value' => $sale_order_no)); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="col-md-4 control-label requiredField">
+                            Select Staff
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
+                        </div> 
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="row col-md-11">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Lot No</th>
+                                <th>Quantity</th>
+                                <th>Product Unit</th>
+                                <th>Unit Price</th>
+                                <th>Sub Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_selected_product_list">                        
+                        </tbody>
+                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
+                            {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
+                            {% while(product_info){ %}
+                            <tr>
+                            <td id="{%= product_info.product_id%}"><input name="name" type="hidden" value="{%= product_info.product_name%}"/>{%= product_info.product_name %}</td>
+                            <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="purchase_order_no" type="text" value="{%= product_info.purchase_order_no%}"/></td>
+                            <td><input class="input-width-table" id="{%= product_info.product_id%}" name="quantity" type="text" value=""/></td>
+                            <td>{%= product_info.categort_unit %}</td>
+                            <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="unit_price" type="text" value="{%= product_info.unit_price%}"/></td>
+                            <td><input readonly="readonly" class="input-width-table" name="product_sale_price" type="text" value="0"/></td>
+                            </tr>
+                            {% product_info = ((o instanceof Array) ? o[i++] : null); %}
+                            {% } %}
+                        </script>
+                    </table>
+                </div>
+            </div>
+            <div class="row margin-top-bottom">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="form-group">
+                        <label for="sale_remarks" class="col-md-2 control-label requiredField">
+                            Remarks
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_textarea(array('name' => 'sale_remarks', 'id' => 'sale_remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
 
-    </div>
-    <div class="col-md-2">        
-    </div>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="total_return_sale_price" class="col-md-2 control-label requiredField">
+                            Total
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_input(array('name' => 'total_return_sale_price', 'id' => 'total_return_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="previous_due" class="col-md-2 control-label requiredField">
+                            Previous Due
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="current_due" class="col-md-2 control-label requiredField">
+                            Current Due
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="return_balance" class="col-md-2 control-label requiredField">
+                            Return balance
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="update_return_sale_order" class="col-md-2 control-label requiredField">
+
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_button(array('name' => 'update_return_sale_order', 'id' => 'update_return_sale_order', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-2">        
+        </div>
+    </div>    
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

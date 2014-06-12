@@ -103,7 +103,7 @@
     {% } %}
 </script>
 <h3>Search Expense</h3>
-<div class ="row form-background top-bottom-padding">
+<div class ="form-background top-bottom-padding">
     <div class="row col-md-6 col-md-offset-3"><?php echo $message?></div>
     <div class="row">
         <div class ="col-md-6">
@@ -178,7 +178,7 @@
     
 </div>
 <h3>Search Result</h3>
-<div class="row form-background">
+<div class="form-background">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

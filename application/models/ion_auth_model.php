@@ -2302,6 +2302,21 @@ class Ion_auth_model extends CI_Model {
                     ->get();  
     } 
     
+    public function get_all_shop_staffs($shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_groups'].'.group_id',$this->user_group_list['salesman_id'])
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();  
+    }
+    
     //---------------------------------- Manager Module ---------------------------------------
     public function get_all_managers($shop_id = '')
     {
@@ -2420,11 +2435,16 @@ class Ion_auth_model extends CI_Model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_all_message()
+    public function get_all_message( $shop_id = 0 )
     {
+        if( 0 == $shop_id )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->response = $this->db->select($this->tables['message_info'].'.*,'.$this->tables['message_category'].'.description,')
                             ->from($this->tables['message_info'])
                             ->join($this->tables['message_category'], $this->tables['message_category'].'.id='.$this->tables['message_info'].'.message_category_id')
+                            ->where($this->tables['message_info'].'.shop_id', $shop_id)
                             ->get();
         return $this;
     }

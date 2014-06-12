@@ -45,86 +45,86 @@
     {% } %}
 </script>
 <h3>Search Attendance</h3>
-<div class ="row form-background top-bottom-padding">
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="salesman_list" class="col-md-6 control-label requiredField">
-                                Select Staff
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('salesman_list', $salesman_list+array('0' => 'All'), '0','class="form-control" id="salesman_list"'); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="button_search_attendance" class="col-md-6 control-label requiredField">
+<div class ="form-background top-bottom-padding">
+    <div class="row">
+        <div class ="col-md-6">
+            <div class ="row">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="row">
+                        <div class ="col-md-6 margin-top-bottom">
+                            <div class="form-group">
+                                <label for="salesman_list" class="col-md-6 control-label requiredField">
+                                    Select Staff
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_dropdown('salesman_list', $salesman_list+array('0' => 'All'), '0','class="form-control" id="salesman_list"'); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="button_search_attendance" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_search_attendance+array('class'=>'form-control btn-success')); ?>
-                            </div> 
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($button_search_attendance+array('class'=>'form-control btn-success')); ?>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class ="col-md-6">
+            <div class ="row">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="row">
+                        <div class ="col-md-6 margin-top-bottom">
+                            <div class="form-group">
+                                <label for="show_attendance_start_date" class="col-md-6 control-label requiredField">
+                                    Start Date
+                                </label>
+                                <div class ="col-md-6">
+                                   <?php echo form_input($show_attendance_start_date+array('class'=>'form-control')); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="show_attendance_end_date" class="col-md-6 control-label requiredField">
+                                    End Date
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($show_attendance_end_date+array('class'=>'form-control')); ?>
+                                </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>  
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <div class="form-group">
-                            <label for="show_attendance_start_date" class="col-md-6 control-label requiredField">
-                                Start Date
-                            </label>
-                            <div class ="col-md-6">
-                               <?php echo form_input($show_attendance_start_date+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="show_attendance_end_date" class="col-md-6 control-label requiredField">
-                                End Date
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($show_attendance_end_date+array('class'=>'form-control')); ?>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </div>    
 </div>
 <h2>Search Result</h2>
-<div class="row form-background">
-    <div class="row col-md-12">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
+<div class="form-background">    
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>In Time</th>
+                    <th>Out Time</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_attendance_list">                    
+                <?php foreach ($attendance_list as $attendance_info){?>
                     <tr>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>In Time</th>
-                        <th>Out Time</th>
-                        <th>Comments</th>
+                        <td><?php echo $attendance_info['login_date']; ?></td>
+                        <td><?php echo $attendance_info['first_name'].' '.$attendance_info['last_name']; ?></td>
+                        <td><?php echo $attendance_info['login_time']; ?></td>
+                        <td><?php echo $attendance_info['logout_time']; ?></td>
+                        <td><?php echo $attendance_info['attendance_comment']; ?></td>
                     </tr>
-                </thead>
-                <tbody id="tbody_attendance_list">                    
-                    <?php foreach ($attendance_list as $attendance_info){?>
-                        <tr>
-                            <td><?php echo $attendance_info['login_date']; ?></td>
-                            <td><?php echo $attendance_info['first_name'].' '.$attendance_info['last_name']; ?></td>
-                            <td><?php echo $attendance_info['login_time']; ?></td>
-                            <td><?php echo $attendance_info['logout_time']; ?></td>
-                            <td><?php echo $attendance_info['attendance_comment']; ?></td>
-                        </tr>
-                    <?php }?>
-                </tbody>
-            </table>
-        </div>
-    </div> 
+                <?php }?>
+            </tbody>
+        </table>
+    </div>    
 </div>

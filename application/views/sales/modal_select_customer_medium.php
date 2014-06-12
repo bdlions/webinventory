@@ -121,7 +121,7 @@
                     if (datum.customer_id === cust_info['customer_id'])
                     {
                         update_fields_selected_customer(cust_info);
-                        $('#modal_select_customer').modal('hide');
+                        $('#modal_select_customer_medium').modal('hide');
                         return;
                     }
                 }

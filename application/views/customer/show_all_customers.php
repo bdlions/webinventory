@@ -1,8 +1,8 @@
 <h3>Customer List</h3>
 
-<div class ="row form-background top-bottom-padding">
+<div class ="form-background top-bottom-padding">
     <div class="table-responsive">
-        <div class="row">
+        <div class="row" style="margin:0px;">
             <div class="col-md-offset-3 col-md-5">
                 <div class=" input-group search-box">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>

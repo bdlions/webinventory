@@ -18,6 +18,7 @@ class Payment extends CI_Controller {
         $this->load->library('org/common/utils');
         $this->load->library('org/purchase/purchase_library');
         $this->load->library('org/sale/sale_library');
+        $this->load->library('org/shop/shop_library');
         $this->load->helper('url');
         $this->load->helper('file');
 
@@ -81,6 +82,14 @@ class Payment extends CI_Controller {
     
     public function show_customer_transactions($customer_id)
     {
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
+        
         $customer_transaction_list = array();
         $customer_transactions_array = $this->payments->get_customer_transactions($customer_id)->result_array();
         if(!empty($customer_transactions_array))
@@ -103,7 +112,14 @@ class Payment extends CI_Controller {
             $customer_info = $customer_info_array[0];
         }
         $this->data['customer_info'] = $customer_info;
-        $this->template->load(null, 'customer/show_customer_transactions',$this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) 
+        {   
+            $this->template->load(null, 'customer/show_customer_transactions',$this->data);        
+        }
+        else if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) 
+        {
+            $this->template->load(null, 'customer/show_customer_transactions_medium',$this->data);       
+        }
     }
     
     public function add_due_collect()

@@ -22,17 +22,7 @@
                             <?php echo $customer_info['phone']; ?>
                         </label>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="first_name" class="col-md-6 control-label">
-                            Card No
-                        </label>
-                        <label for="first_name" class="col-md-6 control-label">
-                            <?php echo $customer_info['card_no']; ?>
-                        </label>
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
         <table class="table table-bordered">

@@ -193,58 +193,60 @@
 </script>
 
 <h3>Upload a cover photo for your shop...   </h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
-    <div class="row col-md-offset-1">
-        <div id="divImageCanvas" class="row">
-            <canvas id="imageCanvas"> 
-                Sorry, your browser doesn't support HTML5.
-            </canvas>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <img src="<?php echo base_url() ?>resources/images/clockwiserotate.jpg" onclick="clockWiseRotateImage()"></img> 
-                <img src="<?php echo base_url() ?>resources/images/anticlockwise.jpg" onclick="antiClockWiseRotateImage()"></img>
+<div class ="form-horizontal form-background top-bottom-padding">
+    <div class="row" style="margin:0px;">
+        <div class="row col-md-offset-1">
+            <div id="divImageCanvas" class="row">
+                <canvas id="imageCanvas"> 
+                    Sorry, your browser doesn't support HTML5.
+                </canvas>
             </div>
-            <div class="col-md-2">
-                <img src="<?php echo base_url() ?>resources/images/zoomin.jpg" onclick="zoomInImage()"></img> 
-                <img src="<?php echo base_url() ?>resources/images/zoomout.jpg" onclick="zoomOutImage()"></img>
-            </div>	
-        </div>
-    </div>
-    <div class="row">                
-        <?php echo form_open_multipart("upload/upload_cover", array('name' => 'form_upload_logo', 'class' => 'form-horizontal')); ?>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="file" class="col-md-6 control-label requiredField">
-                    Browse Photo
-                </label>
-                <div class ="col-md-6">
-                    <input class="form-control" type="file" name="userfile"/>
-                </div> 
-            </div>
-        </div>        
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="phone" class="col-md-6 control-label requiredField">
-                    &nbsp;
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($submit_shop_cover_photo+array('class'=>'form-control btn-success')); ?>
-                </div> 
+            <div class="row" style="margin:0px;">
+                <div class="col-md-2">
+                    <img src="<?php echo base_url() ?>resources/images/clockwiserotate.jpg" onclick="clockWiseRotateImage()"></img> 
+                    <img src="<?php echo base_url() ?>resources/images/anticlockwise.jpg" onclick="antiClockWiseRotateImage()"></img>
+                </div>
+                <div class="col-md-2">
+                    <img src="<?php echo base_url() ?>resources/images/zoomin.jpg" onclick="zoomInImage()"></img> 
+                    <img src="<?php echo base_url() ?>resources/images/zoomout.jpg" onclick="zoomOutImage()"></img>
+                </div>	
             </div>
         </div>
-        <?php echo form_close(); ?>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="" class="col-md-6 control-label requiredField">
-                    &nbsp;
-                </label>
-                <div class ="col-md-6">
-                    <input id="button_cover_photo_edit" name="button_cover_photo_edit" type="button" value="Save" class="form-control btn-success"/>
-                </div> 
+        <div class="row">                
+            <?php echo form_open_multipart("upload/upload_cover", array('name' => 'form_upload_logo', 'class' => 'form-horizontal')); ?>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="file" class="col-md-6 control-label requiredField">
+                        Browse Photo
+                    </label>
+                    <div class ="col-md-6">
+                        <input class="form-control" type="file" name="userfile"/>
+                    </div> 
+                </div>
+            </div>        
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="phone" class="col-md-6 control-label requiredField">
+                        &nbsp;
+                    </label>
+                    <div class ="col-md-6">
+                        <?php echo form_input($submit_shop_cover_photo+array('class'=>'form-control btn-success')); ?>
+                    </div> 
+                </div>
             </div>
-        </div>
+            <?php echo form_close(); ?>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="" class="col-md-6 control-label requiredField">
+                        &nbsp;
+                    </label>
+                    <div class ="col-md-6">
+                        <input id="button_cover_photo_edit" name="button_cover_photo_edit" type="button" value="Save" class="form-control btn-success"/>
+                    </div> 
+                </div>
+            </div>
+        </div>    
+        <canvas id="savedImage" style="visibility: hidden;" >
+        </canvas>
     </div>    
-    <canvas id="savedImage" style="visibility: hidden;" >
-    </canvas>
 </div>

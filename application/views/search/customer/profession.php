@@ -30,46 +30,48 @@
     {% } %}
 </script>
 <h3>Search Customer by Profession</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
-    <div class ="col-md-6">
-        <div class ="row">
-            <div class ="col-md-12 form-horizontal">
-                <div class="row">
-                    <div class ="col-md-6 margin-top-bottom">
-                        <?php echo form_open("search/download_search_customer_by_profession", array('id' => 'form_download_search_customer_profession', 'class' => 'form-horizontal')); ?>
-                        <div class="form-group">
-                            <label for="profession_list" class="col-md-6 control-label requiredField">
-                                Select Profession
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_dropdown('profession_list', $profession_list + array('0' => 'All'), '', 'class="form-control" id="profession_list"'); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="address" class="col-md-6 control-label requiredField">
+<div class ="form-horizontal form-background top-bottom-padding">
+    <div class="row">
+        <div class ="col-md-6">
+            <div class ="row">
+                <div class ="col-md-12 form-horizontal">
+                    <div class="row">
+                        <div class ="col-md-6 margin-top-bottom">
+                            <?php echo form_open("search/download_search_customer_by_profession", array('id' => 'form_download_search_customer_profession', 'class' => 'form-horizontal')); ?>
+                            <div class="form-group">
+                                <label for="profession_list" class="col-md-6 control-label requiredField">
+                                    Select Profession
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_dropdown('profession_list', $profession_list + array('0' => 'All'), '', 'class="form-control" id="profession_list"'); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
-                            </div> 
-                        </div>
-                        <div class="form-group">
-                            <label for="button_download_customer" class="col-md-6 control-label requiredField">
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="button_download_customer" class="col-md-6 control-label requiredField">
 
-                            </label>
-                            <div class ="col-md-6">
-                                <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
-                            </div> 
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
+                                </div> 
+                            </div>
+                            <?php echo form_close(); ?>
                         </div>
-                        <?php echo form_close(); ?>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>
 <h3>Search Result</h3>
-<div class="row form-background top-bottom-padding">
+<div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

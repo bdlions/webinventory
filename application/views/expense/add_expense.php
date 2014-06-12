@@ -61,53 +61,55 @@
 </script>
 
 <h3>Add Expense</h3>
-<div class ="row form-background form-horizontal top-bottom-padding">   
-    <?php echo form_open("expense/add_expense", array('id' => 'form_add_expense', 'class' => 'form-horizontal')); ?>
-    <div class ="col-md-5 col-md-offset-2">
-        <div class ="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-8"><?php echo $message; ?></div>
-        </div>
-        <div class="form-group">
-            <label for="expense_categories" class="col-md-6 control-label requiredField">
-                Select Type
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_dropdown('expense_categories', $expense_categories, $selected_expense_category, 'class="form-control" id="expense_categories"'); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="item_list" class="col-md-6 control-label requiredField">
-                Select Item
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="first_name" class="col-md-6 control-label requiredField">
-                Expense Amount
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($expense_amount+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="last_name" class="col-md-6 control-label requiredField">
-                Expense Description
-            </label>
-            <div class ="col-md-6">
-                <?php echo form_input($expense_description+array('class'=>'form-control')); ?>
-            </div> 
-        </div>
-        <div class="form-group">
-            <label for="submit_add_expense" class="col-md-6 control-label requiredField">
+<div class ="form-background form-horizontal top-bottom-padding">   
+    <div class="row">
+        <?php echo form_open("expense/add_expense", array('id' => 'form_add_expense', 'class' => 'form-horizontal')); ?>
+        <div class ="col-md-5 col-md-offset-2">
+            <div class ="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8"><?php echo $message; ?></div>
+            </div>
+            <div class="form-group">
+                <label for="expense_categories" class="col-md-6 control-label requiredField">
+                    Select Type
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_dropdown('expense_categories', $expense_categories, $selected_expense_category, 'class="form-control" id="expense_categories"'); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="item_list" class="col-md-6 control-label requiredField">
+                    Select Item
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="first_name" class="col-md-6 control-label requiredField">
+                    Expense Amount
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($expense_amount+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="last_name" class="col-md-6 control-label requiredField">
+                    Expense Description
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($expense_description+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="submit_add_expense" class="col-md-6 control-label requiredField">
 
-            </label>
-            <div class ="col-md-3 col-md-offset-3">
-                <?php echo form_input($submit_add_expense+array('class'=>'form-control btn-success')); ?>
-            </div> 
-        </div>        
+                </label>
+                <div class ="col-md-3 col-md-offset-3">
+                    <?php echo form_input($submit_add_expense+array('class'=>'form-control btn-success')); ?>
+                </div> 
+            </div>        
+        </div>    
+        <?php echo form_close(); ?>
     </div>    
-    <?php echo form_close(); ?>
 </div>

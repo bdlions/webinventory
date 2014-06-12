@@ -1,5 +1,5 @@
 <h3>Import Product</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open_multipart("product/import_product", array('id' => 'form_upload_file', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class="form-group">
@@ -44,6 +44,7 @@
         </div>        
     </div>
     <?php echo form_close(); ?>
+    <div class="row">
     <?php echo form_open("product/download_sample_file", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
         <div class="col-md-3">
             <div class="form-group">
@@ -56,4 +57,5 @@
             </div>
         </div>
     <?php echo form_close(); ?>
+    </div>
 </div>

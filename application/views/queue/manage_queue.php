@@ -1,6 +1,6 @@
 
 <h3>Mange your Queue</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class="col-md-offset-4 col-md-5" id="show_error_message"></div>
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">

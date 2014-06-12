@@ -1,5 +1,5 @@
 <h3>Product Information</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-5 col-md-offset-2">
             <div class="form-group">

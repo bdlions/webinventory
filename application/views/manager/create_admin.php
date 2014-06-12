@@ -4,7 +4,7 @@
  };
  </script>
 <h3>Add New Admin</h3>
-<div class ="row form-horizontal form-background top-bottom-padding" >
+<div class ="form-horizontal form-background top-bottom-padding" >
      <?php echo form_open("user/admin_signup", array('id' => 'form_create_admin', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">

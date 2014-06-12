@@ -1,5 +1,5 @@
 <h3>Configure your Queue</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("queue/config_queue/".$phone_upload_list_id, array('id' => 'form_create_operator', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class="col-md-offset-5 col-md-4" id="show_error_message"></div>

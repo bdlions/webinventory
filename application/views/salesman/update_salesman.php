@@ -1,5 +1,5 @@
 <h3>Update Staff</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("user/update_salesman/".$salesman_info['id'], array('id' => 'form_update_salesman', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">

@@ -36,7 +36,7 @@
     {% } %}
 </script>
 <h3>Stock Information</h3>
-<div class="row form-horizontal form-background top-bottom-padding">
+<div class="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <tbody>
@@ -93,7 +93,7 @@
         </table>
     </div>    
 </div>
-<div class ="row form-background">    
+<div class ="form-background">    
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

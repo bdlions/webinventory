@@ -228,7 +228,7 @@ class Expense extends CI_Controller {
         }
         else if( $expense_type_id == $this->expense_type_list['user'])
         {
-            $user_list_array = $this->ion_auth->get_all_shop_employees()->result_array();
+            $user_list_array = $this->ion_auth->get_all_shop_staffs()->result_array();
             $user_list = array();
             //filter administrator from this list
             foreach($user_list_array as $key => $user_info)

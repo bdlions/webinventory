@@ -1,5 +1,5 @@
 <h3>Process File</h3>
-<div class="row form-horizontal form-background top-bottom-padding">
+<div class="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

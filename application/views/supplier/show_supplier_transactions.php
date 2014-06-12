@@ -1,40 +1,40 @@
 <h3>Supplier Transactions</h3>
-<div class ="row form-horizontal form-background top-bottom-padding">
-    <div class="row">
-        <div class="col-md-3 col-lg-offset-1">
-            <div class="row">
-                <div class="form-group">
-                    <label for="first_name" class="col-md-4 control-label">
-                        Supplier Name
-                    </label>
-                    <label for="first_name" class="col-md-4 control-label">
-                        <?php echo $supplier_info['first_name'].' '.$supplier_info['last_name']; ?>
-                    </label>
+<div class ="form-horizontal form-background top-bottom-padding">    
+    <div class="table-responsive">
+        <div class="row" style="margin:0px;">
+            <div class="col-md-3 col-lg-offset-1">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="first_name" class="col-md-4 control-label">
+                            Supplier Name
+                        </label>
+                        <label for="first_name" class="col-md-4 control-label">
+                            <?php echo $supplier_info['first_name'].' '.$supplier_info['last_name']; ?>
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="first_name" class="col-md-4 control-label">
-                        Mobile Number
-                    </label>
-                    <label for="first_name" class="col-md-4 control-label">
-                        <?php echo $supplier_info['phone']; ?>
-                    </label>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="first_name" class="col-md-4 control-label">
+                            Mobile Number
+                        </label>
+                        <label for="first_name" class="col-md-4 control-label">
+                            <?php echo $supplier_info['phone']; ?>
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="first_name" class="col-md-4 control-label">
-                        Company
-                    </label>
-                    <label for="first_name" class="col-md-4 control-label">
-                        Company
-                    </label>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="first_name" class="col-md-4 control-label">
+                            Company
+                        </label>
+                        <label for="first_name" class="col-md-4 control-label">
+                            Company
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>

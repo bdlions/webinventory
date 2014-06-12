@@ -41,10 +41,7 @@
     <body>
         <?php $this->load->view("manager/templates/header"); ?>
         <div class ="container">
-            <div class ="row">
-                <!-- Header part -->
-            </div>
-            <div class="row">
+            <div>
                 <!-- Menu Items -->
                 <?php
                 $CI = &get_instance();
@@ -56,7 +53,7 @@
                 ?>
                 <?php echo $contents ?>
             </div>
-            <div class ="row">
+            <div>
                 <?php $this->load->view("manager/templates/footer"); ?>
             </div>
         </div>

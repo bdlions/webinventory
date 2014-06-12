@@ -152,7 +152,7 @@ function startclock()
     </div>
 </div>
 
-<div class ="row form-horizontal form-background top-bottom-padding">
+<div class ="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <tbody>
@@ -271,7 +271,7 @@ function startclock()
     </div>     
 </div>
 <h3>Search Result</h3>
-<div class="row form-background top-bottom-padding">
+<div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

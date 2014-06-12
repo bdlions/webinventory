@@ -1,5 +1,5 @@
 <h3>Supplier returned payment list</h3>
-<div class ="row form-background top-bottom-padding">
+<div class ="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
