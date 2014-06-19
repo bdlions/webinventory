@@ -1,6 +1,35 @@
 <script type="text/javascript">
-    $(function()
-    {
+    $(function(){
+        $("#search_box").typeahead([
+            {
+                name:"search_customer",
+                valuekey:"first_name",
+                remote:'<?php echo base_url()?>search/get_customers?query=%QUERY',
+                header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Customer</div>',
+                template: [
+                    '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{card_no}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
+                  ].join(''),
+                engine: Hogan
+            }
+    ]).on('typeahead:selected', function (obj, datum) {
+           if(datum.customer_id)
+            {
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "search/get_customer_info",
+                    data: {
+                        customer_id: datum.customer_id
+                    },
+                    success: function(data) {
+                        update_fields_selected_customer(data.customer_info);
+                        $('#modal_select_customer').modal('hide');
+                        return;
+                    }
+                });                
+            }
+        });
+        
         $("#button_add_customer").on("click", function() {
             if ($("#input_first_name").val().length == 0)
             {
@@ -30,8 +59,7 @@
                     first_name: $("#input_first_name").val(),
                     last_name: $("#input_last_name").val(),
                     phone_no: $("#input_phone_no").val(),
-                    card_no: $("#input_card_no").val(),
-                    message_category_id: $("#message_category_list").val()
+                    card_no: $("#input_card_no").val()
                 },
                 success: function(data) {
                     
@@ -51,82 +79,7 @@
                     }
                 }
             });
-        });
-        $("#button_search_customer").on("click", function() {
-            if ($("#dropdown_search_customer")[0].selectedIndex == 0)
-            {
-                alert("Please select search criteria.");
-                return false;
-            }
-            else if ($("#input_search_customer").val().length == 0)
-            {
-                alert("Please assign value of search criteria");
-                return false;
-            }
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_customer_sale_order",
-                data: {
-                    search_category_name: $("#dropdown_search_customer").val(),
-                    search_category_value: $("#input_search_customer").val()
-                },
-                success: function(data) {
-                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data));
-                    set_customer_list(data);                    
-                }
-            });
-        });
-        $("#tbody_customer_list").on("click", "td", function() {
-            var c_list = get_customer_list();
-            for (var counter = 0; counter < c_list.length; counter++)
-            {
-                var cust_info = c_list[counter];
-                if ($(this).attr("id") === cust_info['customer_id'])
-                {
-                    update_fields_selected_customer(cust_info);
-                    $('div[class="clr dropdown open"]').removeClass('open');
-                    $('#modal_select_customer').modal('hide');
-                    return;
-                }
-            }            
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    $(function(){
-        $("#search_box").typeahead([
-            {
-                name:"search_customer",
-                valuekey:"first_name",
-                local:<?php echo $searched_customers;?>,
-                /*prefetch:{
-                            url: '<?php echo base_url()?>search/get_customer',
-                            ttl: 0
-                        },*/
-                header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Customer</div>',
-                template: [
-                    '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{card_no}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
-                  ].join(''),
-                engine: Hogan
-            }
-    ]).on('typeahead:selected', function (obj, datum) {
-           if(datum.first_name)
-            {
-                var c_list = get_customer_list();
-                for (var counter = 0; counter < c_list.length; counter++)
-                {
-                    var cust_info = c_list[counter];
-                    if (datum.customer_id === cust_info['customer_id'])
-                    {
-                        update_fields_selected_customer(cust_info);
-                        $('#modal_select_customer').modal('hide');
-                        return;
-                    }
-                }
-            }
-        });
+        }); 
     });
 </script>
 
@@ -160,74 +113,7 @@
                         <br>
                         <br>
                         <br>
-                        <br>
-                    
-                    <!--<div class="row col-md-11">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Card No</th>
-                                        <th>Update</th>
-                                        <th>Show</th>
-                                        <th>Transactions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_customer_list">
-                                    <?php
-                                    foreach ($customer_list_array as $key => $customer) {
-                                        ?>
-                                        <tr>
-                                            <td id="<?php echo $customer['customer_id'] ?>"><?php echo $customer['first_name'] . ' ' . $customer['last_name'] ?></td>
-                                            <td id="<?php echo $customer['customer_id'] ?>"><?php echo $customer['phone'] ?></td>
-                                            <td id="<?php echo $customer['customer_id'] ?>"><?php echo $customer['card_no'] ?></td>
-                                            <td><a target="_blank" href="<?php echo base_url() . "user/update_customer/" . $customer['customer_id']; ?>">Update</a></td>
-                                            <td><a target="_blank" href="<?php echo base_url() . "user/show_customer/" . $customer['customer_id']; ?>">Show</a></td>
-                                            <td><a target="_blank" href="<?php echo base_url() . "payment/show_customer_transactions/" . $customer['customer_id']; ?>">Show</a></td>
-                                        </tr>
-                                        <?php
-                                    }
-                                    ?>
-                                <script type="text/x-tmpl" id="tmpl_customer_list">
-                                    {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
-                                    {% while(customer_info){ %}
-                                    <tr>
-                                        <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.first_name%}' . ' ' . '{%= customer_info.last_name%}'; ?></td>
-                                        <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.phone%}'; ?></td>
-                                        <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.card_no%}'; ?></td>
-                                        <td><a target="_blank" href="<?php echo base_url() . "user/update_customer/" . '{%= customer_info.customer_id%}'; ?>">Update</a></td>
-                                        <td><a target="_blank" href="<?php echo base_url() . "user/show_customer/" . '{%= customer_info.customer_id%}'; ?>">Show</a></td>
-                                        <td><a target="_blank" href="<?php echo base_url() . "payment/show_customer_transactions/" . '{%= customer_info.customer_id%}'; ?>">Show</a></td>            
-                                    </tr>
-                                    {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
-                                    {% } %}
-                                </script>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> 
-                    <div class ="row col-md-11 top-bottom-padding">
-                        <div class ="col-md-4">
-                            <h3>Search</h3>
-                        </div>
-                        <div class ="col-md-4">
-                            <?php echo form_dropdown('dropdown_search_customer', $customer_search_category, '0', 'id="dropdown_search_customer"'); ?>
-                        </div>
-                        <div class ="col-md-4">
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <?php echo form_input(array('name' => 'input_search_customer', 'id' => 'input_search_customer', 'class' => 'form-control')); ?>
-                                </div>
-                            </div>                            
-                            <div class ="row form-group">
-                                <div class="col-md-12">
-                                    <?php echo form_button(array('name' => 'button_search_customer', 'class' => 'form-control btn btn-success', 'id' => 'button_search_customer', 'content' => 'Search')); ?>
-                                </div>
-                            </div>
-                        </div>                      
-                    </div>-->
+                        <br>                    
                     <div class ="row col-md-11">
                         <div class ="col-md-5">
                             <h3>Add New</h3>
@@ -257,25 +143,13 @@
                                     <div class ="col-md-8">
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
-                                </div>
-                                
-                                <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
+                                </div>                                
                                 <div class="form-group">
                                     <label for="input_card_no" class="col-md-4 control-label requiredField">
                                         Card No
                                     </label>
                                     <div class ="col-md-8">
                                         <?php echo form_input(array('name' => 'input_card_no', 'id' => 'input_card_no', 'class' => 'form-control')); ?>
-                                    </div> 
-                                </div>
-                                <?php }?>
-                                
-                                <div class="form-group">
-                                    <label for="address" class="col-md-4 control-label requiredField">
-                                        Message Category
-                                    </label>
-                                    <div class ="col-md-8">
-                                        <?php echo form_dropdown('message_category_list', $message_category_list+array('' => 'Select'), '', 'class=form-control id="message_category_list"'); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">

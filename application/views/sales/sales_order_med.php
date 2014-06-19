@@ -1,9 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        var customer_data = <?php echo json_encode($customer_list_array) ?>;
-		//alert(customer_data);
-        set_customer_list(customer_data);
-		//alert(set_customer_list);
         var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
         

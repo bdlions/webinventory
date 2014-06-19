@@ -93,18 +93,13 @@
     ?>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-        var customer_data = <?php echo json_encode($all_customers) ?>;
-        set_customer_list(customer_data);
-    });
-</script>
-<script type="text/javascript">
     $(function(){
         $("#search_box").typeahead([
             {
                 name:"search_customer_small",
                 valuekey:"value",
-                local:<?php echo $searched_customers;?>,
+                //local:<?php //echo $searched_customers;?>,
+                remote:'<?php echo base_url()?>search/get_customers?query=%QUERY',
                 /*prefetch:{
                             url: '<?php echo base_url()?>search/get_customer',
                             ttl: 0
@@ -117,17 +112,19 @@
             }
     ]).on('typeahead:selected', function (obj, datum) {
         if(datum.customer_id)
-            {
-                var c_list = get_customer_list();
-                for (var counter = 0; counter < c_list.length; counter++)
-                {
-                    var cust_info = c_list[counter];
-                    if (datum.customer_id === cust_info['customer_id'])
-                    {
-                        $("#tbody_customer_list").html(tmpl("tmpl_customer_list",  cust_info));
-                    }
+        {
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "search/get_customer_info",
+                data: {
+                    customer_id: datum.customer_id
+                },
+                success: function(data) {
+                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list",  data.customer_info));
                 }
-            }
+            });
+        }
         });
     });
 </script>

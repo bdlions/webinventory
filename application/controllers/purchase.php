@@ -49,7 +49,7 @@ class Purchase extends CI_Controller {
         }
         $this->data['purchase_order_no'] = $purchase_order_no;
         $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
-        if( count($supplier_list_array) > 0)
+        if( !empty($supplier_list_array) )
         {
             $this->data['supplier_list_array'] = $supplier_list_array;
         }
@@ -91,7 +91,7 @@ class Purchase extends CI_Controller {
             }
         }
         
-        $searched_suppliers = $this->ion_auth->get_all_supplier_for_typeahed();
+        /*$searched_suppliers = $this->ion_auth->get_all_supplier_for_typeahed();
         $temp_searched_suppliers = array();
         
         foreach ($searched_suppliers as  $supplier) {
@@ -99,7 +99,7 @@ class Purchase extends CI_Controller {
             //$supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
             array_push($temp_searched_suppliers, $supplier);
         }
-        $this->data['searched_suppliers'] = json_encode($temp_searched_suppliers);
+        $this->data['searched_suppliers'] = json_encode($temp_searched_suppliers);*/
         
         $this->template->load(null, 'purchase/purchase_order',$this->data);
     }

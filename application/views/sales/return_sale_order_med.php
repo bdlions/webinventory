@@ -304,15 +304,7 @@
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control', 'value' => $sale_order_no)); ?>
                         </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="status" class="col-md-4 control-label requiredField">
-                            Select Staff
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
-                        </div> 
-                    </div>
+                    </div>                    
                 </div>
             </div>
             <div class="row col-md-11">
@@ -388,6 +380,14 @@
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="col-md-2 control-label requiredField">
+                            Select Staff
+                        </label>
+                        <div class ="col-md-3 col-md-offset-5">
+                            <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
                         </div> 
                     </div>
                     <div class="form-group">

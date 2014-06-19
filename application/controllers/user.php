@@ -35,7 +35,7 @@ class User extends CI_Controller {
         $this->lang->load('auth');
         $this->load->helper('language');
 
-        $this->user_type = CUSTOMER;
+        //$this->user_type = CUSTOMER;
         $this->user_group = $this->config->item('user_group', 'ion_auth');
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
     }
@@ -270,9 +270,9 @@ class User extends CI_Controller {
             } else {
                 $this->data['message2'] = 'Invalid captcha.';
             }
-        } else {
+        } else {            
             $this->data['message1'] = $this->session->flashdata('message1');
-            $this->data['message2'] = $this->session->flashdata('message2');
+            $this->data['message2'] = $this->session->flashdata('message2');                        
         }
         $this->data['identity'] = array('name' => 'identity',
             'id' => 'identity',
@@ -1065,22 +1065,22 @@ class User extends CI_Controller {
         }
         $this->data['shop_info'] = $shop_info;
         //all customers of the system.
-        $all_customers = array();
+        //$all_customers = array();
         //customer list of current view page
         $this->data['customer_list'] = array();
         //list the users
         if ($limit == 0) {
             $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
             $limit = PAGINATION_CUSTOMER_LIST_LIMIT;
-            $all_customers = $customer_list_array;
+            //$all_customers = $customer_list_array;
         } else {
             $customer_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_customers()->result_array();
-            $all_customers = $this->ion_auth->get_all_customers()->result_array();
+            //$all_customers = $this->ion_auth->get_all_customers()->result_array();
         }
         if (!empty($customer_list_array)) {
             $this->data['customer_list'] = $customer_list_array;
         }
-        $this->data['all_customers'] = $all_customers;
+        //$this->data['all_customers'] = $all_customers;
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
@@ -1096,16 +1096,7 @@ class User extends CI_Controller {
         $config['per_page'] = PAGINATION_CUSTOMER_LIST_LIMIT;
         $this->pagination->initialize($config);
         $this->data['pagination'] = $this->pagination->create_links();
-
-        $searched_customers = $this->ion_auth->get_all_customers_for_typeahed();
-        $temp_searched_customer = array();
-        
-        foreach ($searched_customers as  $customer) {
-            $customer -> value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
-            array_push($temp_searched_customer, $customer);
-        }
-        $this->data['searched_customers'] = json_encode($temp_searched_customer);
-        
+       
         if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {
             $this->template->load(null, 'customer/show_all_customers', $this->data);
         }

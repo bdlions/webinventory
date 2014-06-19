@@ -29,6 +29,7 @@ class Search extends CI_Controller {
         $this->load->library('org/product/product_library');
         $this->load->library('org/search/search_customer');
         $this->load->library('org/sale/sale_library');
+        $this->load->library('org/common/search_typeahead');
     }
     
     function index()
@@ -1134,6 +1135,34 @@ class Search extends CI_Controller {
             array_push($temp_customer, $customer);
         }
         echo json_encode($temp_customer);
+    }
+    
+    /*
+     * This method will return customer list from typeahead request
+     */
+    public function get_customers()
+    {
+        $search_value = $_GET['query'];
+        $customers = $this->search_typeahead->get_customers($search_value);
+        echo json_encode($customers);
+    }
+    
+    public function get_customer_info()
+    {
+        $customer_id = $_POST['customer_id'];
+        $customer_info = array();
+        if($customer_id > 0)
+        {
+            $customer_list_array = $this->ion_auth->get_customers(array($customer_id))->result_array();
+            if(!empty($customer_list_array))
+            {
+                $customer_info = $customer_list_array[0];
+            }
+        }
+        $result = array(
+            'customer_info' => $customer_info
+        );
+        echo json_encode($result);
     }
     
     
