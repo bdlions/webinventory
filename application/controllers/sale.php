@@ -63,11 +63,6 @@ class Sale extends CI_Controller {
             $this->data['user_info'] = $user_info_array[0];
         }
 
-        $this->data['customer_list_array'] = array();
-        $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
-        if (!empty($customer_list_array)) {
-            $this->data['customer_list_array'] = $customer_list_array;
-        }       
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
         if (count($product_list_array) > 0) {
@@ -84,15 +79,6 @@ class Sale extends CI_Controller {
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
         
-        /*$message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
-        $this->data['message_category_list'] = array();
-        if( !empty($message_category_list_array) )
-        {
-            foreach ($message_category_list_array as $key => $message_category) {
-                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
-            }
-        }*/
-        
         $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
         $this->data['product_unit_category_list'] = array();
         if( !empty($product_unit_category_list_array) )
@@ -101,15 +87,6 @@ class Sale extends CI_Controller {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
         }
-        
-        /*$temp_searched_customer = array(); 
-        $searched_customers = $this->ion_auth->get_all_customers_for_typeahed();        
-               
-        foreach ($searched_customers as  $customer) {
-            $customer -> value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
-            array_push($temp_searched_customer, $customer);
-        }
-        $this->data['searched_customers'] = json_encode($searched_customers);*/
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {$this->template->load(null, 'sales/sales_order', $this->data);}
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) {$this->template->load(null, 'sales/sales_order_med', $this->data);}
     }

@@ -1139,6 +1139,7 @@ class Search extends CI_Controller {
     
     /*
      * This method will return customer list from typeahead request
+     * @author Nazmul on 19th June 2014
      */
     public function get_customers()
     {
@@ -1147,24 +1148,76 @@ class Search extends CI_Controller {
         echo json_encode($customers);
     }
     
+    /*
+     * This method will return customer info for ajax call
+     * @author Nazmul on 19th June 2014
+     */
     public function get_customer_info()
     {
+        $result = array();
         $customer_id = $_POST['customer_id'];
         $customer_info = array();
         if($customer_id > 0)
         {
-            $customer_list_array = $this->ion_auth->get_customers(array($customer_id))->result_array();
+            $customer_list_array = $this->ion_auth->get_customer_info($customer_id)->result_array();
             if(!empty($customer_list_array))
             {
                 $customer_info = $customer_list_array[0];
             }
         }
-        $result = array(
-            'customer_info' => $customer_info
-        );
+        if(!empty($customer_info))
+        {
+            $result['status'] = 1;
+            $result['customer_info'] = $customer_info;
+        }
+        else
+        {
+            $result['status'] = 0;
+            $result['message'] = 'Invalid customer';
+        }
         echo json_encode($result);
     }
     
+    /*
+     * This method will return supplier list from typeahead request
+     * @author Nazmul on 19th June 2014
+     */
+    public function get_suppliers()
+    {
+        $search_value = $_GET['query'];
+        $suppliers = $this->search_typeahead->get_suppliers($search_value);
+        echo json_encode($suppliers);
+    }
     
+    /*
+     * This method will return supplier info for ajax call
+     * @author Nazmul on 19th June 2014
+     * return supplier_info with status 1, otherwise error message with status 0
+     */
+    public function get_supplier_info()
+    {
+        $result = array();
+        $supplier_id = $_POST['supplier_id'];
+        $supplier_info = array();
+        if($supplier_id > 0)
+        {
+            $supplier_list_array = $this->ion_auth->get_supplier_info($supplier_id)->result_array();
+            if(!empty($supplier_list_array))
+            {
+                $supplier_info = $supplier_list_array[0];
+            }
+        }
+        if(!empty($supplier_info))
+        {
+            $result['status'] = 1;
+            $result['supplier_info'] = $supplier_info;
+        }
+        else
+        {
+            $result['status'] = 0;
+            $result['message'] = 'Invalid supplier';
+        }
+        echo json_encode($result);
+    }
     
 }

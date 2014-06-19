@@ -1,8 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        var supplier_data = <?php echo json_encode($supplier_list_array) ?>;
-        set_supplier_list(supplier_data);
-
         var product_data = <?php echo json_encode($product_list_array) ?>;        
         set_product_list(product_data);
         

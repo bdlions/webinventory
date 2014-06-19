@@ -40,7 +40,6 @@ class Purchase extends CI_Controller {
      */
     function purchase_order()
     {
-        $this->data['supplier_list_array'] = array();
         $purchase_order_no = 1;
         $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
         if(!empty($purchase_order_no_array))
@@ -48,11 +47,6 @@ class Purchase extends CI_Controller {
             $purchase_order_no = ($purchase_order_no_array[0]['purchase_order_no']+1);
         }
         $this->data['purchase_order_no'] = $purchase_order_no;
-        $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
-        if( !empty($supplier_list_array) )
-        {
-            $this->data['supplier_list_array'] = $supplier_list_array;
-        }
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
         //echo '<pre/>';print_r($product_list_array);exit;
@@ -61,26 +55,9 @@ class Purchase extends CI_Controller {
             $this->data['product_list_array'] = $product_list_array;
         }
         
-        $this->data['supplier_search_category'] = array();
-        $this->data['supplier_search_category'][0] = "Select an item";
-        $this->data['supplier_search_category']['phone'] = "Phone";
-        $this->data['supplier_search_category']['company'] = "Company";
-        $this->data['supplier_search_category']['first_name'] = "First Name";
-        $this->data['supplier_search_category']['last_name'] = "Last Name";
-        
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
-        
-        $message_category_list_array = $this->ion_auth->get_all_message_category()->result_array();
-        $this->data['message_category_list'] = array();
-        if( !empty($message_category_list_array) )
-        {
-            foreach ($message_category_list_array as $key => $message_category) {
-                $this->data['message_category_list'][$message_category['id']] = $message_category['description'];
-            }
-        }
-        
         
         $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
         $this->data['product_unit_category_list'] = array();
@@ -90,17 +67,6 @@ class Purchase extends CI_Controller {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
         }
-        
-        /*$searched_suppliers = $this->ion_auth->get_all_supplier_for_typeahed();
-        $temp_searched_suppliers = array();
-        
-        foreach ($searched_suppliers as  $supplier) {
-            $supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
-            //$supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
-            array_push($temp_searched_suppliers, $supplier);
-        }
-        $this->data['searched_suppliers'] = json_encode($temp_searched_suppliers);*/
-        
         $this->template->load(null, 'purchase/purchase_order',$this->data);
     }
     

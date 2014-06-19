@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(function(){
-        $("#search_box").typeahead([
+        $("#search_box_customer").typeahead([
             {
                 name:"search_customer",
                 valuekey:"first_name",
@@ -22,9 +22,16 @@
                         customer_id: datum.customer_id
                     },
                     success: function(data) {
-                        update_fields_selected_customer(data.customer_info);
-                        $('#modal_select_customer').modal('hide');
-                        return;
+                        if(data.status == 1)
+                        {
+                            update_fields_selected_customer(data.customer_info);
+                            $('#modal_select_customer_medium').modal('hide');
+                            return;
+                        }
+                        else if(data.status == 0)
+                        {
+                            alert(data.message);
+                        }
                     }
                 });                 
             }
@@ -59,12 +66,8 @@
                     
                     if (data['status'] === '1')
                     {
-                        var c_list = get_customer_list();
-                        c_list[c_list.length] = data['customer_info'];
-                        set_customer_list(c_list);
                         alert('New customer is added successfully.');
                         var customer_info = data['customer_info'];
-                        //$("#tbody_customer_list").html($("#tbody_customer_list").html()+tmpl("tmpl_customer_list", customer_info));
                         update_fields_selected_customer(customer_info);
                         $('#modal_select_customer_medium').modal('hide');
                     }
@@ -92,7 +95,7 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                                 <div class="twitter-typeahead" style="position: relative;">
                                     <input type="text" disabled="" spellcheck="off" autocomplete="off" class="tt-hint form-control" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; background: none repeat scroll 0% 0% rgb(255, 255, 255);">
-                                    <input type="text" placeholder="Search for customer" class="form-control tt-query" id="search_box" autocomplete="off" spellcheck="false" style="position: relative; vertical-align: top; background-color: transparent;" dir="auto">
+                                    <input type="text" placeholder="Search for customer" class="form-control tt-query" id="search_box_customer" autocomplete="off" spellcheck="false" style="position: relative; vertical-align: top; background-color: transparent;" dir="auto">
                                     <div style="position: absolute; left: -9999px; visibility: hidden; white-space: nowrap; font-family: Calibri,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;">
                                         
                                     </div>

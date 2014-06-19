@@ -114,7 +114,14 @@
                         customer_id: datum.customer_id
                     },
                     success: function(data) {
-                        $("#tbody_customer_list").html(tmpl("tmpl_customer_list",  data.customer_info));
+                        if(data.status == 1)
+                        {
+                            $("#tbody_customer_list").html(tmpl("tmpl_customer_list",  data.customer_info));
+                        }
+                        else if(data.status == 0)
+                        {
+                            alert(data.message);
+                        } 
                     }
                 });
             }

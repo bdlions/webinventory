@@ -58,22 +58,12 @@
     ?>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-        var supplier_data = <?php echo json_encode($all_suppliers) ?>;
-        set_supplier_list(supplier_data);
-    });
-</script>
-<script type="text/javascript">
     $(function(){
         $("#search_box").typeahead([
             {
                 name:"search_supplier",
                 valuekey:"first_name",
-                local:<?php echo $searched_suppliers;?>,
-                /*prefetch:{
-                            url: '<?php echo base_url()?>search/get_supplier',
-                            ttl: 0
-                        },*/
+                remote:'<?php echo base_url()?>search/get_suppliers?query=%QUERY',
                 header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Supplier</div>',
                 template: [
                     '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{company}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
@@ -81,17 +71,26 @@
                 engine: Hogan
             }
     ]).on('typeahead:selected', function (obj, datum) {
-           if(datum.first_name)
+           if(datum.supplier_id)
             {
-                var s_list = get_supplier_list();
-                for (var counter = 0; counter < s_list.length; counter++)
-                {
-                    var sup_info = s_list[counter];
-                    if (datum.supplier_id === sup_info['supplier_id'])
-                    {
-                        $("#tbody_supplier_list").html(tmpl("tmpl_supplier_list",  sup_info));
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "search/get_supplier_info",
+                    data: {
+                        supplier_id: datum.supplier_id
+                    },
+                    success: function(data) {
+                        if(data.status == 1)
+                        {
+                            $("#tbody_supplier_list").html(tmpl("tmpl_supplier_list",  data.supplier_info));
+                        }
+                        else if(data.status == 0)
+                        {
+                            alert(data.message);
+                        }
                     }
-                }
+                });
             }
         });  
     });

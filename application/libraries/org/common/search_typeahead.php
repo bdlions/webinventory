@@ -76,14 +76,44 @@ class Search_typeahead {
         return get_instance()->$var;
     }
     
-    public function get_customers($search_value)
+    /*
+     * This method will return customer list adding value field appending first_name, last_name, phone and card_no
+     * @param $search_value, value to be searched in first_name/last_name/phone/card_no
+     * @param $shop_id, shop id
+     * @author Nazmul on 19th June 2014
+     */
+    public function get_customers($search_value, $shop_id = 0)
     {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $customer_list = array();
-        $customers = $this->search_typeahead_model->get_customers($search_value);
+        $customers = $this->search_typeahead_model->get_customers($search_value, $shop_id);
         foreach ($customers as  $customer) {
             $customer->value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
             array_push($customer_list, $customer);
         }
         return $customer_list;
+    }
+    
+    /*
+     * This method will return supplier list adding value field appending first_name, last_name, phone and company
+     * @param $search_value, value to be searched in first_name/last_name/phone/company
+     * @param $shop_id, shop id
+     * @author Nazmul on 19th June 2014
+     */
+    public function get_suppliers($search_value, $shop_id = 0) {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $supplier_list = array();
+        $suppliers = $this->search_typeahead_model->get_suppliers($search_value, $shop_id);
+        foreach ($suppliers as  $supplier) {
+            $supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
+            array_push($supplier_list, $supplier);
+        }
+        return $supplier_list;
     }
 }
