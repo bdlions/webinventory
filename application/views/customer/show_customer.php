@@ -34,6 +34,7 @@
                      <?php echo form_input($address+array('class'=>'form-control')); ?>
                  </div> 
              </div>
+             <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL):?>
              <div class="form-group">
                  <label for="card_no" class="col-md-6 control-label requiredField">
                      Card No
@@ -57,7 +58,8 @@
                  <div class ="col-md-6">
                      <?php echo form_dropdown('profession_list', $profession_list, $selected_profession, 'class=form-control'); ?>
                  </div> 
-             </div> 
+             </div>
+             <?php endif;?>
          </div>
      </div>
 </div>

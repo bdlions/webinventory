@@ -180,6 +180,16 @@ class Payment extends CI_Controller {
     public function show_due_collect()
     {
         $due_collect_list = array();
+        
+        $shop_info = $this->shop_library->get_shop()->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
+        }
+        
+        $this->data['shop_info'] = $shop_info;
+        
         $time = $this->utils->get_current_date_start_time();
         $due_collect_list_array = $this->payments->get_customer_due_collect_list_today($time)->result_array();
         foreach($due_collect_list_array as $due_collect)
@@ -193,6 +203,15 @@ class Payment extends CI_Controller {
     
     public function show_total_due()
     {
+        $shop_info = $this->shop_library->get_shop()->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
+        }
+        
+        $this->data['shop_info'] = $shop_info;
+        
         $this->data['due_list'] = $this->payments->get_daily_sale_due_list();
         $this->template->load(null, 'search/due/due_list',$this->data);
     }
@@ -216,6 +235,15 @@ class Payment extends CI_Controller {
     
     public function show_customers_returned_payment_list()
     {
+        $shop_info = $this->shop_library->get_shop()->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
+        }
+        
+        $this->data['shop_info'] = $shop_info;
+        
         $time = $this->utils->get_current_date_start_time();
         $customers_returned_payment_list = array();
         $customers_returned_payment_list_today_array = $this->payments->get_customers_returned_payment_list_today($time)->result_array();

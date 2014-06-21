@@ -50,6 +50,7 @@
             </tbody>
         </table>
     </div>
+    <?php if($user_group['id'] != USER_GROUP_SALESMAN):?>
     <div class="row">
         <div class="col-md-9">
 
@@ -84,6 +85,7 @@
             <?php echo form_close(); ?>
         </div>    
     </div>
+    <?php endif;?>
     <?php
     if (isset($pagination)) {
         echo $pagination;

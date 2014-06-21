@@ -260,7 +260,7 @@ class User extends CI_Controller {
                         $this->ion_auth->admin_registration_email(array(), $email);
                         $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code'], false);
                         $this->session->set_flashdata('message2', $this->ion_auth->messages());
-                        redirect("user/login", "refresh");
+                        redirect("user/account_validation_sms", "refresh");
                     } else {
                         $this->data['message2'] = $this->ion_auth->errors();
                     }
@@ -1063,7 +1063,20 @@ class User extends CI_Controller {
         if (!empty($shop_info_array)) {
             $shop_info = $shop_info_array[0];
         }
+        
         $this->data['shop_info'] = $shop_info;
+        
+        $user_id = $this->session->userdata('user_id');
+        
+        $user_group = $this->ion_auth->get_users_groups($user_id)->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        $this->data['user_group'] = $user_group;
+        
         //all customers of the system.
         //$all_customers = array();
         //customer list of current view page
@@ -1124,23 +1137,40 @@ class User extends CI_Controller {
             $customer_info = $customer_info_array[0];
         }
         $this->data['customer_info'] = $customer_info;
+        
+        $shop_id = $this->session->userdata('shop_id');
+        
+        $shop_info = $this->shop_library->get_shop($shop_id)->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
+        }
+        
+        $this->data['shop_info'] = $shop_info;
+        
         if ($this->input->post('submit_update_customer')) {
             if ($this->form_validation->run() == true) {
                 $additional_data = array(
                     'user_group_id' => $this->user_group['customer_id'],
-                    'card_no' => $this->input->post('card_no'),
                     'first_name' => $this->input->post('first_name'),
                     'last_name' => $this->input->post('last_name'),
                     'phone' => $this->input->post('phone'),
                     'address' => $this->input->post('address'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
-                if ($this->input->post('institution_list')) {
-                    $additional_data['institution_id'] = $this->input->post('institution_list');
+                
+                if($shop_info['shop_type_id']==SHOP_TYPE_SMALL){
+                    $additional_data['card_no'] = $this->input->post('card_no');
+                
+                    if ($this->input->post('institution_list')) {
+                        $additional_data['institution_id'] = $this->input->post('institution_list');
+                    }
+                    if ($this->input->post('profession_list')) {
+                        $additional_data['profession_id'] = $this->input->post('profession_list');
+                    }
                 }
-                if ($this->input->post('profession_list')) {
-                    $additional_data['profession_id'] = $this->input->post('profession_list');
-                }
+                
                 if ($this->ion_auth->update($customer_info['user_id'], $additional_data)) {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
                     redirect("user/update_customer/" . $customer_id, "refresh");
@@ -1153,29 +1183,31 @@ class User extends CI_Controller {
         } else {
             $this->data['message'] = $this->session->flashdata('message');
         }
-
-        $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
-        $this->data['institution_list'] = array();
-        if (!empty($institution_list_array)) {
-            foreach ($institution_list_array as $key => $institution) {
-                $this->data['institution_list'][$institution['id']] = $institution['description'];
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
+            $this->data['institution_list'] = array();
+            if (!empty($institution_list_array)) {
+                foreach ($institution_list_array as $key => $institution) {
+                    $this->data['institution_list'][$institution['id']] = $institution['description'];
+                }
             }
-        }
-        $this->data['selected_institution'] = $customer_info['institution_id'];
-        $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
-        $this->data['profession_list'] = array();
-        if (!empty($profession_list_array)) {
-            foreach ($profession_list_array as $key => $profession) {
-                $this->data['profession_list'][$profession['id']] = $profession['description'];
+            $this->data['selected_institution'] = $customer_info['institution_id'];
+            $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
+            $this->data['profession_list'] = array();
+            if (!empty($profession_list_array)) {
+                foreach ($profession_list_array as $key => $profession) {
+                    $this->data['profession_list'][$profession['id']] = $profession['description'];
+                }
             }
+            $this->data['selected_profession'] = $customer_info['profession_id'];
+            $this->data['card_no'] = array(
+                'name' => 'card_no',
+                'id' => 'card_no',
+                'type' => 'text',
+                'value' => $customer_info['card_no'],
+            );
         }
-        $this->data['selected_profession'] = $customer_info['profession_id'];
-        $this->data['card_no'] = array(
-            'name' => 'card_no',
-            'id' => 'card_no',
-            'type' => 'text',
-            'value' => $customer_info['card_no'],
-        );
+        
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
@@ -1223,30 +1255,44 @@ class User extends CI_Controller {
             $customer_info = $customer_info_array[0];
         }
         $this->data['customer_info'] = $customer_info;
-
-        $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
-        $this->data['institution_list'] = array();
-        if (!empty($institution_list_array)) {
-            foreach ($institution_list_array as $key => $institution) {
-                $this->data['institution_list'][$institution['id']] = $institution['description'];
-            }
+        $shop_id = $this->session->userdata('shop_id');
+        
+        $shop_info = $this->shop_library->get_shop($shop_id)->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
         }
-        $this->data['selected_institution'] = $customer_info['institution_id'];
-        $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
-        $this->data['profession_list'] = array();
-        if (!empty($profession_list_array)) {
-            foreach ($profession_list_array as $key => $profession) {
-                $this->data['profession_list'][$profession['id']] = $profession['description'];
+        
+        $this->data['shop_info'] = $shop_info;
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){    
+        
+            $institution_list_array = $this->ion_auth->get_all_institutions()->result_array();
+            $this->data['institution_list'] = array();
+            if (!empty($institution_list_array)) {
+                foreach ($institution_list_array as $key => $institution) {
+                    $this->data['institution_list'][$institution['id']] = $institution['description'];
+                }
             }
+            $this->data['selected_institution'] = $customer_info['institution_id'];
+            $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
+            $this->data['profession_list'] = array();
+            if (!empty($profession_list_array)) {
+                foreach ($profession_list_array as $key => $profession) {
+                    $this->data['profession_list'][$profession['id']] = $profession['description'];
+                }
+            }
+            $this->data['selected_profession'] = $customer_info['profession_id'];
+            $this->data['card_no'] = array(
+                'name' => 'card_no',
+                'id' => 'card_no',
+                'type' => 'text',
+                'class' => 'form-control',
+                'value' => $customer_info['card_no'],
+            );
+        
         }
-        $this->data['selected_profession'] = $customer_info['profession_id'];
-        $this->data['card_no'] = array(
-            'name' => 'card_no',
-            'id' => 'card_no',
-            'type' => 'text',
-            'class' => 'form-control',
-            'value' => $customer_info['card_no'],
-        );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
