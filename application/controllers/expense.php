@@ -28,6 +28,11 @@ class Expense extends CI_Controller {
         $this->load->library('org/common/expenses');
         $this->load->library('org/common/utils');
         $this->load->library('org/shop/shop_library');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()

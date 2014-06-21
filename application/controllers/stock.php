@@ -26,6 +26,11 @@ class Stock extends CI_Controller {
         $this->lang->load('auth');
         $this->load->helper('language');
         $this->load->library('org/stock/stock_library');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()

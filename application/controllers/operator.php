@@ -25,6 +25,11 @@ class Operator extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()

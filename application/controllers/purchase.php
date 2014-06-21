@@ -27,6 +27,11 @@ class Purchase extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()
@@ -255,6 +260,17 @@ class Purchase extends CI_Controller {
      */
     function raise_purchase_order()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
         if( count($product_list_array) > 0)
@@ -372,6 +388,17 @@ class Purchase extends CI_Controller {
     }
     function return_purchase_order()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
         if( count($product_list_array) > 0)

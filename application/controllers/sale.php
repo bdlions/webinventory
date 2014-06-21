@@ -34,6 +34,11 @@ class Sale extends CI_Controller {
         $this->payment_category_list = $this->config->item('payment_category', 'ion_auth');
         $this->lang->load('auth');
         $this->load->helper('language');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
 
     function index() {
@@ -312,6 +317,18 @@ class Sale extends CI_Controller {
     }
 
     public function return_sale_order($sale_order_no = '') {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
         if(!empty($shop_info_array))
@@ -460,6 +477,18 @@ class Sale extends CI_Controller {
     }
     
     public function delete_sale($sale_order_id = '') {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['message'] = '';
         if ($this->input->post('submit_delete_sale')) 
         {

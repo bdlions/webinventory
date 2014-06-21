@@ -37,6 +37,8 @@ class Admin extends CI_Controller {
         $this->user_type = CUSTOMER;
         $this->user_group = $this->config->item('user_group', 'ion_auth');
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
+        
+        
     }
 
     function admin_login() {

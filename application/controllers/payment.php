@@ -32,6 +32,11 @@ class Payment extends CI_Controller {
         $this->payment_category_list = $this->config->item('payment_category', 'ion_auth');
         $this->lang->load('auth');
         $this->load->helper('language');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()

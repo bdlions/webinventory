@@ -32,6 +32,21 @@ class Sms extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] == USER_GROUP_SALESMAN){
+            redirect("user/login","refresh");
+        }
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()
@@ -44,6 +59,17 @@ class Sms extends CI_Controller {
      */
     public function sms_configuration_shop($shop_id = 0)
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['message'] = '';
         if( $shop_id == 0)
         {

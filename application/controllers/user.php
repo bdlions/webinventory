@@ -38,6 +38,8 @@ class User extends CI_Controller {
         //$this->user_type = CUSTOMER;
         $this->user_group = $this->config->item('user_group', 'ion_auth');
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
+        
+        
     }
 
     function manager_login() {
@@ -1948,6 +1950,18 @@ class User extends CI_Controller {
 
     // ----------------------------------- Manager Module -------------------------------------------
     public function create_manager() {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] == USER_GROUP_SALESMAN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['message'] = '';
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
@@ -2049,6 +2063,17 @@ class User extends CI_Controller {
     }
 
     public function show_all_managers() {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] == USER_GROUP_SALESMAN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['manager_list'] = array();
         $manager_list_array = $this->ion_auth->get_all_managers()->result_array();
         if (!empty($manager_list_array)) {

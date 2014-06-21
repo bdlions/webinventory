@@ -24,6 +24,22 @@ class Queue extends CI_Controller {
         $this->user_type = CUSTOMER;
         $this->user_group = $this->config->item('user_group', 'ion_auth');
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     public function index()

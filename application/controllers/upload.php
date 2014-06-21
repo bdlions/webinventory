@@ -25,6 +25,11 @@ class Upload extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     public function upload_logo()
@@ -111,6 +116,18 @@ class Upload extends CI_Controller {
         );
         $this->template->load(null, 'upload/upload_cover', $this->data);
          * */
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] == USER_GROUP_SALESMAN){
+            redirect("user/login","refresh");
+        }
+        
         $shop_id = $this->session->userdata('shop_id');
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();

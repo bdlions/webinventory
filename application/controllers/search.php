@@ -30,6 +30,11 @@ class Search extends CI_Controller {
         $this->load->library('org/search/search_customer');
         $this->load->library('org/sale/sale_library');
         $this->load->library('org/common/search_typeahead');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()

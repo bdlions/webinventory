@@ -25,6 +25,11 @@ class Product extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }
     
     function index()
@@ -481,6 +486,17 @@ class Product extends CI_Controller {
      */
     public function import_product()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['message'] = '';
         $file_content = '';
         if($this->input->post('submit_upload_file'))
@@ -626,6 +642,17 @@ class Product extends CI_Controller {
      */
     public function create_product_unit_category()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['message'] = '';
         $this->form_validation->set_rules('unit_name', 'Product Unit Category Name', 'xss_clean|required');
         if ($this->input->post('submit_create_unit')) 

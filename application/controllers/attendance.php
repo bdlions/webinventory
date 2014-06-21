@@ -22,6 +22,11 @@ class Attendance extends CI_Controller {
                         $this->load->database();
 
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+    
+        if(!$this->ion_auth->logged_in())
+        {
+            redirect("user/login","refresh");
+        }
     }    
     
     public function store_attendance()
