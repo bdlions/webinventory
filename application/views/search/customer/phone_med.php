@@ -53,6 +53,7 @@
                                     <?php echo form_input($button_search_customer+array('class'=>'form-control btn-success')); ?>
                                 </div> 
                             </div>
+                            <?php if($user_group['id'] != USER_GROUP_SALESMAN):?>
                             <div class="form-group">
                                 <label for="button_download_customer" class="col-md-6 control-label requiredField">
 
@@ -61,6 +62,7 @@
                                     <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
                                 </div> 
                             </div>
+                            <?php endif;?>
                             <?php echo form_close(); ?>
                         </div>
                     </div>
