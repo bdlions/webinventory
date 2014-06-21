@@ -2031,7 +2031,7 @@ class Ion_auth_model extends CI_Model {
         return (isset($id)) ? $id : FALSE;
     }
     
-    public function get_all_customers($shop_id = '')
+    public function get_all_customers($shop_id = '', $shop_type_id = 0)
     {
         if (isset($this->_ion_limit) && isset($this->_ion_offset)) {
             $this->db->limit($this->_ion_limit, $this->_ion_offset);
@@ -2043,7 +2043,41 @@ class Ion_auth_model extends CI_Model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        $this->db->order_by($this->tables['customers'].'.card_no','asc');
+        if($shop_type_id == SHOP_TYPE_SMALL)
+        {
+            $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
+            $this->db->order_by($order_by);
+        }        
+        //$this->db->order_by($this->tables['customers'].'.card_no','asc');
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();  
+    }
+    /*
+     * This method will return customer list
+     * @param $customer_id_list, customer id list
+     * @param $shop_id, shop id
+     * @param $shop_type_id, shop type id
+     * @author Nazmul on 21st June 2014
+     */    
+    public function get_customer_list($customer_id_list = array(), $shop_id = 0, $shop_type_id = 0)
+    {
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if($shop_type_id == SHOP_TYPE_SMALL)
+        {
+            $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
+            $this->db->order_by($order_by);
+        }   
+        if(!empty($customer_id_list))
+        {
+            $this->db->where_in($this->tables['customers'].'.id', $customer_id_list);
+        }
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')

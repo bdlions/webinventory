@@ -44,12 +44,33 @@ class Search_typeahead_model extends Ion_auth_model {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        $this->db->like($this->tables['users'].'.first_name', $search_value);
+        $shop_type_id = 0;
+        $shop_info_array = $this->db->select($this->tables['shop_info'].".*,".$this->tables['shop_info'].'.id as shop_id')
+                                ->from($this->tables['shop_info'])
+                                ->where($this->tables['shop_info'].'.id', $shop_id)
+                                ->get()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+            $shop_type_id = $shop_info['shop_type_id'];
+        }
+        if($shop_type_id == SHOP_TYPE_SMALL)
+        {
+            $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
+            $this->db->order_by($order_by);
+            
+            $this->db->like($this->tables['customers'].'.card_no', $search_value);
+            $this->db->or_like($this->tables['users'].'.first_name', $search_value);
+        }
+        else
+        {
+            $this->db->like($this->tables['users'].'.first_name', $search_value);
+            $this->db->or_like($this->tables['users'].'.phone', $search_value);
+        }        
         $this->db->or_like($this->tables['users'].'.last_name', $search_value);
-        $this->db->or_like($this->tables['users'].'.phone', $search_value);
-        $this->db->or_like($this->tables['customers'].'.card_no', $search_value);
-        $this->db->order_by($this->tables['customers'].'.card_no','asc');
-        $this->db->limit(100);
+                
+        
+        $this->db->limit(50);
         $query = $this->db->select($this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')

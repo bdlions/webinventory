@@ -746,35 +746,36 @@ class Search extends CI_Controller {
     {
         $total_purchased = $_POST['total_purchased'];
         $customer_list = array();
-        $card_no_customer_id_map = array();
-        $card_no_total_products_map = array();
-        $customer_id_array = array();
+        $customer_id_list = array();
+        $customer_id_total_products_map = array();
         $sale_list_array = $this->sale_library->get_all_sales()->result_array();
         foreach($sale_list_array as $sale_info)
         {
-            if(!array_key_exists($sale_info['card_no'], $card_no_customer_id_map))
+            if(!array_key_exists($sale_info['customer_id'], $customer_id_total_products_map))
             {
-                $card_no_customer_id_map[$sale_info['card_no']] = $sale_info['customer_id'];
-            }
-            if(!array_key_exists($sale_info['card_no'], $card_no_total_products_map))
-            {
-                $card_no_total_products_map[$sale_info['card_no']] = $sale_info['total_sale'];
+                $customer_id_total_products_map[$sale_info['customer_id']] = $sale_info['total_sale'];
             }
             else
             {
-                $card_no_total_products_map[$sale_info['card_no']] = $card_no_total_products_map[$sale_info['card_no']] + $sale_info['total_sale'];
+                $customer_id_total_products_map[$sale_info['customer_id']] = $customer_id_total_products_map[$sale_info['customer_id']] + $sale_info['total_sale'];
             }
         }
-        foreach($card_no_total_products_map as $card_no => $total_products)
+        foreach($customer_id_total_products_map as $customer_id => $total_products)
         {
             if($total_products == $total_purchased)
             {
-                $customer_id_array[] = $card_no_customer_id_map[$card_no];
+                $customer_id_list[] = $customer_id;
             }
         }
-        if(!empty($customer_id_array))
+        if(!empty($customer_id_list))
         {
-            $customer_list = $this->ion_auth->get_customers($customer_id_array)->result_array(); 
+            $shop_info = array();
+            $shop_info_array = $this->shop_library->get_shop()->result_array();
+            if(!empty($shop_info_array))
+            {
+                $shop_info = $shop_info_array[0];
+                $customer_list = $this->ion_auth->get_customer_list($customer_id_list, $shop_info['shop_id'], $shop_info['shop_type_id'])->result_array(); 
+            }            
         }
         $result_array['customer_list'] =  $customer_list;
         echo json_encode($result_array);
@@ -784,35 +785,36 @@ class Search extends CI_Controller {
         $content = '';
         $total_purchased = $this->input->post('total_purchased');
         $customer_list = array();
-        $card_no_customer_id_map = array();
-        $card_no_total_products_map = array();
-        $customer_id_array = array();
+        $customer_id_list = array();
+        $customer_id_total_products_map = array();
         $sale_list_array = $this->sale_library->get_all_sales()->result_array();
         foreach($sale_list_array as $sale_info)
         {
-            if(!array_key_exists($sale_info['card_no'], $card_no_customer_id_map))
+            if(!array_key_exists($sale_info['customer_id'], $customer_id_total_products_map))
             {
-                $card_no_customer_id_map[$sale_info['card_no']] = $sale_info['customer_id'];
-            }
-            if(!array_key_exists($sale_info['card_no'], $card_no_total_products_map))
-            {
-                $card_no_total_products_map[$sale_info['card_no']] = $sale_info['total_sale'];
+                $customer_id_total_products_map[$sale_info['customer_id']] = $sale_info['total_sale'];
             }
             else
             {
-                $card_no_total_products_map[$sale_info['card_no']] = $card_no_total_products_map[$sale_info['card_no']] + $sale_info['total_sale'];
+                $customer_id_total_products_map[$sale_info['customer_id']] = $customer_id_total_products_map[$sale_info['customer_id']] + $sale_info['total_sale'];
             }
         }
-        foreach($card_no_total_products_map as $card_no => $total_products)
+        foreach($customer_id_total_products_map as $customer_id => $total_products)
         {
             if($total_products == $total_purchased)
             {
-                $customer_id_array[] = $card_no_customer_id_map[$card_no];
+                $customer_id_list[] = $customer_id;
             }
         }
-        if(!empty($customer_id_array))
+        if(!empty($customer_id_list))
         {
-            $customer_list = $this->ion_auth->get_customers($customer_id_array)->result_array(); 
+            $shop_info = array();
+            $shop_info_array = $this->shop_library->get_shop()->result_array();
+            if(!empty($shop_info_array))
+            {
+                $shop_info = $shop_info_array[0];
+                $customer_list = $this->ion_auth->get_customer_list($customer_id_list, $shop_info['shop_id'], $shop_info['shop_type_id'])->result_array(); 
+            }            
         }
         foreach($customer_list as $customer_info)
         {
@@ -1128,17 +1130,8 @@ class Search extends CI_Controller {
     {
         $start_card_no = $_POST['start_card_no'];
         $end_card_no = $_POST['end_card_no'];
-        
-        $customer_list = array();
-        $customer_list_array = $this->search_customer->search_customer_by_card_no_range()->result_array();
-        foreach($customer_list_array as $customer_info)
-        {
-            if( $start_card_no+0 <= $customer_info['card_no']+0 && $customer_info['card_no']+0 <= $end_card_no+0)
-            {
-                $customer_list[] = $customer_info;
-            }
-        }
-        $result_array['customer_list'] = $customer_list;
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
+        $result_array['customer_list'] = $customer_list_array;
         echo json_encode($result_array);
     }
     
@@ -1148,7 +1141,7 @@ class Search extends CI_Controller {
         $start_card_no = $this->input->post('start_card_no');
         $end_card_no = $this->input->post('end_card_no');
         
-        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($shop_id = '',$start_card_no, $end_card_no)->result_array();
+        $customer_list_array = $this->search_customer->search_customer_by_card_no_range($start_card_no, $end_card_no)->result_array();
         foreach($customer_list_array as $customer_info)
         {
             $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";

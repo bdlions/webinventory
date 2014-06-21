@@ -1085,11 +1085,11 @@ class User extends CI_Controller {
         $this->data['customer_list'] = array();
         //list the users
         if ($limit == 0) {
-            $customer_list_array = $this->ion_auth->get_all_customers()->result_array();
+            $customer_list_array = $this->ion_auth->get_all_customers($shop_info['shop_id'], $shop_info['shop_type_id'])->result_array();
             $limit = PAGINATION_CUSTOMER_LIST_LIMIT;
             //$all_customers = $customer_list_array;
         } else {
-            $customer_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_customers()->result_array();
+            $customer_list_array = $this->ion_auth->limit($limit)->offset($offset)->get_all_customers($shop_info['shop_id'], $shop_info['shop_type_id'])->result_array();
             //$all_customers = $this->ion_auth->get_all_customers()->result_array();
         }
         if (!empty($customer_list_array)) {

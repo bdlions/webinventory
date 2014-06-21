@@ -12,21 +12,6 @@
 <script>
     function append_selected_product(prod_info)
     {
-        var is_product_previously_selected = false;
-        $("input", "#tbody_selected_product_list").each(function() {
-            if ($(this).attr("name") === "quantity")
-            {
-                if ($(this).attr("id") === prod_info['id'])
-                {
-                    is_product_previously_selected = true;
-                }
-            }
-        });
-        if (is_product_previously_selected === true)
-        {
-            alert('The product is already selected. Please update product quantity.');
-            return;
-        }
         $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
         var total_sale_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
