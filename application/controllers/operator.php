@@ -39,6 +39,17 @@ class Operator extends CI_Controller {
     
     public function create_operator()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('operator_prefix', 'Operator Prefix', 'xss_clean|required');
@@ -102,6 +113,17 @@ class Operator extends CI_Controller {
     }
     public function show_all_operators()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }
+        
+        if($user_group['id'] != USER_GROUP_ADMIN){
+            redirect("user/login","refresh");
+        }
+        
         $this->data['operator_list'] = array();
         $operator_list_array = $this->operators->get_all_operators()->result_array();
         if( !empty($operator_list_array) )

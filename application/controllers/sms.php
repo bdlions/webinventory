@@ -34,18 +34,19 @@ class Sms extends CI_Controller {
         $this->load->helper('language');
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        if($user_group['id'] == USER_GROUP_SALESMAN){
-            redirect("user/login","refresh");
-        }
         
         if(!$this->ion_auth->logged_in())
         {
             redirect("user/login","refresh");
+        }
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        
+            if($user_group['id'] == USER_GROUP_SALESMAN){
+                redirect("user/login","refresh");
+            }
         }
     }
     
@@ -64,11 +65,12 @@ class Sms extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+            if($user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
         }
         
-        if($user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
+        
         
         $this->data['message'] = '';
         if( $shop_id == 0)
@@ -129,6 +131,18 @@ class Sms extends CI_Controller {
     
     public function sms_status()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            if($user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
+        }
+        
+        
+        
         $sms_status_array = $this->sms_configuration->get_sms_status()->result_array();
         $this->data['sms_status_array'] = $sms_status_array;
         $this->template->load(null, 'sms/sms_status', $this->data);
@@ -195,6 +209,17 @@ class Sms extends CI_Controller {
     
     public function process_file()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        
+            if($user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
+        }
+
         $number_name_map = array();
         $number_list = array();
         $this->data['message'] = '';

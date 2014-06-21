@@ -323,11 +323,13 @@ class Sale extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+        
+            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
         }
         
-        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
+        
         
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();

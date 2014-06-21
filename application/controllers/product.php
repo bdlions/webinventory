@@ -491,11 +491,13 @@ class Product extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+        
+            if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER){
+                redirect("user/login","refresh");
+            }
         }
         
-        if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER){
-            redirect("user/login","refresh");
-        }
+
         
         $this->data['message'] = '';
         $file_content = '';
@@ -647,11 +649,13 @@ class Product extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+        
+            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
         }
         
-        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
+        
         
         $this->data['message'] = '';
         $this->form_validation->set_rules('unit_name', 'Product Unit Category Name', 'xss_clean|required');

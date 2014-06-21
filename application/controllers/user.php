@@ -2068,11 +2068,13 @@ class User extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+        
+            if($user_group['id'] == USER_GROUP_SALESMAN){
+                $this->template->load(null, 'user/login', $this->data);
+            }
         }
         
-        if($user_group['id'] == USER_GROUP_SALESMAN){
-            redirect("user/login","refresh");
-        }
+        
         
         $this->data['manager_list'] = array();
         $manager_list_array = $this->ion_auth->get_all_managers()->result_array();

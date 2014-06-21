@@ -265,11 +265,12 @@ class Purchase extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
         }
         
-        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
+        
         
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
@@ -393,11 +394,12 @@ class Purchase extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
         }
         
-        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
+        
         
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();

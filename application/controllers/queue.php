@@ -27,18 +27,18 @@ class Queue extends CI_Controller {
         
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        if($user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
         
         if(!$this->ion_auth->logged_in())
         {
             redirect("user/login","refresh");
+        }
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            if($user_group['id'] != USER_GROUP_ADMIN){
+                redirect("user/login","refresh");
+            }
         }
     }
     
