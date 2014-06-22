@@ -844,7 +844,11 @@ class Search extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
-        
+        $shop_info = $this->ion_auth->get_shop_info()->result_array();
+        if(!empty($shop_info))
+        {
+            $this->data['shop_info'] = $shop_info[0];
+        }
         
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         

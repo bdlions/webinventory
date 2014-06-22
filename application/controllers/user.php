@@ -262,7 +262,9 @@ class User extends CI_Controller {
                         $this->ion_auth->admin_registration_email(array(), $email);
                         $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code'], false);
                         $this->session->set_flashdata('message2', $this->ion_auth->messages());
+                        $this->ion_auth->login($user_name, $password);
                         redirect("user/account_validation_sms", "refresh");
+                        
                     } else {
                         $this->data['message2'] = $this->ion_auth->errors();
                     }
@@ -301,6 +303,7 @@ class User extends CI_Controller {
     function account_validation_sms() {
         //$this->data['title'] = "sms_check";
         //validate form input
+        $user_info = array();
         $this->data['message'] = "";
         $this->form_validation->set_rules('code', 'Code', 'required');
 
@@ -308,20 +311,23 @@ class User extends CI_Controller {
             if ($this->form_validation->run() == true) {
                 $code = $this->input->post('code');
                 $user_info_array = $this->ion_auth->get_user_info()->result_array();
-
-                $user_info = $user_info_array[0];
-                if ($code == $user_info['sms_code']) {
-                    $additional_data = array(
-                        'sms_code' => ''
-                    );
-                    if ($this->ion_auth->update($user_info['id'], $additional_data)) {
-                        $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
-                        if (empty($shop_info)) {
-                            redirect('shop/create_shop', 'refresh');
+                
+                if(!empty($user_info_array)){
+                    $user_info = $user_info_array[0];
+                
+                    if ($code == $user_info['sms_code']) {
+                        $additional_data = array(
+                            'sms_code' => ''
+                        );
+                        if ($this->ion_auth->update($user_info['id'], $additional_data)) {
+                            $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
+                            if (empty($shop_info)) {
+                                redirect('shop/create_shop', 'refresh');
+                            }
                         }
+                    } else {
+                        $this->data['message'] = 'Incorrect sms code.';
                     }
-                } else {
-                    $this->data['message'] = 'Incorrect sms code.';
                 }
             } else {
                 $this->data['message'] = validation_errors();
@@ -1149,7 +1155,6 @@ class User extends CI_Controller {
             $shop_info = $shop_info[0];
         }
         
-        $this->data['shop_info'] = $shop_info;
         
         if ($this->input->post('submit_update_customer')) {
             if ($this->form_validation->run() == true) {
@@ -1175,6 +1180,7 @@ class User extends CI_Controller {
                 
                 if ($this->ion_auth->update($customer_info['user_id'], $additional_data)) {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
+                    
                     redirect("user/update_customer/" . $customer_id, "refresh");
                 } else {
                     $this->data['message'] = $this->ion_auth->errors();
@@ -1240,7 +1246,13 @@ class User extends CI_Controller {
             'type' => 'submit',
             'value' => 'Update',
         );
-        $this->template->load(null, 'customer/update_customer', $this->data);
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $this->template->load(null, 'customer/update_customer', $this->data);
+        }
+        else{
+            $this->template->load(null, 'customer/update_customer_med', $this->data);
+        }
     }
 
     public function show_customer($customer_id) {
@@ -1256,6 +1268,7 @@ class User extends CI_Controller {
         } else {
             $customer_info = $customer_info_array[0];
         }
+        
         $this->data['customer_info'] = $customer_info;
         $shop_id = $this->session->userdata('shop_id');
         
@@ -1266,7 +1279,6 @@ class User extends CI_Controller {
             $shop_info = $shop_info[0];
         }
         
-        $this->data['shop_info'] = $shop_info;
         
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){    
         
@@ -1322,7 +1334,13 @@ class User extends CI_Controller {
             'type' => 'textarea',
             'value' => $customer_info['address'],
         );
-        $this->template->load(null, 'customer/show_customer', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $this->template->load(null, 'customer/show_customer', $this->data);
+        }
+        else{
+            $this->template->load(null, 'customer/show_customer_med', $this->data);
+        }
+    
     }
 
     public function create_customer_sale_order() {

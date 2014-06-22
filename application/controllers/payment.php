@@ -193,8 +193,7 @@ class Payment extends CI_Controller {
             $shop_info = $shop_info[0];
         }
         
-        $this->data['shop_info'] = $shop_info;
-        
+   
         $time = $this->utils->get_current_date_start_time();
         $due_collect_list_array = $this->payments->get_customer_due_collect_list_today($time)->result_array();
         foreach($due_collect_list_array as $due_collect)
@@ -203,7 +202,13 @@ class Payment extends CI_Controller {
             $due_collect_list[] = $due_collect;
         }
         $this->data['due_collect_list'] = $due_collect_list;
-        $this->template->load(null, 'search/due/due_collect',$this->data);
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $this->template->load(null, 'search/due/due_collect',$this->data);
+        }
+        else{
+            $this->template->load(null, 'search/due/due_collect_med',$this->data);
+        }
     }
     
     public function show_total_due()
@@ -215,10 +220,14 @@ class Payment extends CI_Controller {
             $shop_info = $shop_info[0];
         }
         
-        $this->data['shop_info'] = $shop_info;
-        
         $this->data['due_list'] = $this->payments->get_daily_sale_due_list();
-        $this->template->load(null, 'search/due/due_list',$this->data);
+        
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $this->template->load(null, 'search/due/due_list',$this->data);
+        }else{
+            $this->template->load(null, 'search/due/due_list_med',$this->data);
+        }
     }
     
     public function show_suppliers_returned_payment_list()
@@ -261,6 +270,13 @@ class Payment extends CI_Controller {
             }
         }
         $this->data['customers_returned_payment_list'] = $customers_returned_payment_list;
-        $this->template->load(null, 'search/return/customer_payment_list',$this->data);
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $this->template->load(null, 'search/return/customer_payment_list',$this->data);
+        }
+        else{
+            $this->template->load(null, 'search/return/customer_payment_list_med',$this->data);
+        }
+            
     }
 }

@@ -6,7 +6,6 @@
                 <tr>
                     <th>Time & Date</th>
                     <th>Customer Name</th>
-                    <th>Card No</th>
                     <th>Amount</th>
                 </tr>
             </thead>
@@ -17,7 +16,6 @@
                     <tr>
                         <td><?php echo $customer_returned_payment_list['created_on'] ?></td>
                         <td><?php echo $customer_returned_payment_list['first_name'].' '.$customer_returned_payment_list['last_name'] ?></td>
-                        <td><?php echo $customer_returned_payment_list['card_no'] ?></td>    
                         <td><?php echo $customer_returned_payment_list['amount'] ?></td>                        
                     </tr>
                 <?php
