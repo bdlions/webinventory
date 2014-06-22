@@ -158,17 +158,7 @@
                                         <?php
                                     }
                                     ?>
-                                <script type="text/x-tmpl" id="tmpl_product_list">
-                                    {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                                    {% while(product_info){ %}
-                                    <tr>
-                                        <td><input id="{%= product_info.id%}" name="checkbox[]" class="" type="checkbox" /></td>
-                                        <td id="{%= product_info.id%}">{%= product_info.name%}</td>
-                                        <td><a target="_blank" href="<?php echo base_url()?> . "product/show_product/" . {%= product_info.id%}">view</a></td>  
-                                    </tr>
-                                    {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                                    {% } %}
-                                </script>
+                                
                                 </tbody>
                             </table>                            
                         </div>
