@@ -649,9 +649,10 @@ class Product extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-        
-            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                redirect('user/salesman_login',"refresh");
             }
         }
         
@@ -749,6 +750,5 @@ class Product extends CI_Controller {
         header("Content-Disposition: 'attachment'; filename=sample_file.txt");
         echo $file_read;
     }
-    
-    
+
 }

@@ -32,12 +32,16 @@ class Shop extends CI_Controller {
             redirect("user/login","refresh");
         }
         
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-        
-            if($user_group['id'] == USER_GROUP_SALESMAN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                redirect('user/salesman_login',"refresh");
             }
         }
     }
@@ -49,6 +53,18 @@ class Shop extends CI_Controller {
     
     public function create_shop()
     {
+        $shop_info = array();
+        $user_info_array = $this->ion_auth->get_user_info()->result_array();
+        if(!empty($user_info))
+        {
+            $user_info = $user_info_array[0];
+            $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
+        }
+        
+        if (!empty($shop_info)) {
+            redirect('user/manager_login',"refresh");
+        }
+        
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
@@ -164,9 +180,12 @@ class Shop extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            if($user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            if($user_group['id'] == USER_GROUP_MANAGER)
+            {
+                redirect('user/manager_login',"refresh");
             }
+            
         }
         
         
@@ -187,9 +206,10 @@ class Shop extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-        
-            if($user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            if($user_group['id'] == USER_GROUP_MANAGER)
+            {
+                redirect('user/manager_login',"refresh");
             }
         }
         
@@ -284,9 +304,10 @@ class Shop extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-        
-            if($user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            if($user_group['id'] == USER_GROUP_MANAGER)
+            {
+                redirect('user/manager_login',"refresh");
             }
         }
         

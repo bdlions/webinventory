@@ -40,12 +40,16 @@ class Sms extends CI_Controller {
             redirect("user/login","refresh");
         }
         
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-        
-            if($user_group['id'] == USER_GROUP_SALESMAN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                redirect('user/salesman_login',"refresh");
             }
         }
     }
@@ -65,8 +69,14 @@ class Sms extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            if($user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            if($user_group['id'] == USER_GROUP_MANAGER)
+            {
+                redirect('user/manager_login',"refresh");
+            }
+            else if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                redirect('user/salesman_login',"refresh");
             }
         }
         

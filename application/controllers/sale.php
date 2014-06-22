@@ -323,9 +323,11 @@ class Sale extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-        
-            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
+            $this->session->set_flashdata('message',"You have no permission to view that page");
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                redirect('user/salesman_login',"refresh");
             }
         }
         
@@ -479,17 +481,6 @@ class Sale extends CI_Controller {
     }
     
     public function delete_sale($sale_order_id = '') {
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-            redirect("user/login","refresh");
-        }
         
         $this->data['message'] = '';
         if ($this->input->post('submit_delete_sale')) 
