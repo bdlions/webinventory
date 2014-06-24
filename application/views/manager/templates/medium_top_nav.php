@@ -26,7 +26,7 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Inventory<span class="caret"></span>
+        Manage Stock<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("product/create_product_unit_category");?>">create new product unit category</a></li>
@@ -80,22 +80,8 @@
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
-        
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        SMS<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("./sms/all_message_category");?>">Show All Message Category</a></li>
-        <li><a href="<?php echo base_url("./sms/create_message_category");?>">Create new configure Message</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./sms/all_message");?>">All Message</a></li>
-        <li><a href="<?php echo base_url("./sms/create_message");?>">Create New Message</a></li>
-        
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
+        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>        
     </ul>
 </div>
 <div class="btn-group">

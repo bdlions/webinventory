@@ -24,7 +24,7 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Inventory<span class="caret"></span>
+        Manage Stock<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./product/create_product");?>">add new product</a></li>
@@ -78,7 +78,8 @@
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
         <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
-        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li> 
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>
     </ul>
 </div>
 <div class="btn-group">
