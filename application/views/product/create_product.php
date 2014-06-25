@@ -53,7 +53,7 @@
                     Product Unit Category
                 </label>
                 <div class ="col-md-6" id="unit_dropdown">
-                    <?php echo form_dropdown('product_unit_category_list', $product_unit_category_list+array('' => 'Select'), '', 'class=form-control id=dropdown'); ?>
+                    <?php echo form_dropdown('product_unit_category_list', array('' => 'Select')+$product_unit_category_list, '', 'class=form-control id=dropdown'); ?>
                 </div> 
             </div>
             <div class="form-group">
