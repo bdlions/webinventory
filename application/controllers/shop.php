@@ -40,7 +40,7 @@ class Shop extends CI_Controller {
 
             if($user_group['id'] == USER_GROUP_SALESMAN)
             {
-                //$this->session->set_flashdata('message',"You have no permission to view that page");
+                $this->session->set_flashdata('message',"You have no permission to view that page");
                 redirect('user/salesman_login',"refresh");
             }
         }
@@ -180,9 +180,10 @@ class Shop extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            //$this->session->set_flashdata('message',"You have no permission to view that page");
+            
             if($user_group['id'] == USER_GROUP_MANAGER)
             {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
                 redirect('user/manager_login',"refresh");
             }
             
@@ -206,9 +207,10 @@ class Shop extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            //$this->session->set_flashdata('message',"You have no permission to view that page");
+            
             if($user_group['id'] == USER_GROUP_MANAGER)
             {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
                 redirect('user/manager_login',"refresh");
             }
         }
@@ -304,9 +306,10 @@ class Shop extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            //$this->session->set_flashdata('message',"You have no permission to view that page");
+            
             if($user_group['id'] == USER_GROUP_MANAGER)
             {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
                 redirect('user/manager_login',"refresh");
             }
         }
