@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
 	`address` varchar(500) NOT NULL default '',
 	`shop_phone` varchar(200) NOT NULL default '',	
     `picture` varchar(500) default '',
+	`subscription_start` varchar(200) default '',
+	`subscription_end` varchar(200) default '',
 	`created_on` int(11) unsigned DEFAULT NULL,
 	`modified_on` int(11) unsigned DEFAULT NULL,
 	`shop_type_id` int(11) DEFAULT NULL,
