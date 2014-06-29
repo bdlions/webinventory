@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    First Name
+                    <?php echo $this->lang->line("label_first_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($first_name+array('class'=>'form-control')); ?>
@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label for="last_name" class="col-md-6 control-label requiredField">
-                    Last Name
+                    <?php echo $this->lang->line("label_last_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($last_name+array('class'=>'form-control')); ?>
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">
-                    Phone No
+                    <?php echo $this->lang->line("label_phone_no"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($phone+array('class'=>'form-control')); ?>
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Address
+                   <?php echo $this->lang->line("label_address"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($address+array('class'=>'form-control')); ?>
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <label for="card_no" class="col-md-6 control-label requiredField">
-                    Card No
+                    <?php echo $this->lang->line("label_card_no"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($card_no+array('class'=>'form-control')); ?>
@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Institution
+                    <?php echo $this->lang->line("label_institution"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_dropdown('institution_list', $institution_list+array('' => 'Select'), '','class=form-control'); ?>
@@ -57,7 +57,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Profession
+                    <?php echo $this->lang->line("label_profession"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_dropdown('profession_list', $profession_list+array('' => 'Select'), '', 'class=form-control'); ?>

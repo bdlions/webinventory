@@ -121,4 +121,93 @@ class Import extends CI_Controller {
         }
         print_r('Total entry stored:'.$counter);
     }
+    
+    /*
+     * This method for configure label for a shop
+     * @author Omar Faruk on 29th June 2014
+     */
+    public function configure_shop_label()
+    {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        
+            if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER){
+                redirect("user/login","refresh");
+            }
+        }
+        
+
+        
+        $this->data['message'] = '';
+        $file_content = '';
+        if($this->input->post('submit_upload_file'))
+        {
+            //echo $this->session->userdata('shop_id'); exit("i m here");
+            $file_content = $this->input->post('submit_upload_file');
+            //echo '<pre>';print_r($file_content);exit(' here i m');
+            $write_as_string = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed') ";
+            $config['upload_path'] = './application/language/english/';
+            $config['allowed_types'] = '*';
+            $config['max_size'] = '5000';
+            $config['file_name'] = 'label_'.$this->session->userdata('shop_id').'_lang'.'.php';
+            $config['overwrite'] = TRUE;
+            
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) 
+            {
+                $file_content = $this->upload->display_errors();
+            } 
+            else 
+            {
+                $string = read_file('./application/language/english/'.'label_'.$this->session->userdata('shop_id').'_lang'.'.php');
+                $file_content = $string;
+            }
+        }
+        
+        $this->data['textarea_details'] = array(
+            'name'  => 'textarea_details',
+            'id'    => 'textarea_details',
+            'value' => $file_content,
+            'rows'  => '20',
+            'cols'  => '100'
+        );
+        $this->data['submit_upload_file'] = array(
+            'name' => 'submit_upload_file',
+            'id' => 'submit_upload_file',
+            'type' => 'submit',
+            'value' => 'Upload',
+        );
+        $this->data['submit_process_file'] = array(
+            'name' => 'submit_process_file',
+            'id' => 'submit_process_file',
+            'type' => 'submit',
+            'value' => 'Import Product List',
+        );
+        
+        $this->data['download_sample_file'] = array(
+            'name' => 'download_file',
+            'id' => 'download_file',
+            'type' => 'submit',
+            'value' => 'Download Sample file',
+        );
+        $this->template->load(null, 'import_configure_shop_label', $this->data);
+    }
+    
+    /*
+     * This method for download sample label file for a shop
+     * @author Omar Faruk on 29th June 2014
+     */
+    
+    public function download_sample_file()
+    {
+        $file_read = read_file('./resources/download/sample_label_file.php');
+        header("Content-Type:text/plain");
+        header("Content-Disposition: 'attachment'; filename=sample_label_file.php");
+        echo $file_read;
+    }
+    
 }

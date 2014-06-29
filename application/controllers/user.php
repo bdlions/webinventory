@@ -24,7 +24,8 @@ class User extends CI_Controller {
         $this->load->library('org/shop/shop_library');
         $this->load->library('org/common/messages');
         $this->load->helper('url');
-
+        
+        
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
                         $this->load->library('mongo_db') :
@@ -34,7 +35,14 @@ class User extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
-
+        
+        // load the language file based on shop id
+        $shop_id = $this->session->userdata('shop_id');
+        if(!empty($shop_id)) {
+            $this->lang->load('label_'.$shop_id);
+        }
+        
+        
         //$this->user_type = CUSTOMER;
         $this->user_group = $this->config->item('user_group', 'ion_auth');
         $this->account_status_list = $this->config->item('account_status', 'ion_auth');
