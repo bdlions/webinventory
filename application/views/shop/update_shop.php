@@ -1,4 +1,4 @@
-<h3>Update Shop</h3>
+<h3><?php echo $this->lang->line("shop_create_shop_update_header"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("shop/update_shop/".$shop_info['id'], array('id' => 'form_update_shop', 'class' => 'form-horizontal')); ?>
     <div class="row">
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">
-                    Shop No
+                    <?php echo $this->lang->line("shop_create_shop_update_shop_no"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($shop_no+array('class'=>'form-control')); ?>
@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    Shop Name *
+                    <?php echo $this->lang->line("shop_create_shop_update_shop_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($shop_name+array('class'=>'form-control')); ?>
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="last_name" class="col-md-6 control-label requiredField">
-                    Shop Phone
+                     <?php echo $this->lang->line("shop_create_shop_update_shop_phone"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($shop_phone+array('class'=>'form-control')); ?>
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Shop Address *
+                     <?php echo $this->lang->line("shop_create_shop_update_shop_address"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($shop_address+array('class'=>'form-control')); ?>

@@ -309,7 +309,7 @@ class Shop extends CI_Controller {
             'name' => 'submit_update_shop',
             'id' => 'submit_update_shop',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' =>  $this->lang->line("shop_create_shop_update_update")
         );
         $this->template->load(null, 'shop/update_shop',$this->data);
     }

@@ -1,7 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+//menu shop sub-menu change_shop 
+
 $lang['shop_change_shop_header']    						= 'Change Shop';
 $lang['shop_change_shop_select_shop']    					= 'Select Shop';
 $lang['shop_change_shop_update']    						= 'Update';
+
+//menu shop sub-menu create_shop 
 
 $lang['shop_create_shop_header']    						= 'Create Shop';
 $lang['shop_create_shop_shop_no']    						= 'Shop No ';
@@ -10,6 +15,17 @@ $lang['shop_create_shop_shop_phone']    					= 'Shop Phone';
 $lang['shop_create_shop_address']    						= 'Shop Address';
 $lang['shop_create_shop_shop_type']    						= 'Shop Type';
 $lang['shop_create_shop_create']    						= 'Create';
+
+//menu shop sub-menu create_shop->Update
+
+$lang['shop_create_shop_update_header']                                                 ='Update Shop';
+$lang['shop_create_shop_update_shop_no']    						= 'Shop No ';
+$lang['shop_create_shop_update_shop_name']    						= 'Shop Name ';
+$lang['shop_create_shop_update_shop_phone']                                             = 'Shop Phone';
+$lang['shop_create_shop_update_shop_address']    					= 'Shop Address';
+$lang['shop_create_shop_update_update']                                                 = 'update';
+
+//menu shop sub-menu shop_list
 
 $lang['shop_shop_list_header']    				  	    	= 'Shop List';
 $lang['shop_shop_list_shop_no']    						= 'Shop No';
