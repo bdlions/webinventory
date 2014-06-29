@@ -1,4 +1,4 @@
-<h3>Change Shop</h3>
+<h3><?php echo $this->lang->line("shop_change_shop_header"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("shop/set_shop", array('id' => 'form_set_shop', 'class' => 'form-horizontal')); ?>
     <div class="row">
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">
-                    Select Shop
+                    <?php echo $this->lang->line("shop_change_shop_select_shop"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_dropdown('shop_list', $shop_list, $select_shop_id, 'class=form-control'); ?>

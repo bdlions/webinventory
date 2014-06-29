@@ -44,6 +44,8 @@ class Shop extends CI_Controller {
                 redirect('user/salesman_login',"refresh");
             }
         }
+        $this->load->helper('language');
+        $this->lang->load('shop_1');
     }
     
     function index()
@@ -161,7 +163,7 @@ class Shop extends CI_Controller {
             'name' => 'submit_create_shop',
             'id' => 'submit_create_shop',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("shop_create_shop_create"),
         );
         if($this->ion_auth->is_admin())
         {
@@ -341,7 +343,7 @@ class Shop extends CI_Controller {
             'name' => 'submit_set_shop',
             'id' => 'submit_set_shop',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("shop_change_shop_update"),
         );
         
         $this->data['select_shop_id'] = $this->session->userdata('shop_id');
