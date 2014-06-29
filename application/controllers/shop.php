@@ -235,6 +235,8 @@ class Shop extends CI_Controller {
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
+                    'subscription_start' => $this->input->post('subscription_start'),
+                    'subscription_end' => $this->input->post('subscription_end'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
                 if( $this->shop_library->update_shop($shop_id, $data) !== FALSE)
@@ -287,6 +289,20 @@ class Shop extends CI_Controller {
             'id' => 'shop_address',
             'type' => 'text',
             'value' => $shop_info['address'],
+        );
+        
+        $this->data['subscription_start'] = array(
+            'id' => 'subscription_start',
+            'name' => 'subscription_start',
+            'type' => 'text',
+            'value' => $shop_info['subscription_start'],
+        );
+        
+        $this->data['subscription_end'] = array(
+            'id' => 'subscription_end',
+            'name' => 'subscription_end',
+            'type' => 'text',
+            'value' => $shop_info['subscription_end'],
         );
         
         $this->data['submit_update_shop'] = array(
@@ -350,88 +366,5 @@ class Shop extends CI_Controller {
         $this->template->load(null, 'shop/set_shop', $this->data);
     }
     
-    public function all_shop_subscription_list()
-    {
-        $this->data['message'] = '';
-        $this->data['shop_list'] = '';
-        
-        $shop_list = $this->shop_library->get_all_shops()->result_array();
-        if( !empty($shop_list) )
-        {
-            $this->data['shop_list'] = $shop_list;
-        }
-        
-        $this->template->load(null, 'shop/show_all_shops_subscription', $this->data);
-        
-    }
     
-    public function subscription_update_shop($shop_id)
-    {
-        $this->data['message'] = '';
-        
-        $this->form_validation->set_rules('subscription_start', 'Start Date', 'xss_clean|required');
-        $this->form_validation->set_rules('subscription_end', 'End Date', 'xss_clean|required');
-        
-        if($this->input->post('submit_update_shop'))
-        {
-            if($this->form_validation->run()== true)
-            {
-                
-            
-                $data = array(
-                    'subscription_start' => $this->input->post('subscription_start'),
-                    'subscription_end' => $this->input->post('subscription_end'),
-                    'modified_on' => now()
-                );
-            
-            
-                $flag = $this->shop_library->update_shop($shop_id,$data);
-
-                if($flag!=FALSE)
-                {
-                    $this->data['message'] = 'Update successful';
-                }
-                else
-                {
-                    $this->data['message'] = 'Update unsuccessful';
-                }
-            }
-            else
-            {
-                $this->data['message'] = validation_errors();
-            }
-        }
-        
-        $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
-        
-        if(!empty($shop_info_array))
-        {
-            $shop_info = $shop_info_array[0];
-        }
-        
-        $this->data['subscription_start'] = array(
-            'id' => 'subscription_start',
-            'name' => 'subscription_start',
-            'type' => 'text',
-            'value' => $shop_info['subscription_start'],
-        );
-        
-        $this->data['subscription_end'] = array(
-            'id' => 'subscription_end',
-            'name' => 'subscription_end',
-            'type' => 'text',
-            'value' => $shop_info['subscription_end'],
-        );
-        
-        $this->data['submit_update_shop'] = array(
-            'id' => 'submit_update_shop',
-            'name' => 'submit_update_shop',
-            'type' => 'submit',
-            'value' => 'Update'
-        );
-        
-        $this->data['shop_id'] = $shop_id;
-        
-        $this->template->load(null, 'shop/update_for_subscription', $this->data);
-    }
 }

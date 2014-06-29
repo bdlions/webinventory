@@ -41,6 +41,22 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
+                    Subscription Start
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($subscription_start+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="address" class="col-md-6 control-label requiredField">
+                    Subscription End
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($subscription_end+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="address" class="col-md-6 control-label requiredField">
 
                 </label>
                 <div class ="col-md-3 col-md-offset-3">
@@ -51,3 +67,24 @@
     </div>
     <?php echo form_close(); ?>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+
+        $('#subscription_start').datepicker({
+            format: 'dd-mm-yyyy',
+            startDate: '-3d'
+        }).on('changeDate', function(ev) {
+            $('#subscription_start').text($('#subscription_start').data('date'));
+            $('#subscription_start').datepicker('hide');
+        });
+        
+        $('#subscription_end').datepicker({
+            format: 'dd-mm-yyyy',
+            startDate: '-3d'
+        }).on('changeDate', function(ev) {
+            $('#subscription_end').text($('#subscription_end').data('date'));
+            $('#subscription_end').datepicker('hide');
+        });
+    });
+</script>
