@@ -13,6 +13,7 @@ class Product extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('org/product/product_library');
+        $this->load->library('org/shop/shop_library');
         $this->load->helper('url');
         $this->load->helper('file');
 
@@ -43,6 +44,34 @@ class Product extends CI_Controller {
      */
     public function create_product()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
+                redirect('user/salesman_login',"refresh");
+            }
+            
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+//                else if($user_group['id'] == USER_GROUP_SALESMAN)
+//                {
+//                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+//                    redirect('user/show_all_suppliers/25',"refresh");
+//                }
+            }
+        }
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name', 'Product Name', 'xss_clean|required');
         $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
@@ -215,6 +244,35 @@ class Product extends CI_Controller {
      */
     public function update_product($product_id = '')
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
+                redirect('user/salesman_login',"refresh");
+            }
+            
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('product/show_all_products',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('product/show_all_products',"refresh");
+                }
+            }
+        }
+        
         if(empty($product_id))
         {
             redirect("product/show_all_products","refresh");
@@ -495,6 +553,22 @@ class Product extends CI_Controller {
             if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER){
                 redirect("user/login","refresh");
             }
+            
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
         }
         
 
@@ -654,6 +728,22 @@ class Product extends CI_Controller {
             {
                 $this->session->set_flashdata('message',"You have no permission to view that page");
                 redirect('user/salesman_login',"refresh");
+            }
+            
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+//                else if($user_group['id'] == USER_GROUP_SALESMAN)
+//                {
+//                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+//                    redirect('user/show_all_suppliers/25',"refresh");
+//                }
             }
         }
         

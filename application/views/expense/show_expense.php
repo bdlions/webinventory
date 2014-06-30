@@ -178,6 +178,7 @@
     
 </div>
 <h3>Search Result</h3>
+<div class="" style="color: red; text-align: center;"><?php print_r($this->session->flashdata('message'));?></div>
 <div class="form-background">
     <div class="table-responsive">
         <table class="table table-bordered">

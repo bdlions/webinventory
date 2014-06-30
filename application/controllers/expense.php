@@ -42,6 +42,27 @@ class Expense extends CI_Controller {
     
     public function add_expense($selected_expense_category = 0)
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
         if($selected_expense_category == 0)
         {
             $selected_expense_category = 3;
@@ -283,6 +304,27 @@ class Expense extends CI_Controller {
     
     public function delete_expense($expense_id)
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('expense/show_expense',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('expense/show_expense',"refresh");
+                }
+            }
+        }
         $this->data['expense_id'] = $expense_id;
         if ($this->input->post('submit_delete_expense_yes')) 
         {

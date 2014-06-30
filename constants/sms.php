@@ -7,4 +7,6 @@
     
     define("SMS_CUSTOMER_REGISTRATION_MESSAGE",                            "Congratulation for successfully registration.");
     define("SMS_SUPPLIER_REGISTRATION_MESSAGE",                            "We hope that we can establish a good business relationship with you.");
+    define("MESSAGE_FOR_SUBSCRIPTION",                                     "Your subscription date is over.");
+    
 ?>

@@ -911,6 +911,30 @@ class User extends CI_Controller {
      */
 
     public function create_customer() {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
         if (!empty($shop_info_array)) {
@@ -1074,6 +1098,8 @@ class User extends CI_Controller {
     }
 
     public function show_all_customers($limit, $offset = 0) {
+        //$this->data['message'] = '';
+        
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
         if (!empty($shop_info_array)) {
@@ -1135,6 +1161,30 @@ class User extends CI_Controller {
     }
 
     public function update_customer($customer_id = 0) {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/show_all_customers/25',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/show_all_customers/25',"refresh");
+                }
+            }
+        }
+        
         if ($customer_id == 0) {
             redirect("user/show_all_customers", "refresh");
         }
@@ -1427,6 +1477,28 @@ class User extends CI_Controller {
      */
 
     public function create_supplier() {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
         $this->data['message'] = '';
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
@@ -1575,6 +1647,29 @@ class User extends CI_Controller {
     }
 
     public function update_supplier($supplier_id = 0) {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/show_all_suppliers/25',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/show_all_suppliers/25',"refresh");
+                }
+            }
+        }
+        
         if ($supplier_id == 0) {
             redirect("user/show_all_supplierss", "refresh");
         }
@@ -1776,6 +1871,38 @@ class User extends CI_Controller {
 
     //------------------------------------------- Salesman Module -------------------------------------    
     public function create_salesman() {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+           
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
+                redirect('user/salesman_login',"refresh");
+            }
+
+        
+
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/salesman_login',"refresh");
+                }
+            }        
+        
+        }
         $this->data['message'] = '';
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
@@ -1883,6 +2010,30 @@ class User extends CI_Controller {
     }
 
     public function update_salesman($user_id = '') {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/show_all_salesman',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/show_all_salesman',"refresh");
+                }
+            }        
+        
+        }
         if (empty($user_id)) {
             redirect("user/show_all_salesman", "refresh");
         }
@@ -1982,11 +2133,32 @@ class User extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
+        
+            if($user_group['id'] == USER_GROUP_SALESMAN){
+                redirect("user/login","refresh");
+            }
+            
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
         }
         
-        if($user_group['id'] == USER_GROUP_SALESMAN){
-            redirect("user/login","refresh");
-        }
+        
+        
+                    
+        
         
         $this->data['message'] = '';
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
@@ -2202,6 +2374,30 @@ class User extends CI_Controller {
     }
 
     public function create_institution() {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
         $this->data['message'] = '';
         $this->form_validation->set_rules('institution_name', 'Institution Name', 'xss_clean|required');
         if ($this->input->post('submit_create_institution')) {
@@ -2240,6 +2436,30 @@ class User extends CI_Controller {
     }
 
     public function create_profession() {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
         $this->data['message'] = '';
         $this->form_validation->set_rules('profession_name', 'Profession Name', 'xss_clean|required');
         if ($this->input->post('submit_create_profession')) {

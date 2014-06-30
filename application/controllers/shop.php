@@ -55,6 +55,7 @@ class Shop extends CI_Controller {
     
     public function create_shop()
     {
+        
         $shop_info = array();
         $user_info_array = $this->ion_auth->get_user_info()->result_array();
         if(!empty($user_info))
@@ -84,6 +85,8 @@ class Shop extends CI_Controller {
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
                     'shop_type_id' => $this->input->post('shop_type'),
+                    'subscription_start' => date('d-m-Y'),
+                    'subscription_end' => date("d-m-Y", strtotime(SUBSCRIPTION_VALIDATION." day")),
                     'created_on' => now()
                 );
                 $shop_id = $this->shop_library->create_shop($additional_data);
@@ -91,24 +94,24 @@ class Shop extends CI_Controller {
                 {
                     
                     if($this->ion_auth->is_admin())
-                     {
-                         $this->session->set_flashdata('message', $this->shop_library->messages());
-                         redirect('shop/create_shop','refresh');
-                     }
-                     else{
-                         
-                         $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
-                         $shop_info = $shop_info_array[0];
-                         $logoaddress = base_url().'/assets/images/'.$shop_info['picture'];
-                         $this->session->set_userdata(array('logoaddress' => $logoaddress, 'shop_id' => $shop_id));
-                         $user_info_array = $this->ion_auth->get_user_info()->result_array();
-                         $user_info = $user_info_array[0];
-                         if($this->ion_auth->add_to_shop($user_info['id'],$shop_id))
-                         {
-                             redirect('user/manager_login','refresh');
-                         }
-                         
-                     }
+                    {
+                        $this->session->set_flashdata('message', $this->shop_library->messages());
+                        redirect('shop/create_shop','refresh');
+                    }
+                    else{
+
+                        $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
+                        $shop_info = $shop_info_array[0];
+                        $logoaddress = base_url().'/assets/images/'.$shop_info['picture'];
+                        $this->session->set_userdata(array('logoaddress' => $logoaddress, 'shop_id' => $shop_id));
+                        $user_info_array = $this->ion_auth->get_user_info()->result_array();
+                        $user_info = $user_info_array[0];
+                        if($this->ion_auth->add_to_shop($user_info['id'],$shop_id))
+                        {
+                            redirect('user/manager_login','refresh');
+                        }
+
+                    }
                     
                 }
                 else

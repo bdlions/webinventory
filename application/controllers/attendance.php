@@ -13,6 +13,7 @@ class Attendance extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('org/common/attendances');
+            $this->load->library('org/shop/shop_library');
         $this->load->helper('url');
         $this->load->helper('file');
 
@@ -31,6 +32,37 @@ class Attendance extends CI_Controller {
     
     public function store_attendance()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+           
+            
+            if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                $this->session->set_flashdata('message',"You have no permission to view that page");
+                redirect('user/salesman_login',"refresh");
+            }
+        
+
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
         $this->data['message'] = '';
         $salesman_list = array();
         $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();

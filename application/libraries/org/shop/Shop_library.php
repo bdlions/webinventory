@@ -108,4 +108,24 @@ class Shop_library {
     public function __get($var) {
         return get_instance()->$var;
     }
+    
+    function subsription_check()
+    {
+        $present_date = date('d-m-Y');
+        
+        $shop_info = $this->shop_model->get_shop()->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
+            
+            if($present_date > $shop_info['subscription_end'])
+            {
+                
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+    }
 }

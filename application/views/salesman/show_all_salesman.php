@@ -1,5 +1,7 @@
 <h3>All staffs</h3>
+
 <div class ="form-horizontal form-background top-bottom-padding">
+    <div class="" style="color: red; text-align: center;"><?php print_r($this->session->flashdata('message'));?></div>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>

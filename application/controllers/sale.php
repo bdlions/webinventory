@@ -46,6 +46,31 @@ class Sale extends CI_Controller {
     }
 
     function sale_order() {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
+        
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
         if(!empty($shop_info_array))
@@ -330,9 +355,24 @@ class Sale extends CI_Controller {
                 $this->session->set_flashdata('message',"You have no permission to view that page");
                 redirect('user/salesman_login',"refresh");
             }
+        
+
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',"Your subscription date is over");
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
         }
-        
-        
         
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
@@ -367,6 +407,7 @@ class Sale extends CI_Controller {
      * Ajax Call
      */
     function update_return_sale_order() {
+        
         $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
         $current_due = $_POST['current_due'];
@@ -482,6 +523,29 @@ class Sale extends CI_Controller {
     }
     
     public function delete_sale($sale_order_id = '') {
+        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
         
         $this->data['message'] = '';
         if ($this->input->post('submit_delete_sale')) 

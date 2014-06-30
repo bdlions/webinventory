@@ -15,6 +15,7 @@ class Purchase extends CI_Controller {
         $this->load->library('org/common/payments');
         $this->load->library('org/product/product_library');
         $this->load->library('org/purchase/purchase_library');
+        $this->load->library('org/shop/shop_library');
         $this->load->library('org/stock/stock_library');
         $this->load->helper('url');
         
@@ -45,6 +46,29 @@ class Purchase extends CI_Controller {
      */
     function purchase_order()
     {
+        $user_group = $this->ion_auth->get_users_groups()->result_array();
+        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            
+            $sub_check = $this->shop_library->subsription_check();
+            
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
+        }
+        
         $purchase_order_no = 1;
         $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
         if(!empty($purchase_order_no_array))
@@ -270,7 +294,21 @@ class Purchase extends CI_Controller {
             }
         }
         
-        
+        $sub_check = $this->shop_library->subsription_check();
+            
+        if($sub_check == TRUE)
+        {
+            if($user_group['id'] == USER_GROUP_MANAGER)
+            {
+                $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                redirect('user/manager_login',"refresh");
+            }
+            else if($user_group['id'] == USER_GROUP_SALESMAN)
+            {
+                $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                redirect('user/salesman_login',"refresh");
+            }
+        }
         
         $this->data['product_list_array'] = array();
         $product_list_array = $this->product_library->get_all_products()->result_array();
@@ -397,7 +435,25 @@ class Purchase extends CI_Controller {
             if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
                 redirect("user/login","refresh");
             }
+            
+            $sub_check = $this->shop_library->subsription_check();
+
+            if($sub_check == TRUE)
+            {
+                if($user_group['id'] == USER_GROUP_MANAGER)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/manager_login',"refresh");
+                }
+                else if($user_group['id'] == USER_GROUP_SALESMAN)
+                {
+                    $this->session->set_flashdata('message',MESSAGE_FOR_SUBSCRIPTION);
+                    redirect('user/salesman_login',"refresh");
+                }
+            }
         }
+        
+           
         
         
         

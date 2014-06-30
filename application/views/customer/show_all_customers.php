@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div><br>
+        <div class="col-md-4 col-md-offset-6" style="color: red;"><?php print_r($this->session->flashdata('message'));?></div>
         <table class="table table-bordered">
             <thead>
                 <tr>
