@@ -102,7 +102,7 @@
     {% expense_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Expense</h3>
+<h3><?php echo $this->lang->line("expense_show_expense_search_expense"); ?></h3>
 <div class ="form-background top-bottom-padding">
     <div class="row col-md-6 col-md-offset-3"><?php echo $message?></div>
     <div class="row">
@@ -113,7 +113,7 @@
                         <div class ="col-md-6 margin-top-bottom">
                             <div class="form-group">
                                 <label for="expense_categories" class="col-md-6 control-label requiredField">
-                                    Select Type
+                                    <?php echo $this->lang->line("expense_show_expense_select_type"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_dropdown('expense_categories', $expense_categories+ array('0' => 'All'), '0','class="form-control" id="expense_categories"'); ?>
@@ -121,7 +121,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="item_list" class="col-md-6 control-label requiredField">
-                                    Select Item
+                                    <?php echo $this->lang->line("expense_show_expense_select_item"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
@@ -147,7 +147,7 @@
                         <div class ="col-md-6 margin-top-bottom">
                             <div class="form-group">
                                 <label for="expense_categories" class="col-md-6 control-label requiredField">
-                                    Start Date
+                                    <?php echo $this->lang->line("expense_show_expense_start_date"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                    <?php echo form_input($show_expense_start_date+array('class'=>'form-control')); ?>
@@ -155,7 +155,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="item_list" class="col-md-6 control-label requiredField">
-                                    End Date
+                                    <?php echo $this->lang->line("expense_show_expense_end_date"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_input($show_expense_end_date+array('class'=>'form-control')); ?>
@@ -163,7 +163,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-md-6 control-label requiredField">
-                                    Total Expenses : 
+                                    <?php echo $this->lang->line("expense_show_expense_total_expenses"); ?> : 
                                 </label>
                                 <label id="label_total_expense" name="label_total_expense" class="col-md-6 control-label requiredField">
                                     <?php echo $total_expense;?>
@@ -177,19 +177,19 @@
     </div>
     
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("expense_show_expense_search_result"); ?></h3>
 <div class="" style="color: red; text-align: center;"><?php print_r($this->session->flashdata('message'));?></div>
 <div class="form-background">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Description</th>  
-                    <th>Delete</th>
+                    <th><?php echo $this->lang->line("expense_show_expense_date"); ?></th>
+                    <th><?php echo $this->lang->line("expense_show_expense_category"); ?></th>
+                    <th><?php echo $this->lang->line("expense_show_expense_name"); ?></th>
+                    <th><?php echo $this->lang->line("expense_show_expense_amount"); ?></th>
+                    <th><?php echo $this->lang->line("expense_show_expense_description"); ?></th>  
+                    <th><?php echo $this->lang->line("expense_show_expense_delete"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_expense_list">                    

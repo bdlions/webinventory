@@ -139,4 +139,39 @@ $lang['customer_list_add_new_customer_select_type']    				= 'Select Type';
 $lang['customer_list_add_new_customer_download']    				= 'Download';
 
 
+
+
+
+
+
+
+
+
+// redwan
+$lang['expense_add_expense_add_expense']    					= 'Add Expense';
+$lang['expense_add_expense_select_type']    					= 'Select Type';
+$lang['expense_add_expense_select_item']    					= 'Select Item';
+$lang['expense_add_expense_expense_amount']    					= 'Expense Amount';
+$lang['expense_add_expense_expense_description']    				= 'Expense Description';
+$lang['expense_add_expense_add']                                                = 'Add';
+
+
+
+$lang['expense_show_expense_search_expense']                                    = 'Search Expense';
+$lang['expense_show_expense_select_type']                                       = 'Select Type';
+$lang['expense_show_expense_select_item']                                       = 'Select Item';
+$lang['expense_show_expense_search']                                            = 'Search';
+$lang['expense_show_expense_start_date']                                        = 'Start Date';
+$lang['expense_show_expense_end_date']                                          = 'End Date';
+$lang['expense_show_expense_total_expenses']                                    = 'Total Expenses';
+$lang['expense_show_expense_search_result']                                     = 'Search Result';
+$lang['expense_show_expense_date']                                              = 'Date';
+$lang['expense_show_expense_category']                                          = 'Category';
+$lang['expense_show_expense_name']                                              = 'Name';
+$lang['expense_show_expense_amount']                                            = 'Amount';
+$lang['expense_show_expense_description']                                       = 'Description';
+$lang['expense_show_expense_delete']                                            = 'Delete';
+
+
+
 ?>

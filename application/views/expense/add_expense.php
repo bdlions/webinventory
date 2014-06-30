@@ -60,7 +60,7 @@
     }
 </script>
 
-<h3>Add Expense</h3>
+<h3><?php echo $this->lang->line("expense_add_expense_add_expense"); ?></h3>
 <div class ="form-background form-horizontal top-bottom-padding">   
     <div class="row">
         <?php echo form_open("expense/add_expense", array('id' => 'form_add_expense', 'class' => 'form-horizontal')); ?>
@@ -71,7 +71,7 @@
             </div>
             <div class="form-group">
                 <label for="expense_categories" class="col-md-6 control-label requiredField">
-                    Select Type
+                    <?php echo $this->lang->line("expense_add_expense_select_type"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_dropdown('expense_categories', $expense_categories, $selected_expense_category, 'class="form-control" id="expense_categories"'); ?>
@@ -79,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label for="item_list" class="col-md-6 control-label requiredField">
-                    Select Item
+                    <?php echo $this->lang->line("expense_add_expense_select_item"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_dropdown('item_list', $item_list, '', 'class="form-control" id="item_list"'); ?>
@@ -87,7 +87,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    Expense Amount
+                    <?php echo $this->lang->line("expense_add_expense_expense_amount"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($expense_amount+array('class'=>'form-control')); ?>
@@ -95,7 +95,7 @@
             </div>
             <div class="form-group">
                 <label for="last_name" class="col-md-6 control-label requiredField">
-                    Expense Description
+                    <?php echo $this->lang->line("expense_add_expense_expense_description"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($expense_description+array('class'=>'form-control')); ?>

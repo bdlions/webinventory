@@ -25,6 +25,7 @@ class Expense extends CI_Controller {
         
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         $this->load->library('org/common/expenses');
         $this->load->library('org/common/utils');
         $this->load->library('org/shop/shop_library');
@@ -154,7 +155,7 @@ class Expense extends CI_Controller {
             'name' => 'submit_add_expense',
             'id' => 'submit_add_expense',
             'type' => 'submit',
-            'value' => 'Add',
+            'value' => $this->lang->line("expense_add_expense_add"),
         );
         
         $this->template->load(null, 'expense/add_expense', $this->data);
@@ -213,7 +214,7 @@ class Expense extends CI_Controller {
             'name' => 'button_search_expense',
             'id' => 'button_search_expense',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("expense_show_expense_search"),
         );
         $this->template->load(null, 'expense/show_expense', $this->data);
     }
