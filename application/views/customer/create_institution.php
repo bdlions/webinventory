@@ -1,4 +1,4 @@
-<h3>Add New Institution</h3>
+<h3><?php echo $this->lang->line("sales_add_new_institution_header"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <?php echo form_open("user/create_institution", array('id' => 'form_create_institution', 'class' => 'form-horizontal')); ?>
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    Institution Name
+                    <?php echo $this->lang->line("sales_add_new_institution_institution_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($institution_name+array('class'=>'form-control')); ?>

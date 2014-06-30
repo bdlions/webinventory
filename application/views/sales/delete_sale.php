@@ -1,4 +1,4 @@
-<h3>Delete Sale</h3>
+<h3><?php echo $this->lang->line("sales_Delete_sale_Sale_order_no"); ?></h3>
 <div class="form-horizontal top-bottom-padding form-background">
     <div class="row">
         <?php echo form_open("sale/delete_sale", array('id' => 'form_delete_sale', 'class' => 'form-horizontal')); ?>
@@ -13,7 +13,7 @@
             </div>
             <div class="form-group">
                 <label for="input_add_sale_phone" class="col-md-4 control-label requiredField">
-                    Sale Order No
+                    <?php echo $this->lang->line("sales_Delete_sale_Sale_order_no"); ?>
                 </label>
                 <div class ="col-md-7">
                     <?php echo form_input($sale_order_no+array('class' => 'form-control')); ?>

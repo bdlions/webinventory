@@ -35,6 +35,7 @@ class User extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         
         // load the language file based on shop id
         $shop_id = $this->session->userdata('shop_id');
@@ -1067,7 +1068,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_customer',
             'id' => 'submit_create_customer',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("sales_add_new_customer_create"),
         );
         if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {
             $this->template->load(null, 'customer/create_customer', $this->data);
@@ -1140,7 +1141,7 @@ class User extends CI_Controller {
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("customer_list_add_new_customer_download"),
         );
 
         $total_users = count($this->ion_auth->get_all_customers()->result_array());
@@ -2430,7 +2431,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_institution',
             'id' => 'submit_create_institution',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("sales_add_new_institution_create"),
         );
         $this->template->load(null, 'customer/create_institution', $this->data);
     }
@@ -2492,7 +2493,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_profession',
             'id' => 'submit_create_profession',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("sales_add_new_profession_institution_name"),
         );
         $this->template->load(null, 'customer/create_profession', $this->data);
     }

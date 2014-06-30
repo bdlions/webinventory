@@ -265,7 +265,7 @@
     });
 </script>
 
-<h3>Return Sale Order</h3>
+<h3><?php echo $this->lang->line("sales_return_sale_header"); ?></h3>
 <div class ="form-horizontal top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        
@@ -275,7 +275,7 @@
                 <div class ="col-md-7 form-horizontal margin-top-bottom">
                     <div class="form-group" >
                         <label for="input_return_sale_customer" class="col-md-3 control-label requiredField">
-                            Customer name
+                            <?php echo $this->lang->line("sales_return_customer_name"); ?>
                         </label> 
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_return_sale_customer_id', 'id' => 'input_return_sale_customer_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
@@ -284,7 +284,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_return_sale_phone" class="col-md-3 control-label requiredField">
-                            Phone No.
+                            <?php echo $this->lang->line("sales_return_phone_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_return_sale_phone', 'id' => 'input_return_sale_phone', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -292,7 +292,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_return_sale_card_no" class="col-md-3 control-label requiredField">
-                            Card No.
+                            <?php echo $this->lang->line("sales_return_card_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_return_sale_card_no', 'id' => 'input_return_sale_card_no', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -300,7 +300,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_return_sale_product" class="col-md-3 control-label requiredField">
-                            Product
+                            <?php echo $this->lang->line("sales_return_product"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('type'=>'hidden', 'name' => 'input_return_sale_product', 'id' => 'input_return_sale_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_sold_product')); ?>
@@ -310,7 +310,7 @@
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="sale_order_no" class="col-md-4 control-label requiredField">
-                            Sale Order No.
+                            <?php echo $this->lang->line("sales_return_order_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control', 'value' => $sale_order_no)); ?>
@@ -323,12 +323,12 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Lot No</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
+                                <th><?php echo $this->lang->line("sales_return_product_name"); ?></th>
+                                <th><?php echo $this->lang->line("sales_return_lot_no"); ?></th>
+                                <th><?php echo $this->lang->line("sales_return_quantity"); ?></th>
+                                <th><?php echo $this->lang->line("sales_return_product_unit"); ?></th>
+                                <th><?php echo $this->lang->line("sales_return_unit_price"); ?></th>
+                                <th><?php echo $this->lang->line("sales_return_sub_total"); ?></th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
@@ -354,7 +354,7 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
                         <label for="sale_remarks" class="col-md-2 control-label requiredField">
-                            Remarks
+                            <?php echo $this->lang->line("sales_return_remarks"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_textarea(array('name' => 'sale_remarks', 'id' => 'sale_remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
@@ -363,7 +363,7 @@
                     </div>
                     <div class="form-group">
                         <label for="total_return_sale_price" class="col-md-2 control-label requiredField">
-                            Total
+                            <?php echo $this->lang->line("sales_return_total"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'total_return_sale_price', 'id' => 'total_return_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -371,7 +371,7 @@
                     </div>
                     <div class="form-group">
                         <label for="previous_due" class="col-md-2 control-label requiredField">
-                            Previous Due
+                            <?php echo $this->lang->line("sales_return_previous_due"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
@@ -379,7 +379,7 @@
                     </div>
                     <div class="form-group">
                         <label for="current_due" class="col-md-2 control-label requiredField">
-                            Current Due
+                            <?php echo $this->lang->line("sales_return_current_due"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -387,7 +387,7 @@
                     </div>
                     <div class="form-group">
                         <label for="return_balance" class="col-md-2 control-label requiredField">
-                            Return balance
+                            <?php echo $this->lang->line("sales_return_Return_balance"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -395,7 +395,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status" class="col-md-2 control-label requiredField">
-                            Select Staff
+                            <?php echo $this->lang->line("sales_return_select_staff"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
@@ -406,7 +406,7 @@
 
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_button(array('name' => 'update_return_sale_order', 'id' => 'update_return_sale_order', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
+                            <?php echo form_button(array('name' => 'update_return_sale_order', 'id' => 'update_return_sale_order', 'content' => $this->lang->line("sales_return_select_update"), 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                 </div>

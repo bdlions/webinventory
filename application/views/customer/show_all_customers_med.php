@@ -1,4 +1,4 @@
-<h3>Customer List</h3>
+<h3><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></h3>
 
 <div class ="form-background top-bottom-padding">
     <div class="table-responsive">
@@ -23,13 +23,14 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Manage</th>
-                    <th>Show</th>
-                    <th>Transactions</th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
+                    <th><?php echo $this->lang->line("customer_list_add_new_customer_header"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">
@@ -60,7 +61,7 @@
             <?php echo form_open("user/download_search_customer", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
             <div class="form-group">
                 <label for="expense_categories" class="col-md-6 control-label requiredField">
-                    Select Type
+                    <?php echo $this->lang->line("customer_list_add_new_customer_select_type"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php

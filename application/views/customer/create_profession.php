@@ -1,4 +1,4 @@
-<h3>Add New Profession</h3>
+<h3><?php echo $this->lang->line("sales_add_new_profession_header"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <?php echo form_open("user/create_profession", array('id' => 'form_create_profession', 'class' => 'form-horizontal')); ?>
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    Profession Name
+                    <?php echo $this->lang->line("sales_add_new_profession_institution_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($profession_name+array('class'=>'form-control')); ?>
@@ -19,8 +19,8 @@
                 <label for="address" class="col-md-6 control-label requiredField">
 
                 </label>
-                <div class ="col-md-3 col-md-offset-3">
-                    <?php echo form_input($submit_create_profession+array('class'=>'form-control btn-success')); ?>
+                <div class ="col-md-3 col-md-offset-3 pull-right" style="margin-right: 20px">
+                    <?php echo form_input($submit_create_profession+array('class'=>'btn btn-success')); ?>
                 </div> 
             </div>
         </div>

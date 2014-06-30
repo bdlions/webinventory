@@ -36,68 +36,107 @@ $lang['shop_shop_list_shop_type']    						= 'Shop Type';
 $lang['shop_shop_list_shop_manage']    						= 'Manage';
 $lang['shop_shop_list_shop_update']    						= 'Update';
 
-$lang['add_new_sale_header']    							= 'Sales Order';
-$lang['add_new_sale_customer_name']    							= 'Customer name';
-$lang['add_new_sale_phone_no']    							= 'Phone No.';
-$lang['add_new_sale_card_no']    							= 'Card No.';
-$lang['add_new_sale_product']    							= 'Product';
-$lang['add_new_sale_order_no']    							= 'Order No.';
-$lang['add_new_sale_due_collect']    							= 'Due Collect';
-$lang['add_new_sale_product_name']    							= 'Product Name';
-$lang['add_new_sale_lot_no']    							= 'Lot No';
-$lang['add_new_sale_quantity']    							= 'Quantity';
-$lang['add_new_sale_product_unit']    							= 'Product Unit';
-$lang['add_new_sale_unit_price']    							= 'Unit Price';
-$lang['add_new_sale_sub_total']    							= 'Sub Total';
-$lang['add_new_sale_delete_row']    							= 'Delete Row';
-$lang['add_new_sale_remarks']    							= 'Remarks';
-$lang['add_new_sale_total']    							= 'Total';
-$lang['add_new_sale_previous_due']    							= 'Previous Due';
-$lang['add_new_sale_cast_payment']    							= 'Cast Payment';
-$lang['add_new_sale_current_due']    							= 'Current Due';
-$lang['add_new_sale_select_staff']    							= 'Select Staff';
-$lang['add_new_sale_select_save']    							= 'Save';
+//menu sales submenu add_new_sale
 
-$lang['return_sale_header']    							= 'Return Sale Order';
-$lang['return_customer_name']    							= 'Customer name';
-$lang['return_phone_no']    							= 'Phone No.';
-$lang['return_card_no']    							= 'Card No.';
-$lang['return_product']    							= 'Product';
-$lang['return_order_no']    							= 'Sale Order No.';
-$lang['return_product_name']    							= 'Product Name';
-$lang['return_lot_no']    							= 'Lot No';
-$lang['return_quantity']    							= 'Quantity';
-$lang['return_product_unit']    							= 'Product Unit';
-$lang['return_unit_price']    							= 'Unit Price';
-$lang['return_sub_total']    							= 'Sub Total';
-$lang['return_remarks']    							= 'Remarks';
-$lang['return_total']    							= 'Total';
-$lang['return_previous_due']    							= 'Previous Due';
-$lang['return_current_due']    							= 'Current Due';
-$lang['return_Return_balance']    							= 'Return balance';
-$lang['return_select_staff']    							= 'Select Staff';
-$lang['return_select_update']    							= 'Update';
+$lang['sales_add_new_sale_header']    						= 'Sales Order';
+$lang['sales_add_new_sale_customer_name']    					= 'Customer name';
+$lang['sales_add_new_sale_phone_no']    					= 'Phone No.';
+$lang['sales_add_new_sale_card_no']    						= 'Card No.';
+$lang['sales_add_new_sale_product']    						= 'Product';
+$lang['sales_add_new_sale_order_no']    					= 'Order No.';
+$lang['sales_add_new_sale_due_collect']    					= 'Due Collect';
+$lang['sales_add_new_sale_product_name']    					= 'Product Name';
+$lang['sales_add_new_sale_lot_no']    						= 'Lot No';
+$lang['sales_add_new_sale_quantity']    					= 'Quantity';
+$lang['sales_add_new_sale_product_unit']    					= 'Product Unit';
+$lang['sales_add_new_sale_unit_price']    					= 'Unit Price';
+$lang['sales_add_new_sale_sub_total']    					= 'Sub Total';
+$lang['sales_add_new_sale_delete_row']    					= 'Delete Row';
+$lang['sales_add_new_sale_remarks']    						= 'Remarks';
+$lang['sales_add_new_sale_total']    						= 'Total';
+$lang['sales_add_new_sale_previous_due']    					= 'Previous Due';
+$lang['sales_add_new_sale_cast_payment']    					= 'Cast Payment';
+$lang['sales_add_new_sale_current_due']    					= 'Current Due';
+$lang['sales_add_new_sale_select_staff']    					= 'Select Staff';
+$lang['sales_add_new_sale_select_save']    					= 'Save';
 
-$lang['Delete_sale_header']    							= 'Delete Sale';
-$lang['Delete_sale_Sale_order_no']    							= 'Sale Order No';
-$lang['Delete_sale_delete']    							= 'Delete';
+//menu sales submenu add_new_sale submenu due_collect
 
-$lang['add_new_institution_header']    							= 'Add New Institution';
-$lang['add_new_institution_institution_name']    					= 'Institution Name';
-$lang['add_new_institution_create']    							= 'Create';
+$lang['sales_add_new_sale_due_collect_header']    				= 'Select Customer';
+$lang['sales_add_new_sale_due_collect_name']    				= 'Name';
+$lang['sales_add_new_sale_due_collect_phone_no']    				= 'Phone';
+$lang['sales_add_new_sale_due_collect_card_no']    				= 'Card No';
+$lang['sales_add_new_sale_due_collect_due_amount']    				= 'Due Amount';
+$lang['sales_add_new_sale_due_collect_save']    				= 'Save';
+$lang['sales_add_new_sale_due_collect_header2']    				= 'Search';
+$lang['sales_add_new_sale_due_collect_search']    				= 'Search';
 
-$lang['add_new_profession_header']    							= 'Add New Profession';
-$lang['add_new_profession_institution_name']    					= 'Profession Name';
-$lang['add_new_profession_create']    							= 'Create';
 
-$lang['add_new_customer_']    								= 'Add New Customer';
-$lang['add_new_customer_']    								= 'First Name';
-$lang['add_new_customer_']    								= 'Last Name';
-$lang['add_new_customer_']    								= 'Phone No';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
+//menu sales submenu return_sale
+
+$lang['sales_return_sale_header']    						= 'Return Sale Order';
+$lang['sales_return_customer_name']    						= 'Customer name';
+$lang['sales_return_phone_no']    						= 'Phone No.';
+$lang['sales_return_card_no']    						= 'Card No.';
+$lang['sales_return_product']    						= 'Product';
+$lang['sales_return_order_no']    						= 'Sale Order No.';
+$lang['sales_return_product_name']    						= 'Product Name';
+$lang['sales_return_lot_no']    						= 'Lot No';
+$lang['sales_return_quantity']    						= 'Quantity';
+$lang['sales_return_product_unit']    						= 'Product Unit';
+$lang['sales_return_unit_price']    						= 'Unit Price';
+$lang['sales_return_sub_total']    						= 'Sub Total';
+$lang['sales_return_remarks']    						= 'Remarks';
+$lang['sales_return_total']    							= 'Total';
+$lang['sales_return_previous_due']    						= 'Previous Due';
+$lang['sales_return_current_due']    						= 'Current Due';
+$lang['sales_return_Return_balance']    					= 'Return balance';
+$lang['sales_return_select_staff']    						= 'Select Staff';
+$lang['sales_return_select_update']    						= 'Update';
+
+//menu sales submenu delete_sale
+
+$lang['sales_Delete_sale_header']    						= 'Delete Sale';
+$lang['sales_Delete_sale_Sale_order_no']    					= 'Sale Order No';
+$lang['sales_Delete_sale_delete']                                               = 'Delete';
+
+//menu sales submenu add_new_institution
+
+$lang['sales_add_new_institution_header']    					= 'Add New Institution';
+$lang['sales_add_new_institution_institution_name']    				= 'Institution Name';
+$lang['sales_add_new_institution_create']    					= 'Create';
+
+//menu sales submenu add_new_profession
+
+$lang['sales_add_new_profession_header']    					= 'Add New Profession';
+$lang['sales_add_new_profession_institution_name']    				= 'Profession Name';
+$lang['sales_add_new_profession_create']    					= 'Create';
+
+//menu sales submenu add_new_customer
+
+$lang['sales_add_new_customer_header']                                          = 'Add New Customer';
+$lang['sales_add_new_customer_first_name']                                      = 'First Name';
+$lang['sales_add_new_customer_last_name']    					= 'Last Name';
+$lang['sales_add_new_customer_phone_no']    					= 'Phone No';
+$lang['sales_add_new_customer_address']    					= 'Address';
+$lang['sales_add_new_customer_card_no']    					= 'Card No';
+$lang['sales_add_new_customer_institution']    					= 'Institution';
+$lang['sales_add_new_customer_profession']    					= 'Profession';
+$lang['sales_add_new_customer_create']    					= 'Create';
+
+//menu add_new_sale submenu customer_list
+
+$lang['customer_list_add_new_customer_header']                                  = 'Customer List';
+$lang['customer_list_add_new_customer_first_name']                              = 'First Name';
+$lang['customer_list_add_new_customer_last_name']                               = 'Last Name';
+$lang['customer_list_add_new_customer_phone_no']    				= 'Phone';
+$lang['customer_list_add_new_customer_address']                                 = 'Address';
+$lang['customer_list_add_new_customer_card_no']    				= 'Card No';
+$lang['customer_list_add_new_customer_manage']    				= 'Manage';
+$lang['customer_list_add_new_customer_show']    				= 'Show';
+$lang['customer_list_add_new_customer_transactions']    			= 'Transactions';
+$lang['customer_list_add_new_customer_select_type']    				= 'Select Type';
+$lang['customer_list_add_new_customer_download']    				= 'Download';
+
 
 ?>

@@ -92,7 +92,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Select Customer</h4>
+                <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line("sales_add_new_sale_due_collect_header"); ?></h4>
             </div>
             <div class="modal-body">
                 <div class="row col-md-offset-1">
@@ -101,10 +101,10 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Card No</th>
-                                        <th>Due Amount</th>
+                                        <th><?php echo $this->lang->line("sales_add_new_sale_due_collect_name"); ?></th>
+                                        <th><?php echo $this->lang->line("sales_add_new_sale_due_collect_phone_no"); ?></th>
+                                        <th><?php echo $this->lang->line("sales_add_new_sale_due_collect_card_no"); ?> No</th>
+                                        <th><?php echo $this->lang->line("sales_add_new_sale_due_collect_due_amount"); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_due_collect_customer_list">                                    
@@ -129,13 +129,13 @@
                             <label for="button_add_due_collect" class="col-md-8 control-label requiredField">
                             </label>
                             <div class ="col-md-4">
-                                <?php echo form_button(array('name' => 'button_add_due_collect', 'class' => 'form-control btn btn-success', 'id' => 'button_add_due_collect', 'content' => 'Save')); ?>
+                                <?php echo form_button(array('name' => 'button_add_due_collect', 'class' => 'form-control btn btn-success', 'id' => 'button_add_due_collect', 'content' => $this->lang->line("sales_add_new_sale_due_collect_save"))); ?>
                             </div> 
                         </div>
                     </div> 
                     <div class ="row col-md-11 top-bottom-padding">
                         <div class ="col-md-4">
-                            <h3>Search</h3>
+                            <h3><?php echo $this->lang->line("sales_add_new_sale_due_collect_header2"); ?></h3>
                         </div>
                         <div class ="col-md-4">
                             <?php echo form_dropdown('dropdown_due_collect_search_customer', $customer_search_category, '0', 'id="dropdown_due_collect_search_customer"'); ?>
@@ -148,7 +148,7 @@
                             </div>                            
                             <div class ="row form-group">
                                 <div class="col-md-12">
-                                    <?php echo form_button(array('name' => 'button_due_collect_search_customer', 'class' => 'form-control btn btn-success', 'id' => 'button_due_collect_search_customer', 'content' => 'Search')); ?>
+                                    <?php echo form_button(array('name' => 'button_due_collect_search_customer', 'class' => 'form-control btn btn-success', 'id' => 'button_due_collect_search_customer', 'content' => $this->lang->line("sales_add_new_sale_due_collect_search"))); ?>
                                 </div>
                             </div>
                         </div>                      

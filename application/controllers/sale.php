@@ -34,6 +34,7 @@ class Sale extends CI_Controller {
         $this->payment_category_list = $this->config->item('payment_category', 'ion_auth');
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         
         if(!$this->ion_auth->logged_in())
         {
@@ -576,7 +577,7 @@ class Sale extends CI_Controller {
             'name' => 'submit_delete_sale',
             'id' => 'submit_delete_sale',
             'type' => 'submit',
-            'value' => 'Delete',
+            'value' => $this->lang->line("sales_Delete_sale_delete"),
         );
         $this->template->load(null, 'sales/delete_sale', $this->data);
     }
