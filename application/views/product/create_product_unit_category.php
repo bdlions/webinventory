@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    Product Unit Category Name
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($unit_name+array('class'=>'form-control')); ?>

@@ -26,6 +26,7 @@ class Product extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         
         if(!$this->ion_auth->logged_in())
         {
@@ -184,7 +185,7 @@ class Product extends CI_Controller {
             'name' => 'submit_create_product',
             'id' => 'submit_create_product',
             'type' => 'submit',
-            'value' => 'Add',
+            'value' => $this->lang->line('manage_stock_create_product_unit_category_product_add'),
         );
         $this->template->load(null, 'product/create_product', $this->data);
     }
@@ -406,7 +407,7 @@ class Product extends CI_Controller {
             'name' => 'submit_update_product',
             'id' => 'submit_update_product',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' =>  $this->lang->line("manage_stock_create_product_unit_category_product_update"),
         );
         $this->template->load(null, 'product/update_product', $this->data);
     }
@@ -619,20 +620,20 @@ class Product extends CI_Controller {
             'name' => 'submit_upload_file',
             'id' => 'submit_upload_file',
             'type' => 'submit',
-            'value' => 'Upload',
+            'value' => $this->lang->line("manage_stock_create_product_unit_category_upload"),
         );
         $this->data['submit_process_file'] = array(
             'name' => 'submit_process_file',
             'id' => 'submit_process_file',
             'type' => 'submit',
-            'value' => 'Import Product List',
+            'value' => $this->lang->line("manage_stock_create_product_unit_category_import_product_list"),
         );
         
         $this->data['download_sample_file'] = array(
             'name' => 'download_file',
             'id' => 'download_file',
             'type' => 'submit',
-            'value' => 'Download Sample file',
+            'value' => $this->lang->line("manage_stock_create_product_unit_category_download_sample_file"),
         );
         $this->template->load(null, 'product/import_product', $this->data);
     }
@@ -790,7 +791,7 @@ class Product extends CI_Controller {
             'name' => 'submit_create_unit',
             'id' => 'submit_create_unit',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("manage_stock_create_product_unit_category_create"),
         );
         $this->template->load(null, 'product/create_product_unit_category',$this->data);
     }

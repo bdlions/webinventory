@@ -1,4 +1,5 @@
-<h3>Product List</h3>
+
+<h3><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_list"); ?></h3>
 
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="" style="color: red; text-align: center;"><?php print_r($this->session->flashdata('message'));?></div>
@@ -6,14 +7,14 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Product Size</th>
-                    <th>Product Weight</th>
-                    <th>Product Unit</th>
-                    <th>Product Warranty</th>
-                    <th>Product Quality</th>
-                    <th>Brand Name</th>
-                    <th>Manage</th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_name"); ?></th>
+                    <th> <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_size"); ?></th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_weight"); ?></th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_unit"); ?></th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_Warranty"); ?></th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_quality"); ?></th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_brand_name"); ?></th>
+                    <th><?php echo $this->lang->line("manage_stock_create_product_unit_category_product_manage"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_product_list">

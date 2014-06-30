@@ -43,7 +43,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                        <label for="" class="col-md-6 control-label">Select Product</label>
+                        <label for="" class="col-md-6 control-label">
+                            <?php echo $this->lang->line("stock_stock_show_all_stocks_select_product"); ?>
+                        </label>
                         <div class="col-md-6">
                           <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
                         </div>
@@ -51,7 +53,7 @@
                     </td>
                     <td>
                         <label>
-                            Total Quantity:
+                            <?php echo $this->lang->line("stock_stock_show_all_stocks_total_questity"); ?>:
                         </label>
                         <label id="total_quantity">
                             <?php echo $total_quantity.' pieces';?>
@@ -59,7 +61,7 @@
                     </td>
                     <td>
                         <label>
-                            Total Stock Value:
+                            <?php echo $this->lang->line("stock_stock_show_all_stocks_total_tock_value"); ?>:
                         </label>
                         <label id="total_stock_value">
                             <?php echo $total_stock_value;?>
@@ -69,7 +71,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label for="input_lot_no" class="col-md-6 control-label">Lot No</label>
+                            <label for="input_lot_no" class="col-md-6 control-label">
+                                <?php echo $this->lang->line("stock_stock_show_all_stocks_lot_no"); ?>
+                            </label>
                             <div class="col-md-6">
                               <input type="text" class="form-control" id="input_lot_no" name="input_lot_no">
                             </div>
@@ -82,7 +86,9 @@
                     <td>
                         <div class="form-group">
                           <div class="col-md-12">
-                            <button type="button" id="button_search_stock" name="button_search_stock" class="btn btn-success pull-right">Search</button>
+                            <button type="button" id="button_search_stock" name="button_search_stock" class="btn btn-success pull-right">
+                                <?php echo $this->lang->line("stock_stock_show_all_stocks_search"); ?>
+                            </button>
                           </div>
                         </div>
                     </td>
@@ -98,13 +104,13 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Supplier Name</th>
-                    <th>Product Name</th>
-                    <th>Lot No</th>
-                    <th>Quantity</th>
-                    <th>Product Unit</th>
-                    <th>Purchase Unit Price</th>
-                    <th>Total Purchase Price</th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_supplier_name"); ?></th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_product_name"); ?></th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_lot_no"); ?></th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_quentity"); ?></th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_product_unit"); ?></th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_purchase_unit_price"); ?></th>
+                    <th><?php echo $this->lang->line("stock_stock_show_all_stocks_total_purchase_price"); ?></th>
 
                 </tr>
             </thead>

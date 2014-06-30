@@ -143,10 +143,6 @@ $lang['customer_list_add_new_customer_download']    				= 'Download';
 
 
 
-
-
-
-
 // redwan
 $lang['expense_add_expense_add_expense']    					= 'Add Expense';
 $lang['expense_add_expense_select_type']    					= 'Select Type';
@@ -171,6 +167,120 @@ $lang['expense_show_expense_name']                                              
 $lang['expense_show_expense_amount']                                            = 'Amount';
 $lang['expense_show_expense_description']                                       = 'Description';
 $lang['expense_show_expense_delete']                                            = 'Delete';
+
+
+$lang['add_new_sale_header']    							= 'Sales Order';
+$lang['add_new_sale_customer_name']    							= 'Customer name';
+$lang['add_new_sale_phone_no']    							= 'Phone No.';
+$lang['add_new_sale_card_no']    							= 'Card No.';
+$lang['add_new_sale_product']    							= 'Product';
+$lang['add_new_sale_order_no']    							= 'Order No.';
+$lang['add_new_sale_due_collect']    							= 'Due Collect';
+$lang['add_new_sale_product_name']    							= 'Product Name';
+$lang['add_new_sale_lot_no']    							= 'Lot No';
+$lang['add_new_sale_quantity']    							= 'Quantity';
+$lang['add_new_sale_product_unit']    							= 'Product Unit';
+$lang['add_new_sale_unit_price']    							= 'Unit Price';
+$lang['add_new_sale_sub_total']    							= 'Sub Total';
+$lang['add_new_sale_delete_row']    							= 'Delete Row';
+$lang['add_new_sale_remarks']    							= 'Remarks';
+$lang['add_new_sale_total']    							= 'Total';
+$lang['add_new_sale_previous_due']    							= 'Previous Due';
+$lang['add_new_sale_cast_payment']    							= 'Cast Payment';
+$lang['add_new_sale_current_due']    							= 'Current Due';
+$lang['add_new_sale_select_staff']    							= 'Select Staff';
+$lang['add_new_sale_select_save']    							= 'Save';
+
+$lang['return_sale_header']    							= 'Return Sale Order';
+$lang['return_customer_name']    						= 'Customer name';
+$lang['return_phone_no']    							= 'Phone No.';
+$lang['return_card_no']    							= 'Card No.';
+$lang['return_product']    							= 'Product';
+$lang['return_order_no']    							= 'Sale Order No.';
+$lang['return_product_name']    						= 'Product Name';
+$lang['return_lot_no']    							= 'Lot No';
+$lang['return_quantity']    							= 'Quantity';
+$lang['return_product_unit']    						= 'Product Unit';
+$lang['return_unit_price']    							= 'Unit Price';
+$lang['return_sub_total']    							= 'Sub Total';
+$lang['return_remarks']    							= 'Remarks';
+$lang['return_total']    							= 'Total';
+$lang['return_previous_due']    						= 'Previous Due';
+$lang['return_current_due']    							= 'Current Due';
+$lang['return_Return_balance']    						= 'Return balance';
+$lang['return_select_staff']    						= 'Select Staff';
+$lang['return_select_update']    						= 'Update';
+
+$lang['Delete_sale_header']    							= 'Delete Sale';
+$lang['Delete_sale_Sale_order_no']    						= 'Sale Order No';
+$lang['Delete_sale_delete']    							= 'Delete';
+
+$lang['add_new_institution_header']    						= 'Add New Institution s';
+$lang['add_new_institution_institution_name']    				= 'Institution Name';
+$lang['add_new_institution_create']    						= 'Create';
+
+$lang['add_new_profession_header']    						= 'Add New Profession 8 ';
+$lang['add_new_profession_institution_name']    				= 'Profession Names';
+$lang['add_new_profession_create']    						= 'Create';
+
+$lang['add_new_customer_']    								= 'Add New Customer';
+$lang['add_new_customer_']    								= 'First Name';
+$lang['add_new_customer_']    								= 'Last Name';
+$lang['add_new_customer_']    								= 'Phone No';
+$lang['add_new_customer_']    								= 'Create';
+$lang['add_new_customer_']    								= 'Create';
+$lang['add_new_customer_']    								= 'Create';
+$lang['add_new_customer_']    								= 'Create';
+$lang['add_new_customer_']    								= 'Create';
+
+
+
+
+
+//Start Manage Stock Menu by omar Faruk
+//product/create_product_unit_category
+$lang['manage_stock_create_product_unit_category_name']                         ='Product Unit Category Name';
+$lang['manage_stock_create_product_unit_category_create']    			= 'Create';
+
+// for product/create_product and product/show_all_products and product/update_product
+$lang['manage_stock_create_product_unit_category_product_name']    		= 'Product Name';
+$lang['manage_stock_create_product_unit_category_product_size']    		= 'Product Size';
+$lang['manage_stock_create_product_unit_category_product_weight']    		= 'Product Weight';
+$lang['manage_stock_create_product_unit_category_product_Warranty']    		= 'Product Warranty';
+$lang['manage_stock_create_product_unit_category_product_quality']    		= 'Product Quality';
+$lang['manage_stock_create_product_unit_category_product_unit_category']    	= 'Product Unit Category';
+$lang['manage_stock_create_product_unit_category_product_unit']    	= 'Product Unit Category';
+$lang['manage_stock_create_product_unit_category_product_new_unit']             = 'New Unit';
+$lang['manage_stock_create_product_unit_category_product_brand_name']    	= 'Brand Name';
+$lang['manage_stock_create_product_unit_category_product_unit_price']           = 'Unit Price';
+$lang['manage_stock_create_product_unit_category_product_new_unit']           = 'New Unit';
+$lang['manage_stock_create_product_unit_category_product_add']                  = 'Add';
+$lang['manage_stock_create_product_unit_category_product_update']                  = 'Update';
+$lang['manage_stock_create_product_unit_category_product_manage']                  = 'Manage';
+$lang['manage_stock_create_product_unit_category_product_list']                  = 'Product List';
+
+// for product/import_product
+
+$lang['manage_stock_create_product_unit_category_import_product']    		= 'Import Product';
+$lang['manage_stock_create_product_unit_category_browse']                       = 'Browse';
+$lang['manage_stock_create_product_unit_category_upload']    			= 'Upload';
+$lang['manage_stock_create_product_unit_category_import_product_list']    	= 'Import Product List';
+$lang['manage_stock_create_product_unit_category_download_sample_file']    	= 'Download Sample file';
+
+
+// for stock/show_all_stocks
+$lang['stock_stock_show_all_stocks_select_product']                             = 'Select Product';
+$lang['stock_stock_show_all_stocks_total_questity']                             = 'Total Quantity';
+$lang['stock_stock_show_all_stocks_total_tock_value']                           = 'Total Stock Value';
+$lang['stock_stock_show_all_stocks_lot_no']                                     = 'Lot No';
+$lang['stock_stock_show_all_stocks_supplier_name']                              = 'Supplier Name';
+$lang['stock_stock_show_all_stocks_product_name']                               = 'Product Name';
+$lang['stock_stock_show_all_stocks_quentity']                                   = 'Quantity';
+$lang['stock_stock_show_all_stocks_product_unit']                               = 'Product Unit';
+$lang['stock_stock_show_all_stocks_purchase_unit_price']    			= 'Purchase Unit Price';
+$lang['stock_stock_show_all_stocks_total_purchase_price']                       = 'Total Purchase Price';
+$lang['stock_stock_show_all_stocks_search']                                     = 'Search';
+// end of Manage Stock menu
 
 
 
