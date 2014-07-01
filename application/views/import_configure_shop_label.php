@@ -1,4 +1,4 @@
-<h3>Import label file for your shop</h3>
+<h3><?php echo $this->lang->line("import_configure_shop_label_header");?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open_multipart("import/configure_shop_label", array('id' => 'form_upload_file', 'class' => 'form-horizontal')); ?>
     <div class="row">
@@ -15,7 +15,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label for="file" class="col-md-6 control-label requiredField">
-                    Browse
+                    <?php echo $this->lang->line("import_configure_shop_label_browse");?>
                 </label>
                 <div class ="col-md-6">
                     <input class="form-control" type="file" name="userfile"/>

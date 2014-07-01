@@ -280,5 +280,148 @@ $lang['expense_show_expense_delete']                                            
 // End Expense menu
 
 
+//Start Attendance menu by Omar
+// for attendance/store_attendance
+$lang['attendance_store_attendance_heading']                                    = 'Store Attendance';
+$lang['attendance_store_attendance_login_date']                                 = 'Login Date';
+$lang['attendance_store_attendance_in_time']                                    = 'In Time';
+$lang['attendance_store_attendance_out_time']                                  = 'Out Time';
+$lang['attendance_store_attendance_comment']                                    = 'Comment';
+$lang['attendance_store_attendance_add']                                        = 'Add';
 
+//for attendance/show_attendance
+$lang['attendance_show_attendance_select_staff']                                = 'Select Staff';
+$lang['attendance_show_attendance_start_date']                                  = 'Start Date';
+$lang['attendance_show_attendance_end_date']                                    = 'End Date';
+$lang['attendance_show_attendance_search']                                      = 'Search';
+$lang['attendance_show_attendance_search_result']                               = 'Search Result';
+$lang['attendance_show_attendance_search_attendance']                           = 'Search Attendance';
+$lang['attendance_show_attendance_date']                                        = 'Date';
+$lang['attendance_show_attendance_name']                                        = 'Name';
+$lang['attendance_show_attendance_in_time']                                     = 'In time';
+$lang['attendance_show_attendance_out_time']                                    = 'Out time';
+$lang['attendance_show_attendance_comments']                                    = 'comments';
+//End Attendance menu 
+
+//Start Tools menu by Omar
+// for upload/upload_cover
+$lang['upload_upload_cover_heading']                                            = 'Upload a cover photo for your shop...';
+$lang['upload_upload_cover_browsw_photo']                                       ='Browse Photo';
+$lang['upload_upload_cover_browse_photo_error_msg']                             ='Sorry, your browser does not support HTML5.';
+$lang['upload_upload_cover_save']                                               ='Save';
+$lang['upload_upload_cover_upload']                                             ='Upload';
+
+// for user/create_salesman and user/show_all_salesman and user/update_salesman
+$lang['user_create_salesman_header']                                            = 'Create Staff';
+$lang['user_create_salesman_first_name']                                        = 'First Name';
+$lang['user_create_salesman_last_name']    					= 'Last Name';
+$lang['user_create_salesman_user_name']    					= 'User Name';
+$lang['user_create_salesman_address']    					= 'Address';
+$lang['user_create_salesman_phone_no']    					= 'Phone No';
+$lang['user_create_salesman_email']                                             = 'Email';
+$lang['user_create_salesman_password']    					= 'Password';
+$lang['user_create_salesman_confirm_password']                                  = 'Confirm Password';
+$lang['user_create_salesman_create']    					= 'Create';
+
+$lang['user_show_all_salesman_all_staffs']    					= 'All staffs';
+$lang['user_show_all_salesman_phone']                                           = 'Phone';
+$lang['user_show_all_salesman_all_manage']    					= 'Manage';
+
+$lang['user_update_salesman_heading']    					= 'Update Staff';
+$lang['user_update_salesman_update']    					= 'Update';
+
+// for user/create_manager and user/show_all_managers and user/update_manager
+$lang['user_create_manager_header']                                             = 'Add New Admin';
+$lang['user_create_manager_first_name']                                         = 'First Name';
+$lang['user_create_manager_last_name']    					= 'Last Name';
+$lang['user_create_manager_user_name']    					= 'User Name';
+$lang['user_create_manager_email']                                              = 'Email Id';
+$lang['user_create_manager_password']    					= 'Password';
+$lang['user_create_manager_confirm_password']                                   = 'Confirm Password';
+$lang['user_create_manager_phone_no']    					= 'Phone No';
+$lang['user_create_manager_address']    					= 'Address';
+$lang['user_create_manager_create']                                             = 'Create';
+
+$lang['user_show_all_manager_all_admin']    					= 'Admin List';
+$lang['user_show_all_manager_phone']                                            = 'Phone';
+$lang['user_show_all_manager_all_manage']    					= 'Manage';
+
+$lang['user_update_manager_heading']    					= 'Update Admin';
+$lang['user_update_manager_update']                                             = 'Update';
+
+// for import/configure_shop_label 
+$lang['import_configure_shop_label_header']                                     ='Import label file for your shop';
+$lang['import_configure_shop_label_browse']                                     ='Browse';
+$lang['import_configure_shop_label_download_sample_file']                       ='Download Sample file';
+$lang['import_configure_shop_label_update']                                     ='Update';
+
+//End Tools menu 
+
+
+//Start SMS menu by Omar
+// for sms/sms_configuration_shop
+$lang['sms_sms_configuration_shop_update']                                      ='Update';
+$lang['sms_sms_configuration_shop_config_sms']                                  ='Configure SMS';
+$lang['sms_sms_configuration_shop_select_shop']                                 ='Select Shop';
+$lang['sms_sms_configuration_shop_sms_status']                                  ='SMS Status';
+
+// for sms/sms_status
+$lang['sms_sms_status_SMS_status']                                              ='SMS Status';
+$lang['sms_sms_status_status']                                                  ='Status';
+$lang['sms_sms_status_shop_name']                                               ='Shop Name';
+
+// for operator/create_operator 
+$lang['operator_create_operator_heading']                                       ='Create Operator';
+$lang['operator_create_operator_code']                                          ='Operator Code';
+$lang['operator_create_operator_name']                                          ='Operator Name';
+$lang['operator_create_operator_description']                                   ='Description';
+$lang['operator_create_operator_create']                                        ='Create';
+
+// for operator/show_all_operators 
+$lang['operator_show_all_operators_list']                                       ='Operator List';
+$lang['operator_show_all_operators_prefix']                                     ='Operator Prefix';
+$lang['operator_show_all_operators_name']                                       ='Operator Name';
+$lang['operator_show_all_operators_description']                                ='Description';
+
+// for sms/upload_file 
+$lang['sms_upload_file_header']                                                 ='Process File';
+$lang['sms_upload_file_browse']                                                 ='Browse';
+$lang['sms_upload_file_upload']                                                 ='Upload';
+$lang['sms_upload_file_process']                                                ='Process';
+
+// for sms/all_message_category 
+$lang['sms_all_message_category_list']                                          ='Message Category List';
+$lang['sms_all_message_category_no']                                            ='Message Category No';
+$lang['sms_all_message_category_name']                                          ='Message category Name';
+$lang['sms_all_message_category_action']                                        ='Action';
+
+// for sms/create_message_category
+$lang['sms_create_message_category_header']                                     ='Add New Message Category';
+$lang['sms_create_message_category_name']                                       ='Message Category Name';
+$lang['sms_create_message_category_create']                                     ='Create';
+
+// for sms/update_message_category
+$lang['sms_update_message_category_header']                                     ='Edit Message Category';
+$lang['sms_update_message_category_name']                                       ='Message Category Nam';
+$lang['sms_update_message_category_update']                                     ='Update';
+
+// for sms/all_message 
+$lang['sms_all_message_list']                                                   ='Message List';
+$lang['sms_all_message_no']                                                     ='Message No';
+$lang['sms_all_message_category']                                               ='Message Category';
+$lang['sms_all_message_description']                                            ='Message Description';
+$lang['sms_all_message_action']                                                 ='Action';
+
+$lang['sms_create_message_heading']                                             ='Add New Message';
+$lang['sms_create_message_category']                                            ='Message Category';
+$lang['sms_create_message_name']                                                ='Message Category Name';
+$lang['sms_create_message_create']                                              ='Create';
+
+
+$lang['sms_update_message_heading']                                             ='Edit Message Category';
+$lang['sms_update_message_category']                                            ='Message Category';
+$lang['sms_update_message_description']                                         ='Message Description';
+$lang['sms_update_message_update']                                              ='Update';
+
+//End Tools menu 
 ?>

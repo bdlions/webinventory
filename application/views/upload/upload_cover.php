@@ -192,13 +192,13 @@
     
 </script>
 
-<h3>Upload a cover photo for your shop...   </h3>
+<h3><?php echo $this->lang->line("upload_upload_cover_heading"); ?>   </h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row" style="margin:0px;">
         <div class="row col-md-offset-1">
             <div id="divImageCanvas" class="row">
                 <canvas id="imageCanvas"> 
-                    Sorry, your browser doesn't support HTML5.
+                    <?php echo $this->lang->line("upload_upload_cover_browse_photo_error_msg"); ?>
                 </canvas>
             </div>
             <div class="row" style="margin:0px;">
@@ -217,7 +217,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="file" class="col-md-6 control-label requiredField">
-                        Browse Photo
+                        <?php echo $this->lang->line("upload_upload_cover_browsw_photo"); ?>
                     </label>
                     <div class ="col-md-6">
                         <input class="form-control" type="file" name="userfile"/>
@@ -241,7 +241,7 @@
                         &nbsp;
                     </label>
                     <div class ="col-md-6">
-                        <input id="button_cover_photo_edit" name="button_cover_photo_edit" type="button" value="Save" class="form-control btn-success"/>
+                        <input id="button_cover_photo_edit" name="button_cover_photo_edit" type="button" value="<?php echo $this->lang->line("upload_upload_cover_save"); ?>" class="form-control btn-success"/>
                     </div> 
                 </div>
             </div>

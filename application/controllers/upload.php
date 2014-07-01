@@ -25,6 +25,7 @@ class Upload extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         
         if(!$this->ion_auth->logged_in())
         {
@@ -160,7 +161,7 @@ class Upload extends CI_Controller {
             'name' => 'submit_shop_cover_photo',
             'id' => 'submit_shop_cover_photo',
             'type' => 'submit',
-            'value' => 'Upload',
+            'value' => $this->lang->line("upload_upload_cover_upload"),
         );
         $this->template->load(null, 'upload/upload_cover', $this->data); 
     }

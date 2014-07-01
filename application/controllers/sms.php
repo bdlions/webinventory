@@ -32,6 +32,8 @@ class Sms extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
+        
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         
@@ -136,7 +138,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_sms_configuration_shop',
             'id' => 'submit_sms_configuration_shop',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("sms_sms_configuration_shop_update")
         );
         $this->template->load(null, 'sms/sms_configuration_shop', $this->data);
     }
@@ -206,7 +208,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_upload_file',
             'id' => 'submit_upload_file',
             'type' => 'submit',
-            'value' => 'Upload',
+            'value' => $this->lang->line("sms_upload_file_upload")
         );
         
         
@@ -214,7 +216,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_process_file',
             'id' => 'submit_process_file',
             'type' => 'submit',
-            'value' => 'Process',
+            'value' => $this->lang->line("sms_upload_file_process")
         );
         $this->template->load(null, 'sms/upload_file', $this->data);
     }
@@ -393,7 +395,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_create_categoty_message',
             'id' => 'submit_create_categoty_message',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("sms_create_message_category_create")
         );
         $this->template->load(null, 'sms/create_message_category',$this->data);
     }
@@ -450,7 +452,6 @@ class Sms extends CI_Controller {
         {
             $message_category_info = $message_category_info_array[0];
         }
-        //echo '<pre / >';print_r($message_category_info);exit(' dsff');
         
         $this->data['message_category_info'] = $message_category_info;
         
@@ -471,7 +472,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_update_categoty_message',
             'id' => 'submit_update_categoty_message',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("sms_update_message_category_update")
         );
         $this->template->load(null, 'sms/update_message_category',$this->data);
     }
@@ -541,7 +542,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_create_message',
             'id' => 'submit_create_message',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("sms_create_message_create")
         );
         $this->template->load(null, 'sms/create_message',$this->data);
     }
@@ -550,7 +551,6 @@ class Sms extends CI_Controller {
     {
         $this->data['message_list'] = array();
         $message_list = $this->ion_auth->get_all_message()->result_array();
-        //echo '<pre/>';print_r($message_list);exit('here');
         if( !empty($message_list) )
         {
             $this->data['message_list'] = $message_list;
@@ -582,7 +582,7 @@ class Sms extends CI_Controller {
                     'message_description' => trim($this->input->post('message_description')),
                     'modified_on' => date('Y-m-d H:i:s')
                 );
-                //echo $message_id; echo '< pre >';print_r($data);exit('here');
+
                 if( $this->ion_auth->update_message_data($message_id, $data) !== FALSE)
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -610,7 +610,7 @@ class Sms extends CI_Controller {
         {
             $message_info = $message_info_array[0];
         }
-        //echo '<pre / >';print_r($message_info);exit(' dsff');
+
         
         if($message_info['message_category_id'] != NULL) {
             $this->data['selected_message_category'] = $message_info['message_category_id'];
@@ -639,7 +639,7 @@ class Sms extends CI_Controller {
             'name' => 'submit_update_message',
             'id' => 'submit_update_message',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("sms_update_message_update")
         );
         $this->template->load(null, 'sms/update_message',$this->data);
     }

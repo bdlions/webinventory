@@ -24,7 +24,8 @@ class Import extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
-        
+        $this->lang->load('shop_1');
+         
         if(!$this->ion_auth->logged_in())
         {
             redirect("user/login","refresh");
@@ -145,9 +146,7 @@ class Import extends CI_Controller {
         $file_content = '';
         if($this->input->post('submit_upload_file'))
         {
-            //echo $this->session->userdata('shop_id'); exit("i m here");
             $file_content = $this->input->post('submit_upload_file');
-            //echo '<pre>';print_r($file_content);exit(' here i m');
             $write_as_string = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed') ";
             $config['upload_path'] = './application/language/english/';
             $config['allowed_types'] = '*';
@@ -179,20 +178,15 @@ class Import extends CI_Controller {
             'name' => 'submit_upload_file',
             'id' => 'submit_upload_file',
             'type' => 'submit',
-            'value' => 'Upload',
+            'value' => $this->lang->line("import_configure_shop_label_update")
         );
-        $this->data['submit_process_file'] = array(
-            'name' => 'submit_process_file',
-            'id' => 'submit_process_file',
-            'type' => 'submit',
-            'value' => 'Import Product List',
-        );
+        
         
         $this->data['download_sample_file'] = array(
             'name' => 'download_file',
             'id' => 'download_file',
             'type' => 'submit',
-            'value' => 'Download Sample file',
+            'value' => $this->lang->line("import_configure_shop_label_download_sample_file")
         );
         $this->template->load(null, 'import_configure_shop_label', $this->data);
     }

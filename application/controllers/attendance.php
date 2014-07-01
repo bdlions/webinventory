@@ -28,6 +28,9 @@ class Attendance extends CI_Controller {
         {
             redirect("user/login","refresh");
         }
+        
+        $this->load->helper('language');
+        $this->lang->load('shop_1');
     }    
     
     public function store_attendance()
@@ -150,7 +153,7 @@ class Attendance extends CI_Controller {
             'name' => 'submit_store_attendance',
             'id' => 'submit_store_attendance',
             'type' => 'submit',
-            'value' => 'Add',
+            'value' => $this->lang->line("attendance_store_attendance_add"),
         );
         $this->template->load(null, 'attendance/store_attendance', $this->data);
     }
@@ -187,7 +190,7 @@ class Attendance extends CI_Controller {
             'name' => 'button_search_attendance',
             'id' => 'button_search_attendance',
             'type' => 'submit',
-            'value' => 'Search',
+            'value' => $this->lang->line("attendance_show_attendance_search"),
         );
         $this->template->load(null, 'attendance/show_attendance', $this->data);
     }

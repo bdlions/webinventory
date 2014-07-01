@@ -44,7 +44,7 @@
     {% attendance_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Attendance</h3>
+<h3><?php echo $this->lang->line("attendance_show_attendance_search_attendance"); ?></h3>
 <div class ="form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-6">
@@ -54,7 +54,7 @@
                         <div class ="col-md-6 margin-top-bottom">
                             <div class="form-group">
                                 <label for="salesman_list" class="col-md-6 control-label requiredField">
-                                    Select Staff
+                                    <?php echo $this->lang->line("attendance_show_attendance_select_staff"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_dropdown('salesman_list', $salesman_list+array('0' => 'All'), '0','class="form-control" id="salesman_list"'); ?>
@@ -80,7 +80,7 @@
                         <div class ="col-md-6 margin-top-bottom">
                             <div class="form-group">
                                 <label for="show_attendance_start_date" class="col-md-6 control-label requiredField">
-                                    Start Date
+                                    <?php echo $this->lang->line("attendance_show_attendance_start_date"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                    <?php echo form_input($show_attendance_start_date+array('class'=>'form-control')); ?>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="show_attendance_end_date" class="col-md-6 control-label requiredField">
-                                    End Date
+                                    <?php echo $this->lang->line("attendance_show_attendance_end_date"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_input($show_attendance_end_date+array('class'=>'form-control')); ?>
@@ -101,17 +101,17 @@
         </div>
     </div>    
 </div>
-<h2>Search Result</h2>
+<h2><?php echo $this->lang->line("attendance_show_attendance_search_result"); ?></h2>
 <div class="form-background">    
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>In Time</th>
-                    <th>Out Time</th>
-                    <th>Comments</th>
+                    <th><?php echo $this->lang->line("attendance_show_attendance_date"); ?></th>
+                    <th><?php echo $this->lang->line("attendance_show_attendance_name"); ?></th>
+                    <th><?php echo $this->lang->line("attendance_show_attendance_in_time"); ?></th>
+                    <th><?php echo $this->lang->line("attendance_show_attendance_out_time"); ?></th>
+                    <th><?php echo $this->lang->line("attendance_show_attendance_comments"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_attendance_list">                    

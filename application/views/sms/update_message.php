@@ -1,4 +1,4 @@
-<h3>Edit Message Category</h3>
+<h3><?php echo $this->lang->line("sms_create_message_heading");?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <?php echo form_open("sms/update_message/".$message_info['id'], array('id' => 'form_edit_message', 'class' => 'form-horizontal')); ?>
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                      <label for="address" class="col-md-6 control-label requiredField">
-                         Message Category
+                        <?php echo $this->lang->line("sms_create_message_category");?>
                      </label>
                      <div class ="col-md-6">
                          <?php if($message_category_list != NULL) : ?>
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label for="message_description" class="col-md-6 control-label requiredField">
-                    Message Description
+                    <?php echo $this->lang->line("sms_create_message_name");?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_textarea($message_description+array('class'=>'form-control')); ?>
