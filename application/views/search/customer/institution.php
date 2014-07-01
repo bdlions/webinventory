@@ -29,7 +29,7 @@
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Institution</h3>
+<h3><?php echo $this->lang->line("search_search_customer_institution_search_customer_by_institution"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-6">
@@ -40,7 +40,7 @@
                             <?php echo form_open("search/download_search_customer_by_institution", array('id' => 'form_download_search_customer_by_institution', 'class' => 'form-horizontal')); ?>
                             <div class="form-group">
                                 <label for="institution_list" class="col-md-6 control-label requiredField">
-                                    Select Institution
+                                    <?php echo $this->lang->line("search_search_customer_institution_select_institution"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_dropdown('institution_list', $institution_list+ array('0' => 'All'), '','class="form-control" id="institution_list"'); ?>
@@ -72,17 +72,17 @@
         </div>
     </div>    
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_search_customer_institution_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Card No</th>
+                    <th><?php echo $this->lang->line("search_search_customer_institution_first_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_institution_last_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_institution_phone"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_institution_address"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_institution_card_no"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                

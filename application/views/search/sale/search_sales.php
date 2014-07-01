@@ -77,7 +77,7 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Sale</h3>
+<h3><?php echo $this->lang->line("search_search_sales_search_sale"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -85,7 +85,7 @@
                 <tr>
                     <td>
                         <label for="employee_list" class="col-md-6 control-label requiredField">
-                            Select User
+                            <?php echo $this->lang->line("search_search_sales_select_user"); ?>
                         </label>
                         <div class ="col-md-6">
                             <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '0','class="form-control" id="employee_list"'); ?>
@@ -93,7 +93,7 @@
                     </td> 
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Sale Price : 
+                            <?php echo $this->lang->line("search_search_sales_total_sale_price"); ?> : 
                         </label>
                         <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
                             <?php //echo $total_sale_price;?> 
@@ -101,7 +101,7 @@
                     </td>
                     <td>                        
                         <label for="start_date" class="col-md-6 control-label requiredField">
-                            Start Date
+                            <?php echo $this->lang->line("search_search_sales_start_date"); ?>
                         </label>
                         <div class ="col-md-6">
                            <?php echo form_input($start_date+array('class'=>'form-control')); ?>
@@ -111,7 +111,7 @@
                 <tr>
                     <td>
                         <label for="product_list" class="col-md-6 control-label requiredField">
-                            Select Product
+                            <?php echo $this->lang->line("search_search_sales_select_product"); ?>
                         </label>
                         <div class ="col-md-6">
                             <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
@@ -119,7 +119,7 @@
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Quantity : 
+                            <?php echo $this->lang->line("search_search_sales_total_quantity"); ?> : 
                         </label>
                         <label id="label_total_quantity" class="col-md-6 control-label requiredField">
                             <?php //echo $total_expense;?>
@@ -127,7 +127,7 @@
                     </td>
                     <td>
                         <label for="end_date" class="col-md-6 control-label requiredField">
-                            End Date
+                            <?php echo $this->lang->line("search_search_sales_end_date"); ?>
                         </label>
                         <div class ="col-md-6">
                             <?php echo form_input($end_date+array('class'=>'form-control')); ?>
@@ -148,7 +148,7 @@
                             <?php 
                                 if($this->session->userdata('user_type') != SALESMAN)
                                 {                                    
-                                    echo 'Total Profit : ';
+                                    echo $this->lang->line("search_search_sales_total_profit").' : ';
                                 }
                             ?>
                             
@@ -170,38 +170,38 @@
         </table>
     </div>     
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_search_sales_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Time & Date</th>
-                    <th>Product Name</th>
-                    <th>Lot No</th>
-                    <th>Quantity</th>
-                    <th>Product Unit</th>
-                    <th>Purchase Unit Price</th>
-                    <th>Sale Unit Price</th>
-                    <th>Total Purchase Price</th>
-                    <th>Total Sale Price</th>
-                    <th>Transactions</th>
+                    <th><?php echo $this->lang->line("search_search_sales_date_&_time"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_product_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_lot_no"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_quantity"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_product_unit"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_purchase_unit_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_sale_unit_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_total_purchase_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_total_sale_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_transactions"); ?></th>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Net Profit</th>';
+                            echo '<th>'.$this->lang->line("search_search_sales_net_profit").'</th>';
                         }                            
                     ?> 
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Return</th>';
+                            echo '<th>'.$this->lang->line("search_search_sales_return").'</th>';
                         }                            
                     ?>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Delete</th>';
+                            echo '<th>'.$this->lang->line("search_search_sales_delete").'</th>';
                         }                            
                     ?>
                 </tr>

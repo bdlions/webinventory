@@ -145,7 +145,7 @@ function startclock()
 </script>
 <div class="row">
     <div class="col-md-4">
-        <h3>Daily Sale Page</h3>
+        <h3><?php echo $this->lang->line("search_daily_sales_daily_sale_page"); ?></h3>
     </div>
     <div class="col-md-2 pull-right">
         <div id="time_display"></div>
@@ -159,7 +159,7 @@ function startclock()
                 <tr>
                     <td>
                         <label for="product_list" class="col-md-6 control-label requiredField">
-                            Select Product
+                            <?php echo $this->lang->line("search_daily_sales_select_product"); ?>
                         </label>
                         <div class ="col-md-6">
                             <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
@@ -167,7 +167,7 @@ function startclock()
                     </td> 
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Total Expense : 
+                            <?php echo $this->lang->line("search_daily_sales_total_expense"); ?> : 
                         </label>
                         <label id="label_total_expense" class="col-md-4 control-label requiredField">
                             <?php echo $total_expense;?>
@@ -175,7 +175,7 @@ function startclock()
                     </td>
                     <td>                        
                         <label class="col-md-8 control-label requiredField">
-                            Total Due Collect <a href="<?php echo base_url().'payment/show_due_collect'?>">View</a> : 
+                            <?php echo $this->lang->line("search_daily_sales_total_due_collect"); ?> <a href="<?php echo base_url().'payment/show_due_collect'?>">View</a> : 
                         </label>
                         <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
                             <?php echo $total_due_collect;?>
@@ -185,7 +185,7 @@ function startclock()
                 <tr>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Product Sold : 
+                            <?php echo $this->lang->line("search_daily_sales_total_product_sold"); ?> : 
                         </label>
                         <label id="label_total_product_sold" class="col-md-6 control-label requiredField">
                             <?php echo $total_product_sold;?> 
@@ -193,7 +193,7 @@ function startclock()
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Total Due <a href="<?php echo base_url().'payment/show_total_due'?>">View</a> : 
+                            <?php echo $this->lang->line("search_daily_sales_total_due"); ?> <a href="<?php echo base_url().'payment/show_total_due'?>">View</a> : 
                         </label>
                         <label id="label_total_due" class="col-md-4 control-label requiredField">
                             <?php echo $total_due;?>
@@ -201,7 +201,7 @@ function startclock()
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Suppliers total returned balance <a href="<?php echo base_url().'payment/show_suppliers_returned_payment_list'?>">View</a> : 
+                            <?php echo $this->lang->line("search_daily_sales_suppliers_total_returned_balance"); ?> <a href="<?php echo base_url().'payment/show_suppliers_returned_payment_list'?>">View</a> : 
                         </label>
                         <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
                             <?php echo $suppliers_total_returned_payment_today;?>
@@ -211,7 +211,7 @@ function startclock()
                 <tr>
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Sale Price : 
+                            <?php echo $this->lang->line("search_daily_sales_total_sale_price"); ?> : 
                         </label>
                         <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
                             <?php echo $total_sale_price;?> 
@@ -219,7 +219,7 @@ function startclock()
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Customers total returned balance <a href="<?php echo base_url().'payment/show_customers_returned_payment_list'?>">View</a> : 
+                            <?php echo $this->lang->line("search_daily_sales_customers_total_returned_balance"); ?> <a href="<?php echo base_url().'payment/show_customers_returned_payment_list'?>">View</a> : 
                         </label>
                         <label id="label_total_due_collect" class="col-md-4 control-label requiredField">
                             <?php echo $customers_total_returned_payment_today;?>
@@ -227,7 +227,7 @@ function startclock()
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Previous Balance : 
+                            <?php echo $this->lang->line("search_daily_sales_previous_balance"); ?> : 
                         </label>
                         <label id="label_previous_balance" class="col-md-4 control-label requiredField">
                             <?php echo $previous_balance?>
@@ -240,7 +240,7 @@ function startclock()
                             <?php 
                                 if($this->session->userdata('user_type') != SALESMAN)
                                 {                                    
-                                    echo 'Total Profit : ';
+                                    echo $this->lang->line("search_daily_sales_total_profit").' : ';
                                 }
                             ?>
                             
@@ -259,7 +259,7 @@ function startclock()
                     </td>
                     <td>
                         <label class="col-md-8 control-label requiredField">
-                            Total Net Balance : 
+                            <?php echo $this->lang->line("search_daily_sales_total_net_balance"); ?> : 
                         </label>
                         <label id="label_total_net_balance" class="col-md-4 control-label requiredField">
                             <?php echo $current_balance?>
@@ -270,38 +270,38 @@ function startclock()
         </table>
     </div>     
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_daily_sales_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Date & Time</th>
-                    <th>Lot No</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Product Unit</th>
-                    <th>Sale Unit Price</th>
-                    <th>Sub Total</th>
+                    <th><?php echo $this->lang->line("search_daily_sales_date_&_time"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_lot_no"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_product_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_quantity"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_product_unit"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_sale_unit_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_sub_total"); ?></th>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Profit</th>';
+                            echo '<th>'.$this->lang->line("search_daily_sales_profit").'</th>';
                         }                            
                     ?> 
-                    <th>Sale by Staff</th>
-                    <th>Card No</th>
-                    <th>Transactions</th>
+                    <th><?php echo $this->lang->line("search_daily_sales_sale_by_staff"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_card_no"); ?></th>
+                    <th><?php echo $this->lang->line("search_daily_sales_transactions"); ?></th>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Return</th>';
+                            echo '<th>'.$this->lang->line("search_daily_sales_return").'</th>';
                         }                            
                     ?>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Delete</th>';
+                            echo '<th>'.$this->lang->line("search_daily_sales_delete").'</th>';
                         }                            
                     ?>
                 </tr>

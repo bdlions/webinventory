@@ -61,7 +61,7 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer sale by Customer Name</h3>
+<h3><?php echo $this->lang->line("search_search_sales_customer_name_search_customer_sale_by_customer_name"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -69,7 +69,7 @@
                 <tr>
                     <td>
                         <label for="name" class="col-md-6 control-label requiredField">
-                            Name
+                            <?php echo $this->lang->line("search_search_sales_customer_name_name"); ?>
                         </label>
                         <div class ="col-md-6">
                             <?php echo form_input($name+array('class'=>'form-control')); ?>
@@ -77,7 +77,7 @@
                     </td> 
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            Total Sale Price : 
+                            <?php echo $this->lang->line("search_search_sales_customer_name_total_sale_price"); ?> : 
                         </label>
                         <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
                             <?php //echo $total_sale_price;?> 
@@ -85,7 +85,7 @@
                     </td>
                     <td>                        
                         <label class="col-md-6 control-label requiredField">
-                            Total Quantity : 
+                            <?php echo $this->lang->line("search_search_sales_customer_name_total_quantity"); ?> : 
                         </label>
                         <label id="label_total_quantity" class="col-md-6 control-label requiredField">
                             <?php //echo $total_expense;?>
@@ -106,7 +106,7 @@
                             <?php 
                                 if($this->session->userdata('user_type') != SALESMAN)
                                 {                                    
-                                    echo 'Total Profit : ';
+                                    echo $this->lang->line("search_search_sales_customer_name_total_profit").' : ';
                                 }
                             ?>
                             
@@ -128,39 +128,39 @@
         </table>
     </div>     
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_search_sales_customer_name_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Customer Name</th>
-                    <th>Card No</th>
-                    <th>Product Name</th>
-                    <th>Lot No</th>
-                    <th>Quantity</th>
-                    <th>Product Unit</th>
-                    <th>Purchase Unit Price</th>
-                    <th>Sale Unit Price</th>
-                    <th>Total Purchase Price</th>
-                    <th>Total Sale Price</th>
-                    <th>Transactions</th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_customer_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_card_no"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_product_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_lot_no"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_quantity"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_product_unit"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_purchase_unit_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_sale_unit_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_total_purchase_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_total_sale_price"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_sales_customer_name_transactions"); ?></th>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Net Profit</th>';
+                            echo '<th>'.$this->lang->line("search_search_sales_customer_name_net_profit").'</th>';
                         }                            
                     ?> 
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Return</th>';
+                            echo '<th>'.$this->lang->line("search_search_sales_customer_name_return").'</th>';
                         }                            
                     ?>
                     <?php 
                         if($this->session->userdata('user_type') != SALESMAN)
                         {                                    
-                            echo '<th>Delete</th>';
+                            echo '<th>'.$this->lang->line("search_search_sales_customer_name_delete").'</th>';
                         }                            
                     ?>
                 </tr>

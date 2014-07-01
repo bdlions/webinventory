@@ -29,7 +29,7 @@
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Profession</h3>
+<h3><?php echo $this->lang->line("search_search_customer_profession_search_customer_by_profession"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-6">
@@ -40,7 +40,7 @@
                             <?php echo form_open("search/download_search_customer_by_profession", array('id' => 'form_download_search_customer_profession', 'class' => 'form-horizontal')); ?>
                             <div class="form-group">
                                 <label for="profession_list" class="col-md-6 control-label requiredField">
-                                    Select Profession
+                                    <?php echo $this->lang->line("search_search_customer_profession_select_profession"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_dropdown('profession_list', $profession_list + array('0' => 'All'), '', 'class="form-control" id="profession_list"'); ?>
@@ -72,17 +72,17 @@
         </div>
     </div>    
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_search_customer_profession_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Card No</th>
+                    <th><?php echo $this->lang->line("search_search_customer_profession_first_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_profession_last_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_profession_phone"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_profession_address"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_profession_card_no"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                

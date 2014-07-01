@@ -23,6 +23,7 @@ class Search extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         $this->load->library('org/common/expenses');
         $this->load->library('org/common/payments');
         $this->load->library('org/common/utils');
@@ -526,7 +527,7 @@ class Search extends CI_Controller {
             'name' => 'button_search_sale',
             'id' => 'button_search_sale',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_sales_search"),
         );
         $this->template->load(null, 'search/sale/search_sales', $this->data);
     }
@@ -590,7 +591,7 @@ class Search extends CI_Controller {
             'name' => 'button_search_sale',
             'id' => 'button_search_sale',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_sales_purchase_order_no_search"),
         );
         $this->template->load(null, 'search/sale/purchase_order_no', $this->data);
     }
@@ -633,7 +634,7 @@ class Search extends CI_Controller {
             'name' => 'button_search_sale',
             'id' => 'button_search_sale',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_sales_customer_card_no_total_profit"),
         );
         $this->template->load(null, 'search/sale/customer_card_no', $this->data);
     }
@@ -683,7 +684,7 @@ class Search extends CI_Controller {
             'name' => 'button_search_sale',
             'id' => 'button_search_sale',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_sales_customer_name_search"),
         );
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/customer_name', $this->data);}
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_name_med', $this->data);}
@@ -736,7 +737,7 @@ class Search extends CI_Controller {
             'name' => 'button_search_sale',
             'id' => 'button_search_sale',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_sales_customer_phone_search"),
         );
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/customer_phone', $this->data);}
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_phone_med', $this->data);}
@@ -912,13 +913,13 @@ class Search extends CI_Controller {
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_customer_profession_search"),
         );
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("search_search_customer_profession_download"),
         );
         $this->template->load(null, 'search/customer/profession',$this->data);
     }
@@ -972,13 +973,13 @@ class Search extends CI_Controller {
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_customer_institution_search"),
         );
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("search_search_customer_institution_download"),
         );
         
         
