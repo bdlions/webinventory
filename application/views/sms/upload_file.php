@@ -1,4 +1,4 @@
-<h3>Process File</h3>
+<h3><?php echo $this->lang->line("sms_upload_file_header");?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row" style="margin:0px;">
         <?php echo form_open_multipart("sms/upload_file", array('id' => 'form_upload_file', 'class' => 'form-horizontal')); ?>
@@ -16,7 +16,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="file" class="col-md-6 control-label requiredField">
-                        Browse
+                        <?php echo $this->lang->line("sms_upload_file_browse");?>
                     </label>
                     <div class ="col-md-6">
                         <input class="form-control" type="file" name="userfile"/>

@@ -24,7 +24,10 @@ class Stock extends CI_Controller {
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
         $this->lang->load('auth');
+        
         $this->load->helper('language');
+        $this->lang->load('shop_1');
+        
         $this->load->library('org/stock/stock_library');
         
         if(!$this->ion_auth->logged_in())

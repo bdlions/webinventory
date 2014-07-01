@@ -22,7 +22,7 @@
     {% salesman_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Store Attendance</h3>
+<h3><?php echo $this->lang->line("attendance_store_attendance_heading"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">    
     <div class="row" style="margin:0px;">
         <?php echo form_open("attendance/store_attendance", array('id' => 'form_store_attendance', 'class' => 'form-horizontal')); ?>
@@ -39,7 +39,7 @@
         <div class ="col-md-4 margin-top-bottom">
             <div class="form-group">
                 <label for="login_date" class="col-md-6 control-label requiredField">
-                    Login Date
+                    <?php echo $this->lang->line("attendance_store_attendance_login_date"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($login_date+array('class'=>'form-control')); ?>
@@ -47,7 +47,7 @@
             </div>
             <div class="form-group">
                 <label for="login_time" class="col-md-6 control-label requiredField">
-                    In Time
+                    <?php echo $this->lang->line("attendance_store_attendance_in_time"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($login_time+array('class'=>'form-control')); ?>
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
                 <label for="logout_time" class="col-md-6 control-label requiredField">
-                    Out Time
+                    <?php echo $this->lang->line("attendance_store_attendance_out_time"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($logout_time+array('class'=>'form-control')); ?>
@@ -63,7 +63,8 @@
             </div>
             <div class="form-group">
                 <label for="attendance_comment" class="col-md-6 control-label requiredField">
-                    Comment
+                    <?php echo $this->lang->line("attendance_store_attendance_comment"); ?>
+                    
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($attendance_comment+array('class'=>'form-control')); ?>

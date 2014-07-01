@@ -1,4 +1,4 @@
-<h3>Add New Message Category</h3>
+<h3><?php echo $this->lang->line("sms_create_message_category_header");?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <?php echo form_open("sms/create_message_category", array('id' => 'form_create_message_category', 'class' => 'form-horizontal')); ?>
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="message_categoty_name" class="col-md-6 control-label requiredField">
-                    Message Category Name
+                    <?php echo $this->lang->line("sms_create_message_category_name");?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($message_category_name+array('class'=>'form-control')); ?>

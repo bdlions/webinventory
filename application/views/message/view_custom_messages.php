@@ -1,14 +1,14 @@
 <div >
-    <h3>All messages</h2>
+    <h3><?php echo $this->lang->line("view_messages_header"); ?></h2>
 </div>
 <div class="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered table-condensed" style="background-color: white">
             <tr class="warning">
-                <th>Messege No.</th>
-                <th>Messege ID</th>
-                <th>Messege Body</th>
-                <th>Messege Created On</th>
+                <th><?php echo $this->lang->line("view_messages_message_no"); ?></th>
+                <th><?php echo $this->lang->line("view_messages_message_id"); ?></th>
+                <th><?php echo $this->lang->line("view_messages_message_body"); ?></th>
+                <th><?php echo $this->lang->line("view_messages_message_created_on"); ?></th>
             </tr>
 
             <?php // $i=0; $msg = $all_messages[0];?>

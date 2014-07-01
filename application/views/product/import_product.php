@@ -1,4 +1,4 @@
-<h3>Import Product</h3>
+<h3><?php echo $this->lang->line("manage_stock_create_product_unit_category_import_product"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open_multipart("product/import_product", array('id' => 'form_upload_file', 'class' => 'form-horizontal')); ?>
     <div class="row">
@@ -15,7 +15,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label for="file" class="col-md-6 control-label requiredField">
-                    Browse
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_browse"); ?>
                 </label>
                 <div class ="col-md-6">
                     <input class="form-control" type="file" name="userfile"/>

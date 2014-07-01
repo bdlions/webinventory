@@ -1,4 +1,4 @@
-<h3>Create Operator</h3>
+<h3><?php echo $this->lang->line("operator_create_operator_heading");?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("operator/create_operator", array('id' => 'form_create_operator', 'class' => 'form-horizontal')); ?>
     <div class="row">
@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="operator_prefix" class="col-md-6 control-label requiredField">
-                    Operator Code *
+                    <?php echo $this->lang->line("operator_create_operator_code");?> *
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($operator_prefix+array('class'=>'form-control')); ?>
@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label for="operator_name" class="col-md-6 control-label requiredField">
-                    Operator Name *
+                    <?php echo $this->lang->line("operator_create_operator_name");?> *
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($operator_name+array('class'=>'form-control')); ?>
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="description" class="col-md-6 control-label requiredField">
-                    Description
+                    <?php echo $this->lang->line("operator_create_operator_description");?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($description+array('class'=>'form-control')); ?>

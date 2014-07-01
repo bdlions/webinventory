@@ -25,6 +25,7 @@ class Operator extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         
         if(!$this->ion_auth->logged_in())
         {
@@ -115,8 +116,8 @@ class Operator extends CI_Controller {
             'name' => 'submit_create_operator',
             'id' => 'submit_create_operator',
             'type' => 'submit',
-            'value' => 'Create',
-        );
+            'value' =>  $this->lang->line("operator_create_operator_create")
+       );
         $this->template->load(null, 'sms/create_operator',$this->data);
     }
     public function show_all_operators()

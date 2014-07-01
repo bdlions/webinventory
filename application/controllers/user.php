@@ -1603,7 +1603,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_supplier',
             'id' => 'submit_create_supplier',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("add_new_supplier_create"),
         );
         $this->template->load(null, 'supplier/create_supplier', $this->data);
     }
@@ -1996,7 +1996,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_salesman',
             'id' => 'submit_create_salesman',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("user_create_salesman_create"),
         );
         $this->template->load(null, 'salesman/create_salesman', $this->data);
     }
@@ -2121,7 +2121,7 @@ class User extends CI_Controller {
             'name' => 'submit_update_salesman',
             'id' => 'submit_update_salesman',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("user_update_salesman_update"),
         );
         $this->template->load(null, 'salesman/update_salesman', $this->data);
     }
@@ -2256,7 +2256,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_manager',
             'id' => 'submit_create_manager',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("user_create_manager_create"),
         );
         $this->template->load(null, 'manager/create_manager', $this->data);
     }
@@ -2369,7 +2369,7 @@ class User extends CI_Controller {
             'name' => 'submit_update_manager',
             'id' => 'submit_update_manager',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("user_update_manager_update")
         );
         $this->template->load(null, 'manager/update_manager', $this->data);
     }

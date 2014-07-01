@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">
-                    Product Name
+                     <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($name+array('class'=>'form-control')); ?>
@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
-                    Product Size
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_size"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($size+array('class'=>'form-control')); ?>
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="last_name" class="col-md-6 control-label requiredField">
-                    Product Weight
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_weight"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($weight+array('class'=>'form-control')); ?>
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Product Warranty
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_Warranty"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($warranty+array('class'=>'form-control')); ?>
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Product Quality
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_quality"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($quality+array('class'=>'form-control')); ?>
@@ -50,7 +50,7 @@
             
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Product Unit Category
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_unit_category"); ?>
                 </label>
                 <div class ="col-md-6" id="unit_dropdown">
                     <?php echo form_dropdown('product_unit_category_list', array('' => 'Select')+$product_unit_category_list, '', 'class=form-control id=dropdown'); ?>
@@ -58,18 +58,20 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    New Unit
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_new_unit"); ?>
                 </label>
                 <div class ="col-md-3">
                     <input type="text" class="form-control" id="unit_name"/>
                 </div>
                 <div class ="col-md-3">
-                    <button type="button" name="create" class="form-control btn-success" id="unit_create">Create</button>
+                    <button type="button" name="create" class="form-control btn-success" id="unit_create">
+                        <?php echo $this->lang->line("manage_stock_create_product_unit_category_create"); ?>
+                    </button>
                 </div>
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Brand Name
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_brand_name"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($brand_name+array('class'=>'form-control')); ?>
@@ -77,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Unit Price
+                    <?php echo $this->lang->line("manage_stock_create_product_unit_category_product_unit_price"); ?>
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($unit_price+array('class'=>'form-control')); ?>
