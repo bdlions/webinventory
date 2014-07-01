@@ -139,36 +139,6 @@ $lang['customer_list_add_new_customer_select_type']    				= 'Select Type';
 $lang['customer_list_add_new_customer_download']    				= 'Download';
 
 
-
-
-
-
-// redwan
-$lang['expense_add_expense_add_expense']    					= 'Add Expense';
-$lang['expense_add_expense_select_type']    					= 'Select Type';
-$lang['expense_add_expense_select_item']    					= 'Select Item';
-$lang['expense_add_expense_expense_amount']    					= 'Expense Amount';
-$lang['expense_add_expense_expense_description']    				= 'Expense Description';
-$lang['expense_add_expense_add']                                                = 'Add';
-
-
-
-$lang['expense_show_expense_search_expense']                                    = 'Search Expense';
-$lang['expense_show_expense_select_type']                                       = 'Select Type';
-$lang['expense_show_expense_select_item']                                       = 'Select Item';
-$lang['expense_show_expense_search']                                            = 'Search';
-$lang['expense_show_expense_start_date']                                        = 'Start Date';
-$lang['expense_show_expense_end_date']                                          = 'End Date';
-$lang['expense_show_expense_total_expenses']                                    = 'Total Expenses';
-$lang['expense_show_expense_search_result']                                     = 'Search Result';
-$lang['expense_show_expense_date']                                              = 'Date';
-$lang['expense_show_expense_category']                                          = 'Category';
-$lang['expense_show_expense_name']                                              = 'Name';
-$lang['expense_show_expense_amount']                                            = 'Amount';
-$lang['expense_show_expense_description']                                       = 'Description';
-$lang['expense_show_expense_delete']                                            = 'Delete';
-
-
 $lang['add_new_sale_header']    							= 'Sales Order';
 $lang['add_new_sale_customer_name']    							= 'Customer name';
 $lang['add_new_sale_phone_no']    							= 'Phone No.';
@@ -238,6 +208,7 @@ $lang['add_new_customer_']    								= 'Create';
 
 
 //Start Manage Stock Menu by omar Faruk
+
 //product/create_product_unit_category
 $lang['manage_stock_create_product_unit_category_name']                         ='Product Unit Category Name';
 $lang['manage_stock_create_product_unit_category_create']    			= 'Create';
@@ -249,24 +220,22 @@ $lang['manage_stock_create_product_unit_category_product_weight']    		= 'Produc
 $lang['manage_stock_create_product_unit_category_product_Warranty']    		= 'Product Warranty';
 $lang['manage_stock_create_product_unit_category_product_quality']    		= 'Product Quality';
 $lang['manage_stock_create_product_unit_category_product_unit_category']    	= 'Product Unit Category';
-$lang['manage_stock_create_product_unit_category_product_unit']    	= 'Product Unit Category';
+$lang['manage_stock_create_product_unit_category_product_unit']                 = 'Product Unit Category';
 $lang['manage_stock_create_product_unit_category_product_new_unit']             = 'New Unit';
 $lang['manage_stock_create_product_unit_category_product_brand_name']    	= 'Brand Name';
 $lang['manage_stock_create_product_unit_category_product_unit_price']           = 'Unit Price';
-$lang['manage_stock_create_product_unit_category_product_new_unit']           = 'New Unit';
+$lang['manage_stock_create_product_unit_category_product_new_unit']             = 'New Unit';
 $lang['manage_stock_create_product_unit_category_product_add']                  = 'Add';
-$lang['manage_stock_create_product_unit_category_product_update']                  = 'Update';
-$lang['manage_stock_create_product_unit_category_product_manage']                  = 'Manage';
-$lang['manage_stock_create_product_unit_category_product_list']                  = 'Product List';
+$lang['manage_stock_create_product_unit_category_product_update']               = 'Update';
+$lang['manage_stock_create_product_unit_category_product_manage']               = 'Manage';
+$lang['manage_stock_create_product_unit_category_product_list']                 = 'Product List';
 
 // for product/import_product
-
 $lang['manage_stock_create_product_unit_category_import_product']    		= 'Import Product';
 $lang['manage_stock_create_product_unit_category_browse']                       = 'Browse';
 $lang['manage_stock_create_product_unit_category_upload']    			= 'Upload';
 $lang['manage_stock_create_product_unit_category_import_product_list']    	= 'Import Product List';
 $lang['manage_stock_create_product_unit_category_download_sample_file']    	= 'Download Sample file';
-
 
 // for stock/show_all_stocks
 $lang['stock_stock_show_all_stocks_select_product']                             = 'Select Product';
@@ -281,6 +250,34 @@ $lang['stock_stock_show_all_stocks_purchase_unit_price']    			= 'Purchase Unit 
 $lang['stock_stock_show_all_stocks_total_purchase_price']                       = 'Total Purchase Price';
 $lang['stock_stock_show_all_stocks_search']                                     = 'Search';
 // end of Manage Stock menu
+
+
+// Start Expense menu
+// for expense/add_expense
+$lang['expense_add_expense_add_expense']    					= 'Add Expense';
+$lang['expense_add_expense_select_type']    					= 'Select Type';
+$lang['expense_add_expense_select_item']    					= 'Select Item';
+$lang['expense_add_expense_expense_amount']    					= 'Expense Amount';
+$lang['expense_add_expense_expense_description']    				= 'Expense Description';
+$lang['expense_add_expense_add']                                                = 'Add';
+
+// for expense/show_expense
+$lang['expense_show_expense_search_expense']                                    = 'Search Expense';
+$lang['expense_show_expense_select_type']                                       = 'Select Type';
+$lang['expense_show_expense_select_item']                                       = 'Select Item';
+$lang['expense_show_expense_search']                                            = 'Search';
+$lang['expense_show_expense_start_date']                                        = 'Start Date';
+$lang['expense_show_expense_end_date']                                          = 'End Date';
+$lang['expense_show_expense_total_expenses']                                    = 'Total Expenses';
+$lang['expense_show_expense_search_result']                                     = 'Search Result';
+$lang['expense_show_expense_date']                                              = 'Date';
+$lang['expense_show_expense_category']                                          = 'Category';
+$lang['expense_show_expense_name']                                              = 'Name';
+$lang['expense_show_expense_amount']                                            = 'Amount';
+$lang['expense_show_expense_description']                                       = 'Description';
+$lang['expense_show_expense_delete']                                            = 'Delete';
+
+// End Expense menu
 
 
 
