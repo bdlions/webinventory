@@ -24,6 +24,7 @@ class Message extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+        $this->lang->load('shop_1');
         
         if(!$this->ion_auth->logged_in())
         {
@@ -137,14 +138,14 @@ class Message extends CI_Controller {
             'name' => 'submit_update_message',
             'id' => 'submit_update_message',
             'type' => 'submit',
-            'value' => 'Update',
+            'value' => $this->lang->line("create_or_update_message_update"),
         );
         
         $this->data['submit_create_message'] = array(
             'name' => 'submit_create_message',
             'id' => 'submit_create_message',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("create_or_update_message_create"),
         );
         $this->data['custom_messages'] = $this->get_custom_message();
         

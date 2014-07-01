@@ -274,7 +274,7 @@
     });
 </script>
 
-<h3>Purchase Order</h3>
+<h3><?php echo $this->lang->line("add_new_purchase_header"); ?></h3>
 <div class ="form-horizontal top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        
@@ -284,7 +284,7 @@
                 <div class ="col-md-7 form-horizontal margin-top-bottom">
                     <div class="form-group" >
                         <label for="input_add_purchase_supplier" class="col-md-3 control-label requiredField">
-                            Supplier Name
+                            <?php echo $this->lang->line("add_new_purchase_supplier_name"); ?>
                         </label> 
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_add_purchase_supplier_id', 'id' => 'input_add_purchase_supplier_id', 'class' => 'form-control', 'type' => 'hidden')); ?>
@@ -293,7 +293,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_add_purchase_phone" class="col-md-3 control-label requiredField">
-                            Phone No.
+                            <?php echo $this->lang->line("add_new_purchase_phone_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_add_purchase_phone', 'id' => 'input_add_purchase_phone', 'class' => 'form-control')); ?>
@@ -301,7 +301,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_add_purchase_company" class="col-md-3 control-label requiredField">
-                            Company
+                            <?php echo $this->lang->line("add_new_purchase_company"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_add_purchase_company', 'id' => 'input_add_purchase_company', 'class' => 'form-control')); ?>
@@ -309,7 +309,7 @@
                     </div>
                     <div class="form-group">
                         <label for="product" class="col-md-3 control-label requiredField">
-                            Product
+                            <?php echo $this->lang->line("add_new_purchase_product"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_product')); ?>
@@ -319,7 +319,7 @@
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="purchase_order_no" class="col-md-4 control-label requiredField">
-                            Lot No
+                            <?php echo $this->lang->line("add_new_purchase_lot_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control','value' => $purchase_order_no)); ?>
@@ -332,11 +332,11 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
+                                <th><?php echo $this->lang->line("add_new_purchase_product_name"); ?></th>
+                                <th><?php echo $this->lang->line("add_new_purchase_quantity"); ?></th>
+                                <th><?php echo $this->lang->line("add_new_purchase_product_unit"); ?></th>
+                                <th><?php echo $this->lang->line("add_new_purchase_unit_price"); ?></th>
+                                <th><?php echo $this->lang->line("add_new_purchase_sub_total"); ?></th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
@@ -363,7 +363,7 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
                         <label for="remarks" class="col-md-2 control-label requiredField">
-                            Remarks
+                            <?php echo $this->lang->line("add_new_purchase_return_remarks"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
@@ -372,7 +372,7 @@
                     </div>
                     <div class="form-group">
                         <label for="total_purchase_price" class="col-md-2 control-label requiredField">
-                            Total
+                            <?php echo $this->lang->line("add_new_purchase_return_total"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -380,7 +380,7 @@
                     </div>
                     <div class="form-group">
                         <label for="previous_due" class="col-md-2 control-label requiredField">
-                            Previous Due
+                            <?php echo $this->lang->line("add_new_purchase_return_previous_due"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
@@ -388,7 +388,7 @@
                     </div>
                     <div class="form-group">
                         <label for="paid_amount" class="col-md-2 control-label requiredField">
-                            Payment Amount
+                            <?php echo $this->lang->line("add_new_purchase_return_payment_amount"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'paid_amount', 'id' => 'paid_amount', 'class' => 'form-control')); ?>
@@ -396,7 +396,7 @@
                     </div>
                     <div class="form-group">
                         <label for="current_due" class="col-md-2 control-label requiredField">
-                            Current Due
+                             <?php echo $this->lang->line("add_new_purchase_return_current_due"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -407,7 +407,7 @@
 
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_button(array('name' => 'button_save_purchase_order', 'id' => 'button_save_purchase_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
+                            <?php echo form_button(array('name' => 'button_save_purchase_order', 'id' => 'button_save_purchase_order', 'content' => $this->lang->line("add_new_purchase_return_save"), 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                 </div>

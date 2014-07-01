@@ -28,6 +28,7 @@ class Purchase extends CI_Controller {
 
         $this->lang->load('auth');
         $this->load->helper('language');
+         $this->lang->load('shop_1');
         
         if(!$this->ion_auth->logged_in())
         {

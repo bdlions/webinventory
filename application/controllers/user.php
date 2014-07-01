@@ -1603,7 +1603,7 @@ class User extends CI_Controller {
             'name' => 'submit_create_supplier',
             'id' => 'submit_create_supplier',
             'type' => 'submit',
-            'value' => 'Create',
+            'value' => $this->lang->line("add_new_supplier_create"),
         );
         $this->template->load(null, 'supplier/create_supplier', $this->data);
     }

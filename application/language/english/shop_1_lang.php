@@ -18,12 +18,12 @@ $lang['shop_create_shop_create']    						= 'Create';
 
 //menu shop sub-menu create_shop->Update
 
-$lang['shop_create_shop_update_header']                                                 ='Update Shop';
-$lang['shop_create_shop_update_shop_no']    						= 'Shop No ';
-$lang['shop_create_shop_update_shop_name']    						= 'Shop Name ';
-$lang['shop_create_shop_update_shop_phone']                                             = 'Shop Phone';
-$lang['shop_create_shop_update_shop_address']    					= 'Shop Address';
-$lang['shop_create_shop_update_update']                                                 = 'update';
+$lang['shop_create_shop_update_header']                                         ='Update Shop';
+$lang['shop_create_shop_update_shop_no']                                        = 'Shop No ';
+$lang['shop_create_shop_update_shop_name']    					= 'Shop Name ';
+$lang['shop_create_shop_update_shop_phone']                                     = 'Shop Phone';
+$lang['shop_create_shop_update_shop_address']    				= 'Shop Address';
+$lang['shop_create_shop_update_update']                                         = 'update';
 
 //menu shop sub-menu shop_list
 
@@ -35,6 +35,8 @@ $lang['shop_shop_list_shop_address']                                     	= 'Sho
 $lang['shop_shop_list_shop_type']    						= 'Shop Type';
 $lang['shop_shop_list_shop_manage']    						= 'Manage';
 $lang['shop_shop_list_shop_update']    						= 'Update';
+// END OF MENU SHOP Done by purnob
+
 
 //menu sales submenu add_new_sale
 
@@ -137,29 +139,130 @@ $lang['customer_list_add_new_customer_show']    				= 'Show';
 $lang['customer_list_add_new_customer_transactions']    			= 'Transactions';
 $lang['customer_list_add_new_customer_select_type']    				= 'Select Type';
 $lang['customer_list_add_new_customer_download']    				= 'Download';
+// END OF MENU SALES Done by purnob
 
 
-$lang['add_new_sale_header']    							= 'Sales Order';
-$lang['add_new_sale_customer_name']    							= 'Customer name';
-$lang['add_new_sale_phone_no']    							= 'Phone No.';
-$lang['add_new_sale_card_no']    							= 'Card No.';
-$lang['add_new_sale_product']    							= 'Product';
-$lang['add_new_sale_order_no']    							= 'Order No.';
-$lang['add_new_sale_due_collect']    							= 'Due Collect';
-$lang['add_new_sale_product_name']    							= 'Product Name';
-$lang['add_new_sale_lot_no']    							= 'Lot No';
-$lang['add_new_sale_quantity']    							= 'Quantity';
-$lang['add_new_sale_product_unit']    							= 'Product Unit';
-$lang['add_new_sale_unit_price']    							= 'Unit Price';
-$lang['add_new_sale_sub_total']    							= 'Sub Total';
-$lang['add_new_sale_delete_row']    							= 'Delete Row';
-$lang['add_new_sale_remarks']    							= 'Remarks';
+//menu purchase submenu add new purchase
+
+$lang['add_new_purchase_header']                                                = 'Purchase Order';
+$lang['add_new_purchase_supplier_name']                                         = 'Supplier Name';
+$lang['add_new_purchase_phone_no']                                              = 'Phone No.';
+$lang['add_new_purchase_company']                                               = 'Company';
+$lang['add_new_purchase_product']                                               = 'Product';
+$lang['add_new_purchase_lot_no']                                                = 'Lot No';
+$lang['add_new_purchase_product_name']                                          = 'Product Name';
+$lang['add_new_purchase_quantity']                                              = 'Quantity';
+$lang['add_new_purchase_product_unit']                                          = 'Product Unit';
+$lang['add_new_purchase_unit_price']                                            = 'Unit Price';
+$lang['add_new_purchase_sub_total']                                             = 'Sub Total';
+$lang['add_new_purchase_return_remarks']    					= 'Remarks';
+$lang['add_new_purchase_return_total']    					= 'Total';
+$lang['add_new_purchase_return_previous_due']    				= 'Previous Due';
+$lang['add_new_purchase_return_payment_amount']    				= 'Payment Amount';
+$lang['add_new_purchase_return_current_due']    				= 'Current Due';
+$lang['add_new_purchase_return_save']                                           = 'save';
+
+//menu purchase submenu raise purchase order
+
+$lang['raise_purchase_order_header']                                            = 'Raise Purchase Order';
+$lang['raise_purchase_order_supplier_name']                                     = 'Supplier Name';
+$lang['raise_purchase_order_phone_no']                                          = 'Phone No.';
+$lang['raise_purchase_order_company']                                           = 'Company';
+$lang['raise_purchase_order_product']                                           = 'Product';
+$lang['raise_purchase_order_lot_no']                                            = 'Lot No';
+$lang['raise_purchase_order_product_name']                                      = 'Product Name';
+$lang['raise_purchase_order_quantity']                                          = 'Quantity';
+$lang['raise_purchase_order_product_unit']                                      = 'Product Unit';
+$lang['raise_purchase_order_unit_price']                                        = 'Unit Price';
+$lang['raise_purchase_order_sub_total']                                         = 'Sub Total';
+$lang['raise_purchase_order_return_remarks']    				= 'Remarks';
+$lang['raise_purchase_order_return_total']    					= 'Total';
+$lang['raise_purchase_order_return_previous_due']    				= 'Previous Due';
+$lang['raise_purchase_order_return_current_due']    				= 'Current Due';
+$lang['raise_purchase_order_return_update']                                     = 'update';
+
+//menu purchase submenu return purchase order
+
+$lang['return_purchase_order_header']                                           = 'Return Purchase Order';
+$lang['return_purchase_order_supplier_name']                                    = 'Supplier Name';
+$lang['return_purchase_order_phone_no']                                         = 'Phone No.';
+$lang['return_purchase_order_company']                                          = 'Company';
+$lang['return_purchase_order_product']                                          = 'Product';
+$lang['return_purchase_order_lot_no']                                           = 'Lot No';
+$lang['return_purchase_order_product_name']                                     = 'Product Name';
+$lang['return_purchase_order_quantity']                                         = 'Quantity';
+$lang['return_purchase_order_product_unit']                                     = 'Product Unit';
+$lang['return_purchase_order_unit_price']                                       = 'Unit Price';
+$lang['return_purchase_order_sub_total']                                        = 'Sub Total';
+$lang['return_purchase_order_return_remarks']    				= 'Remarks';
+$lang['return_purchase_order_return_total']    					= 'Total';
+$lang['return_purchase_order_return_previous_due']    				= 'Previous Due';
+$lang['return_purchase_order_return_current_due']    				= 'Current Due';
+$lang['return_purchase_order_return_return_balance']    			= 'Return balance';
+$lang['return_purchase_order_return_update']                                    = 'update';
+
+//menu purchase submenu add new supplier
+
+$lang['add_new_supplier_header']                                                = 'Add New Supplier';
+$lang['add_new_supplier_first_name']                                            = 'First Name';
+$lang['add_new_supplier_last_name']                                             = 'Last Name';
+$lang['add_new_supplier_phone_no']                                              = 'Phone No';
+$lang['add_new_supplier_address']                                               = 'Address';
+$lang['add_new_supplier_company']                                               = 'Company';
+$lang['add_new_supplier_create']                                        	= 'Create';
+
+//menu purchase submenu supplier list
+
+$lang['supplier_list_header']                                                   = 'Supplier List';
+$lang['supplier_list_first_name']                                               = 'First Name';
+$lang['supplier_list_last_name']                                                = 'Last Name';
+$lang['supplier_list_phone_no']                                                 = 'Phone';
+$lang['supplier_list_address']                                                  = 'Address';
+$lang['supplier_list_company']                                                  = 'Company';
+$lang['supplier_list_manage']                                                   = 'Manage';
+$lang['supplier_list_show']                                                     = 'Show';
+$lang['supplier_list_transactions']                                             = 'Transactions';
+// END OF MENU PURCHASE, Done by purnob
+
+//menu notebook submenu create/update message
+
+$lang['create_or_update_message_header']                                        = 'Edit Custom Message';
+$lang['create_or_update_message_message']                                       = 'Message';
+$lang['create_or_update_message_update']                                        = 'Update';
+$lang['create_or_update_message_create']                                        = 'Create';
+
+//menu notebook submenu view messages
+
+$lang['view_messages_header']                                                   = 'All messages';
+$lang['view_messages_message_no']                                               = 'Messege No.';
+$lang['view_messages_message_id']                                               = 'Messege ID';
+$lang['view_messages_message_body']                                             = 'Messege Body';
+$lang['view_messages_message_created_on']                                       = 'Messege Created On';
+
+// END OF MENU NOTEBOOK Done by purnob
+
+
+$lang['add_new_sale_header']    						= 'Sales Order';
+$lang['add_new_sale_customer_name']    						= 'Customer name';
+$lang['add_new_sale_phone_no']    						= 'Phone No.';
+$lang['add_new_sale_card_no']    						= 'Card No.';
+$lang['add_new_sale_product']    						= 'Product';
+$lang['add_new_sale_order_no']    						= 'Order No.';
+$lang['add_new_sale_due_collect']    						= 'Due Collect';
+$lang['add_new_sale_product_name']    						= 'Product Name';
+$lang['add_new_sale_lot_no']    						= 'Lot No';
+$lang['add_new_sale_quantity']    						= 'Quantity';
+$lang['add_new_sale_product_unit']    						= 'Product Unit';
+$lang['add_new_sale_unit_price']    						= 'Unit Price';
+$lang['add_new_sale_sub_total']    						= 'Sub Total';
+$lang['add_new_sale_delete_row']    						= 'Delete Row';
+$lang['add_new_sale_remarks']    						= 'Remarks';
 $lang['add_new_sale_total']    							= 'Total';
-$lang['add_new_sale_previous_due']    							= 'Previous Due';
-$lang['add_new_sale_cast_payment']    							= 'Cast Payment';
-$lang['add_new_sale_current_due']    							= 'Current Due';
-$lang['add_new_sale_select_staff']    							= 'Select Staff';
-$lang['add_new_sale_select_save']    							= 'Save';
+$lang['add_new_sale_previous_due']    						= 'Previous Due';
+$lang['add_new_sale_cast_payment']    						= 'Cast Payment';
+$lang['add_new_sale_current_due']    						= 'Current Due';
+$lang['add_new_sale_select_staff']    						= 'Select Staff';
+$lang['add_new_sale_select_save']    						= 'Save';
 
 $lang['return_sale_header']    							= 'Return Sale Order';
 $lang['return_customer_name']    						= 'Customer name';
@@ -193,19 +296,15 @@ $lang['add_new_profession_header']    						= 'Add New Profession 8 ';
 $lang['add_new_profession_institution_name']    				= 'Profession Names';
 $lang['add_new_profession_create']    						= 'Create';
 
-$lang['add_new_customer_']    								= 'Add New Customer';
-$lang['add_new_customer_']    								= 'First Name';
-$lang['add_new_customer_']    								= 'Last Name';
-$lang['add_new_customer_']    								= 'Phone No';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-$lang['add_new_customer_']    								= 'Create';
-
-
-
-
+$lang['add_new_customer_']    							= 'Add New Customer';
+$lang['add_new_customer_']    							= 'First Name';
+$lang['add_new_customer_']    							= 'Last Name';
+$lang['add_new_customer_']    							= 'Phone No';
+$lang['add_new_customer_']    							= 'Create';
+$lang['add_new_customer_']    							= 'Create';
+$lang['add_new_customer_']    							= 'Create';
+$lang['add_new_customer_']    							= 'Create';
+$lang['add_new_customer_']    							= 'Create';
 
 //Start Manage Stock Menu by omar Faruk
 
@@ -423,5 +522,6 @@ $lang['sms_update_message_category']                                            
 $lang['sms_update_message_description']                                         ='Message Description';
 $lang['sms_update_message_update']                                              ='Update';
 
-//End Tools menu 
+//End sms menu 
+
 ?>

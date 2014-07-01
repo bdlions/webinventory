@@ -255,7 +255,7 @@
     });
 </script>
 
-<h3>Raise Purchase Order</h3>
+<h3><?php echo $this->lang->line("raise_purchase_order_header"); ?></h3>
 <div class ="top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        
@@ -265,7 +265,7 @@
                 <div class ="col-md-7 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="input_raise_purchase_supplier" class="col-md-3 control-label requiredField">
-                            Supplier Name
+                            <?php echo $this->lang->line("raise_purchase_order_supplier_name"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_raise_purchase_supplier_id', 'id' => 'input_raise_purchase_supplier_id', 'type'=>'hidden', 'class' => 'form-control')); ?>
@@ -274,7 +274,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_raise_purchase_phone" class="col-md-3 control-label requiredField">
-                            Phone No
+                           <?php echo $this->lang->line("raise_purchase_order_phone_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_raise_purchase_phone', 'id' => 'input_raise_purchase_phone', 'readonly'=>'true', 'class' => 'form-control')); ?>
@@ -282,7 +282,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_raise_purchase_company" class="col-md-3 control-label requiredField">
-                            Company
+                            <?php echo $this->lang->line("raise_purchase_order_company"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_raise_purchase_company', 'id' => 'input_raise_purchase_company', 'readonly'=>'true', 'class' => 'form-control')); ?>
@@ -290,7 +290,7 @@
                     </div>
                     <div class="form-group">
                         <label for="input_raise_purchase_product" class="col-md-3 control-label requiredField">
-                            Product
+                            <?php echo $this->lang->line("raise_purchase_order_product"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('type'=>'hidden', 'name' => 'input_raise_purchase_product', 'id' => 'input_raise_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_product')); ?>
@@ -300,7 +300,7 @@
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="input_raise_purchase_order_no" class="col-md-4 control-label requiredField">
-                            Lot No
+                            <?php echo $this->lang->line("raise_purchase_order_lot_no"); ?>
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_raise_purchase_order_no', 'id' => 'input_raise_purchase_order_no', 'class' => 'form-control')); ?>
@@ -313,11 +313,11 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
+                                <th><?php echo $this->lang->line("raise_purchase_order_product_name"); ?></th>
+                                <th><?php echo $this->lang->line("raise_purchase_order_quantity"); ?></th>
+                                <th><?php echo $this->lang->line("raise_purchase_order_product_unit"); ?></th>
+                                <th><?php echo $this->lang->line("raise_purchase_order_unit_price"); ?></th>
+                                <th><?php echo $this->lang->line("raise_purchase_order_sub_total"); ?></th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
@@ -347,7 +347,7 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
                         <label for="remarks" class="col-md-2 control-label requiredField">
-                            Remarks
+                            <?php echo $this->lang->line("raise_purchase_order_return_remarks"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
@@ -356,7 +356,7 @@
                     </div>
                     <div class="form-group">
                         <label for="total_purchase_price" class="col-md-2 control-label requiredField">
-                            Total
+                            <?php echo $this->lang->line("raise_purchase_order_return_total"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -364,7 +364,7 @@
                     </div>     
                     <div class="form-group">
                         <label for="previous_due" class="col-md-2 control-label requiredField">
-                            Previous Due
+                            <?php echo $this->lang->line("raise_purchase_order_return_previous_due"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
@@ -372,7 +372,7 @@
                     </div>
                     <div class="form-group">
                         <label for="current_due" class="col-md-2 control-label requiredField">
-                            Current Due
+                            <?php echo $this->lang->line("raise_purchase_order_return_current_due"); ?>
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
@@ -383,7 +383,7 @@
 
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_button(array('name' => 'button_raise_purchase_order', 'id' => 'button_raise_purchase_order', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
+                            <?php echo form_button(array('name' => 'button_raise_purchase_order', 'id' => 'button_raise_purchase_order', 'content' => $this->lang->line("raise_purchase_order_return_update"), 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                 </div>

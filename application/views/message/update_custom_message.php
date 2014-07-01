@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/ckeditor/ckeditor.js"></script>
 
-<h3>Edit Custom Message</h3>
+<h3><?php echo $this->lang->line("create_or_update_message_header"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-7 col-md-offset-2">
@@ -45,7 +45,7 @@
             <?php echo form_open("message/update_custom_message", array('id' => 'form_edit_message_1', 'name' => 'form_edit_message_1',  'class' => 'form-horizontal', 'onsubmit=return false')); ?>
             <div class="form-group">
                 <label for="custom_message" class="col-md-3 control-label requiredField">
-                    Message
+                    <?php echo $this->lang->line("create_or_update_message_message"); ?>
                 </label>
                 <div class ="col-md-8">
                     <?php echo form_textarea($editor1+array('class'=>'form-control')); ?>

@@ -1,4 +1,4 @@
-<h3>Supplier List</h3>
+<h3><?php echo $this->lang->line("supplier_list_header"); ?></h3>
 <div class ="form-background top-bottom-padding">
     <div class="table-responsive">        
         <div class="row" style="margin:0px;">
@@ -22,14 +22,14 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Company</th>
-                    <th>Manage</th>
-                    <th>Show</th>
-                    <th>Transactions</th>
+                    <th><?php echo $this->lang->line("supplier_list_first_name"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_last_name"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_phone_no"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_address"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_company"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_manage"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_show"); ?></th>
+                    <th><?php echo $this->lang->line("supplier_list_transactions"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_supplier_list">
