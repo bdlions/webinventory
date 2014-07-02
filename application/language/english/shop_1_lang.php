@@ -546,7 +546,7 @@ $lang['search_search_sales_customer_phone_return']                              
 $lang['search_search_sales_customer_phone_delete']                                                  = 'Delete';
 //End
 
-//Start search_customer_profession
+//Start search/search_customer_profession
 $lang['search_search_customer_profession_search_customer_by_profession']                           = 'Search Customer by Profession';
 $lang['search_search_customer_profession_select_profession']                                        = 'Select Profession';
 $lang['search_search_customer_profession_search']                                                  = 'Search';
@@ -559,7 +559,7 @@ $lang['search_search_customer_profession_address']                              
 $lang['search_search_customer_profession_card_no']                                                  = 'Card No';
 //End
 
-//Start search_customer_institution
+//Start search/search_customer_institution
 $lang['search_search_customer_institution_search_customer_by_institution']                           = 'Search Customer by Institution';
 $lang['search_search_customer_institution_select_institution']                                        = 'Select Institution';
 $lang['search_search_customer_institution_search']                                                  = 'Search';
@@ -572,7 +572,66 @@ $lang['search_search_customer_institution_address']                             
 $lang['search_search_customer_institution_card_no']                                                  = 'Card No';
 //End
 
-// End Expense menu
+//Start search/search_customers_total_purchased
+$lang['search_search_customers_total_purchased_search_customer_by_total_purchased']                 = 'Search Customer by Total Purchased';
+$lang['search_search_customers_total_purchased_total_purchased']                                    = 'Total Purchased';
+$lang['search_search_customers_total_purchased_search']                                             = 'Search';
+$lang['search_search_customers_total_purchased_download']                                           = 'Download';
+
+
+$lang['search_search_customers_total_purchased_search_result']                                      = 'Search Result';
+$lang['search_search_customers_total_purchased_first_name']                                         = 'First Name';
+$lang['search_search_customers_total_purchased_last_name']                                          = 'Last Name';
+$lang['search_search_customers_total_purchased_phone']                                              = 'Phone';
+$lang['search_search_customers_total_purchased_address']                                            = 'Address';
+$lang['search_search_customers_total_purchased_card_no']                                            = 'Card No';
+//End
+
+//Start search/search_customer_card_no
+$lang['search_search_customer_card_no_search_customer_by_card_no']                          = 'Search Customer by Card No';
+$lang['search_search_customer_card_no_search']                                             = 'Search';
+$lang['search_search_customer_card_no_download']                                           = 'Download';
+
+
+$lang['search_search_customer_card_no_search_result']                                      = 'Search Result';
+$lang['search_search_customer_card_no_first_name']                                         = 'First Name';
+$lang['search_search_customer_card_no_last_name']                                          = 'Last Name';
+$lang['search_search_customer_card_no_phone']                                              = 'Phone';
+$lang['search_search_customer_card_no_address']                                            = 'Address';
+$lang['search_search_customer_card_no_card_no']                                            = 'Card No';
+//End
+
+
+//Start search/search_customer_phone
+$lang['search_search_customer_phone_search_customer_by_phone']                          = 'Search Customer by Phone';
+$lang['search_search_customer_phone_mobile_no']                                         = 'Mobile No';
+$lang['search_search_customer_phone_search']                                             = 'Search';
+$lang['search_search_customer_phone_download']                                           = 'Download';
+
+
+$lang['search_search_customer_phone_search_result']                                      = 'Search Result';
+$lang['search_search_customer_phone_first_name']                                         = 'First Name';
+$lang['search_search_customer_phone_last_name']                                          = 'Last Name';
+$lang['search_search_customer_phone_phone']                                              = 'Phone';
+$lang['search_search_customer_phone_address']                                            = 'Address';
+$lang['search_search_customer_phone_card_no']                                            = 'Card No';
+//End
+
+//Start search/search_customer_phone
+$lang['search_search_customer_card_no_range_search_customer_by_card_range']                      = 'Search Customer by Card Range';
+$lang['search_search_customer_card_no_range_start_card_no']                                      = 'Start Card No';
+$lang['search_search_customer_card_no_range_end_card_no']                                       = 'End Card No';
+$lang['search_search_customer_card_no_range_search']                                             = 'Search';
+$lang['search_search_customer_card_no_range_download']                                           = 'Download';
+
+
+$lang['search_search_customer_card_no_range_search_result']                                      = 'Search Result';
+$lang['search_search_customer_card_no_range_first_name']                                         = 'First Name';
+$lang['search_search_customer_card_no_range_last_name']                                          = 'Last Name';
+$lang['search_search_customer_card_no_range_phone']                                              = 'Phone';
+$lang['search_search_customer_card_no_range_address']                                            = 'Address';
+$lang['search_search_customer_card_no_range_card_no']                                            = 'Card No';
+//End
 
 
 //Start Attendance menu by Omar

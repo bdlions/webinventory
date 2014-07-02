@@ -28,7 +28,7 @@
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Phone</h3>
+<h3><?php echo $this->lang->line("search_search_customer_phone_search_customer_by_phone"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-6">
@@ -39,7 +39,7 @@
                             <?php echo form_open("search/download_search_customer_by_phone", array('id' => 'form_download_search_customer_by_phone', 'class' => 'form-horizontal')); ?>
                             <div class="form-group">
                                 <label for="phone" class="col-md-6 control-label requiredField">
-                                    Mobile No
+                                    <?php echo $this->lang->line("search_search_customer_phone_mobile_no"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_input($phone+array('class'=>'form-control')); ?>
@@ -71,16 +71,16 @@
         </div>
     </div>    
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_search_customer_phone_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
+                    <th><?php echo $this->lang->line("search_search_customer_phone_first_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_phone_last_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_phone_phone"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_phone_address"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                

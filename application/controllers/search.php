@@ -837,18 +837,18 @@ class Search extends CI_Controller {
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
             'type' => 'button',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_customers_total_purchased_search"),
         );
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("search_search_customers_total_purchased_download"),
         );
         $shop_info = $this->ion_auth->get_shop_info()->result_array();
         if(!empty($shop_info))
         {
-            $this->data['shop_info'] = $shop_info[0];
+            $shop_info = $shop_info[0];
         }
         
         $user_group = $this->ion_auth->get_users_groups()->result_array();
@@ -859,7 +859,9 @@ class Search extends CI_Controller {
         }
         
         $this->data['user_group'] = $user_group;
-        $this->template->load(null, 'search/customer/total_purchased', $this->data);
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL)$this->template->load(null, 'search/customer/total_purchased', $this->data);
+        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM)$this->template->load(null, 'search/customer/total_purchased_med', $this->data);
     }
     
     //---------------------------------------- Customer Search -------------------------------------------
@@ -1032,13 +1034,13 @@ class Search extends CI_Controller {
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_customer_card_no_search"),
         );
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("search_search_customer_card_no_download"),
         );
         
         $user_group = $this->ion_auth->get_users_groups()->result_array();
@@ -1116,13 +1118,13 @@ class Search extends CI_Controller {
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_customer_phone_search"),
         );
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("search_search_customer_phone_download"),
         );
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/customer/phone',$this->data);}
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/customer/phone_med',$this->data);}
@@ -1183,14 +1185,14 @@ class Search extends CI_Controller {
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
             'type' => 'reset',
-            'value' => 'Search',
+            'value' => $this->lang->line("search_search_customer_card_no_range_search"),
         );
         
         $this->data['button_download_customer'] = array(
             'name' => 'button_download_customer',
             'id' => 'button_download_customer',
             'type' => 'submit',
-            'value' => 'Download',
+            'value' => $this->lang->line("search_search_customer_card_no_range_download"),
         );
         
         

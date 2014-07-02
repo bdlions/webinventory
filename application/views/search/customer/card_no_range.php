@@ -30,7 +30,7 @@
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Card Range</h3>
+<h3><?php echo $this->lang->line("search_search_customer_card_no_range_search_customer_by_card_range"); ?></h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-6">
@@ -41,7 +41,7 @@
                         <div class ="col-md-6 margin-top-bottom">
                             <div class="form-group">
                                 <label for="start_card_no" class="col-md-6 control-label requiredField">
-                                    Start Card No
+                                    <?php echo $this->lang->line("search_search_customer_card_no_range_start_card_no"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_input($start_card_no+array('class'=>'form-control')); ?>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="end_card_no" class="col-md-6 control-label requiredField">
-                                    Start Card No
+                                    <?php echo $this->lang->line("search_search_customer_card_no_range_end_card_no"); ?>
                                 </label>
                                 <div class ="col-md-6">
                                     <?php echo form_input($end_card_no+array('class'=>'form-control')); ?>
@@ -81,17 +81,17 @@
         </div>
     </div>    
 </div>
-<h3>Search Result</h3>
+<h3><?php echo $this->lang->line("search_search_customer_card_no_range_search_result"); ?></h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Card No</th>
+                    <th><?php echo $this->lang->line("search_search_customer_card_no_range_first_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_card_no_range_last_name"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_card_no_range_phone"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_card_no_range_address"); ?></th>
+                    <th><?php echo $this->lang->line("search_search_customer_card_no_range_card_no"); ?></th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                
