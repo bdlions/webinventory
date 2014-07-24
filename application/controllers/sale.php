@@ -105,6 +105,23 @@ class Sale extends CI_Controller {
         $sale_info = $_POST['sale_info'];
         $current_due = $_POST['current_due'];
 
+        $product_lot_map = array();
+        foreach ($selected_product_list as $key => $prod_info) 
+        {
+            $key = $prod_info['product_id'].'_'.$sale_info['sale_order_no'];
+            if(in_array($key, $product_lot_map))
+            {
+                $response['status'] = '0';
+                $response['message'] = 'Error!! Duplicate lot no for same product.';
+                echo json_encode($response);
+                return;
+            }
+            else
+            {
+                $product_lot_map[] = $key;
+            }
+        }
+        
         $product_quantity_map = array();
         $stock_list_array = $this->stock_library->search_stocks()->result_array();
         foreach ($stock_list_array as $key => $stock_info) {

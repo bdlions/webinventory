@@ -169,6 +169,7 @@
                 sale_info.setCheckPaid('0');
                 sale_info.setCheckDescription('');
                 $.ajax({
+                    dataType: 'json',
                     type: "POST",
                     url: '<?php echo base_url(); ?>' + "sale/add_sale",
                     data: {
@@ -177,8 +178,7 @@
                         current_due: $("#current_due").val()
                     },
                     success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response['status'] === '1')
+                        if (data['status'] === '1')
                         {
                             alert('Sale order is executed successfully.');
                             $("#tbody_selected_product_list").html('');
@@ -193,9 +193,9 @@
                             $("#cash_paid_amount").val(0);
                             $("#current_due").val(0);
                         }
-                        else if (response['status'] === '0')
+                        else if (data['status'] === '0')
                         {
-                            alert(response['message']);
+                            alert(data['message']);
                         }
                     }
                 });
@@ -207,6 +207,29 @@
             var product_discount = '';
             var product_unit_price = '';
             var total_product_price = '';
+            var product_lot_map = Array();
+            var is_valid = true;
+            //user will not be able to use same lot no more than one for same product
+            $("input", "#tbody_selected_product_list").each(function() {
+                if ($(this).attr("name") === "purchase_order_no" && $(this).val() != '' && is_valid)
+                {
+                    var key = $(this).attr("id")+'_'+$(this).val();
+                    if(product_lot_map.indexOf(key) >= 0) {
+                        alert('Duplicate lot no. Please use a different lot no.');
+                        $(this).attr('value', '');
+                        $(this).val('');
+                        is_valid = false;
+                        return;
+                    }
+                    else {
+                        product_lot_map.push(key);
+                    }
+                }
+            });
+            if(!is_valid)
+            {
+                return;
+            }
             $("input", $(this).parent().parent()).each(function() {
                 if ($(this).attr("name") === "purchase_order_no")
                 {

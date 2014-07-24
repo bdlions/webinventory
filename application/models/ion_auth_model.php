@@ -1623,7 +1623,14 @@ class Ion_auth_model extends CI_Model {
             $user = $query->row();
 
             $this->update_last_login($user->id);
-
+            
+            $users_groups = $this->get_users_groups($user->id)->result();
+            $group_name = "";
+            foreach ($users_groups as $group) {
+                $group_name = $group->name;
+            }
+            
+            $user->user_type = $group_name;
             $this->set_session($user);
 
             //extend the users cookies if the option is enabled

@@ -325,7 +325,7 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
                     ->join($this->tables['users'].' AS users_customers', 'users_customers.id='.$this->tables['customers'].'.user_id')
                     ->join($this->tables['users'].' AS users_salesman', 'users_salesman.id='.$this->tables['sale_order'].'.created_by')
-                    ->get();
+                    ->get();        
     }
     
     public function get_user_sales_by_name($name , $shop_id = '')

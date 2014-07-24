@@ -93,10 +93,10 @@
     {% while(expense_info){ %}
     <tr>
         <td>{%= expense_info.expense_date %}</td>
+        <td>{%= expense_info.category_title %}</td>
+        <td>{%= expense_info.category_description %}</td>        
         <td>{%= expense_info.expense_amount %}</td>
         <td>{%= expense_info.description %}</td>
-        <td>{%= expense_info.category_title %}</td>
-        <td>{%= expense_info.category_description %}</td>
         <td><a href="<?php echo base_url()."./expense/delete_expense/{%= expense_info.id %}"; ?>">Delete</a></td>
     </tr>
     {% expense_info = ((o instanceof Array) ? o[i++] : null); %}
