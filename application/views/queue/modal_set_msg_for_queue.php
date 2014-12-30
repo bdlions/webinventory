@@ -41,7 +41,7 @@
                newArr = [];
                insetArr = [];
                 var temp_phone_list = get_phone_list();
-                console.log(temp_phone_list);
+                //console.log(temp_phone_list);
                 for(var i = 0; i< temp_phone_list.length; i++) {
                     var temp = temp_phone_list[i].number.trim();
                     if(selected_array.indexOf(temp) == -1 ) {

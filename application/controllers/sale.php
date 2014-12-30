@@ -108,7 +108,7 @@ class Sale extends CI_Controller {
         $product_lot_map = array();
         foreach ($selected_product_list as $key => $prod_info) 
         {
-            $key = $prod_info['product_id'].'_'.$sale_info['sale_order_no'];
+            $key = $prod_info['product_id'].'_'.$prod_info['purchase_order_no'];
             if(in_array($key, $product_lot_map))
             {
                 $response['status'] = '0';
