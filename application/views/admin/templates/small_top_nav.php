@@ -28,11 +28,15 @@
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add Warehouse Purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/raise_warehouse_purchase_order");?>">Raise Warehouse Purchase Order</a></li>
+        <li><a href="<?php echo base_url("purchase/return_warehouse_purchase_order");?>">Return Warehouse Purchase Order</a></li>
+        <li class="divider"></li>
         <li><a href="<?php echo base_url("purchase/purchase_order");?>">add new purchase</a></li>
         <li><a href="<?php echo base_url("purchase/raise_purchase_order");?>">Raise Purchase Order</a></li>
         <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return Purchase Order</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/create_supplier");?>">add new supplier</a></li>
+        <li><a href="<?php echo base_url("./user/create_supplier");?>">Add New Supplier</a></li>
         <li><a href="<?php echo base_url("./user/show_all_suppliers/".PAGINATION_SUPPLIER_LIST_LIMIT);?>">Supplier List</a></li>
     </ul>
 </div>
@@ -93,8 +97,10 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./upload/upload_cover");?>">Upload Cover</a></li>
-        <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
+        <li><a href="<?php echo base_url("./user/create_staff");?>">Create Staff</a></li>
+        <li><a href="<?php echo base_url("./user/show_all_staffs");?>">Show All Staffs</a></li>
+        <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Equipment Supplier</a></li>
+        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Equipment Suppliers</a></li>
         <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
         <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>    
         <li class="divider"></li>

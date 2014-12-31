@@ -34,6 +34,38 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-offset-1 col-md-4"> 
+            <div class="row">
+                    <div class="form-group">
+                        <label for="" class="col-md-6 control-label">
+                            Total Purchased Quantity
+                        </label>
+                        <label for="" class="col-md-6 control-label">
+                            25
+                        </label>
+                    </div>
+                </div>
+            <div class="row">
+                    <div class="form-group">
+                        <label for="" class="col-md-6 control-label">
+                            Total Purchased Price
+                        </label>
+                        <label for="" class="col-md-6 control-label">
+                            2500
+                        </label>
+                    </div>
+                </div>
+            <div class="row">
+                    <div class="form-group">
+                        <label for="" class="col-md-6 control-label">
+                            Total Profit
+                        </label>
+                        <label for="" class="col-md-6 control-label">
+                            1000
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
         <table class="table table-bordered">
             <thead>

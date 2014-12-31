@@ -1,4 +1,4 @@
-<h3>Create Staff</h3>
+<h3>Create Equipment Supplier</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("user/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
     <div class="row">

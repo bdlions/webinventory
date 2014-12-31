@@ -1,4 +1,4 @@
-<h3>All Equipment Suppliers</h3>
+<h3>All Staffs</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">

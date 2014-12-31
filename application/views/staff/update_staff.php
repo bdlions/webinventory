@@ -1,4 +1,4 @@
-<h3>Update Equipment Supplier</h3>
+<h3>Update Staffs</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("user/update_salesman/".$salesman_info['id'], array('id' => 'form_update_salesman', 'class' => 'form-horizontal')); ?>
     <div class="row">
