@@ -9,7 +9,8 @@
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <th>Manage</th>                        
+                    <th>Manage</th>     
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody id="tbody_product_list">
@@ -23,6 +24,7 @@
                         <td><?php echo $salesman_info['phone'] ?></td>
                         <td><?php echo $salesman_info['address'] ?></td>
                         <td><a href="<?php echo base_url("./user/update_salesman/" . $salesman_info['user_id']); ?>">Update</a></td>                            
+                        <td><a href="">Inactive</a></td>
                     </tr>
                 <?php
                 }

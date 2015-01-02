@@ -370,30 +370,6 @@
                         </div> 
                     </div>     
                     <div class="form-group">
-                        <label for="previous_due" class="col-md-2 control-label requiredField">
-                            Previous Due
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="current_due" class="col-md-2 control-label requiredField">
-                            Current Due
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="return_balance" class="col-md-2 control-label requiredField">
-                            Return balance
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
                         <label for="button_raise_purchase_order" class="col-md-2 control-label requiredField">
 
                         </label>

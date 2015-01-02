@@ -379,30 +379,6 @@
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="previous_due" class="col-md-2 control-label requiredField">
-                            Previous Due
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="paid_amount" class="col-md-2 control-label requiredField">
-                            Payment Amount
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_input(array('name' => 'paid_amount', 'id' => 'paid_amount', 'class' => 'form-control')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="current_due" class="col-md-2 control-label requiredField">
-                            Current Due
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
                         <label for="save" class="col-md-2 control-label requiredField">
 
                         </label>

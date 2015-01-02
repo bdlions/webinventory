@@ -608,4 +608,10 @@ class Purchase extends CI_Controller {
         echo json_encode($response);
     }
     
+    public function show_showroom_purchase_transactions()
+    {
+        $this->data['message'] = "";
+        $this->template->load(null, 'purchase/show_showroom_purchase_transactions',$this->data);
+    }
+    
 }

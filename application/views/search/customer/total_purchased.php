@@ -25,6 +25,7 @@
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
     <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><td ><?php echo '{%= customer_info.card_no%}'; ?></td><?php endif;?>
+    <td><a href="">Show</a></td>
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -103,10 +104,12 @@
             <div class="row">
                 <div class="col-md-12">
                   <span><b>Message:</b></span>
-                  <textarea rows="4" cols="60"></textarea>
+                  <textarea rows="4" cols="83"></textarea>
                 </div>
-                <div class="col-md-12">
-                  <button type="button">Send</button>
+            </div>
+            <div class="row">
+                <div class="col-md-2 pull-right" style="padding-top:5px;">
+                  <input type="button" class="form-control btn-success" value="Send"/>
                 </div>
             </div>
         </div>
@@ -125,6 +128,7 @@
                     <th>Phone</th>
                     <th>Address</th>
                     <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><th>Card No</th><?php endif;?>
+                    <th>Transactions</th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                

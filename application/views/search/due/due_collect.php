@@ -9,6 +9,7 @@
                     <th>Last Name</th>
                     <th>Card No</th>
                     <th>Amount</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody id="tbody_product_list">
@@ -20,7 +21,8 @@
                         <td><?php echo $due_collect['first_name'] ?></td>
                         <td><?php echo $due_collect['last_name'] ?></td>  
                         <td><?php echo $due_collect['card_no'] ?></td>    
-                        <td><?php echo $due_collect['amount'] ?></td>                        
+                        <td><?php echo $due_collect['amount'] ?></td>
+                        <td><a href="">Delete</a></td>
                     </tr>
                 <?php
                 }
