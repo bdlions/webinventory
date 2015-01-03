@@ -25,6 +25,7 @@
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
     <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
+    <td ><a onclick="open_modal_status_confirm(<?php echo '{%= customer_info.card_no%}'; ?>)">Inactive</a></td>
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -83,11 +84,13 @@
                     <th>Phone</th>
                     <th>Address</th>
                     <th>Card No</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                
-            
             </tbody>
         </table>
     </div>
 </div>
+
+<?php $this->load->view("search/customer/modal_customer_inactive_confirmation");

@@ -16,7 +16,7 @@
             <tbody id="tbody_product_list">
                 <?php
                 foreach ($salesman_list as $salesman_info) {
-                ?>
+                    ?>
                     <tr>
                         <td><?php echo $salesman_info['username'] ?></td>
                         <td><?php echo $salesman_info['first_name'] ?></td>
@@ -24,12 +24,14 @@
                         <td><?php echo $salesman_info['phone'] ?></td>
                         <td><?php echo $salesman_info['address'] ?></td>
                         <td><a href="<?php echo base_url("./user/update_salesman/" . $salesman_info['user_id']); ?>">Update</a></td>                            
-                        <td><a href="">Inactive</a></td>
+                        <td><a role="menuitem" tabindex="-1" href="javascript:void(o)" onclick="open_modal_status_confirm(<?php echo $salesman_info['user_id'] ?>)">Inactive</a></td>
                     </tr>
-                <?php
+                    <?php
                 }
                 ?>
             </tbody>
         </table>
     </div>
 </div>
+<?php
+$this->load->view("salesman/modal_inactive_equipment_supplier_confirmation");
