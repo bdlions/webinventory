@@ -6,7 +6,7 @@
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "",
                 data: {
-                    client_id: $("#input_payment_category_id").val()
+                    client_id: $("#input_client_id").val()
                 },
                 success: function(data) {
                     alert(data['message']);
@@ -16,8 +16,8 @@
             });
         });
     });
-    function open_modal_delete_confirm(payment_category_id) {
-        $('#input_payment_category_id').val(payment_category_id);
+    function open_modal_delete_confirm(id) {
+        $('#input_client_id').val(id);
         $("#modal_delete_confirm").modal('show');
     }
 </script>
@@ -26,14 +26,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Delete Due Collect List</h4>
+                <h4 class="modal-title" id="myModalLabel">Delete Due</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="row form-group">
                         <div class ="col-sm-2"></div>
-                        <label class="col-sm-10 control-label">Are you sure to delete this Due Collect List?</label>
-                        <input id="input_payment_category_id" name="input_payment_category_id" value="" type="hidden" class="form-control"/>
+                        <label class="col-sm-10 control-label">Are you sure to delete this due?</label>
+                        <input id="input_client_id" name="input_client_id" value="" type="hidden" class="form-control"/>
                     </div>
                 </div>                
             </div>
@@ -42,10 +42,10 @@
                     
                 </div>
                 <div class ="col-md-3">
-                    <button style="width:100%; background-color: #5CB85C; color: white;" id="button_delete" name="button_delete" value="" class="form-control">Delete</button>
+                    <button style="width:100%; background-color: #5CB85C; color: white;" id="button_delete" name="button_delete" value="" class="form-control btn button-custom pull-right">Delete</button>
                 </div>
                 <div class ="col-md-3">
-                    <button style="width:100%; background-color: #5CB85C; color: white;" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button style="width:100%; background-color: #5CB85C; color: white;" type="button" class="btn button-custom" data-dismiss="modal">Cancel</button>
                 </div>
                 
             </div>

@@ -530,6 +530,39 @@ class Search extends CI_Controller {
         );
         $this->template->load(null, 'search/sale/search_sales', $this->data);
     }
+    
+    public function show_due_collect_date()
+    {
+        $due_collect_list = array();
+        
+        $shop_info = $this->shop_library->get_shop()->result_array();
+        
+        if(!empty($shop_info))
+        {
+            $shop_info = $shop_info[0];
+        }
+        
+   
+        $time = $this->utils->get_current_date_start_time();
+        $due_collect_list_array = $this->payments->get_customer_due_collect_list_today($time)->result_array();
+        foreach($due_collect_list_array as $due_collect)
+        {
+            $due_collect['created_on'] = $this->utils->process_time($due_collect['created_on']);
+            $due_collect_list[] = $due_collect;
+        }
+        $this->data['due_collect_list'] = $due_collect_list;
+        
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){
+            $this->template->load(null, 'search/due/search_dues_collect_date',$this->data);
+        }
+        else{
+            $this->template->load(null, 'search/due/due_collect_med',$this->data);
+        }
+    }
+    
+    
+    
+    
     /*
      * Ajax Call
      */
