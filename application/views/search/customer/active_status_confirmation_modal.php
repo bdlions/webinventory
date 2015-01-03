@@ -1,39 +1,39 @@
 <script type="text/javascript">
     $(function() {
-        $("#button_delete").on("click", function() {
+        $("#button_active").on("click", function() {
             $.ajax({
                 dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "",
                 data: {
-                    client_id: $("#input_payment_category_id").val()
+                    client_id: $("#input_user_id").val()
                 },
                 success: function(data) {
                     alert(data['message']);
-                    $("#modal_delete_confirm").modal('hide');
+                    $("#admin_status_confirm_modal").modal('hide');
                     window.location.reload();
                 }
             });
         });
     });
-    function open_modal_delete_confirm(payment_category_id) {
-        $('#input_payment_category_id').val(payment_category_id);
-        $("#modal_delete_confirm").modal('show');
+    function open_modal_active_confirm(user_id) {
+        $('#input_user_id').val(user_id);
+        $("#admin_status_confirm_modal").modal('show');
     }
 </script>
-<div class="modal fade" id="modal_delete_confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="admin_status_confirm_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Delete Due Collect List</h4>
+                <h4 class="modal-title" id="myModalLabel">User Status</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="row form-group">
                         <div class ="col-sm-2"></div>
-                        <label class="col-sm-10 control-label">Are you sure to delete this Due Collect List?</label>
-                        <input id="input_payment_category_id" name="input_payment_category_id" value="" type="hidden" class="form-control"/>
+                        <label class="col-sm-10 control-label">Are you sure to Active all user ?</label>
+                        <input id="input_user_id" name="input_user_id" value="" type="hidden" class="form-control"/>
                     </div>
                 </div>                
             </div>
@@ -42,8 +42,7 @@
                     
                 </div>
                 <div class ="col-md-3">
-
-                    <button style="width:100%" id="button_delete" name="button_delete" value="" class="form-control btn btn-success">Delete</button>
+                    <button style="width:100%" id="button_active" name="button_delete" value="" class="form-control btn btn-success">Active</button>
                 </div>
                 <div class ="col-md-3">
                     <button style="width:100%" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>

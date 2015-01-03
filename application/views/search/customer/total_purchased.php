@@ -19,11 +19,12 @@
 <script type="text/x-tmpl" id="tmpl_customer_list">
     {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(customer_info){ %}
-    <tr>
+    <tr>s
     <td ><?php echo '{%= customer_info.first_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
+    <td><?php echo 'active'?></td>    
     <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><td ><?php echo '{%= customer_info.card_no%}'; ?></td><?php endif;?>
     <td><a href="">Show</a></td>
     </tr>
@@ -85,6 +86,17 @@
                                 </div> 
                                     
                             </div>
+                                <div class="form-group">
+                                            <div class ="col-md-offset-2 col-md-2">
+                                            <a onclick="open_modal_active_confirm(<?php echo $total_purchased['id'] ?>)">Active all</a>
+                                            </div>
+                                            <div class="col-md-3">
+                                            <a onclick="open_modal_inactive_confirm(<?php echo $total_purchased['id'] ?>)">Inactive all</a>
+                                            </div>
+                            </div>
+                         
+
+
 <!--                            <div class="form-group">
                                 <label for="button_download_customer" class="col-md-6 control-label requiredField">
 
@@ -129,6 +141,7 @@
                     <th>Address</th>
                     <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><th>Card No</th><?php endif;?>
                     <th>Transactions</th>
+                    <th>Status </th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                
@@ -137,3 +150,5 @@
         </table>
     </div>
 </div>
+<?php $this->load->view("search/customer/active_status_confirmation_modal");?>
+<?php $this->load->view("search/customer/inactive_status_confirmation_modal");?>
