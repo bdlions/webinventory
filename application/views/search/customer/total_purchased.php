@@ -53,82 +53,87 @@
                                     <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
                                 </div>
                                 <?php if ($user_group['id'] != USER_GROUP_SALESMAN): ?>
-                            </div>
-                            
-<!--                            <div class="form-group">
-                                <label for="button_search_customer" class="col-md-6 control-label requiredField">
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input($button_search_customer+array('class'=>'form-control btn-success')); ?>
-                                </div> 
-                            </div>-->
-                            
+                                </div>
+
+                                <!--                            <div class="form-group">
+                                                                <label for="button_search_customer" class="col-md-6 control-label requiredField">
+                                                                </label>
+                                                                <div class ="col-md-6">
+                                <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
+                                                                </div> 
+                                                            </div>-->
+
                                 <div class="form-group">
                                     <?php echo form_open("user/download_search_customer", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
-                                        <label for="expense_categories" class="col-md-4 control-label requiredField">
-                                            Select Type
-                                        </label>
-                                        <div class ="col-md-5">
-                                            <?php
-                                            $options = array(
-                                                'name' => 'Name',
-                                                'mobile_no' => 'Mobile No',
-                                                'both' => 'Both'
-                                            );
-                                            echo form_dropdown('select_option_for_download', $options, 'both', 'class="form-control" id="select_option_for_download"');
-                                            ?>
+                                    <label for="expense_categories" class="col-md-4 control-label requiredField">
+                                        Select Type
+                                    </label>
+                                    <div class ="col-md-5">
+                                        <?php
+                                        $options = array(
+                                            'name' => 'Name',
+                                            'mobile_no' => 'Mobile No',
+                                            'both' => 'Both'
+                                        );
+                                        echo form_dropdown('select_option_for_download', $options, 'both', 'class="form-control" id="select_option_for_download"');
+                                        ?>
                                     </div>
                                     <label for="button_download_customer" class="control-label requiredField">
 
-                                </label>
-                                <div class ="col-md-3">
-                                    <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
-                                </div> 
-                                    
-                            </div>
+                                    </label>
+                                    <div class ="col-md-3">
+                                        <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
+                                    </div> 
+
+                                </div>
                                 <div class="form-group">
-                                            <div class ="col-md-offset-2 col-md-2">
-                                            <a onclick="open_modal_active_confirm(<?php echo $total_purchased['id'] ?>)">Active all</a>
-                                            </div>
-                                            <div class="col-md-3">
-                                            <a onclick="open_modal_inactive_confirm(<?php echo $total_purchased['id'] ?>)">Inactive all</a>
-                                            </div>
-                            </div>
-                         
+                                    <div class ="col-md-offset-2 col-md-2">
+                                        <a onclick="open_modal_active_confirm(<?php echo $total_purchased['id'] ?>)">Active all</a>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a onclick="open_modal_inactive_confirm(<?php echo $total_purchased['id'] ?>)">Inactive all</a>
+                                    </div>
+                                </div>
 
 
-<!--                            <div class="form-group">
-                                <label for="button_download_customer" class="col-md-6 control-label requiredField">
 
-                                </label>
-                                <div class ="col-md-6">
-                                    <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
-                                </div> 
-                            </div>-->
-                            <?php endif;?>
+                                <!--                            <div class="form-group">
+                                                                <label for="button_download_customer" class="col-md-6 control-label requiredField">
+                                
+                                                                </label>
+                                                                <div class ="col-md-6">
+                                <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
+                                                                </div> 
+                                                            </div>-->
+                            <?php endif; ?>
                             <?php echo form_close(); ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 margin-top-bottom">
-            <div class="row">
-                <div class="col-md-12">
-                  <span><b>Message:</b></span>
-                  <textarea rows="4" cols="83"></textarea>
+        <div class="col-md-6">
+            <div class="row form-group">
+                <label class="col-md-2">Title:</label>
+                <div class="col-md-8">
+                    <input type="text" name="title" class="form-control">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-2 pull-right" style="padding-top:5px;">
-                  <input type="button" class="form-control btn-success" value="Send"/>
+            <div class="row form-group">
+                <label class="col-md-2">Body:</label>
+                <div class="col-md-8">
+                    <textarea rows="5" style="width: 100%; resize: vertical"></textarea>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-offset-8 col-md-2">
+                <button class="btn btn-success pull-right">Send</button>
                 </div>
             </div>
         </div>
-            
-        </div>
-    </div>    
+    </div>
 </div>
+
 <h3>Search Result</h3>
 <div class="form-background top-bottom-padding">
     <div class="table-responsive">
