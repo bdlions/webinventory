@@ -24,9 +24,9 @@
     <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
-    <td><?php echo 'active'?></td>    
     <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><td ><?php echo '{%= customer_info.card_no%}'; ?></td><?php endif;?>
     <td><a href="">Show</a></td>
+    <td><?php echo 'active'?></td> 
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}

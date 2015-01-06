@@ -42,10 +42,10 @@
                     
                 </div>
                 <div class ="col-md-3">
-                    <button style="width:100%" id="button_delete" name="button_delete" value="" class="form-control btn button-custom pull-right">Delete</button>
+                    <button style="width:100%" id="button_delete" name="button_delete" value="" class="form-control btn btn-success pull-right">Delete</button>
                 </div>
                 <div class ="col-md-3">
-                    <button style="width:100%" type="button" class="btn button-custom" data-dismiss="modal">Cancel</button>
+                    <button style="width:100%" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
                 </div>
                 
             </div>

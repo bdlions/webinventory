@@ -611,6 +611,17 @@ class Purchase extends CI_Controller {
     public function show_showroom_purchase_transactions()
     {
         $this->data['message'] = "";
+        $this->data['lot_no'] = array(
+            'name' => 'lot_no',
+            'id' => 'lot_no',
+            'type' => 'text'
+        );
+        $this->data['button_search_transactions'] = array(
+            'name' => 'button_search_transactions',
+            'id' => 'button_search_transactions',
+            'type' => 'submit',
+            'value' => 'Search',
+        );
         $this->template->load(null, 'purchase/show_showroom_purchase_transactions',$this->data);
     }
     

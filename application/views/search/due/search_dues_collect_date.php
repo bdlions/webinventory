@@ -5,7 +5,7 @@
         
     });
 </script>
-<h3>Search Dues</h3>
+<h3>Search Due Collect by Date Range</h3>
 <div class ="form-background top-bottom-padding">
     <div class="row">
         <div class="col-md-6">

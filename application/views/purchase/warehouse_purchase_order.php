@@ -362,44 +362,52 @@
             <div class="row margin-top-bottom">
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
-                        <label for="remarks" class="col-md-2 control-label requiredField">
+                        <label for="remarks" class="col-md-7 control-label requiredField">
                             Remarks
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
 
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="total_purchase_price" class="col-md-2 control-label requiredField">
+                        <label for="total_purchase_price" class="col-md-7 control-label requiredField">
                             Total
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="previous_due" class="col-md-2 control-label requiredField">
+                        <label for="previous_due" class="col-md-7 control-label requiredField">
                             Previous Due
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="paid_amount" class="col-md-2 control-label requiredField">
+                        <label for="paid_amount" class="col-md-7 control-label requiredField">
                             Payment Amount
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'paid_amount', 'id' => 'paid_amount', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="current_due" class="col-md-2 control-label requiredField">
+                        <label for="current_due" class="col-md-7 control-label requiredField">
                             Current Due
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="current_due" class="col-md-7 control-label requiredField">
+                            Forward to Showroom
+                        </label>
+                        <div class ="col-md-3">
+                            <input type="checkbox"/>
                         </div> 
                     </div>
                     <div class="form-group">
