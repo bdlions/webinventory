@@ -114,20 +114,23 @@
         </div>
         <div class="col-md-6">
             <div class="row form-group">
-                <label class="col-md-2">Title:</label>
+                <label class="col-md-2">SMS Title:</label>
                 <div class="col-md-8">
                     <input type="text" name="title" class="form-control">
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-md-2">Body:</label>
+                <label class="col-md-2">SMS Body:</label>
                 <div class="col-md-8">
                     <textarea rows="5" style="width: 100%; resize: vertical"></textarea>
                 </div>
             </div>
             <div class="row form-group">
-                <div class="col-md-offset-8 col-md-2">
-                <button class="btn btn-success pull-right">Send</button>
+                <label class="col-md-2"></label>
+                <label class="col-md-2">0 character</label>
+                <label class="col-md-4"></label>
+                <div class="col-md-2">
+                    <button class="btn btn-success pull-right">Send</button>
                 </div>
             </div>
         </div>
