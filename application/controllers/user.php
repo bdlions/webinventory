@@ -1939,17 +1939,21 @@ class User extends CI_Controller {
             'type' => 'text',
             'value' => $salesman_info['last_name'],
         );
-        $this->data['password'] = array(
-            'name' => 'password',
-            'id' => 'password',
+        $this->data['old_password'] = array(
+            'name' => 'old_password',
+            'id' => 'old_password',
             'type' => 'password',
             'value' => PSD_DUMMY,
+        );
+        $this->data['new_password'] = array(
+            'name' => 'new_password',
+            'id' => 'new_password',
+            'type' => 'password',
         );
         $this->data['password_confirm'] = array(
             'name' => 'password_confirm',
             'id' => 'password_confirm',
             'type' => 'password',
-            'value' => PSD_DUMMY,
         );
         $this->data['address'] = array(
             'name' => 'address',
@@ -2362,17 +2366,21 @@ class User extends CI_Controller {
             'type' => 'text',
             'value' => $manager_info['last_name'],
         );
-        $this->data['password'] = array(
-            'name' => 'password',
-            'id' => 'password',
+        $this->data['old_password'] = array(
+            'name' => 'old_password',
+            'id' => 'old_password',
             'type' => 'password',
             'value' => PSD_DUMMY,
+        );
+        $this->data['new_password'] = array(
+            'name' => 'new_password',
+            'id' => 'new_password',
+            'type' => 'password',
         );
         $this->data['password_confirm'] = array(
             'name' => 'password_confirm',
             'id' => 'password_confirm',
             'type' => 'password',
-            'value' => PSD_DUMMY,
         );
         $this->data['address'] = array(
             'name' => 'address',
