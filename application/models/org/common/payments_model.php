@@ -265,6 +265,23 @@ class Payments_model extends Ion_auth_model {
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
+    public function delete_due_collect($id)
+    {
+        if(!isset($id) || $id <= 0)
+        {
+            $this->set_error('delete_due_collect_fail');
+            return FALSE;
+        }
+        $this->db->where('id', $id);
+        $this->db->delete($this->tables['customer_payment_info']);
+        
+        if ($this->db->affected_rows() == 0) {
+            $this->set_error('delete_due_collect_fail');
+            return FALSE;
+        }
+        $this->set_message('delete_due_collect_successful');
+        return TRUE;
+    }
     
     public function get_customer_due_collect_list_today($start_time, $shop_id = '')
     {

@@ -213,5 +213,20 @@ class Message extends CI_Controller {
         $this->template->load(null, 'message/show_message_view',$this->data);
     }
     
+    public function delete_custom_message()
+    {
+        $result = array();
+        $id = $this->input->post('id');
+        if($this->messages->delete_message($id))
+        {
+            $result['message'] = $this->messages->messages_alert();
+        }
+        else
+        {
+            $result['message'] = $this->messages->errors_alert();
+        }
+        echo json_encode($result);
+    }
+    
             
 }

@@ -192,8 +192,6 @@ class Payment extends CI_Controller {
         {
             $shop_info = $shop_info[0];
         }
-        
-   
         $time = $this->utils->get_current_date_start_time();
         $due_collect_list_array = $this->payments->get_customer_due_collect_list_today($time)->result_array();
         foreach($due_collect_list_array as $due_collect)
@@ -210,6 +208,21 @@ class Payment extends CI_Controller {
             $this->template->load(null, 'search/due/due_collect_med',$this->data);
         }
     }
+    public function delete_due_collect()
+    {
+        $result = array();
+        $id = $this->input->post('id');
+        if($this->payments->delete_due_collect($id))
+        {
+            $result['message'] = $this->payments->messages_alert();
+        }
+        else
+        {
+            $result['message'] = $this->payments->errors_alert();
+        }
+        echo json_encode($result);
+    }
+    
     
     public function show_total_due()
     {

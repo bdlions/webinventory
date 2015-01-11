@@ -22,7 +22,7 @@
                         <td><?php echo $due_collect['last_name'] ?></td>  
                         <td><?php echo $due_collect['card_no'] ?></td>    
                         <td><?php echo $due_collect['amount'] ?></td>
-                        <td><a onclick="open_modal_delete_confirm(<?php echo $due_collect['payment_category_id'] ?>)">Delete</a></td>
+                        <td><a onclick="open_modal_delete_confirm(<?php echo $due_collect['id'] ?>)">Delete</a></td>
                     </tr>
                 <?php
                 }

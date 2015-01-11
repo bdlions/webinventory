@@ -1,10 +1,11 @@
 <script type="text/javascript">
-   $(function() {
+    $(function() {
         $("#button_delete").on("click", function() {
+            //alert('gfdhfh');
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "payment/delete_due_collect",
+                url: '<?php echo base_url(); ?>' + "message/delete_custom_message",
                 data: {
                        id: $("#id").val()
                 },
@@ -16,7 +17,7 @@
             });
         });
     });
-    function open_modal_delete_confirm(id) {
+    function confirm_message_modal_delete(id) {
         $('#id').val(id);
         $("#modal_delete_confirm").modal('show');
     }
@@ -26,13 +27,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Delete Due Collect</h4>
+                <h4 class="modal-title" id="myModalLabel">Delete Message</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="row form-group">
                         <div class ="col-sm-2"></div>
-                        <label class="col-sm-10 control-label">Are you sure to delete this due collect amount?</label>
+                        <label class="col-sm-10 control-label">Are you sure to delete this message?</label>
                         <input id="id" name="id" value="" type="hidden" class="form-control"/>
                     </div>
                 </div>                
@@ -42,8 +43,7 @@
                     
                 </div>
                 <div class ="col-md-3">
-
-                    <button style="width:100%" id="button_delete" name="button_delete" value="" class="form-control btn btn-success">Delete</button>
+                    <button style="width:100%" id="button_delete" name="button_delete" value="" class="form-control btn btn-success pull-right">Delete</button>
                 </div>
                 <div class ="col-md-3">
                     <button style="width:100%" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>

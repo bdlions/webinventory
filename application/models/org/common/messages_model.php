@@ -106,4 +106,22 @@ class Messages_model extends Ion_auth_model {
                     ->from($this->tables['message_info'])
                     ->get();
     }
+    public function delete_message($id)
+    {
+        if(!isset($id) || $id <= 0)
+        {
+            $this->set_error('delete_notebook_message_fail');
+            return FALSE;
+        }
+        $this->db->where('id', $id);
+        $this->db->delete($this->tables['custom_message']);
+        
+        if ($this->db->affected_rows() == 0) {
+            $this->set_error('delete_notebook_message_fail');
+            return FALSE;
+        }
+        $this->set_message('delete_notebook_message_successful');
+        return TRUE;
+    }
+    
 }

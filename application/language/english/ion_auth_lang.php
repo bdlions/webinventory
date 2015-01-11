@@ -121,3 +121,10 @@ $lang['message_supplier_update_successful']                   = 'Supplier Messag
 
 $lang['duplicate_phoneno']                   = 'Phone no Duplicate';
 
+//Notebook massage
+$lang['delete_notebook_message_fail']                         = 'Fail to delete message.';
+$lang['delete_notebook_message_successful']                   = 'Message deleted successfully';
+
+//Due collect
+$lang['delete_due_collect_fail']                              = 'Fail to delete due collect.';
+$lang['delete_due_collect_successful']                        = 'Due collect deleted successfully';
