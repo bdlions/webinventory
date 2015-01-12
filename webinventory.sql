@@ -398,7 +398,47 @@ ALTER TABLE `product_purchase_order`
   ADD CONSTRAINT `fk_product_purchase_order_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_purchase_order_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_purchase_order_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- warehouse stock details
+CREATE TABLE IF NOT EXISTS `warehouse_stock_transaction_category` (
+	`id` int NOT NULL auto_increment,
+	`description` varchar(200),	
+	PRIMARY KEY  (`id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+INSERT INTO `warehouse_stock_transaction_category` (`id`, `description`) VALUES
+(1, 'Purchase In'),
+(2, 'Purchase Partial In'),
+(3, 'Purchase partial Out'),
+(4, 'Purchase Delete'); 
+ CREATE TABLE IF NOT EXISTS `warehouse_stock_info` (
+	`id` int NOT NULL auto_increment,
+	`shop_id` int NOT NULL,
+	`purchase_order_no` varchar(200) DEFAULT NULL,
+	`product_id` int NOT NULL,
+	`stock_in` double default 0,
+	`stock_out` double default 0,
+	`created_on` int(11) unsigned DEFAULT NULL,
+    `created_by` int,
+    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_by` int default NULL,
+	`transaction_category_id` int NOT NULL,
+	PRIMARY KEY  (`id`),
+	KEY `fk_wsi_shop_info1_idx` (`shop_id`),
+	KEY `fk_wsi_purchase_order1_idx` (`purchase_order_no`),
+	KEY `fk_wsi_product_info1_idx` (`product_id`),
+	KEY `fk_wsi_users1_idx` (`created_by`),
+	KEY `fk_wsi_users2_idx` (`modified_by`),
+	KEY `fk_wsi_wstcat1_idx` (`transaction_category_id`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+ALTER TABLE `warehouse_stock_info`
+  ADD CONSTRAINT `fk_wsi_purchase_order1` FOREIGN KEY (`purchase_order_no`) REFERENCES `purchase_order` (`purchase_order_no`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_wsi_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_wsi_product_info1` FOREIGN KEY (`product_id`) REFERENCES `product_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_wsi_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_wsi_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_wsi_wstcat1` FOREIGN KEY (`transaction_category_id`) REFERENCES `warehouse_stock_transaction_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
  
+  
 CREATE TABLE IF NOT EXISTS `sale_order_status` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	

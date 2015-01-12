@@ -6,4 +6,9 @@
     define("STOCK_SALE_IN",                                       5);
     define("STOCK_SALE_PARTIAL_OUT",                              6);
     define("STOCK_SALE_DELETE",                                   7);
+    
+    define("SHOWROOM_STOCK_PURCHASE_IN",                          1);
+    define("SHOWROOM_STOCK_PURCHASE_PARTIAL_IN",                  2);
+    define("SHOWROOM_STOCK_PURCHASE_PARTIAL_OUT",                 3);
+    define("SHOWROOM_STOCK_PURCHASE_DELETE",                      4);
 ?>

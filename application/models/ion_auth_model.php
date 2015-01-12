@@ -1988,6 +1988,33 @@ class Ion_auth_model extends CI_Model {
             return inet_pton($ip_address);
         }
     }
+    //-------------------------------------------Block/Unblock User------------------------------------------
+    /*
+     * This method will block users
+     * @param $user_id_list, user list to be blocked
+     * @Author Nazmul on 12th January 2015
+     */
+    public function block_users($user_id_list = array())
+    {
+        $data = array(
+            'account_status_id' => ACCOUNT_STATUS_BLOCKED
+        );
+        $this->db->where_in($this->tables['users'].'.id',$user_id_list);
+        $this->db->update($this->tables['users'],$data);
+    }
+    /*
+     * This method will activate users
+     * @param $user_id_list, user list to be activated
+     * @Author Nazmul on 12th January 2015
+     */
+    public function active_users($user_id_list = array())
+    {
+        $data = array(
+            'account_status_id' => ACCOUNT_STATUS_ACTIVE
+        );
+        $this->db->where_in($this->tables['users'].'.id',$user_id_list);
+        $this->db->update($this->tables['users'],$data);
+    }
     
     //--------------------------------------------Customer related queries-----------------------------------------
     /**
