@@ -127,9 +127,9 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr>
-    <td><input id="<?php echo '{%= product_info.id%}'; ?>" name="checkbox[]" class="" type="checkbox" /></td>
+    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="checkbox[]" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
-    <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . '{%= product_info.id%}'; ?>">view</a></td>
+    <td>500 pieces</td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -149,17 +149,17 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-					<th>Check box</th>
+                                        <th>Check box</th>
                                         <th>Name</th>
-                                        <th>Details</th>
+                                        <th>Current stock</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_product_list">
                                 <?php foreach ($product_list_array as $key => $product) : ?>
                                     <tr>
-                                        <td><input id="<?php echo $product['id'] ?>" name="checkbox[]" class="" type="checkbox" /></td>
+                                        <td style="width: 20px; padding: 0px" ><label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;"><input id="<?php echo $product['id'] ?>" name="checkbox[]" class="" type="checkbox"></label></td>
                                         <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
-                                        <td><a target="_blank" href="<?php echo base_url() . "product/show_product/" . $product['id']; ?>">view</a></td>
+                                        <td>500 pieces</td>
                                     </tr>
                                 <?php endforeach; ?>
                                 
@@ -232,7 +232,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group">
                                 <label class="col-md-5 control-label requiredField" for="button_add_supplier">
                                 </label>
@@ -242,7 +241,6 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
             <div class="modal-footer">
