@@ -238,12 +238,12 @@ class Purchase extends CI_Controller {
         $purchase_id = $this->purchase_library->add_purchase_order($additional_data, $purchased_product_list, $add_stock_list, $supplier_payment_data, $supplier_transaction_info_array);
         if( $purchase_id !== FALSE )
         {
-            $purchase_info_array = $this->purchase_library->get_purchase_order_info($purchase_id)->result_array();
+            /*$purchase_info_array = $this->purchase_library->get_purchase_order_info($purchase_id)->result_array();
             $purchase_info = array();
             if( count($purchase_info_array) > 0 )
             {
                 $purchase_info = $purchase_info_array[0];
-            }
+            }*/
             $response['status'] = '1';
         } 
         else
@@ -261,7 +261,8 @@ class Purchase extends CI_Controller {
         $purchased_product_list = array();
         $supplier_due = 0;
         $purchase_order_no = $_POST['lot_no'];
-        $purchase_info_array = $this->purchase_library->get_purchase_info($purchase_order_no)->result_array();
+        //Instead of accessing database two times we can create one method to get purchase order info and supplier info
+        $purchase_info_array = $this->purchase_library->get_purchase_order_info($purchase_order_no)->result_array();
         if(!empty($purchase_info_array))
         {
             $purchase_info = $purchase_info_array[0];

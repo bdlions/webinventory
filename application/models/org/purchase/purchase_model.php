@@ -4,25 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth Model
- *
- * Author:  Ben Edmunds
- * 		   ben.edmunds@gmail.com
- * 	  	   @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- * 
- * Last Change: 3.22.13
- *
- * Changelog:
- * * 3-22-13 - Additional entropy added - 52aa456eef8b60ad6754b31fbdcc77bb
- * 
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
+ * Name:  Purchase Model
  *
  * Requirements: PHP5 or above
  *
@@ -35,6 +17,7 @@ class Purchase_model extends Ion_auth_model
     
     /**
      * Purchase Order No of a shop is checked
+     * purchase order no will be unique for a shop
      *
      * @return bool
      * @author Nazmul on 22nd November 2014
@@ -49,6 +32,44 @@ class Purchase_model extends Ion_auth_model
         $this->db->where('purchase_order_no', $purchase_order_no);
         return $this->db->count_all_results($this->tables['purchase_order']) > 0;
     }
+    
+    /*
+     * This method will add warehouse purchase order
+     * @Author Nazmul on 14th January 2015
+     */
+    public function add_warehouse_purchase_order()
+    {
+        
+    }
+    
+    /*
+     * This method will raise warehouse purchase order
+     * @Author Nazmul on 14th January 2015
+     */
+    public function raise_warehouse_purchase_order()
+    {
+        
+    }
+    /*
+     * This method will return warehouse purchase order
+     * @Author Nazmul on 14th January 2015
+     */
+    public function return_warehouse_purchase_order()
+    {
+        
+    }
+    
+    /*
+     * This method will return product list under a purchase order
+     * @param $purchase_order_no, purchase order no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 14th January 2015
+     */
+    public function get_warehouse_purchased_product_list()
+    {
+        
+    }
+    
     /**
      * Storing purchase order, product purchase order and stock into the database
      *
@@ -145,67 +166,10 @@ class Purchase_model extends Ion_auth_model
         return TRUE;
     }
     
-    public function get_purchase_order_info($purchase_id = 0, $purchase_order_no = 0, $shop_id = 0)
-    {
-        if( $purchase_id != 0 )
-        {
-            $this->db->where($this->tables['purchase_order'].'.id', $purchase_id);
-        }
-        if( $purchase_order_no != 0 )
-        {
-            $this->db->where($this->tables['purchase_order'].'.purchase_order_no', $purchase_order_no);
-        }
-        if($shop_id == 0)
-        {
-            $shop_id = $this->session->userdata('shop_id');
-        }        
-        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);        
-        return $this->db->select('*')
-                    ->from($this->tables['purchase_order'])
-                    ->get(); 
-    }
-    public function get_purchase_order_list($shop_id)
-    {
-        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);
-        return $this->db->select('*')
-                    ->from($this->tables['purchase_order'])
-                    ->get(); 
-    }
-    
-    public function get_product_list_purchase_order($purchase_order_no, $shop_id = 0)
-    {
-        if($shop_id == 0)
-        {
-            $shop_id = $this->session->userdata('shop_id');
-        }
-        $this->db->where($this->tables['purchase_order'].'.purchase_order_no', $purchase_order_no);
-        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);
-        return $this->db->select($this->tables['product_purchase_order'].'.*')
-                    ->from($this->tables['purchase_order'])
-                    ->join($this->tables['product_purchase_order'], $this->tables['purchase_order'].'.purchase_order_no='.$this->tables['product_purchase_order'].'.purchase_order_no')
-                    ->get();
-    }
-    
-    public function get_purchase_order_no_product_list($purchase_order_no_list, $shop_id)
-    {
-        $this->db->where($this->tables['purchase_order'].'.shop_id', $shop_id);
-        $this->db->where_in($this->tables['purchase_order'].'.purchase_order_no', $purchase_order_no_list);
-        return $this->db->select($this->tables['purchase_order'].'.id as purchase_order_id,'.$this->tables['product_purchase_order'].'.id as product_purchase_order_id,'.$this->tables['purchase_order'].'.purchase_order_no as purchase_order_no,'. $this->tables['product_purchase_order'].'.product_id,'. $this->tables['product_purchase_order'].'.available_quantity')
-                    ->from($this->tables['purchase_order'])
-                    ->join($this->tables['product_purchase_order'], $this->tables['purchase_order'].'.id='.$this->tables['product_purchase_order'].'.purchase_order_id')
-                    ->get();  
-    }
-    
-    public function get_total_purchase_price($supplier_id)
-    {
-        $shop_id = $this->session->userdata('shop_id');
-        $this->db->where('shop_id', $shop_id);
-        $this->db->where('supplier_id', $supplier_id);
-        return $this->db->select('SUM(total) as total_purchase_price')
-                            ->from($this->tables['purchase_order'])
-                            ->get();
-    }
-    
+    /*
+     * This method will return largest purchase order no of a shop
+     * @Author Nazmul on 14th January 2015
+     */
     public function get_next_purchase_order_no($shop_id = 0)
     {
         if( $shop_id == 0)
@@ -216,7 +180,13 @@ class Purchase_model extends Ion_auth_model
         return $this->db->query($query);
     }
     
-    public function get_purchase_info($purchase_order_no, $shop_id = 0)
+    /*
+     * This method will return purchase order info
+     * @param $purchase_order_no, purchase order no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 14th January 2015
+     */
+    public function get_purchase_order_info($purchase_order_no, $shop_id = 0)
     {
         if($shop_id == 0)
         {
@@ -229,6 +199,12 @@ class Purchase_model extends Ion_auth_model
                     ->get();
     }
     
+    /*
+     * This method will return product list under a purchase
+     * @param $purchase_order_no, purchase order no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 14th January 2015
+     */
     public function get_purchased_product_list($purchase_order_no, $shop_id = 0)
     {
         if($shop_id == 0)
