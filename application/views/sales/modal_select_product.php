@@ -1,40 +1,5 @@
 <script type="text/javascript">
     $(function() {
-        
-        /*$("#button_add_product").on("click", function() {
-            if ($("#input_product_name").val().length == 0)
-            {
-                alert("Product Name is required.");
-                return;
-            }            
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "product/create_product_sale_order",
-                data: {
-                    product_name: $("#input_product_name").val()
-                },
-                success: function(data) {
-                    if (data['status'] === '1')
-                    {
-                        var p_list = get_product_list();
-                        p_list[p_list.length] = data['product_info'];
-                        set_product_list(p_list);
-                        alert('New product is added successfully.');
-                        var product_info = data['product_info'];
-                        $("#tbody_product_list").html($("#tbody_product_list").html()+tmpl("tmpl_product_list",  product_info));
-                        append_selected_product(product_info);
-                        $('#modal_select_product').modal('hide');
-                    }
-                    else
-                    {
-                        alert('Error while creating product.');
-                    }
-                }
-
-            });
-        });*/
-        
         $("#button_search_product").on("click", function() {
             if ($("#dropdown_search_product")[0].selectedIndex == 0)
             {

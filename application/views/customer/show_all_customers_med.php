@@ -42,7 +42,7 @@
                         <td><?php echo $customer_info['address'] ?></td>
                         <td><a href="<?php echo base_url("./user/update_customer/" . $customer_info['customer_id']); ?>">Update</a></td>
                         <td><a href="<?php echo base_url("./user/show_customer/" . $customer_info['customer_id']); ?>">Show</a></td>
-                        <td><a href="<?php echo base_url("./payment/show_customer_transactions/" . $customer_info['customer_id']); ?>">Show</a></td>
+                        <td><a href="<?php echo base_url("./transaction/show_customer_transactions/" . $customer_info['customer_id']); ?>">Show</a></td>
                     </tr>
                     <?php
                 }
@@ -140,7 +140,7 @@
     <td>{%= customer_info.address%}</td>
     <td><a href="<?php echo base_url() . "user/update_customer/{%= customer_info.customer_id%}"; ?>">Update</a></td>
     <td><a href="<?php echo base_url() . "user/show_customer/{%= customer_info.customer_id%}"; ?>">Show</a></td>
-    <td><a href="<?php echo base_url() . "payment/show_customer_transactions/{%= customer_info.customer_id%}"; ?>">Show</a></td>
+    <td><a href="<?php echo base_url() . "transaction/show_customer_transactions/{%= customer_info.customer_id%}"; ?>">Show</a></td>
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}

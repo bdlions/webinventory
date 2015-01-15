@@ -67,6 +67,11 @@ class Sale_model extends Ion_auth_model
                 $this->db->insert_batch($this->tables['stock_info'], $stock_out_list);            
             }
         }
+        else
+        {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
         $this->db->trans_commit();
         $this->trigger_events('post_add_sale_order');
         return (isset($id)) ? $id : FALSE;

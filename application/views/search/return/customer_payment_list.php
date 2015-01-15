@@ -6,7 +6,9 @@
                 <tr>
                     <th>Time & Date</th>
                     <th>Customer Name</th>
+                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){ ?>
                     <th>Card No</th>
+                    <?php }?>
                     <th>Amount</th>
                 </tr>
             </thead>
@@ -17,7 +19,9 @@
                     <tr>
                         <td><?php echo $customer_returned_payment_list['created_on'] ?></td>
                         <td><?php echo $customer_returned_payment_list['first_name'].' '.$customer_returned_payment_list['last_name'] ?></td>
-                        <td><?php echo $customer_returned_payment_list['card_no'] ?></td>    
+                        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){ ?>
+                        <td><?php echo $customer_returned_payment_list['card_no'] ?></td>  
+                        <?php }?>
                         <td><?php echo $customer_returned_payment_list['amount'] ?></td>                        
                     </tr>
                 <?php

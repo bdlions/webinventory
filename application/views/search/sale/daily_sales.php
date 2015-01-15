@@ -122,7 +122,7 @@ function startclock()
         ?>
         <td >{%= sale_info.salesman_first_name%} {%=sale_info.salesman_last_name %}</td>
         <td >{%= sale_info.card_no%}</td>
-        <td ><?php echo '<a href="'.base_url().'payment/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
+        <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
         <?php 
             if($this->session->userdata('user_type') != SALESMAN)
             {                                    
@@ -326,7 +326,7 @@ function startclock()
                         ?>
                         <td><?php echo $sale_info['salesman_first_name'].' '.$sale_info['salesman_last_name'];?></td>
                         <td><?php echo $sale_info['card_no'];?></td>
-                        <td><?php echo '<a href="'.base_url().'payment/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>'?></td> 
+                        <td><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>'?></td> 
                         <?php 
                             if($this->session->userdata('user_type') != SALESMAN)
                             {                                    

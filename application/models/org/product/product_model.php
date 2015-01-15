@@ -4,26 +4,9 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth Model
- *
- * Author:  Ben Edmunds
- * 		   ben.edmunds@gmail.com
- * 	  	   @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
  * 
- * Last Change: 3.22.13
- *
- * Changelog:
- * * 3-22-13 - Additional entropy added - 52aa456eef8b60ad6754b31fbdcc77bb
- * 
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Purchase Model
+ * Added in Class Diagram
  * Requirements: PHP5 or above
  *
  */
@@ -73,11 +56,15 @@ class Product_model extends Ion_auth_model
         //filter out any data passed that doesnt have a matching column in the users table
         //and merge the product data and the additional data
         $additional_data = array_merge($this->_filter_data($this->tables['product_info'], $additional_data), $data);
-        //print_r($additional_data);exit('HI');
         $this->db->insert($this->tables['product_info'], $additional_data);
 
         $id = $this->db->insert_id();
-
+        if ($id !== FALSE) {
+            $this->set_message('product_creation_successful');
+        } else {
+            $this->set_error('product_creation_unsuccessful');
+        }
+        
         $this->trigger_events('post_create_product');
 
         return (isset($id)) ? $id : FALSE;
@@ -92,7 +79,7 @@ class Product_model extends Ion_auth_model
      * */
     public function update_product($id, $data)
     {
-        $product_info = $this->get_product($id)->row();
+        $product_info = $this->get_product_info($id)->row();
         if (array_key_exists($this->product_identity_column, $data) && $this->identity_check($data[$this->product_identity_column]) && $product_info->{$this->product_identity_column} !== $data[$this->product_identity_column])
         {
             $this->set_error('product_update_duplicate_product_name');
@@ -109,18 +96,9 @@ class Product_model extends Ion_auth_model
      * @return product info
      * @author Nazmul on 22nd November 2014
      * */
-    public function get_product($product_id)
+    public function get_product_info($product_id)
     {
         $this->db->where($this->tables['product_info'].'.id', $product_id);
-        return $this->db->select($this->tables['product_info'].'.id as product_id,'.$this->tables['product_info'].'.*,'.$this->tables['product_unit_category'].'.description as category_unit')
-                    ->from($this->tables['product_info'])
-                    ->join($this->tables['product_unit_category'],  $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id')
-                    ->get();
-    }
-    
-    public function get_products($product_id_list)
-    {
-         $this->db->where_in($this->tables['product_info'].'.id', $product_id_list);
         return $this->db->select($this->tables['product_info'].'.id as product_id,'.$this->tables['product_info'].'.*,'.$this->tables['product_unit_category'].'.description as category_unit')
                     ->from($this->tables['product_info'])
                     ->join($this->tables['product_unit_category'],  $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id')
@@ -132,9 +110,9 @@ class Product_model extends Ion_auth_model
      * @return product list of a shop
      * @author Nazmul on 22nd November 2014
      * */
-    public function get_all_products($shop_id = '')
+    public function get_all_products($shop_id = 0)
     {
-        if(empty($shop_id))
+        if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
@@ -152,20 +130,32 @@ class Product_model extends Ion_auth_model
      * @return product list
      * @author Nazmul on 22nd November 2014
      * */
-    public function search_product($key, $value)
+    public function search_product($key, $value, $shop_id = 0)
     {
-        $shop_id = $this->session->userdata('shop_id');
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
         $this->db->where($this->tables['product_info'].'.shop_id', $shop_id);
         $this->db->like($key, $value); 
         return $this->db->get($this->tables['product_info']); 
     }
     
-    public function create_product_unit_category($additional_data)
+    /*
+     * This method will create a product unit category
+     * @param $additional_data, product unit category data
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function create_product_unit_category($additional_data, $shop_id = 0)
     {
-        //echo $this->session->userdata('shop_id');
-        //$this->trigger_events('pre_create_unit');
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $data = array(
-            'shop_id' => $this->session->userdata('shop_id')
+            'shop_id' => $shop_id,
+            'created_on' => now()
         );
         //filter out any data passed that doesnt have a matching column in the unit table
         $unit_data = array_merge($this->_filter_data($this->tables['product_unit_category'], $additional_data), $data);
@@ -179,10 +169,14 @@ class Product_model extends Ion_auth_model
         {
             $this->set_error('create_unit_unsuccessful');
         }        
-        //$this->trigger_events('post_create_unit');
         return (isset($id)) ? $id : FALSE;
     }
     
+    /*
+     * This method will return all unit categories of product
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_all_product_unit_category($shop_id = 0)
     {
         if( $shop_id == 0 )
@@ -194,9 +188,14 @@ class Product_model extends Ion_auth_model
         return $this;
     }
     
-    public function get_product_unit_category_info($id)
+    /*
+     * This method will return product unit category info
+     * @param $product_unit_category_id, product unit category id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_product_unit_category_info($product_unit_category_id)
     {
-        $this->db->where('id',$id);
+        $this->db->where('id',$product_unit_category_id);
         return $this->db->select("*")
                     ->from($this->tables['product_unit_category'])
                     ->get();

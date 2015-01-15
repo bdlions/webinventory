@@ -1,52 +1,47 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth Model
- *
- * Author:  Ben Edmunds
- * 		   ben.edmunds@gmail.com
- * 	  	   @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- * 
- * Last Change: 3.22.13
- *
- * Changelog:
- * * 3-22-13 - Additional entropy added - 52aa456eef8b60ad6754b31fbdcc77bb
- * 
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Payments Model
+ * Added in Class Diagram
  * Requirements: PHP5 or above
- *
  */
 class Payments_model extends Ion_auth_model {
-    protected $payment_category_list = array();
     public function __construct() {
         parent::__construct();
-        $this->payment_category_list = $this->config->item('payment_category', 'ion_auth');
     }
     
-    public function get_supplier_total_payment($supplier_id)
+    /*
+     * This method will return total payment of a supplier of a shop
+     * @param $supplier_id, supplier id
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_supplier_total_payment($supplier_id, $shop_id = 0)
     {
-        $shop_id = $this->session->userdata('shop_id');
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
         $this->db->where('shop_id', $shop_id);
         $this->db->where('supplier_id', $supplier_id);
         return $this->db->select('SUM(amount) as total_payment')
                             ->from($this->tables['supplier_payment_info'])
                             ->get();
     }
-    
-    public function get_supplier_total_returned_payment($supplier_id)
+    /*
+     * This method will return total returned payment of a supplier of a shop
+     * @param $supplier_id, supplier id
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_supplier_total_returned_payment($supplier_id, $shop_id = 0)
     {
-        $shop_id = $this->session->userdata('shop_id');
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('supplier_id', $supplier_id);
         return $this->db->select('SUM(amount) as total_returned_payment')
@@ -54,7 +49,9 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     /*
-     * Suppliers total returned payment
+     * This method will return total returned payment of all supplier of a shop
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
      */
     public function get_suppliers_total_returned_payment($shop_id = 0)
     {
@@ -68,7 +65,10 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     /*
-     * Suppliers total returned payment of today
+     * This method will return total returned payment of all supplier of a shop of today
+     * @param $time, time in milisecond
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
      */
     public function get_suppliers_total_returned_payment_today($time, $shop_id = 0)
     {
@@ -84,7 +84,10 @@ class Payments_model extends Ion_auth_model {
     }
     
     /*
-     * Suppliers returned payment list of today
+     * This method will return returned payment list of all supplier of a shop of today
+     * @param $time, time in milisecond
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
      */
     public function get_suppliers_returned_payment_list_today($time, $shop_id = 0)
     {
@@ -100,26 +103,41 @@ class Payments_model extends Ion_auth_model {
                             ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                             ->get();
     }
-    
-    public function get_supplier_transactions($supplier_id)
+    /*
+     * This method will return customer payment info
+     * @param $payment_id, payment id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customer_payment_info($payment_id)
     {
-        $shop_id = $this->session->userdata('shop_id');
-        $this->db->where('shop_id', $shop_id);
-        $this->db->where('supplier_id', $supplier_id);
-        $this->response = $this->db->get($this->tables['supplier_transaction_info']);
-        return $this;
+        $this->db->where('id', $payment_id);
+        return $this->db->select('*')
+                    ->from($this->tables['customer_payment_info'])
+                    ->get();
     }
-    
-    public function get_customer_total_payment($customer_id)
+    /*
+     * This method will return total payment of a customer of a shop
+     * @param $customer_id, customer id
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customer_total_payment($customer_id, $shop_id = 0)
     {
-        $shop_id = $this->session->userdata('shop_id');
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('customer_id', $customer_id);
         return $this->db->select('SUM(amount) as total_payment')
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
-    
+    /*
+     * This method will return total payment of all customers of a shop
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_customers_total_payment($shop_id = 0)
     {
         if($shop_id == 0)
@@ -131,7 +149,12 @@ class Payments_model extends Ion_auth_model {
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
-    
+    /*
+     * This method will return total payment of all customers of a shop of today
+     * @param $time, time in milisecond
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_customers_total_payment_today($time, $shop_id = 0)
     {
         if($shop_id == 0)
@@ -144,10 +167,18 @@ class Payments_model extends Ion_auth_model {
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
-    
-    public function get_customer_total_returned_payment($customer_id)
+    /*
+     * This method will return total returned payment of a customer of a shop
+     * @param $customer_id, custome id
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customer_total_returned_payment($customer_id, $shop_id = 0)
     {
-        $shop_id = $this->session->userdata('shop_id');
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('customer_id', $customer_id);
         return $this->db->select('SUM(amount) as total_returned_payment')
@@ -155,7 +186,9 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     /*
-     * Customers total returned payment
+     * This method will return total returned payment of all customers of a shop
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
      */
     public function get_customers_total_returned_payment($shop_id = 0)
     {
@@ -169,7 +202,10 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     /*
-     * Customers total returned payment of today
+     * This method will return total returned payment of all customers of a shop of today
+     * @param $time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
      */
     public function get_customers_total_returned_payment_today($time, $shop_id = 0)
     {
@@ -183,7 +219,12 @@ class Payments_model extends Ion_auth_model {
                             ->from($this->tables['customer_returned_payment_info'])
                             ->get();
     }
-    
+    /*
+     * This method will return returned payment list of all customers of a shop of today
+     * @param $time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_customers_returned_payment_list_today($time, $shop_id = 0)
     {
         if($shop_id == 0)
@@ -198,32 +239,13 @@ class Payments_model extends Ion_auth_model {
                             ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                             ->get();
     }
-    
-    public function get_customer_transactions($customer_id)
-    {
-        $shop_id = $this->session->userdata('shop_id');
-        $this->db->where('shop_id', $shop_id);
-        $this->db->where('customer_id', $customer_id);
-        $this->response = $this->db->get($this->tables['customer_transaction_info']);
-        return $this;
-    }
-    
-    public function add_customer_due_collect($payment_data)
-    {
-        $payment_data = $this->_filter_data($this->tables['customer_payment_info'], $payment_data);
-        $this->db->insert($this->tables['customer_payment_info'], $payment_data);
-        $id = $this->db->insert_id();
-        return (isset($id)) ? $id : FALSE;        
-    }
-    
-    public function add_customer_due_collect_transaction($transaction_data)
-    {
-        $this->db->insert_batch($this->tables['customer_transaction_info'], $transaction_data);
-        $id = $this->db->insert_id();
-        return (isset($id)) ? $id : FALSE;        
-    }
-    
-    public function get_customer_payment_today($start_time, $shop_id = '')
+    /*
+     * This method will return customers total sale payment of today of a shop
+     * @param $start_time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customers_sale_payment_today($start_time, $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -231,13 +253,18 @@ class Payments_model extends Ion_auth_model {
         }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('created_on >=', $start_time);
-        $this->db->where('payment_category_id', $this->payment_category_list['sale_payment_id']);
+        $this->db->where('payment_category_id', CUSTOMER_PAYMENT_CATEGORY_SALE_PAYMENT_ID);
         return $this->db->select('sum(amount) as total_customer_payment')
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
-    
-    public function get_customer_payment_list_today($start_time, $shop_id = '')
+    /*
+     * This method will return customers sale payment list of today of a shop
+     * @param $start_time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customers_sale_payment_list_today($start_time, $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -245,14 +272,19 @@ class Payments_model extends Ion_auth_model {
         }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('created_on >=', $start_time);
-        $this->db->where('payment_category_id', $this->payment_category_list['sale_payment_id']);
+        $this->db->where('payment_category_id', CUSTOMER_PAYMENT_CATEGORY_SALE_PAYMENT_ID);
         $this->db->group_by($this->tables['customer_payment_info'].'.sale_order_no');
         return $this->db->select($this->tables['customer_payment_info'].'.sale_order_no, sum(amount) as total_payment')
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
-    
-    public function get_customer_due_collect_today($start_time, $shop_id = '')
+    /*
+     * This method will return customers total due collect of today of a shop
+     * @param $start_time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customers_due_collect_today($start_time, $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -260,30 +292,18 @@ class Payments_model extends Ion_auth_model {
         }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('created_on >=', $start_time);
-        $this->db->where('payment_category_id', $this->payment_category_list['due_collect_id']);
+        $this->db->where('payment_category_id', CUSTOMER_PAYMENT_CATEGORY_DUE_COLLECT_ID);
         return $this->db->select('sum(amount) as total_due_collect')
                             ->from($this->tables['customer_payment_info'])
                             ->get();
     }
-    public function delete_due_collect($id)
-    {
-        if(!isset($id) || $id <= 0)
-        {
-            $this->set_error('delete_due_collect_fail');
-            return FALSE;
-        }
-        $this->db->where('id', $id);
-        $this->db->delete($this->tables['customer_payment_info']);
-        
-        if ($this->db->affected_rows() == 0) {
-            $this->set_error('delete_due_collect_fail');
-            return FALSE;
-        }
-        $this->set_message('delete_due_collect_successful');
-        return TRUE;
-    }
-    
-    public function get_customer_due_collect_list_today($start_time, $shop_id = '')
+    /*
+     * This method will return customers due collect list of today of a shop
+     * @param $start_time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customers_due_collect_list_today($start_time, $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -291,42 +311,66 @@ class Payments_model extends Ion_auth_model {
         }
         $this->db->where($this->tables['customer_payment_info'].'.shop_id', $shop_id);
         $this->db->where($this->tables['customer_payment_info'].'.created_on >=', $start_time);
-        $this->db->where('payment_category_id', $this->payment_category_list['due_collect_id']);
+        $this->db->where('payment_category_id', CUSTOMER_PAYMENT_CATEGORY_DUE_COLLECT_ID);
         return $this->db->select($this->tables['customer_payment_info'].'.*,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['customers'].'.card_no')
                             ->from($this->tables['customer_payment_info'])
                             ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['customer_payment_info'].'.customer_id')
                             ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                             ->get();
     }
-    
-    public function get_customer_previous_due_collect($current_date, $shop_id = 0)
+    /*
+     * This method will add due collect of a customer
+     * @param $payment_data, payment data
+     * @param $customer_transaction_info_array, customer transaction related to due collect
+     */
+    public function add_customer_due_collect($payment_data, $customer_transaction_info_array)
     {
-        if(empty($shop_id))
+        $payment_data = $this->_filter_data($this->tables['customer_payment_info'], $payment_data);
+        $this->db->trans_begin();
+        $this->db->insert($this->tables['customer_payment_info'], $payment_data);
+        $id = $this->db->insert_id();
+        if($id > 0)
         {
-            $shop_id = $this->session->userdata('shop_id');
+            if(!empty($customer_transaction_info_array))
+            {
+                $this->db->insert_batch($this->tables['customer_transaction_info'], $customer_transaction_info_array);
+            }
         }
-        $this->db->where('shop_id', $shop_id);
-        $this->db->where('created_on <', $current_date);
-        $this->db->where('payment_category_id', $this->payment_category_list['due_collect_id']);
-        return $this->db->select('sum(amount) as total_previous_due_collect')
-                            ->from($this->tables['customer_payment_info'])
-                            ->get();
-    }
-    
-    public function add_customer_transactions($customer_transaction_info_array)
-    {
-        $this->db->insert_batch($this->tables['customer_transaction_info'], $customer_transaction_info_array);
-    }
-    
-    public function delete_customer_payment($sale_order_no, $shop_id = 0)
-    {
-        if(empty($shop_id))
+        else
         {
-            $shop_id = $this->session->userdata('shop_id');
+            $this->db->trans_rollback();
+            return FALSE;
         }
-        $this->db->where('shop_id', $shop_id);
-        $this->db->where('sale_order_no', $sale_order_no);
-        return $this->db->delete($this->tables['customer_payment_info']);
+        $this->db->trans_commit();
+        return TRUE;        
     }
-       
+    /*
+     * This method will remove a due collect payment info
+     * @param $payment_id, due collect payment id
+     * @param $customer_transaction_info_array, customer transaction related to due collect delete
+     */
+    public function delete_due_collect_payment($payment_id, $customer_transaction_info_array)
+    {
+        if(!isset($payment_id) || $payment_id <= 0)
+        {
+            $this->set_error('delete_due_collect_fail');
+            return FALSE;
+        }
+        $this->db->trans_begin();
+        $this->db->where('id', $payment_id);
+        $this->db->delete($this->tables['customer_payment_info']);
+        
+        if ($this->db->affected_rows() == 0) {
+            $this->set_error('delete_due_collect_fail');
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+        if(!empty($customer_transaction_info_array))
+        {
+            $this->db->insert_batch($this->tables['customer_transaction_info'], $customer_transaction_info_array);
+        }
+        $this->set_message('delete_due_collect_successful');
+        $this->db->trans_commit();
+        return TRUE;        
+    }       
 }

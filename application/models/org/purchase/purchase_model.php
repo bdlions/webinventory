@@ -5,7 +5,7 @@ if (!defined('BASEPATH'))
 
 /**
  * Name:  Purchase Model
- *
+ * Added in Class Diagram
  * Requirements: PHP5 or above
  *
  */

@@ -44,7 +44,7 @@
                         <td><?php echo $supplier_info['company'] ?></td>
                         <td><a href="<?php echo base_url("./user/update_supplier/" . $supplier_info['supplier_id']); ?>">Update</a></td>
                         <td><a href="<?php echo base_url("./user/show_supplier/" . $supplier_info['supplier_id']); ?>">Show</a></td>
-                        <td><a href="<?php echo base_url("./payment/show_supplier_transactions/" . $supplier_info['supplier_id']); ?>">Show</a></td>
+                        <td><a href="<?php echo base_url().'transaction/show_supplier_transactions/'.$supplier_info['supplier_id']; ?>">Show</a></td>
                         <td><a role="menuitem" tabindex="-1" href="javascript:void(o)" onclick="open_modal_delete_confirm(<?php echo $supplier_info['supplier_id'] ?>)">Inactive</a></td>
                     </tr>
                 <?php
@@ -108,7 +108,7 @@
         <td>{%= supplier_info.company%}</td>
         <td><a href="<?php echo base_url()."user/update_supplier/{%= supplier_info.supplier_id%}"; ?>">Update</a></td>
         <td><a href="<?php echo base_url()."user/show_supplier/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
-        <td><a href="<?php echo base_url()."payment/show_supplier_transactions/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
+        <td><a href="<?php echo base_url()."transaction/show_supplier_transactions/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
     </tr>
     {% supplier_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}

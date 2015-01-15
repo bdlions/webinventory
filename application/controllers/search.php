@@ -124,141 +124,6 @@ class Search extends CI_Controller {
         //echo '<pre/>';print_r($result);exit('hi');
         echo json_encode($result);
     }
-    
-    /*public function process_daily_sale($product_id = 0)
-    {
-        //$today = date('Y-m-d');
-        $time = $this->utils->get_current_date_start_time();
-        $result = array();
-        $shop_id = $this->session->userdata('shop_id');
-        $product_list = array();
-        $product_list_array = $this->product_library->get_all_products($shop_id)->result_array();
-        if( !empty($product_list_array) )
-        {
-            foreach($product_list_array as $product_info)
-            {
-                $product_list[$product_info['id']] = $product_info['name'];
-            }
-        }
-        $result['product_list'] = $product_list;
-        
-        $total_product_sold = 0;
-        $total_profit = 0;
-        $total_sale_price = 0;
-        
-        $sale_list = array();
-        $sale_list_array = $this->sale_library->get_daily_sales($time, $shop_id, $product_id)->result_array();
-        if( !empty($sale_list_array) )
-        {
-            foreach($sale_list_array as $sale_info)
-            {
-                $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);
-                $total_product_sold = $total_product_sold + $sale_info['quantity'];
-                $total_profit = $total_profit + $sale_info['total_sale_price'] - ($sale_info['quantity']*$sale_info['purchase_unit_price']);
-                $total_sale_price = $total_sale_price + $sale_info['total_sale_price'];
-                $sale_list[] = $sale_info;
-            }
-        }
-        $result['sale_list'] = $sale_list;
-        $result['total_product_sold'] = $total_product_sold;
-        if($this->session->userdata('user_type') != SALESMAN)
-        {                                    
-            $result['total_profit'] = $total_profit;
-        }        
-        $result['total_sale_price'] = $total_sale_price;
-        
-        //expense of today
-        $total_expense = 0;
-        $expense_list_array = $this->expenses->get_all_expenses_today($time)->result_array();
-        foreach($expense_list_array as $expense_info)
-        {
-            $total_expense = $total_expense + $expense_info['expense_amount'];
-        }
-        $result['total_expense'] = $total_expense;
-        //total due
-        $total_due = 0;
-        $sale_order_array = $this->sale_library->get_sale_orders_today($time)->result_array();
-        foreach($sale_order_array as $sale_info)
-        {
-            if( ($sale_info['total'] - $sale_info['paid']) > 0)
-            {
-                $total_due = $total_due + ($sale_info['total'] - $sale_info['paid']);
-            }
-        }
-        $result['total_due'] = $total_due;
-        
-        //total due collect
-        $total_due_collect = 0;
-        $payment_list_array = $this->payments->get_customer_due_collect_today($time)->result_array();
-        if(!empty($payment_list_array))
-        {
-            $total_due_collect = $payment_list_array[0]['total_due_collect'];
-        }        
-        $result['total_due_collect'] = $total_due_collect;
-        
-        //customers total payments and total payments of today
-        $customers_total_payment = 0;
-        $customers_total_payment_array = $this->payments->get_customers_total_payment()->result_array();
-        if(!empty($customers_total_payment_array))
-        {
-            $customers_total_payment = $customers_total_payment_array[0]['total_payment'];
-        }
-        $customers_total_payment_today = 0;
-        $customers_total_payment_today_array = $this->payments->get_customers_total_payment_today($time)->result_array();
-        if(!empty($customers_total_payment_today_array))
-        {
-            $customers_total_payment_today = $customers_total_payment_today_array[0]['total_payment'];
-        }
-        //shop total expenses and total expenses of today
-        $shop_total_expenses = 0;
-        $shop_total_expenses_array = $this->expenses->get_shop_total_expenses()->result_array();
-        if(!empty($shop_total_expenses_array))
-        {
-            $shop_total_expenses = $shop_total_expenses_array[0]['total_expense'];
-        }
-        $shop_total_expenses_today = 0;
-        $shop_total_expenses_today_array = $this->expenses->get_shop_total_expenses_today($time)->result_array();
-        if(!empty($shop_total_expenses_today_array))
-        {
-            $shop_total_expenses_today = $shop_total_expenses_today_array[0]['total_expense'];
-        }
-        //suppliers total returned payment and returned payment of today
-        $suppliers_total_returned_payment = 0;
-        $suppliers_total_returned_payment_array = $this->payments->get_suppliers_total_returned_payment()->result_array();
-        if(!empty($suppliers_total_returned_payment_array))
-        {
-            $suppliers_total_returned_payment = $suppliers_total_returned_payment_array[0]['total_returned_payment'];
-        }
-        $suppliers_total_returned_payment_today = 0;
-        $suppliers_total_returned_payment_today_array = $this->payments->get_suppliers_total_returned_payment_today($time)->result_array();
-        if(!empty($suppliers_total_returned_payment_today_array))
-        {
-            $suppliers_total_returned_payment_today = $suppliers_total_returned_payment_today_array[0]['total_returned_payment'];
-        }
-        //customers total returned payment and returned payment of today
-        $customers_total_returned_payment = 0;
-        $customers_total_returned_payment_array = $this->payments->get_customers_total_returned_payment()->result_array();
-        if(!empty($customers_total_returned_payment_array))
-        {
-            $customers_total_returned_payment = $customers_total_returned_payment_array[0]['total_returned_payment'];
-        }
-        $customers_total_returned_payment_today = 0;
-        $customers_total_returned_payment_today_array = $this->payments->get_customers_total_returned_payment_today($time)->result_array();
-        if(!empty($customers_total_returned_payment_today_array))
-        {
-            $customers_total_returned_payment_today = $customers_total_returned_payment_today_array[0]['total_returned_payment'];
-        }
-        
-        $result['suppliers_total_returned_payment_today'] = $suppliers_total_returned_payment_today;
-        $result['customers_total_returned_payment_today'] = $customers_total_returned_payment_today;
-        
-        $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses;
-        $result['current_balance'] = $current_balance;
-        
-        $previous_balance = $current_balance - ($customers_total_payment_today + $suppliers_total_returned_payment_today - $customers_total_returned_payment_today - $shop_total_expenses_today);
-        $result['previous_balance'] = $previous_balance;
-        return $result;
-    }*/
     public function process_daily_sale($product_id = 0)
     {
         
@@ -336,7 +201,7 @@ class Search extends CI_Controller {
         $result['total_expense'] = $total_expense;
         //total customer payment
         $total_customer_payment = 0;
-        $customer_payment_list_array = $this->payments->get_customer_payment_today($time)->result_array();
+        $customer_payment_list_array = $this->payments->get_customers_sale_payment_today($time)->result_array();
         if(!empty($customer_payment_list_array))
         {
             $total_customer_payment = $customer_payment_list_array[0]['total_customer_payment'];
@@ -345,7 +210,7 @@ class Search extends CI_Controller {
         
         //total due collect
         $total_due_collect = 0;
-        $payment_list_array = $this->payments->get_customer_due_collect_today($time)->result_array();
+        $payment_list_array = $this->payments->get_customers_due_collect_today($time)->result_array();
         if(!empty($payment_list_array))
         {
             $total_due_collect = $payment_list_array[0]['total_due_collect'];
@@ -544,7 +409,7 @@ class Search extends CI_Controller {
         
    
         $time = $this->utils->get_current_date_start_time();
-        $due_collect_list_array = $this->payments->get_customer_due_collect_list_today($time)->result_array();
+        $due_collect_list_array = $this->payments->get_customers_due_collect_list_today($time)->result_array();
         foreach($due_collect_list_array as $due_collect)
         {
             $due_collect['created_on'] = $this->utils->process_time($due_collect['created_on']);

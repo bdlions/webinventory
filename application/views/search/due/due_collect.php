@@ -7,7 +7,9 @@
                     <th>Time & Date</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){ ?>
                     <th>Card No</th>
+                    <?php }?>
                     <th>Amount</th>
                     <th>Delete</th>
                 </tr>
@@ -20,9 +22,11 @@
                         <td><?php echo $due_collect['created_on'] ?></td>
                         <td><?php echo $due_collect['first_name'] ?></td>
                         <td><?php echo $due_collect['last_name'] ?></td>  
-                        <td><?php echo $due_collect['card_no'] ?></td>    
+                        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){ ?>
+                        <td><?php echo $due_collect['card_no'] ?></td>  
+                        <?php }?>
                         <td><?php echo $due_collect['amount'] ?></td>
-                        <td><a onclick="open_modal_delete_confirm(<?php echo $due_collect['id'] ?>)">Delete</a></td>
+                        <td><a onclick="open_modal_delete_due_collect_confirm(<?php echo $due_collect['id'] ?>)">Delete</a></td>
                     </tr>
                 <?php
                 }

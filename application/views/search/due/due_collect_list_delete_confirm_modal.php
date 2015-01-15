@@ -4,24 +4,24 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "payment/delete_due_collect",
+                url: '<?php echo base_url(); ?>' + "payment/delete_due_collect_payment",
                 data: {
                        id: $("#id").val()
                 },
                 success: function(data) {
                     alert(data['message']);
-                    $("#modal_delete_confirm").modal('hide');
+                    $("#modal_delete_due_collect_confirm").modal('hide');
                     window.location.reload();
                 }
             });
         });
     });
-    function open_modal_delete_confirm(id) {
+    function open_modal_delete_due_collect_confirm(id) {
         $('#id').val(id);
-        $("#modal_delete_confirm").modal('show');
+        $("#modal_delete_due_collect_confirm").modal('show');
     }
 </script>
-<div class="modal fade" id="modal_delete_confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_delete_due_collect_confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

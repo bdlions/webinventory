@@ -4,23 +4,9 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth
- *
- * Author: Ben Edmunds
- * 		  ben.edmunds@gmail.com
- *         @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- *
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Payments
+ * Added in Class Diagram
  * Requirements: PHP5 or above
- *
  */
 class Payments {
     /**
@@ -33,6 +19,7 @@ class Payments {
         $this->load->config('ion_auth', TRUE);
         $this->load->library('org/common/utils');
         $this->load->library('org/purchase/purchase_library');
+        $this->load->library('org/sale/sale_library');
         $this->load->library('org/stock/stock_library');
         $this->load->model('org/common/payments_model');
 
@@ -81,6 +68,11 @@ class Payments {
         return get_instance()->$var;
     }
     
+    /*
+     * This method will calculate current due of a supplier
+     * @param $supplier_id, supplier id
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_supplier_current_due($supplier_id)
     {
         $total_purchase_price = 0;
@@ -103,7 +95,11 @@ class Payments {
         }
         return $total_purchase_price - $total_payment + $total_returned_payment;
     }
-    
+    /*
+     * This method will calculate current due of a customer
+     * @param $customer_id, customer id
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_customer_current_due($customer_id)
     {
         $total_sale_price = 0;
@@ -126,7 +122,10 @@ class Payments {
         }
         return $total_sale_price - $total_payment + $total_returned_payment;
     }
-    
+    /*
+     * This method will generate due list of today
+     * @Author Nazmul on 15th January 2015
+     */
     public function get_daily_sale_due_list()
     {
         $sale_due_list = array();
@@ -152,7 +151,7 @@ class Payments {
                 $sale_order_no_sale_info_map[$sale_info['sale_order_no']] = $sale_order_no_sale_info_map[$sale_info['sale_order_no']] + $sale_info['sale_unit_price']*$sale_info['total_sale'];
             }
         }
-        $customer_payment_list_array = $this->payments_model->get_customer_payment_list_today($time)->result_array();
+        $customer_payment_list_array = $this->payments_model->get_customers_sale_payment_list_today($time)->result_array();
         foreach($customer_payment_list_array as $customer_payment_info)
         {
             $sale_order_no_payment_info_map[$customer_payment_info['sale_order_no']] = $customer_payment_info['total_payment'];

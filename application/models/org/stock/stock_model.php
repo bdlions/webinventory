@@ -4,26 +4,8 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth Model
- *
- * Author:  Ben Edmunds
- * 		   ben.edmunds@gmail.com
- * 	  	   @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- * 
- * Last Change: 3.22.13
- *
- * Changelog:
- * * 3-22-13 - Additional entropy added - 52aa456eef8b60ad6754b31fbdcc77bb
- * 
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Stock Model
+ * Added in Class Diagram
  * Requirements: PHP5 or above
  *
  */
@@ -33,9 +15,12 @@ class Stock_model extends Ion_auth_model
         parent::__construct();        
     }
 
-    //---------------------------------------------- Stock related queries -------------------------------------------
     /*
      * This method will return current stock info
+     * @param $product_id, product id
+     * @param $purchase_order_no, purchase order number
+     * @param $shop_id, shop id
+     * @Author Nazmul
      */
     public function search_stocks($product_id = 0, $purchase_order_no = '', $shop_id = 0)
     {
@@ -65,6 +50,12 @@ class Stock_model extends Ion_auth_model
                     ->get(); 
     }
     
+    /*
+     * This method will return supplier purchase list
+     * @param $supplier_id, supplier id
+     * @param $shop_id, shop id
+     * @Author Nazmul
+     */
     public function get_supplier_purchase_list($supplier_id, $shop_id = 0)
     {
         if($shop_id == 0)
@@ -85,7 +76,12 @@ class Stock_model extends Ion_auth_model
                     ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->get(); 
     }
-    
+    /*
+     * This method will return customer purchase list
+     * @param $customer_id, customer id
+     * @param $shop_id, shop id
+     * @Author Nazmul
+     */
     public function get_customer_purchase_list($customer_id, $shop_id = 0)
     {
         if($shop_id == 0)

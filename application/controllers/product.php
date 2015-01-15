@@ -160,22 +160,28 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/create_product', $this->data);
     }
     
+    /*
+     * Ajax call
+     * This method will create a new product
+     * @Author Nazmul on 15th January 2015
+     */
     public function create_product_by_ajax()
     {
+        $response = array();
         $product_name = $this->input->post('input_product_name');
         $product_unit_category = $this->input->post('product_unit_category');
         
-         $data = array(
-                'unit_category_id' => $product_unit_category,
-                'created_on' => now()
-            );
+        $data = array(
+            'unit_category_id' => $product_unit_category,
+            'created_on' => now()
+        );
 
         $product_id = $this->product_library->create_product($product_name, $data);
         if( $product_id !== FALSE )
         {
             $response['status'] = 1;
-            $response['message'] = 'Product is added successfully.';
-            $data = $this->product_library->get_product($product_id)->result_array();
+            $response['message'] = $this->product_library->messages_alert();
+            $data = $this->product_library->get_product_info($product_id)->result_array();
             if(!empty($data))
             {
                 $response['product_info'] = $data[0];
@@ -184,9 +190,8 @@ class Product extends CI_Controller {
         else
         {
             $response['status'] = 0;
-            $this->data['message'] = 'Duplicate product name';
+            $this->data['message'] = $this->product_library->errors_alert();
         }
-        
         echo json_encode($response);
     }
     
@@ -213,9 +218,9 @@ class Product extends CI_Controller {
      * This method will update product info
      * @author Nazmul on 22nd January 2014
      */
-    public function update_product($product_id = '')
+    public function update_product($product_id = 0)
     {
-        if(empty($product_id))
+        if($product_id == 0)
         {
             redirect("product/show_all_products","refresh");
         }
@@ -231,7 +236,7 @@ class Product extends CI_Controller {
         $this->form_validation->set_rules('remarks', 'Remarks', 'xss_clean');
         
         $product_info = array();
-        $product_info_array = $this->product_library->get_product($product_id)->result_array();
+        $product_info_array = $this->product_library->get_product_info($product_id)->result_array();
         if(empty($product_info_array))
         {
             redirect("product/show_all_products","refresh");
@@ -357,14 +362,14 @@ class Product extends CI_Controller {
      * This method will dispaly product info
      * @author Nazmul on 22nd January 2014
      */
-    public function show_product($product_id = '')
+    public function show_product($product_id = 0)
     {
-        if(empty($product_id))
+        if($product_id == 0)
         {
             redirect("product/show_all_products","refresh");
         }
         $product_info = array();
-        $product_info_array = $this->product_library->get_product($product_id)->result_array();
+        $product_info_array = $this->product_library->get_product_info($product_id)->result_array();
         if(!empty($product_info_array))
         {
             $product_info = $product_info_array[0];
@@ -413,72 +418,6 @@ class Product extends CI_Controller {
         );
         $this->template->load(null, 'product/show_product', $this->data);
     }    
-    
-    /*
-     * Ajax Call
-     * This method will create a new product into the system
-     * @return status, 0 for error and 1 for success
-     * @return message, if there is any error
-     * @return product_info, newly created product
-     * @author Nazmul on 22nd January 2014
-     */
-    public function create_product_sale_order()
-    {
-        $response = array();
-        $product_name = $_POST['product_name'];
-        $additional_data = array();
-        $product_id = $this->product_library->create_product($product_name, $additional_data);
-        if( $product_id !== FALSE )
-        {
-            $product_info_array = $this->product_library->get_product($product_id)->result_array();
-            $product_info = array();
-            if( count($product_info_array) > 0 )
-            {
-                $product_info = $product_info_array[0];
-            }
-            $response['status'] = '1';
-            $response['product_info'] = $product_info;            
-        }  
-        else
-        {
-           $response['status'] = '0';
-           $response['message'] = $this->product_library->errors_alert();
-        }
-        echo json_encode($response);
-    }
-    
-    /*
-     * Ajax Call
-     * This method will create a new product into the system
-     * @return status, 0 for error and 1 for success
-     * @return message, if there is any error
-     * @return product_info, newly created product
-     * @author Nazmul on 22nd January 2014
-     */
-    public function create_product_purchase_order()
-    {
-        $response = array();
-        $product_name = $_POST['product_name'];
-        $additional_data = array();
-        $product_id = $this->product_library->create_product($product_name, $additional_data);
-        if( $product_id !== FALSE )
-        {
-            $product_info_array = $this->product_library->get_product($product_id)->result_array();
-            $product_info = array();
-            if( count($product_info_array) > 0 )
-            {
-                $product_info = $product_info_array[0];
-            }
-            $response['status'] = '1';
-            $response['product_info'] = $product_info;            
-        }  
-        else
-        {
-           $response['status'] = '0';
-           $response['message'] = $this->product_library->errors_alert();
-        }
-        echo json_encode($response);
-    }
     
     /*
      * This method will upload product list
@@ -601,8 +540,7 @@ class Product extends CI_Controller {
                     }
                     if($i==count($product_unit)){
                         $data = array(
-                            'description' => $category_name,
-                            'created_on' => now()
+                            'description' => $category_name
                         );
                         $category_name = $this->product_library->create_product_unit_category($data);
                     }
@@ -667,8 +605,7 @@ class Product extends CI_Controller {
             {
                 $unit_name = $this->input->post('unit_name');
                 $data = array(
-                    'description' => $unit_name,
-                    'created_on' => now()
+                    'description' => $unit_name
                 );
                 $id = $this->product_library->create_product_unit_category($data);
                 if( $id !== FALSE )
@@ -705,6 +642,11 @@ class Product extends CI_Controller {
         $this->template->load(null, 'product/create_product_unit_category',$this->data);
     }
     
+    /*
+     * Ajax call
+     * This method will create a product unit category
+     * @Author Nazmul modified on 15th January 2015
+     */
     public function create_product_unit(){
         $unit_name = $this->input->post('unit_name');
         $product_unit = $this->product_library->get_all_product_unit_category()->result_array();
@@ -712,15 +654,13 @@ class Product extends CI_Controller {
         for($i=0;$i<count($product_unit);$i++){
             $name = strtolower($product_unit[$i]['description']);
             if($name == $unit_name_lower){
-                //echo json_encode($product_unit);
                 return;
             }
         }
         
         $data = array(
-                'description' => $unit_name,
-                'created_on' => now()
-            );
+            'description' => $unit_name
+        );
         
         $id = $this->product_library->create_product_unit_category($data);
         
