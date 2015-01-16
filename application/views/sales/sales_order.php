@@ -509,5 +509,4 @@
 </div><!-- /.modal -->
 <?php $this->load->view("sales/modal_due_collect"); ?>
 <?php $this->load->view("sales/modal_select_customer"); ?>
-<?php //$this->load->view("sales/modal_create_customer_small"); ?>
 <?php $this->load->view("sales/modal_select_product"); ?>

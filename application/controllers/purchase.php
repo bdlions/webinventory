@@ -267,7 +267,7 @@ class Purchase extends CI_Controller {
         {
             $purchase_info = $purchase_info_array[0];
             $supplier_id = $purchase_info['supplier_id'];
-            $supplier_info_array = $this->ion_auth->get_supplier(0, $supplier_id)->result_array();
+            $supplier_info_array = $this->ion_auth->get_supplier_info(0, $supplier_id)->result_array();
             if(!empty($supplier_info_array))
             {
                 $supplier_info = $supplier_info_array[0]; 

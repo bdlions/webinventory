@@ -1,7 +1,7 @@
 <h3>Add New Customer</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
-        <?php echo form_open("user/create_customer", array('id' => 'form_create_customer', 'class' => 'form-horizontal')); ?>
+        <?php echo form_open("customer/create_customer", array('id' => 'form_create_customer', 'class' => 'form-horizontal')); ?>
         <div class ="col-md-5 col-md-offset-2">
             <div class ="row">
                 <div class="col-md-4"></div>
@@ -63,14 +63,6 @@
                     <?php echo form_dropdown('profession_list', $profession_list+array('' => 'Select'), '', 'class=form-control'); ?>
                 </div> 
             </div>
-            <!--<div class="form-group">
-                <label for="address" class="col-md-6 control-label requiredField">
-                    Message Category
-                </label>
-                <div class ="col-md-6">
-                    <?php //echo form_dropdown('message_category_list', $message_category_list+array('' => 'Select'), '', 'class=form-control'); ?>
-                </div> 
-            </div>-->
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
 

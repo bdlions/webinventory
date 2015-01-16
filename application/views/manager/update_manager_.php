@@ -1,8 +1,8 @@
-<h3>Create Equipment Supplier</h3>
+<h3>Update Admin</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("salesman/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5">
+    <?php echo form_open("user/update_manager/".$manager_info['id'], array('id' => 'form_update_manager', 'class' => 'form-horizontal')); ?>
             <div class ="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-8"><?php echo $message; ?></div>
@@ -24,13 +24,14 @@
                 </div> 
             </div>
             <div class="form-group">
-                <label for="username" class="col-md-6 control-label requiredField">
-                    User Name
+                <label for="phone" class="col-md-6 control-label requiredField">
+                    Phone No
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($username+array('class'=>'form-control')); ?>
+                    <?php echo form_input($phone+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Address
@@ -39,30 +40,32 @@
                     <?php echo form_input($address+array('class'=>'form-control')); ?>
                 </div> 
             </div>
-        </div>
-        <div class ="col-md-5">
             <div class="form-group">
-                <label for="phone" class="col-md-6 control-label requiredField">
-                    Phone No
+                <label for="address" class="col-md-6 control-label requiredField">
+
                 </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($phone+array('class'=>'form-control')); ?>
+                <div class ="col-md-3 col-md-offset-3">
+                    <?php echo form_input($submit_update_manager+array('class'=>'form-control btn-success')); ?>
                 </div> 
             </div>
+    <?php echo form_close(); ?>
+        </div>
+        <div class="col-md-5">
+            <?php echo form_open("user//".$manager_info['id'], array('id' => 'form_update_manager', 'class' => 'form-horizontal')); ?>
             <div class="form-group">
-                <label for="email" class="col-md-6 control-label requiredField">
-                    Email
+                <label for="password" class="col-md-6 control-label requiredField">
+                   Old Password
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($email+array('class'=>'form-control')); ?>
+                    <?php echo form_input($old_password+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">
                 <label for="password" class="col-md-6 control-label requiredField">
-                    Password
+                    New Password
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($password+array('class'=>'form-control')); ?>
+                    <?php echo form_input($new_password+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">
@@ -78,10 +81,12 @@
 
                 </label>
                 <div class ="col-md-3 col-md-offset-3">
-                    <?php echo form_input($submit_create_salesman+array('class'=>'form-control btn-success')); ?>
+                    <?php echo form_input($submit_update_manager+array('class'=>'form-control btn-success')); ?>
                 </div> 
             </div>
+            <?php echo form_close(); ?>
         </div>
+        
+        
     </div>
-    <?php echo form_close(); ?>
 </div>

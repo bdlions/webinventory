@@ -1,7 +1,7 @@
 <h3>Add New Institution</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
-        <?php echo form_open("user/create_institution", array('id' => 'form_create_institution', 'class' => 'form-horizontal')); ?>
+        <?php echo form_open("customer/create_institution", array('id' => 'form_create_institution', 'class' => 'form-horizontal')); ?>
         <div class ="col-md-5 col-md-offset-2">
             <div class ="row">
                 <div class="col-md-4"></div>

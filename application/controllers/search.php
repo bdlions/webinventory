@@ -41,39 +41,43 @@ class Search extends CI_Controller {
     {
         
     }
+     /*
+     * This method will return customer list from typeahead request
+     * @author Nazmul on 16th January 2015
+     */
+    public function get_customers()
+    {
+        $search_value = $_GET['query'];
+        $customers = $this->search_typeahead->get_customers($search_value);
+        echo json_encode($customers);
+    }
+   
+    /*
+     * This method will return supplier list from typeahead request
+     * @author Nazmul on 16th January 2015
+     */
+    public function get_suppliers()
+    {
+        $search_value = $_GET['query'];
+        $suppliers = $this->search_typeahead->get_suppliers($search_value);
+        echo json_encode($suppliers);
+    }
     /*
      * This method will return customer list based on search parameter
      * @param search_category_name, column name of customer or user table
      * @param search_category_value, value of coumn of customer or user table
      * @return customer list
+     * @author Nazmul on 16th January 2015
      */
     function search_customer_sale_order()
     {
         $result_array = array();
-        $search_category_name = $_POST['search_category_name'];
-        $search_category_value = $_POST['search_category_value'];
+        $search_category_name = $this->input->post('search_category_name');
+        $search_category_value = $this->input->post('search_category_value');
         $customer_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_CUSTOMER_SALE_ORDER_LIMIT)->search_customer($search_category_name, $search_category_value)->result_array();
         if( count($customer_list_array) > 0)
         {
             $result_array = $customer_list_array;
-        }
-        echo json_encode($result_array);
-    }
-    /*
-     * This method will return supplier list based on search parameter
-     * @param search_category_name, column name of supplier or user table
-     * @param search_category_value, value of coumn of supplier or user table
-     * @return supplier list
-     */
-    function search_supplier_purchase_order()
-    {
-        $result_array = array();
-        $search_category_name = $_POST['search_category_name'];
-        $search_category_value = $_POST['search_category_value'];
-        $supplier_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_SUPPLIER_PURCHASE_ORDER_LIMIT)->search_supplier($search_category_name, $search_category_value)->result_array();
-        if( count($supplier_list_array) > 0)
-        {
-            $result_array = $supplier_list_array;
         }
         echo json_encode($result_array);
     }
@@ -1101,114 +1105,5 @@ class Search extends CI_Controller {
         $this->data['user_group'] = $user_group;
         
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
-    }
-    
-    //omar
-    public function get_supplier() {
-        $suppliers = $this->ion_auth->get_all_supplier_for_typeahed();
-        $temp_supplier = array();
-        
-        foreach ($suppliers as  $supplier) {
-            $supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
-            //$supplier -> value = $supplier -> first_name . " ". $supplier -> last_name . " ". $supplier -> phone . " " . $supplier -> company;
-            array_push($temp_supplier, $supplier);
-        }
-        echo json_encode($temp_supplier);
-    }
-    
-    public function get_customer()
-    {
-        $customers = $this->ion_auth->get_all_customers_for_typeahed();
-        $temp_customer = array();
-        
-        foreach ($customers as  $customer) {
-            $customer -> value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
-            array_push($temp_customer, $customer);
-        }
-        echo json_encode($temp_customer);
-    }
-    
-    /*
-     * This method will return customer list from typeahead request
-     * @author Nazmul on 19th June 2014
-     */
-    public function get_customers()
-    {
-        $search_value = $_GET['query'];
-        $customers = $this->search_typeahead->get_customers($search_value);
-        echo json_encode($customers);
-    }
-    
-    /*
-     * This method will return customer info for ajax call
-     * @author Nazmul on 19th June 2014
-     */
-    public function get_customer_info()
-    {
-        $result = array();
-        $customer_id = $_POST['customer_id'];
-        $customer_info = array();
-        if($customer_id > 0)
-        {
-            $customer_list_array = $this->ion_auth->get_customer_info($customer_id)->result_array();
-            if(!empty($customer_list_array))
-            {
-                $customer_info = $customer_list_array[0];
-            }
-        }
-        if(!empty($customer_info))
-        {
-            $result['status'] = 1;
-            $result['customer_info'] = $customer_info;
-        }
-        else
-        {
-            $result['status'] = 0;
-            $result['message'] = 'Invalid customer';
-        }
-        echo json_encode($result);
-    }
-    
-    /*
-     * This method will return supplier list from typeahead request
-     * @author Nazmul on 19th June 2014
-     */
-    public function get_suppliers()
-    {
-        $search_value = $_GET['query'];
-        $suppliers = $this->search_typeahead->get_suppliers($search_value);
-        echo json_encode($suppliers);
-    }
-    
-    /*
-     * This method will return supplier info for ajax call
-     * @author Nazmul on 19th June 2014
-     * return supplier_info with status 1, otherwise error message with status 0
-     */
-    public function get_supplier_info()
-    {
-        $result = array();
-        $supplier_id = $_POST['supplier_id'];
-        $supplier_info = array();
-        if($supplier_id > 0)
-        {
-            $supplier_list_array = $this->ion_auth->get_supplier_info($supplier_id)->result_array();
-            if(!empty($supplier_list_array))
-            {
-                $supplier_info = $supplier_list_array[0];
-            }
-        }
-        if(!empty($supplier_info))
-        {
-            $result['status'] = 1;
-            $result['supplier_info'] = $supplier_info;
-        }
-        else
-        {
-            $result['status'] = 0;
-            $result['message'] = 'Invalid supplier';
-        }
-        echo json_encode($result);
-    }
-    
+    }   
 }

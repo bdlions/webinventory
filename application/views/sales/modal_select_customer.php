@@ -17,7 +17,7 @@
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
-                    url: '<?php echo base_url(); ?>' + "search/get_customer_info",
+                    url: '<?php echo base_url(); ?>' + "customer/get_customer_info",
                     data: {
                         customer_id: datum.customer_id
                     },
@@ -62,7 +62,7 @@
             $.ajax({
                 dataType: 'json',    
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "user/create_customer_sale_order",
+                url: '<?php echo base_url(); ?>' + "customer/create_customer_sale_order",
                 data: {
                     first_name: $("#input_first_name").val(),
                     last_name: $("#input_last_name").val(),

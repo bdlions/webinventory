@@ -314,7 +314,7 @@ class Sale extends CI_Controller {
         {
             $sale_info = $sale_info_array[0];
             $customer_id = $sale_info['customer_id'];
-            $customer_info_array = $this->ion_auth->get_customer(0, $customer_id)->result_array();
+            $customer_info_array = $this->ion_auth->get_customer_info(0, $customer_id)->result_array();
             if(!empty($customer_info_array))
             {
                 $customer_info = $customer_info_array[0]; 

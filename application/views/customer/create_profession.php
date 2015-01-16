@@ -1,7 +1,7 @@
 <h3>Add New Profession</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
-        <?php echo form_open("user/create_profession", array('id' => 'form_create_profession', 'class' => 'form-horizontal')); ?>
+        <?php echo form_open("customer/create_profession", array('id' => 'form_create_profession', 'class' => 'form-horizontal')); ?>
         <div class ="col-md-5 col-md-offset-2">
             <div class ="row">
                 <div class="col-md-4"></div>

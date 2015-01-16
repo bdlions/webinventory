@@ -1,9 +1,8 @@
 <?php
-include './constants/account_status.php';
 include './constants/pagination.php';
 include './constants/registration.php';
 include './constants/stock.php';
-include './constants/user_group.php';
+include './constants/user.php';
 include './constants/shop.php';
 include './constants/sms.php';
 include './constants/payment.php';

@@ -19,30 +19,3 @@
         </div>
     </div>
 </nav>
-
-<script type="text/javascript">
-    /*$(function(){
-        $("#search_box").typeahead([
-            {
-                name:"search_supplier",
-                prefetch:{
-                            url: '<?php echo base_url()?>search/get_supplier',
-                            ttl: 0
-                        },
-                header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Supplier</div>',
-                template: [
-                    '<div class="col-md-9">'+
-                        '<div class="row col-md-12 profile-name">'+
-                            '{{first_name}} {{last_name}}'+
-                        '</div>'+  
-                        '<div class="row col-md-12">'+
-                            '{{phone}} {{company}}'+
-                        '</div>'+
-                    '</div>'
-                  ].join(''),
-                engine: Hogan
-            }
-    ]);
-        
-    });*/
-</script>

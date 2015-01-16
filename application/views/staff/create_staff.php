@@ -1,6 +1,6 @@
 <h3>Create Staff</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("user/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("staff/create_staff", array('id' => 'form_create_staff', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5">
             <div class ="row">
@@ -78,7 +78,7 @@
 
                 </label>
                 <div class ="col-md-3 col-md-offset-3">
-                    <?php echo form_input($submit_create_salesman+array('class'=>'form-control btn-success')); ?>
+                    <?php echo form_input($submit_create_staff+array('class'=>'form-control btn-success')); ?>
                 </div> 
             </div>
         </div>

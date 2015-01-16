@@ -42,10 +42,14 @@
                         <td><?php echo $supplier_info['phone'] ?></td>
                         <td><?php echo $supplier_info['address'] ?></td>
                         <td><?php echo $supplier_info['company'] ?></td>
-                        <td><a href="<?php echo base_url("./user/update_supplier/" . $supplier_info['supplier_id']); ?>">Update</a></td>
-                        <td><a href="<?php echo base_url("./user/show_supplier/" . $supplier_info['supplier_id']); ?>">Show</a></td>
+                        <td><a href="<?php echo base_url("./supplier/update_supplier/" . $supplier_info['supplier_id']); ?>">Update</a></td>
+                        <td><a href="<?php echo base_url("./supplier/show_supplier/" . $supplier_info['supplier_id']); ?>">Show</a></td>
                         <td><a href="<?php echo base_url().'transaction/show_supplier_transactions/'.$supplier_info['supplier_id']; ?>">Show</a></td>
-                        <td><a role="menuitem" tabindex="-1" href="javascript:void(o)" onclick="open_modal_delete_confirm(<?php echo $supplier_info['supplier_id'] ?>)">Inactive</a></td>
+                        <?php if($supplier_info['account_status_id'] == ACCOUNT_STATUS_ACTIVE){?>
+                        <td><a onclick="open_modal_inactive_account_status_confirm(<?php echo $supplier_info['user_id'] ?>)"><?php echo $supplier_info['account_status'];?></a></td>
+                        <?php }else if($supplier_info['account_status_id'] == ACCOUNT_STATUS_INACTIVE){?>
+                        <td><a onclick="open_modal_active_account_status_confirm(<?php echo $supplier_info['user_id'] ?>)"><?php echo $supplier_info['account_status'];?></a></td>
+                        <?php }?>
                     </tr>
                 <?php
                 }
@@ -78,7 +82,7 @@
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
-                    url: '<?php echo base_url(); ?>' + "search/get_supplier_info",
+                    url: '<?php echo base_url(); ?>' + "supplier/get_supplier_info",
                     data: {
                         supplier_id: datum.supplier_id
                     },
@@ -106,12 +110,19 @@
         <td>{%= supplier_info.phone%}</td>
         <td>{%= supplier_info.address%}</td>
         <td>{%= supplier_info.company%}</td>
-        <td><a href="<?php echo base_url()."user/update_supplier/{%= supplier_info.supplier_id%}"; ?>">Update</a></td>
-        <td><a href="<?php echo base_url()."user/show_supplier/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
+        <td><a href="<?php echo base_url()."supplier/update_supplier/{%= supplier_info.supplier_id%}"; ?>">Update</a></td>
+        <td><a href="<?php echo base_url()."supplier/show_supplier/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
         <td><a href="<?php echo base_url()."transaction/show_supplier_transactions/{%= supplier_info.supplier_id%}"; ?>">Show</a></td>
+        {% if(supplier_info.account_status_id == <?php echo ACCOUNT_STATUS_ACTIVE?>){ %}
+        <td><a onclick="open_modal_inactive_account_status_confirm({%= supplier_info.user_id%})">{%= supplier_info.account_status %}</a></td>
+        {% }else if(supplier_info.account_status_id == <?php echo ACCOUNT_STATUS_INACTIVE?>){  %}
+        <td><a onclick="open_modal_active_account_status_confirm({%= supplier_info.user_id%})">{%= supplier_info.account_status %}</a></td>
+        {% } %}
     </tr>
     {% supplier_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
 
-<?php $this->load->view("supplier/modal_suppliers_inactivite_confirmation");
+<?php 
+$this->load->view("user/modal/active_account_status_confirm");
+$this->load->view("user/modal/inactive_account_status_confirm");

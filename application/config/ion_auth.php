@@ -36,6 +36,7 @@ $config['tables']['groups']                         = 'groups';
 $config['tables']['users_groups']                   = 'users_groups';
 $config['tables']['login_attempts']                 = 'login_attempts';
 
+$config['tables']['account_status']                 = 'account_status';
 $config['tables']['shop_info']                      = 'shop_info';
 $config['tables']['users_shop_info']                = 'users_shop_info';
 $config['tables']['product_info']                   = 'product_info';

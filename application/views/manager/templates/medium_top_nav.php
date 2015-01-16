@@ -7,8 +7,8 @@
         <li><a href="<?php echo base_url("sale/return_sale_order");?>">return sale</a></li>
         <li><a href="<?php echo base_url("sale/delete_sale");?>">Delete Sale</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/create_customer");?>">add new customer </a></li>
-        <li><a href="<?php echo base_url("./user/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT);?>">Customer List</a></li>
+        <li><a href="<?php echo base_url("./customer/create_customer");?>">add new customer </a></li>
+        <li><a href="<?php echo base_url("./customer/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT);?>">Customer List</a></li>
     </ul>
 </div>
 <div class="btn-group">
@@ -20,8 +20,8 @@
         <li><a href="<?php echo base_url("purchase/raise_purchase_order");?>">Raise Purchase Order</a></li>
         <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return Purchase Order</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/create_supplier");?>">add new supplier</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_suppliers/".PAGINATION_SUPPLIER_LIST_LIMIT);?>">Supplier List</a></li>
+        <li><a href="<?php echo base_url("./supplier/create_supplier");?>">add new supplier</a></li>
+        <li><a href="<?php echo base_url("./supplier/show_all_suppliers/".PAGINATION_SUPPLIER_LIST_LIMIT);?>">Supplier List</a></li>
     </ul>
 </div>
 <div class="btn-group">
@@ -76,10 +76,12 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./upload/upload_cover");?>">Upload Cover</a></li>
-        <li><a href="<?php echo base_url("./user/create_salesman");?>">Create Staff</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_salesman");?>">Show All Staffs</a></li>
-        <li><a href="<?php echo base_url("./user/create_manager");?>">Create Admin</a></li>
-        <li><a href="<?php echo base_url("./user/show_all_managers");?>">Show All Admins</a></li>
+        <li><a href="<?php echo base_url("./staff/create_staff");?>">Create Staff</a></li>
+        <li><a href="<?php echo base_url("./staff/show_all_staffs");?>">Show All Staffs</a></li>
+        <li><a href="<?php echo base_url("./salesman/create_salesman");?>">Create Equipment Supplier</a></li>
+        <li><a href="<?php echo base_url("./salesman/show_all_salesmen");?>">Show All Equipment Suppliers</a></li>
+        <li><a href="<?php echo base_url("./manager/create_manager");?>">Create Admin</a></li>
+        <li><a href="<?php echo base_url("./manager/show_all_managers");?>">Show All Admins</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>        
     </ul>

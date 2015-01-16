@@ -1,6 +1,6 @@
 <h3>Add New Supplier</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("user/create_supplier", array('id' => 'form_create_supplier', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("supplier/create_supplier", array('id' => 'form_create_supplier', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
             <div class ="row">

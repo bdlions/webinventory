@@ -41,7 +41,7 @@ class Transaction extends CI_Controller {
         //validate supplier id
         $this->data['supplier_transaction_list'] = $this->transaction_library->get_supplier_transactions($supplier_id);
         $supplier_info = array();
-        $supplier_info_array = $this->ion_auth->get_supplier(0, $supplier_id)->result_array();
+        $supplier_info_array = $this->ion_auth->get_supplier_info(0, $supplier_id)->result_array();
         if(!empty($supplier_info_array))
         {
             $supplier_info = $supplier_info_array[0];
@@ -66,7 +66,7 @@ class Transaction extends CI_Controller {
         $this->data['shop_info'] = $shop_info;
         $this->data['customer_transaction_list'] = $this->transaction_library->get_customer_transactions($customer_id);
         $customer_info = array();
-        $customer_info_array = $this->ion_auth->get_customer(0, $customer_id)->result_array();
+        $customer_info_array = $this->ion_auth->get_customer_info(0, $customer_id)->result_array();
         if(!empty($customer_info_array))
         {
             $customer_info = $customer_info_array[0];

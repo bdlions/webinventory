@@ -1,6 +1,6 @@
 <h3>Create Equipment Supplier</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("salesman/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("user/create_salesman", array('id' => 'form_create_salesman', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5">
             <div class ="row">

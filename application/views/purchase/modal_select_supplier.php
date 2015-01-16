@@ -26,7 +26,7 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "user/create_supplier_purchase_order",
+                url: '<?php echo base_url(); ?>' + "supplier/create_supplier_purchase_order",
                 data: {
                     first_name: $("#input_first_name").val(),
                     last_name: $("#input_last_name").val(),
@@ -74,7 +74,7 @@
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
-                    url: '<?php echo base_url(); ?>' + "search/get_supplier_info",
+                    url: '<?php echo base_url(); ?>' + "supplier/get_supplier_info",
                     data: {
                         supplier_id: datum.supplier_id
                     },

@@ -1,6 +1,6 @@
 <h3>Update Customer</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
-    <?php echo form_open("user/update_customer/".$customer_info['customer_id'], array('id' => 'form_update_customer', 'class' => 'form-horizontal')); ?>
+    <?php echo form_open("customer/update_customer/".$customer_info['customer_id'], array('id' => 'form_update_customer', 'class' => 'form-horizontal')); ?>
     <div class="row">
         <div class ="col-md-5 col-md-offset-2 margin-top-bottom">
             <div class ="row">
@@ -39,6 +39,7 @@
                     <?php echo form_input($address+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
             <div class="form-group">
                 <label for="card_no" class="col-md-6 control-label requiredField">
                     Card No
@@ -47,6 +48,7 @@
                     <?php echo form_input($card_no+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php }?>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Institution

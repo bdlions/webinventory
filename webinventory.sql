@@ -45,10 +45,10 @@ CREATE TABLE IF NOT EXISTS `groups` (
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (1, 'admin', 'Administrator'),
 (2, 'manager', 'Manager'),
-(3, 'salesman', 'Salesman'),
+(3, 'salesman', 'Equipment Supplier'),
 (4, 'supplier', 'Supplier'),
 (5, 'customer', 'Customer'),
-(6, 'equipmentsupplier', 'Equipment Supplier');
+(6, 'staff', 'Staff');
 
 -- User account status
 CREATE TABLE IF NOT EXISTS `account_status` (
@@ -75,7 +75,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `forgotten_password_code` varchar(40) DEFAULT NULL,
   `forgotten_password_time` int(11) unsigned DEFAULT NULL,
   `remember_code` varchar(40) DEFAULT NULL,
-  `created_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   `last_login` int(11) unsigned DEFAULT NULL,
   `first_name` varchar(50) DEFAULT '',
   `last_name` varchar(50) DEFAULT '',

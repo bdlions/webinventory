@@ -26,10 +26,13 @@
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Address</th>
+                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <th>Card No</th>
+                    <?php }?>
                     <th>Manage</th>
                     <th>Show</th>
                     <th>Transactions</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">
@@ -41,10 +44,17 @@
                         <td><?php echo $customer_info['last_name'] ?></td>
                         <td><?php echo $customer_info['phone'] ?></td>
                         <td><?php echo $customer_info['address'] ?></td>
+                        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                         <td><?php echo $customer_info['card_no'] ?></td>
-                        <td><a href="<?php echo base_url("./user/update_customer/" . $customer_info['customer_id']); ?>">Update</a></td>
-                        <td><a href="<?php echo base_url("./user/show_customer/" . $customer_info['customer_id']); ?>">Show</a></td>
+                        <?php }?>
+                        <td><a href="<?php echo base_url("./customer/update_customer/" . $customer_info['customer_id']); ?>">Update</a></td>
+                        <td><a href="<?php echo base_url("./customer/show_customer/" . $customer_info['customer_id']); ?>">Show</a></td>
                         <td><a href="<?php echo base_url("./transaction/show_customer_transactions/" . $customer_info['customer_id']); ?>">Show</a></td>
+                        <?php if($customer_info['account_status_id'] == ACCOUNT_STATUS_ACTIVE){?>
+                        <td><a onclick="open_modal_inactive_account_status_confirm(<?php echo $customer_info['user_id'] ?>)"><?php echo $customer_info['account_status'];?></a></td>
+                        <?php }else if($customer_info['account_status_id'] == ACCOUNT_STATUS_INACTIVE){?>
+                        <td><a onclick="open_modal_active_account_status_confirm(<?php echo $customer_info['user_id'] ?>)"><?php echo $customer_info['account_status'];?></a></td>
+                        <?php }?>
                     </tr>
                 <?php
                 }
@@ -53,7 +63,7 @@
         </table>
     </div>
     
-    <?php if($user_group['id'] != USER_GROUP_SALESMAN):?>
+    <?php if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER){?>
     <div class="row">
         <div class="col-md-9">
             
@@ -88,7 +98,7 @@
             <?php echo form_close(); ?>
         </div>    
     </div>
-    <?php endif;?>
+    <?php }?>
     <?php 
         if(isset($pagination)){
             echo $pagination; 
@@ -114,7 +124,7 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/get_customer_info",
+                url: '<?php echo base_url(); ?>' + "customer/get_customer_info",
                 data: {
                     customer_id: datum.customer_id
                 },
@@ -141,11 +151,21 @@
         <td>{%= customer_info.last_name%}</td>
         <td>{%= customer_info.phone%}</td>
         <td>{%= customer_info.address%}</td>
+        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
         <td>{%= customer_info.card_no%}</td>
-        <td><a href="<?php echo base_url()."user/update_customer/{%= customer_info.customer_id%}"; ?>">Update</a></td>
-        <td><a href="<?php echo base_url()."user/show_customer/{%= customer_info.customer_id%}"; ?>">Show</a></td>
+        <?php }?>
+        <td><a href="<?php echo base_url()."customer/update_customer/{%= customer_info.customer_id%}"; ?>">Update</a></td>
+        <td><a href="<?php echo base_url()."customer/show_customer/{%= customer_info.customer_id%}"; ?>">Show</a></td>
         <td><a href="<?php echo base_url()."transaction/show_customer_transactions/{%= customer_info.customer_id%}"; ?>">Show</a></td>
+        {% if(customer_info.account_status_id == <?php echo ACCOUNT_STATUS_ACTIVE?>){ %}
+        <td><a onclick="open_modal_inactive_account_status_confirm({%= customer_info.user_id%})">{%= customer_info.account_status %}</a></td>
+        {% }else if(customer_info.account_status_id == <?php echo ACCOUNT_STATUS_INACTIVE?>){  %}
+        <td><a onclick="open_modal_active_account_status_confirm({%= customer_info.user_id%})">{%= customer_info.account_status %}</a></td>
+        {% } %}            
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
+<?php 
+$this->load->view("user/modal/active_account_status_confirm");
+$this->load->view("user/modal/inactive_account_status_confirm");
