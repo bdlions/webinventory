@@ -3,12 +3,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Attendance extends CI_Controller {
-    /*
-     * Holds account status list
-     * 
-     * $var array
-     */
-
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
@@ -33,10 +27,10 @@ class Attendance extends CI_Controller {
     {
         $this->data['message'] = '';
         $salesman_list = array();
-        $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
+        $salesman_list_array = $this->ion_auth->get_all_staffs()->result_array();
         if(!empty($salesman_list_array))
         {
-            foreach($salesman_list_array as $key => $salesman_info)
+            foreach($salesman_list_array as $salesman_info)
             {
                 $salesman_list[] = $salesman_info;
             }
@@ -127,7 +121,7 @@ class Attendance extends CI_Controller {
     {
         $this->data['message'] = '';
         $salesman_list = array();
-        $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
+        $salesman_list_array = $this->ion_auth->get_all_staffs()->result_array();
         if(!empty($salesman_list_array))
         {
             foreach($salesman_list_array as $key => $salesman_info)

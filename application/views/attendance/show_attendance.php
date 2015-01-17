@@ -35,8 +35,8 @@
     {% var i=0, attendance_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(attendance_info){ %}
     <tr>
-    <td>{%= attendance_info.first_name%} {%= attendance_info.last_name%}</td>
     <td>{%= attendance_info.login_date%}</td>
+    <td>{%= attendance_info.first_name%} {%= attendance_info.last_name%}</td>    
     <td>{%= attendance_info.login_time%}</td>
     <td>{%= attendance_info.logout_time%}</td>
     <td>{%= attendance_info.attendance_comment%}</td>
