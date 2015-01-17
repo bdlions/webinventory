@@ -2018,7 +2018,7 @@ class Ion_auth_model extends CI_Model {
      * @param $shop_id, shop id
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_staffs($shop_id = 0)
+    public function get_all_staffs($shop_id = 0, $staff_id_list = array())
     {
         if($shop_id == 0)
         {
@@ -2026,6 +2026,10 @@ class Ion_auth_model extends CI_Model {
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_STAFF_ID);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
+        if(!empty($staff_id_list))
+        {
+            $this->db->where_in($this->tables['users'].'.id',$staff_id_list);
+        }
         return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address,'.$this->tables['users'].'.account_status_id,'.$this->tables['account_status'].'.description as account_status')
                     ->from($this->tables['users'])
                     ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
@@ -2062,7 +2066,7 @@ class Ion_auth_model extends CI_Model {
      * @param $shop_id, shop id
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_salesmen($shop_id = 0)
+    public function get_all_salesmen($shop_id = 0, $salesman_id_list = array())
     {
         if($shop_id == 0)
         {
@@ -2070,6 +2074,10 @@ class Ion_auth_model extends CI_Model {
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_SALESMAN);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
+        if(!empty($salesman_id_list))
+        {
+            $this->db->where_in($this->tables['users'].'.id',$salesman_id_list);
+        }
         return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address,'.$this->tables['users'].'.account_status_id,'.$this->tables['account_status'].'.description as account_status')
                     ->from($this->tables['users'])
                     ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
@@ -2172,7 +2180,7 @@ class Ion_auth_model extends CI_Model {
         $this->db->update($this->tables['suppliers'], $data, array('user_id' => $user_id));
         return true;
     }
-    // ------------------------------------------- Custome Module --------------------------------
+    // ------------------------------------------- Customer Module --------------------------------
     /*
      * This method will ad new institution
      * @param $additional_data, institution data

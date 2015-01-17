@@ -17,7 +17,7 @@
             },
             success: function(data) {
                 var result = JSON.parse(data);
-                if( $("#expense_categories").val() === '<?php echo $expense_type_list['shop']?>' )
+                if( $("#expense_categories").val() === '<?php echo EXPENSE_SHOP_TYPE_ID?>' )
                 {
                     $("#item_list").html("");
                     var shop_list = result['shop_list'];
@@ -28,7 +28,7 @@
                     }                        
                     $("#item_list").html(options);
                 }
-                else if( $("#expense_categories").val() === '<?php echo $expense_type_list['supplier']?>' )
+                else if( $("#expense_categories").val() === '<?php echo EXPENSE_SUPPLIER_TYPE_ID?>' )
                 {
                     $("#item_list").html("");
                     var supplier_list = result['supplier_list'];
@@ -39,7 +39,18 @@
                     }                        
                     $("#item_list").html(options);
                 }
-                else if( $("#expense_categories").val() === '<?php echo $expense_type_list['user']?>' )
+                else if( $("#expense_categories").val() === '<?php echo EXPENSE_STAFF_TYPE_ID?>' )
+                {
+                    $("#item_list").html("");
+                    var user_list = result['user_list'];
+                    var options = "";
+                    for (var counter = 0; counter < user_list.length; counter++)
+                    {
+                        options += "<option value=\"" + user_list[counter]['id'] + "\">" + user_list[counter]['value'] + "</option>";
+                    }                        
+                    $("#item_list").html(options);
+                }
+                else if( $("#expense_categories").val() === '<?php echo EXPENSE_EQUIPMENT_SUPPLIER_TYPE_ID?>' )
                 {
                     $("#item_list").html("");
                     var user_list = result['user_list'];

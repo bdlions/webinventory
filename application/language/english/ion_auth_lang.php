@@ -84,7 +84,8 @@ $lang['add_purchase_order_duplicate_purchase_order_no']       = 'Order # already
 
 //Expense
 $lang['add_expense_invalid_shop']           = 'Shop Id is invalid.';
-$lang['add_expense_invalid_user']           = 'User Id is invalid.';
+$lang['add_expense_invalid_supplier']       = 'Supplier is invalid.';
+$lang['add_expense_invalid_user']           = 'User is invalid.';
 $lang['add_expense_success']                = 'Expense is added successfully.';
 $lang['delete_expense_successful']          = 'Expense is removed successfully.';
 $lang['delete_expense_unsuccessful']        = 'Error while deleting expense.';

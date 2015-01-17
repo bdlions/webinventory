@@ -3,16 +3,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Expense extends CI_Controller {    
-    protected $expense_type_list = array();
-    /*
-     * Holds account status list
-     * 
-     * $var array
-     */
-
     function __construct() {
         parent::__construct();
-        $this->expense_type_list = $this->config->item('expense_type', 'ion_auth');
         $this->load->library('form_validation');
         $this->load->helper('url');
 
@@ -37,49 +29,38 @@ class Expense extends CI_Controller {
     
     function index()
     {
-        //print_r($this->ion_auth->get_shop_id(2)->result_array());
+        //write your code if required
     }
     
+    /*
+     * This method will add an expense
+     * @param $selected_expense_category, type of expense
+     * @Author Nazmul on 17th January 2015
+     */
     public function add_expense($selected_expense_category = 0)
     {
         if($selected_expense_category == 0)
         {
-            $selected_expense_category = 3;
-        }
-        $current_time = now();
-        $shop_id = $this->session->userdata('shop_id');
-        $this->data['expense_type_list'] = $this->expense_type_list;
-        
+            $selected_expense_category = EXPENSE_STAFF_TYPE_ID;
+        }        
+        $shop_id = $this->session->userdata('shop_id');        
         $expense_types_array = $this->expenses->get_all_expense_types()->result_array();
         $expense_categories = array();
-        foreach($expense_types_array as $key => $expense_type)
+        foreach($expense_types_array as $expense_type)
         {
             $expense_categories[$expense_type['id']] = $expense_type['description'];
         }
         $this->data['expense_categories'] = $expense_categories;
-        
-        
-        /*$shop_list_array = $this->shop_library->get_all_shops()->result_array();
-        $shop_list = array();
-        foreach($shop_list_array as $key => $shop_info)
-        {
-            if( $this->session->userdata('shop_id') == $shop_info['id'])
-            {
-               $shop_list[$shop_info['id']] = $shop_info['name']; 
-            }            
-        }
-        $this->data['item_list'] = $shop_list;*/
         $this->data['item_list'] = array();
-        
-        $message_data = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('expense_amount', 'Expense Amount', 'xss_clean|required');
         $this->form_validation->set_rules('expense_description', 'Expense Description', 'xss_clean');
-        
         if ($this->input->post('submit_add_expense')) 
         {            
+            $selected_expense_category = $this->input->post('expense_categories');
             if($this->form_validation->run() == true)
             {
+                $current_time = now();
                 $additional_data = array(
                     'shop_id' => $shop_id,
                     'expense_date' => $current_time,
@@ -88,34 +69,37 @@ class Expense extends CI_Controller {
                     'description' => $this->input->post('expense_description'),
                     'expense_amount' => $this->input->post('expense_amount')
                 );
-                if( $this->input->post('expense_categories') != $this->expense_type_list['other'])
+                if( $this->input->post('expense_categories') != EXPENSE_OTHER_TYPE_ID)
                 {
-                    $additional_data['reference_id'] = $this->input->post('item_list');
+                    if($this->input->post('item_list'))
+                    {
+                        $additional_data['reference_id'] = $this->input->post('item_list');
+                    }
+                    else
+                    {
+                        $additional_data['reference_id'] = 0;
+                    }
                 }
                 $expense_id = $this->expenses->add_expense($additional_data);
                 if( $expense_id !== FALSE )
                 {
                     $this->session->set_flashdata('message', $this->expenses->messages());
-                    $selected_expense_category = $this->input->post('expense_categories');
                     redirect('expense/add_expense/'.$selected_expense_category,'refresh');
                 }
                 else
                 {
-                    $message_data = $this->expenses->errors();
+                    $this->data['message'] = $this->expenses->errors();
                 }
             }
             else
             {
                 $this->data['message'] = validation_errors();
-            }
-            
+            }            
         }        
         else
         {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
-        
-        
         $this->data['selected_expense_category'] = $selected_expense_category;
         $this->data['expense_description'] = array(
             'name' => 'expense_description',
@@ -134,39 +118,93 @@ class Expense extends CI_Controller {
             'id' => 'submit_add_expense',
             'type' => 'submit',
             'value' => 'Add',
-        );
-        
+        );        
         $this->template->load(null, 'expense/add_expense', $this->data);
     }
     
+    /*
+     * Ajax Call
+     * This method will return item list based on expense type
+     * Author Nazmul on 17th January 2015
+     */
+    public function getItems()
+    {
+        $result_array = array();
+        $expense_type_id = $this->input->post('expense_type_id');
+        if( $expense_type_id == EXPENSE_SHOP_TYPE_ID)
+        {
+            $shop_list_array = $this->shop_library->get_shop()->result_array();
+            $shop_list = array();
+            foreach($shop_list_array as $key => $shop_info)
+            {
+                $shop_list[] = array(
+                    'id' => $shop_info['id'],
+                    'value' => $shop_info['name']
+                );          
+            }
+            $result_array['shop_list'] = $shop_list;            
+        }
+        else if( $expense_type_id == EXPENSE_SUPPLIER_TYPE_ID)
+        {
+            $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+            $supplier_list = array();
+            foreach($supplier_list_array as $key => $supplier_info)
+            {
+                $supplier_list[] = array(
+                    'id' => $supplier_info['supplier_id'],
+                    'value' => $supplier_info['first_name'].' '.$supplier_info['last_name']
+                );
+            }
+            $result_array['supplier_list'] = $supplier_list;            
+        }
+        else if( $expense_type_id == EXPENSE_STAFF_TYPE_ID)
+        {
+            $user_list_array = $this->ion_auth->get_all_staffs()->result_array();
+            $user_list = array();
+            foreach($user_list_array as $key => $user_info)
+            {
+                $user_list[] = array(
+                    'id' => $user_info['user_id'],
+                    'value' => $user_info['first_name'].' '.$user_info['last_name']
+                );
+            }
+            $result_array['user_list'] = $user_list;
+        }
+        else if( $expense_type_id == EXPENSE_EQUIPMENT_SUPPLIER_TYPE_ID)
+        {
+            $user_list_array = $this->ion_auth->get_all_salesmen()->result_array();
+            $user_list = array();
+            foreach($user_list_array as $key => $user_info)
+            {
+                $user_list[] = array(
+                    'id' => $user_info['user_id'],
+                    'value' => $user_info['first_name'].' '.$user_info['last_name']
+                );
+            }
+            $result_array['user_list'] = $user_list;
+        }
+        echo json_encode($result_array);
+    }
+    
+    /*
+     * This method will show all expenses
+     * @Author Nazmul on 17th January 2015
+     */
     public function show_expense()
     {
-        $this->data['message'] = $this->session->flashdata('message');
-        $this->data['expense_type_list'] = $this->expense_type_list;
-        
+        $this->data['message'] = $this->session->flashdata('message');        
         $expense_types_array = $this->expenses->get_all_expense_types()->result_array();
         $expense_categories = array();
-        foreach($expense_types_array as $key => $expense_type)
+        foreach($expense_types_array as $expense_type)
         {
             $expense_categories[$expense_type['id']] = $expense_type['description'];
         }
         $this->data['expense_categories'] = $expense_categories;
-        
-        $shop_list_array = $this->shop_library->get_all_shops()->result_array();
-        $shop_list = array();
-        /*foreach($shop_list_array as $key => $shop_info)
-        {
-            if( $this->session->userdata('shop_id') == $shop_info['id'])
-            {
-               $shop_list[$shop_info['id']] = $shop_info['name']; 
-            }            
-        }*/
-        $this->data['item_list'] = $shop_list;
-        $date = date('Y-m-d');    
-        
+        $this->data['item_list'] = array();
+        $date = date('Y-m-d');
         $start_time = $this->utils->get_current_date_start_time();
         $end_time = $start_time + 86400;
-        $expense_list = $this->expenses->get_all_expenses($start_time, $end_time);
+        $expense_list = $this->expenses->get_all_expenses(0, 0, $start_time, $end_time);
         $total_expense = 0;
         foreach($expense_list as $expense_info)
         {
@@ -197,90 +235,11 @@ class Expense extends CI_Controller {
         $this->template->load(null, 'expense/show_expense', $this->data);
     }
     
-    public function getItems()
-    {
-        $result_array = array();
-        $expense_type_id = $_POST['expense_type_id'];
-        if( $expense_type_id == $this->expense_type_list['shop'])
-        {
-            $shop_list_array = $this->shop_library->get_shop()->result_array();
-            $shop_list = array();
-            foreach($shop_list_array as $key => $shop_info)
-            {
-                $shop_list[] = array(
-                    'id' => $shop_info['id'],
-                    'value' => $shop_info['name']
-                );          
-            }
-            $result_array['shop_list'] = $shop_list;            
-        }
-        else if( $expense_type_id == $this->expense_type_list['supplier'])
-        {
-            $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
-            $supplier_list = array();
-            foreach($supplier_list_array as $key => $supplier_info)
-            {
-                $supplier_list[] = array(
-                    'id' => $supplier_info['supplier_id'],
-                    'value' => $supplier_info['first_name'].' '.$supplier_info['last_name']
-                );
-            }
-            $supplier_list[] = array(
-                'id' => 0,
-                'value' => 'All'
-            );
-            $result_array['supplier_list'] = $supplier_list;            
-        }
-        else if( $expense_type_id == $this->expense_type_list['user'])
-        {
-            $user_list_array = $this->ion_auth->get_all_shop_staffs()->result_array();
-            $user_list = array();
-            //filter administrator from this list
-            foreach($user_list_array as $key => $user_info)
-            {
-                $user_list[] = array(
-                    'id' => $user_info['user_id'],
-                    'value' => $user_info['first_name'].' '.$user_info['last_name']
-                );
-            }
-            $user_list[] = array(
-                'id' => 0,
-                'value' => 'All'
-            );
-            $result_array['user_list'] = $user_list;
-        }
-        echo json_encode($result_array);
-    }
-    
-    public function get_expense()
-    {
-        $expense_type_id = $_POST['expense_type_id'];
-        $reference_id = $_POST['reference_id'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
-        $start_time = $this->utils->get_human_to_unix($start_date);
-        $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
-        $expense_list_array = array();
-        if($expense_type_id > 0)
-        {
-            $expense_list_array = $this->expenses->get_expenses($expense_type_id, $reference_id, $start_time, $end_time);
-        }
-        else
-        {
-            $expense_list_array = $this->expenses->get_all_expenses($start_time, $end_time);
-        }
-        $total_expense = 0;
-        foreach($expense_list_array as $expense_info)
-        {
-            $total_expense = $total_expense + $expense_info['expense_amount'];
-        }
-        $result = array(
-            'total_expense' => $total_expense,
-            'expense_list' => $expense_list_array
-        );
-        echo json_encode($result);
-    }
-    
+    /*
+     * This method will delete expense
+     * @param $expense_id, expense id
+     * @Author Nazmul on 17th January 2015
+     */
     public function delete_expense($expense_id)
     {
         $this->data['expense_id'] = $expense_id;
@@ -315,11 +274,29 @@ class Expense extends CI_Controller {
         $this->template->load(null, 'expense/delete_expense_confirmation', $this->data);
     }
     
-    public function test()
+    /*
+     * Ajax Call
+     * This method will return expenses
+     * @Author Nazmul on 17th January 2015
+     */
+    public function get_expense()
     {
-        $expense_type_id = 1;
-        $start_date = '2014-03-18';
-        $end_date = '2014-03-18';
-        print_r($this->get_expense($expense_type_id, $start_date, $end_date));
+        $expense_type_id = $this->input->post('expense_type_id');
+        $reference_id = $this->input->post('reference_id');
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+        $start_time = $this->utils->get_human_to_unix($start_date);
+        $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
+        $expense_list_array = $this->expenses->get_all_expenses($expense_type_id, $reference_id, $start_time, $end_time);
+        $total_expense = 0;
+        foreach($expense_list_array as $expense_info)
+        {
+            $total_expense = $total_expense + $expense_info['expense_amount'];
+        }
+        $result = array(
+            'total_expense' => $total_expense,
+            'expense_list' => $expense_list_array
+        );
+        echo json_encode($result);
     }
 }

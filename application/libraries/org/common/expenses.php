@@ -4,21 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth
- *
- * Author: Ben Edmunds
- * 		  ben.edmunds@gmail.com
- *         @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- *
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Expenses
  * Requirements: PHP5 or above
  *
  */
@@ -80,51 +66,51 @@ class Expenses {
     public function __get($var) {
         return get_instance()->$var;
     }
-    
-    public function get_expenses($expense_type_id, $reference_id, $start_time, $end_time)
+    /*
+     * This method will return all expenses 
+     * @param $expense_type_id, expense type id
+     * @param $reference_id, reference id
+     * @param $start_time, time
+     * @param $end_time, time
+     * @Author Nazmul on 17th January 2015
+     */
+    public function get_all_expenses($expense_type_id = 0, $reference_id= 0, $start_time, $end_time, $shop_id = 0)
     {
-        $expense_list = array();
-        $expense_list_array = $this->expense_model->get_expenses($expense_type_id, $reference_id, $start_time, $end_time)->result_array();
-        foreach($expense_list_array as $expense_info)
-        {
-            $expense_info['expense_date'] = $this->utils->process_time($expense_info['expense_date']);
-            $expense_info['category_title'] = '';
-            $expense_info['category_description'] = '';
-            $expense_list[] = $expense_info;
-        }
-        return $expense_list;
-    }
-    
-    public function get_all_expenses($start_time, $end_time)
-    {
-        $shop_id = 0;
         $shop_name = '';
         $expensed_supplier_id_list_array = array();
         $expensed_salesman_id_list_array = array();
+        $expensed_staff_id_list_array = array();
         $supplier_id_info_map = array();
         $salesman_id_info_map = array();
+        $staff_id_info_map = array();
         
         $expense_list = array();
-        $expense_list_array = $this->expense_model->get_all_expenses($start_time, $end_time)->result_array();
-        //print_r($expense_list_array);
+        $expense_list_array = $this->expense_model->get_all_expenses($expense_type_id, $reference_id, $start_time, $end_time)->result_array();
         foreach($expense_list_array as $expense_info)
         {
-            if($expense_info['expense_type_id'] == $this->expense_type_list['shop'])
+            if($expense_info['expense_type_id'] == EXPENSE_SHOP_TYPE_ID)
             {
                 $shop_id = $expense_info['reference_id'];                
             }
-            else if($expense_info['expense_type_id'] == $this->expense_type_list['supplier'])
+            else if($expense_info['expense_type_id'] == EXPENSE_SUPPLIER_TYPE_ID)
             {
                 if( !in_array($expense_info['reference_id'], $expensed_supplier_id_list_array) )
                 {
                     $expensed_supplier_id_list_array[] = $expense_info['reference_id'];
                 }
             }
-            else if($expense_info['expense_type_id'] == $this->expense_type_list['user'])
+            else if($expense_info['expense_type_id'] == EXPENSE_EQUIPMENT_SUPPLIER_TYPE_ID)
             {
                 if( !in_array($expense_info['reference_id'], $expensed_salesman_id_list_array) )
                 {
                     $expensed_salesman_id_list_array[] = $expense_info['reference_id'];
+                }
+            }
+            else if($expense_info['expense_type_id'] == EXPENSE_STAFF_TYPE_ID)
+            {
+                if( !in_array($expense_info['reference_id'], $expensed_staff_id_list_array) )
+                {
+                    $expensed_staff_id_list_array[] = $expense_info['reference_id'];
                 }
             }
         }
@@ -133,10 +119,15 @@ class Expenses {
         {
             $supplier_id_info_map[$supplier_info['supplier_id']] = $supplier_info;
         }
-        $salesman_list_array = $this->ion_auth->get_all_salesman(0, $expensed_salesman_id_list_array)->result_array();
+        $salesman_list_array = $this->ion_auth->get_all_salesmen(0, $expensed_salesman_id_list_array)->result_array();
         foreach($salesman_list_array as $salesman_info)
         {
             $salesman_id_info_map[$salesman_info['user_id']] = $salesman_info;
+        }
+        $staff_list_array = $this->ion_auth->get_all_staffs(0, $expensed_staff_id_list_array)->result_array();
+        foreach($staff_list_array as $staff_info)
+        {
+            $staff_id_info_map[$staff_info['user_id']] = $staff_info;
         }
         $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
         if(!empty($shop_info_array))
@@ -145,20 +136,25 @@ class Expenses {
         }
         foreach($expense_list_array as $expense_info)
         {
-            if($expense_info['expense_type_id'] == $this->expense_type_list['shop'])
+            if($expense_info['expense_type_id'] == EXPENSE_SHOP_TYPE_ID)
             {
                   $expense_info['category_title'] = 'Shop';
                   $expense_info['category_description'] = $shop_name;
             }
-            else if($expense_info['expense_type_id'] == $this->expense_type_list['supplier'])
+            else if($expense_info['expense_type_id'] == EXPENSE_SUPPLIER_TYPE_ID)
             {
                   $expense_info['category_title'] = 'Supplier';
                   $expense_info['category_description'] = $supplier_id_info_map[$expense_info['reference_id']]['first_name'].' '.$supplier_id_info_map[$expense_info['reference_id']]['last_name'];
             }
-            else if($expense_info['expense_type_id'] == $this->expense_type_list['user'])
+            else if($expense_info['expense_type_id'] == EXPENSE_EQUIPMENT_SUPPLIER_TYPE_ID)
+            {
+                  $expense_info['category_title'] = 'Equipment Supplier';
+                  $expense_info['category_description'] = $salesman_id_info_map[$expense_info['reference_id']]['first_name'].' '.$salesman_id_info_map[$expense_info['reference_id']]['last_name'];
+            }
+            else if($expense_info['expense_type_id'] == EXPENSE_STAFF_TYPE_ID)
             {
                   $expense_info['category_title'] = 'Staff';
-                  $expense_info['category_description'] = $salesman_id_info_map[$expense_info['reference_id']]['first_name'].' '.$salesman_id_info_map[$expense_info['reference_id']]['last_name'];
+                  $expense_info['category_description'] = $staff_id_info_map[$expense_info['reference_id']]['first_name'].' '.$staff_id_info_map[$expense_info['reference_id']]['last_name'];
             }
             if($expense_info['expense_type_id'] == $this->expense_type_list['other'])
             {

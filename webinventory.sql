@@ -536,7 +536,7 @@ INSERT INTO `expense_type` (`id`, `description`, `order`) VALUES
 (1, 'Shop', 1),
 (2, 'Supplier', 2),
 (3, 'Equipment Supplier', 3),
-(4, 'Other', 5);  
+(4, 'Other', 5), 
 (5, 'Staff', 4);  
 CREATE TABLE IF NOT EXISTS `expense_info` (
 	`id` int NOT NULL AUTO_INCREMENT,
