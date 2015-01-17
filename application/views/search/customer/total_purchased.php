@@ -1,4 +1,4 @@
-<script type="text/javascript">
+		<script type="text/javascript">
     $(function() {
         $("#button_search_customer").on("click", function() {
             $.ajax({
@@ -14,7 +14,18 @@
             });
             return false;
         });
+        
     });
+</script>
+<script type="text/javascript">
+function get_char_count(limit)
+{
+    var tarea= document.getElementById("description");
+    var countDisplay = document.getElementById("char_count");
+    var charcount = tarea.value.length;
+    var countRemains = limit - charcount;
+    countDisplay.innerHTML = "Total characters: " + charcount + ".&nbsp;&nbsp;&nbsp;  Remaining: " + countRemains;
+}
 </script>
 <script type="text/x-tmpl" id="tmpl_customer_list">
     {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
@@ -39,8 +50,8 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="row">
                         <div class ="col-md-10 margin-top-bottom">
-                            <?php echo form_open("search/download_search_customers_total_purchased", array('id' => 'form_download_search_customers_total_purchased', 'class' => 'form-horizontal')); ?>
                             <div class="form-group">
+                            <?php echo form_open("search/download_search_customers_total_purchased", array('id' => 'form_download_search_customers_total_purchased', 'class' => 'form-horizontal')); ?>
                                 <label for="total_purchased" class="col-md-4 control-label requiredField">
                                     Total Purchased
                                 </label>
@@ -53,13 +64,13 @@
                                     <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
                                 </div>
                                 <?php if ($user_group['id'] != USER_GROUP_SALESMAN): ?>
+                                <?php echo form_close(); ?>
                                 </div>
 
                                 <!--                            <div class="form-group">
                                                                 <label for="button_search_customer" class="col-md-6 control-label requiredField">
                                                                 </label>
                                                                 <div class ="col-md-6">
-                                <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
                                                                 </div> 
                                                             </div>-->
 
@@ -69,22 +80,23 @@
                                         Select Type
                                     </label>
                                     <div class ="col-md-5">
-                                        <?php
-                                        $options = array(
-                                            'name' => 'Name',
-                                            'mobile_no' => 'Mobile No',
-                                            'both' => 'Both'
-                                        );
-                                        echo form_dropdown('select_option_for_download', $options, 'both', 'class="form-control" id="select_option_for_download"');
+                                        <?php 
+                                            $options = array(
+                                                  'name'  => 'Name',
+                                                  'mobile_no'    => 'Mobile No',
+                                                  'both'   => 'Both'
+                                                );
+
+                                            echo form_dropdown('select_option_for_download', $options, 'both','class="form-control" id="select_option_for_download"');
                                         ?>
                                     </div>
                                     <label for="button_download_customer" class="control-label requiredField">
 
                                     </label>
                                     <div class ="col-md-3">
-                                        <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
-                                    </div> 
-
+                                        <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
+                                    </div>
+                                    <?php echo form_close(); ?>
                                 </div>
                                 <div class="form-group">
                                     <div class ="col-md-offset-2 col-md-2">
@@ -113,24 +125,23 @@
             </div>
         </div>
         <div class="col-md-6">
+            <?php echo form_open("search/create_customer_message", array('id' => 'form_create_message_customers_total_purchased', 'class' => 'form-horizontal')); ?>
             <div class="row form-group">
                 <label class="col-md-2">SMS Title:</label>
                 <div class="col-md-8">
-                    <input type="text" name="title" class="form-control">
+                    <?php echo form_input($message_title + array('class' => 'form-control')); ?>
                 </div>
             </div>
             <div class="row form-group">
                 <label class="col-md-2">SMS Body:</label>
-                <div class="col-md-8">
-                    <textarea rows="5" style="width: 100%; resize: vertical"></textarea>
+                <div class="col-md-8"id="message_body">
+                    <textarea name="description" id="description" rows="5" value="sdf" onkeyup="get_char_count(160)" class="form-control" style="resize: vertical"/></textarea>
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-md-2"></label>
-                <label class="col-md-2">0 character</label>
-                <label class="col-md-4"></label>
+                <label class="col-md-offset-2 col-md-6" id="char_count"></label>
                 <div class="col-md-2">
-                    <button class="btn btn-success pull-right">Send</button>
+                    <?php echo form_input($button_message_send + array('class' => 'form-control btn-success')); ?>
                 </div>
             </div>
         </div>

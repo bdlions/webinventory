@@ -702,6 +702,17 @@ class Search extends CI_Controller {
             'id' => 'total_purchased',
             'type' => 'text'
         );
+        $this->data['message_title'] = array(
+            'name' => 'message_title',
+            'id' => 'message_title',
+            'type' => 'text'
+        );
+        $this->data['button_message_send'] = array(
+            'name' => 'button_message_send',
+            'id' => 'button_message_send',
+            'type' => 'button',
+            'value' => 'Send',
+        );
         $this->data['button_search_customer'] = array(
             'name' => 'button_search_customer',
             'id' => 'button_search_customer',
