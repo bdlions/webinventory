@@ -529,13 +529,15 @@ ALTER TABLE `stock_info`
 CREATE TABLE IF NOT EXISTS `expense_type` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200),	
+	`order` int,	
 	PRIMARY KEY  (`id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-INSERT INTO `expense_type` (`id`, `description`) VALUES
-(1, 'Shop'),
-(2, 'Supplier'),
-(3, 'Staff'),
-(4, 'Other');  
+INSERT INTO `expense_type` (`id`, `description`, `order`) VALUES
+(1, 'Shop', 1),
+(2, 'Supplier', 2),
+(3, 'Equipment Supplier', 3),
+(4, 'Other', 5);  
+(5, 'Staff', 4);  
 CREATE TABLE IF NOT EXISTS `expense_info` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`shop_id` int NOT NULL,

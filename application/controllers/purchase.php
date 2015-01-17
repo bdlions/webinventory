@@ -69,6 +69,157 @@ class Purchase extends CI_Controller {
         $this->template->load(null, 'purchase/warehouse_purchase_order',$this->data);
     }
     /*
+     * Ajax Call
+     * This method will store purchase info into the system
+     * @return status, 0 for error and 1 for success
+     * @return message, if there is any error
+     * @author Nazmul on 23rd January 2014
+     */
+    function add_warehouse_purchase()
+    {
+        $current_time = now();
+        $user_id = $this->session->userdata('user_id');
+        $shop_id = $this->session->userdata('shop_id');
+        $selected_product_list = $_POST['product_list'];
+        $purchased_product_list = array();
+        $add_stock_list = array();
+        $purchase_info = $_POST['purchase_info'];
+        $current_due = $_POST['current_due'];
+        
+        $supplier_transaction_info_array = array();
+        
+        $total_products = count($selected_product_list);
+        $product_counter = 0;
+        foreach($selected_product_list as $key => $prod_info)
+        {
+            $product_counter++;
+            $supplier_transaction_info = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'created_on' => $current_time,
+                'lot_no' => $prod_info['purchase_order_no'],
+                'name' => $prod_info['name'],
+                'quantity' => $prod_info['quantity'],
+                'unit_price' => $prod_info['unit_price'],
+                'sub_total' => $prod_info['sub_total'],
+                'payment_status' => ''
+            );
+            if($product_counter == $total_products)
+            {
+                $supplier_transaction_info['remarks'] = $purchase_info['remarks'];
+            }
+            else
+            {
+                $supplier_transaction_info['remarks'] = '';
+            }
+            $supplier_transaction_info_array[] = $supplier_transaction_info;
+            $product_info = array(
+                'product_id' => $prod_info['product_id'],
+                'purchase_order_no' => $prod_info['purchase_order_no'],
+                'shop_id' => $shop_id,
+                'unit_price' => $prod_info['unit_price'],
+                'created_on' => $current_time,
+                'created_by' => $user_id
+            );
+            $purchased_product_list[] = $product_info;
+            $add_stock_info = array(
+                'product_id' => $prod_info['product_id'],
+                'purchase_order_no' => $prod_info['purchase_order_no'],
+                'shop_id' => $shop_id,
+                'stock_in' => $prod_info['quantity'],
+                'created_on' => $current_time,
+                'transaction_category_id' => STOCK_PURCHASE_IN
+            );
+            $add_stock_list[] = $add_stock_info;
+        }
+        $supplier_transaction_info = array(
+            'shop_id' => $shop_id,
+            'supplier_id' => $purchase_info['supplier_id'],
+            'created_on' => $current_time,
+            'lot_no' => '',
+            'name' => '',
+            'quantity' => '',
+            'unit_price' => '',
+            'sub_total' => ($current_due+$purchase_info['paid']),
+            'payment_status' => 'Total due',
+            'remarks' => ''
+        );
+        $supplier_transaction_info_array[] = $supplier_transaction_info;
+        if( $purchase_info['paid'] > 0)
+        {
+            $supplier_transaction_info = array(
+                'shop_id' => $shop_id,
+                'supplier_id' => $purchase_info['supplier_id'],
+                'created_on' => $current_time,
+                'lot_no' => '',
+                'name' => '',
+                'quantity' => '',
+                'unit_price' => '',
+                'sub_total' => $purchase_info['paid'],
+                'payment_status' => 'Payment(Cash)',
+                'remarks' => ''
+            );
+            $supplier_transaction_info_array[] = $supplier_transaction_info;
+            if( $current_due > 0)
+            {
+                $supplier_transaction_info = array(
+                    'shop_id' => $shop_id,
+                    'supplier_id' => $purchase_info['supplier_id'],
+                    'created_on' => $current_time,
+                    'lot_no' => '',
+                    'name' => '',
+                    'quantity' => '',
+                    'unit_price' => '',
+                    'sub_total' => $current_due,
+                    'payment_status' => 'Total due',
+                    'remarks' => ''
+                );
+                $supplier_transaction_info_array[] = $supplier_transaction_info;
+            }
+        }       
+        
+        $additional_data = array(
+            'order_date' => $current_time,
+            'purchase_order_no' => $purchase_info['order_no'],
+            'shop_id' => $shop_id,
+            'supplier_id' => $purchase_info['supplier_id'],
+            'purchase_order_status_id' => 1,
+            'remarks' => $purchase_info['remarks'],
+            'total' => $purchase_info['total'],
+            'paid' => $purchase_info['paid'],
+            'created_on' => $current_time,
+            'created_by' => $user_id
+        ); 
+        $supplier_payment_data = array(
+            'shop_id' => $shop_id,
+            'supplier_id' => $purchase_info['supplier_id'],
+            'amount' => $purchase_info['paid'],
+            'description' => 'purchase',
+            'payment_category_id' => PAYMENT_PURCHASE_PAYMENT,
+            'reference_id' => $prod_info['purchase_order_no'],
+            'created_on' => $current_time
+        );
+        $purchase_id = $this->purchase_library->add_purchase_order($additional_data, $purchased_product_list, $add_stock_list, $supplier_payment_data, $supplier_transaction_info_array);
+        if( $purchase_id !== FALSE )
+        {
+            /*$purchase_info_array = $this->purchase_library->get_purchase_order_info($purchase_id)->result_array();
+            $purchase_info = array();
+            if( count($purchase_info_array) > 0 )
+            {
+                $purchase_info = $purchase_info_array[0];
+            }*/
+            $response['status'] = '1';
+        } 
+        else
+        {
+            $response['status'] = '0';
+            $response['message'] = $this->purchase_library->errors_alert();
+        }
+        
+        echo json_encode($response);
+    } 
+    
+    /*
      * This method will display purchase page after retrieving relevant data
      * @author Nazmul on 23rd January 2014 
      */
@@ -102,6 +253,11 @@ class Purchase extends CI_Controller {
             }
         }
         $this->template->load(null, 'purchase/purchase_order',$this->data);
+    }
+    
+    public function get_warehouse_purchase_info_from_lot_no()
+    {
+        
     }
     
     /*
@@ -254,6 +410,9 @@ class Purchase extends CI_Controller {
         
         echo json_encode($response);
     } 
+    
+    
+    
     public function get_purchase_info_from_lot_no()
     {
         $result = array();

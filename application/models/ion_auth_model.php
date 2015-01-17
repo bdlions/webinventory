@@ -2006,6 +2006,12 @@ class Ion_auth_model extends CI_Model {
                     ->get(); 
     }
     
+    public function update_users_account_status()
+    {
+        
+    }
+
+
     // -------------------------------------- Staff Module ---------------------------------//
     /*
      * This method will return all staffs of a shop

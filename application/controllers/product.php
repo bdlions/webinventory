@@ -370,8 +370,9 @@ class Product extends CI_Controller {
         }
         $product_info = array();
         $product_info_array = $this->product_library->get_product_info($product_id)->result_array();
-        if(!empty($product_info_array))
-        {
+        if (empty($product_info_array)) {
+            redirect("product/show_all_products", "refresh");
+        } else {
             $product_info = $product_info_array[0];
         }
         $this->data['name'] = array(

@@ -6,7 +6,7 @@ $(function() {
             type: "POST",
             url: '<?php echo base_url()."user/inactive_user_account_status";?>',
             data: {
-                user_id: $("#input_user_id").val()
+                user_id: $("#input_active_user_id").val()
             },
             success: function(data) {
                 alert(data['message']);
@@ -17,7 +17,7 @@ $(function() {
     });
 });
 function open_modal_inactive_account_status_confirm(user_id) {
-    $('#input_user_id').val(user_id);
+    $('#input_active_user_id').val(user_id);
     $("#modal_inactive_account_status_confirm").modal('show');
 }
 </script>
@@ -33,7 +33,7 @@ function open_modal_inactive_account_status_confirm(user_id) {
                     <div class="row form-group">
                         <div class ="col-sm-2"></div>
                         <label class="col-sm-10 control-label">Are you sure to inactive account status?</label>
-                        <input id="input_user_id" name="input_user_id" value="" type="hidden" class="form-control"/>
+                        <input id="input_active_user_id" name="input_active_user_id" value="" type="hidden" class="form-control"/>
                     </div>
                 </div>                
             </div>

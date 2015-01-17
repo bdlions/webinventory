@@ -504,7 +504,7 @@ class Customer extends User {
         $customer_info = array();
         $customer_info_array = $this->ion_auth->get_customer_info(0, $customer_id)->result_array();
         if (empty($customer_info_array)) {
-            redirect("customer/show_all_customers", "refresh");
+            redirect("customer/show_all_customers/10", "refresh");
         } else {
             $customer_info = $customer_info_array[0];
         }
@@ -610,5 +610,13 @@ class Customer extends User {
             'value' => 'Update',
         );        
         $this->template->load(null, 'customer/update_customer', $this->data);
+    }
+    
+    /*
+     * ajax call this fuction.
+     */
+    public function send_custom_sms()
+    {
+        
     }
 }

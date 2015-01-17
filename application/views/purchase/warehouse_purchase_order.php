@@ -144,7 +144,7 @@
                 purchase_info.setPaid($("#paid_amount").val());
                 $.ajax({
                     type: "POST",
-                    url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
+                    url: '<?php echo base_url(); ?>' + "purchase/add_warehouse_purchase",
                     data: {
                         product_list: product_list,
                         purchase_info: purchase_info,
