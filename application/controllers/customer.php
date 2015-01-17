@@ -400,13 +400,13 @@ class Customer extends User {
      */
     public function show_customer($customer_id = 0) {
         if ($customer_id == 0) {
-            redirect("customer/show_all_customers", "refresh");
+            redirect("customer/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT, "refresh");
         }
         $this->data['message'] = '';
         $customer_info = array();
         $customer_info_array = $this->ion_auth->get_customer_info(0, $customer_id)->result_array();
         if (empty($customer_info_array)) {
-            redirect("customer/show_all_customers", "refresh");
+            redirect("customer/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT, "refresh");
         } else {
             $customer_info = $customer_info_array[0];
         }        
@@ -491,7 +491,7 @@ class Customer extends User {
      */
     public function update_customer($customer_id = 0) {
         if ($customer_id == 0) {
-            redirect("customer/show_all_customers", "refresh");
+            redirect("customer/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT, "refresh");
         }
         //validate whether current user has permission to update this custome or not
         $this->data['message'] = '';
@@ -504,7 +504,7 @@ class Customer extends User {
         $customer_info = array();
         $customer_info_array = $this->ion_auth->get_customer_info(0, $customer_id)->result_array();
         if (empty($customer_info_array)) {
-            redirect("customer/show_all_customers/10", "refresh");
+            redirect("customer/show_all_customers/".PAGINATION_CUSTOMER_LIST_LIMIT, "refresh");
         } else {
             $customer_info = $customer_info_array[0];
         }
