@@ -319,6 +319,29 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     /*
+     * This method will return customers due collect list of a shop
+     * @param $start_time, time
+     * @param $end_time, time
+     * @param $shop_id, shop id
+     * @Author Nazmul on 15th January 2015
+     */
+    public function get_customers_due_collect_list($start_time, $end_time, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['customer_payment_info'].'.shop_id', $shop_id);
+        $this->db->where($this->tables['customer_payment_info'].'.created_on >=', $start_time);
+        $this->db->where($this->tables['customer_payment_info'].'.created_on <=', $end_time);
+        $this->db->where('payment_category_id', CUSTOMER_PAYMENT_CATEGORY_DUE_COLLECT_ID);
+        return $this->db->select($this->tables['customer_payment_info'].'.*,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['customers'].'.card_no')
+                            ->from($this->tables['customer_payment_info'])
+                            ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['customer_payment_info'].'.customer_id')
+                            ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                            ->get();
+    }
+    /*
      * This method will add due collect of a customer
      * @param $payment_data, payment data
      * @param $customer_transaction_info_array, customer transaction related to due collect
