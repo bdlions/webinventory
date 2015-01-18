@@ -2006,9 +2006,19 @@ class Ion_auth_model extends CI_Model {
                     ->get(); 
     }
     
-    public function update_users_account_status()
+    /*
+     * This method will update users
+     * @param $user_id_list, user id list
+     * @param $additional_data, user data to be updated
+     * @Author Nazmul on 18th January 2015
+     */
+    public function update_users($user_id_list, $additional_data)
     {
-        
+        $this->db->where_in('id', $user_id_list);
+        // Filter the data passed
+        $data = $this->_filter_data($this->tables['users'], $additional_data);
+        $this->db->update($this->tables['users'], $data);
+        return true;
     }
 
 
