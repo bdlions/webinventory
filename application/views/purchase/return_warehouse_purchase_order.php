@@ -55,7 +55,7 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/get_purchase_info_from_lot_no",
+                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
                 data: {
                     lot_no: $("#input_raise_purchase_order_no").val()
                 },
@@ -167,7 +167,7 @@
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
-                    url: '<?php echo base_url(); ?>' + "purchase/return_purchase",
+                    url: '<?php echo base_url(); ?>' + "purchase/return_warehouse_purchase",
                     data: {
                         product_list: product_list,
                         purchase_info: purchase_info,
