@@ -51,6 +51,41 @@ class Stock_model extends Ion_auth_model
     }
     
     /*
+     * This method will return current warehouse stock info
+     * @param $product_id, product id
+     * @param $purchase_order_no, purchase order number
+     * @param $shop_id, shop id
+     * @Author Nazmul on 18th January 2015
+     */
+    public function search_warehouse_stocks($product_id = 0, $purchase_order_no = '', $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['warehouse_stock_info'].'.shop_id', $shop_id);
+        if( $product_id != 0 )
+        {
+            $this->db->where($this->tables['warehouse_stock_info'].'.product_id', $product_id);
+        }
+        if( !empty($purchase_order_no) )
+        {
+            $this->db->where($this->tables['warehouse_stock_info'].'.purchase_order_no', $purchase_order_no);
+        }
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.purchase_order_no');
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.product_id');
+        return $this->db->select($this->tables['warehouse_stock_info'].'.product_id,'.$this->tables['warehouse_stock_info'].'.purchase_order_no,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['warehouse_product_purchase_order'].'.unit_price,sum(stock_in)-sum(stock_out) as current_stock,'.$this->tables['product_unit_category'].'.description as unit_category')
+                    ->from($this->tables['warehouse_stock_info'])
+                    ->join($this->tables['purchase_order'], $this->tables['purchase_order'].'.purchase_order_no='.$this->tables['warehouse_stock_info'].'.purchase_order_no AND '.$this->tables['purchase_order'].'.shop_id ='.$this->tables['warehouse_stock_info'].'.shop_id')
+                    ->join($this->tables['warehouse_product_purchase_order'], $this->tables['warehouse_product_purchase_order'].'.purchase_order_no='.$this->tables['warehouse_stock_info'].'.purchase_order_no AND '.$this->tables['warehouse_product_purchase_order'].'.product_id='.$this->tables['warehouse_stock_info'].'.product_id')
+                    ->join($this->tables['product_info'], $this->tables['warehouse_stock_info'].'.product_id='.$this->tables['product_info'].'.id ')
+                    ->join($this->tables['product_unit_category'], $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id ')
+                    ->join($this->tables['suppliers'], $this->tables['suppliers'].'.id='.$this->tables['purchase_order'].'.supplier_id')
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->get(); 
+    }
+    
+    /*
      * This method will return supplier purchase list
      * @param $supplier_id, supplier id
      * @param $shop_id, shop id
