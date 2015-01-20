@@ -1,26 +1,10 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
 /**
- * Name:  Ion Auth
- *
- * Author: Ben Edmunds
- * 		  ben.edmunds@gmail.com
- *         @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- *
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Utils
+ * Added in Class Diagram
  * Requirements: PHP5 or above
- *
  */
 class Utils {
     /**
@@ -39,8 +23,6 @@ class Utils {
         }
 
     }
-    
-
     /**
      * __get
      *
@@ -54,17 +36,25 @@ class Utils {
      */
     public function __get($var) {
         return get_instance()->$var;
-    }
-    
+    }    
+    /*
+     * This time will convert unix time to human format time
+     * @param $time, unix time
+     * @Author Nazmul on 18th January 2015
+     */
     public function process_time($time)
     {
-        //$time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, 'BD');
-        //$dateTimeZone = new DateTimeZone($time_zone_array[0]);
-        //$dateTime = new DateTime("now", $dateTimeZone);
-        //return unix_to_human($time + $dateTime->getOffset());
+        /*$time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, 'BD');
+        $dateTimeZone = new DateTimeZone($time_zone_array[0]);
+        $dateTime = new DateTime("now", $dateTimeZone);
+        return unix_to_human($time + $dateTime->getOffset());*/
         return unix_to_human($time);
-    }
-    
+    }    
+    /*
+     * This method will return unix time of a human date
+     * @param $date, date
+     * @Author Nazmul on 18th January 2015
+     */
     public function get_human_to_unix($date)
     {
         //adding default hour, minute and AM/PM if date is YYYY-MM-DD format
@@ -75,8 +65,11 @@ class Utils {
         }
         //return human_to_unix($date)-21600;
         return human_to_unix($date);
-    }
-    
+    }    
+    /*
+     * This method will return server current date start time in unix 
+     * Author Nazmul on 18th January 2015
+     */
     public function get_current_date_start_time()
     {
         $unix_current_time = now();
@@ -86,5 +79,17 @@ class Utils {
         $human_current_date_start_time = $human_current_date.' 00:00 AM';
         $unix_current_date_start_time = human_to_unix($human_current_date_start_time);
         return $unix_current_date_start_time;
+    }
+    
+    /*
+     * This method will return current date
+     * @Author Nazmul on 18th January 2015
+     */
+    public function get_current_date()
+    {
+        $unix_current_time = now();
+        $human_current_time = unix_to_human($unix_current_time);
+        $human_current_time_array= explode(" ", $human_current_time);
+        return $human_current_time_array[0];
     }
 }

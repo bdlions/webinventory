@@ -78,6 +78,7 @@ $lang['product_update_successful'] 	  	   = 'Product is Updated Successfully.';
 
 //customer
 $lang['customer_creation_duplicate_card_no']       = 'Card No Already Used or Invalid.';
+$lang['customer_update_duplicate_card_no']         = 'Card No Already Used or Invalid.';
 
 //purchase
 $lang['add_purchase_order_duplicate_purchase_order_no']       = 'Order # already used or invalid.';

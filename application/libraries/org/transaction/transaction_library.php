@@ -21,6 +21,7 @@ class Transaction_library extends Ion_auth{
         $this->load->library('email');
         $this->lang->load('ion_auth');
         $this->load->helper('cookie');
+        $this->load->library('org/common/utils');
         $this->load->model('org/transaction/transaction_model');
 
         // Load the session, CI2 as a library, CI3 uses it as a driver
@@ -88,11 +89,7 @@ class Transaction_library extends Ion_auth{
         {
             foreach($supplier_transactions_array as $supplier_transaction)
             {
-                $created_on = $supplier_transaction['created_on'];
-                $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, 'BD');
-                $dateTimeZone = new DateTimeZone($time_zone_array[0]);
-                $dateTime = new DateTime("now", $dateTimeZone);
-                $supplier_transaction['created_on'] = unix_to_human($created_on + $dateTime->getOffset());
+                $supplier_transaction['created_on'] = $this->utils->process_time($supplier_transaction['created_on']);
                 $supplier_transaction_list[] = $supplier_transaction;
             }
         }
@@ -112,11 +109,7 @@ class Transaction_library extends Ion_auth{
         {
             foreach($customer_transactions_array as $customer_transaction)
             {
-                $created_on = $customer_transaction['created_on'];
-                $time_zone_array = DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, 'BD');
-                $dateTimeZone = new DateTimeZone($time_zone_array[0]);
-                $dateTime = new DateTime("now", $dateTimeZone);
-                $customer_transaction['created_on'] = unix_to_human($created_on + $dateTime->getOffset());
+                $customer_transaction['created_on'] = $this->utils->process_time($customer_transaction['created_on']);
                 $customer_transaction_list[] = $customer_transaction;
             }
         }

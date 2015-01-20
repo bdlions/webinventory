@@ -201,7 +201,7 @@ class Expense extends CI_Controller {
         }
         $this->data['expense_categories'] = $expense_categories;
         $this->data['item_list'] = array();
-        $date = date('Y-m-d');
+        $date = $this->utils->get_current_date();
         $start_time = $this->utils->get_current_date_start_time();
         $end_time = $start_time + 86400;
         $expense_list = $this->expenses->get_all_expenses(0, 0, $start_time, $end_time);

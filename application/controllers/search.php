@@ -301,7 +301,7 @@ class Search extends CI_Controller {
         }
         $this->data['product_list'] = $product_list;
         
-        $time = $this->utils->get_human_to_unix(date('Y-m-d'));
+        $time = $this->utils->get_current_date_start_time();
         $this->data['sale_list'] = array();
         $sale_list_array = $this->sale_library->get_all_sales($time, $shop_id)->result_array();
         if( !empty($sale_list_array) )
@@ -378,7 +378,7 @@ class Search extends CI_Controller {
             }
         }
         $this->data['product_list'] = $product_list;
-        $date = date('Y-m-d');
+        $date = $this->utils->get_current_date();
         $this->data['start_date'] = array(
             'name' => 'start_date',
             'id' => 'start_date',
@@ -443,7 +443,7 @@ class Search extends CI_Controller {
             'id' => 'purchase_order_no',
             'type' => 'text'
         );
-        $date = date('Y-m-d');
+        $date = $this->utils->get_current_date();
         $this->data['start_date'] = array(
             'name' => 'start_date',
             'id' => 'start_date',

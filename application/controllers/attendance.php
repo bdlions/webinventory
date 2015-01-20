@@ -6,6 +6,7 @@ class Attendance extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('org/common/utils');
         $this->load->library('org/common/attendances');
         $this->load->helper('url');
         $this->load->helper('file');
@@ -86,7 +87,7 @@ class Attendance extends CI_Controller {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
         
-        $date = date('Y-m-d');
+        $date = $this->utils->get_current_date();
         $this->data['login_date'] = array(
             'name' => 'login_date',
             'id' => 'login_date',
@@ -129,7 +130,7 @@ class Attendance extends CI_Controller {
                 $salesman_list[$salesman_info['user_id']] = $salesman_info['first_name'].' '.$salesman_info['last_name'];
             }
         }
-        $date = date('Y-m-d');
+        $date = $this->utils->get_current_date();
         $attendance_info_array = $this->attendances->get_attendance($date, $date)->result_array();
         $this->data['attendance_list'] = $attendance_info_array;
         $this->data['salesman_list'] = $salesman_list;        

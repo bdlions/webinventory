@@ -1389,7 +1389,10 @@ class Ion_auth_model extends CI_Model {
         //update customer info
         if(isset($data['user_group_id']) && $data['user_group_id'] === $this->user_group_list['customer_id'])
         {
-            $this->update_customer($id, $data);
+            if(!$this->update_customer($id, $data))
+            {
+                return FALSE;
+            }
         }
         else if(isset($data['user_group_id']) && $data['user_group_id'] === $this->user_group_list['supplier_id'])
         {
@@ -2399,10 +2402,16 @@ class Ion_auth_model extends CI_Model {
      */
     public function update_customer($user_id, $data)
     {
+        $customer_info = $this->get_customer_info($user_id)->row();
+        if (array_key_exists('card_no', $data) && $this->customer_identity_check($data['card_no']) && $customer_info->card_no !== $data['card_no']) {
+            $this->set_error('customer_update_duplicate_card_no');
+            return FALSE;
+        }
+        
         // Filter the data passed
         $data = $this->_filter_data($this->tables['customers'], $data);
         $this->db->update($this->tables['customers'], $data, array('user_id' => $user_id));
-        return true;
+        return TRUE;
     }
     /*
      * This method will search customer based on column name and value

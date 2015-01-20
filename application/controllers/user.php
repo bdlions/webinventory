@@ -270,16 +270,6 @@ class User extends CI_Controller {
         echo json_encode($result);
     }
     
-    public function activate_users_account_status()
-    {
-        
-    }
-    
-    public function inactivate_users_account_status()
-    {
-        
-    }
-    
     function account_validation_sms() {
         //$this->data['title'] = "sms_check";
         //validate form input
