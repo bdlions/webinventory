@@ -174,38 +174,62 @@ class Purchase_model extends Ion_auth_model
      * @return bool
      * @author Nazmul on 22nd November 2014
      * */
-    public function add_purchase_order($additional_data, $purchased_product_list, $add_stock_list, $supplier_payment_data, $supplier_transaction_info_array)
-    {
-        $this->trigger_events('pre_add_purchase_order');
-        if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
-            $this->set_error('add_purchase_order_duplicate_purchase_order_no');
-            return FALSE;
-        }
-        $this->db->trans_begin();
-        //filter out any data passed that doesnt have a matching column in the users table
-        $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
-
-        $this->db->insert($this->tables['purchase_order'], $purchase_data);
-
-        $id = $this->db->insert_id();
-        if($id > 0)
-        {
-            if($supplier_payment_data['amount'] > 0)
-            {
-                $this->db->insert($this->tables['supplier_payment_info'], $supplier_payment_data);
-            }            
-            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);
-            $this->db->insert_batch($this->tables['product_purchase_order'], $purchased_product_list);
-            if( !empty($add_stock_list) )
-            {
-                $this->db->insert_batch($this->tables['stock_info'], $add_stock_list);            
-            }            
-        }
-
-        $this->trigger_events('post_add_purchase_order');
-        $this->db->trans_commit();
-        return (isset($id)) ? $id : FALSE;
+    
+    
+    
+    public function purchase_product_order_no_check($purchase_order_no, $product_id) {
+        $this->db->where($this->tables['product_purchase_order'] . '.purchase_order_no', $purchase_order_no);
+        $this->db->where($this->tables['product_purchase_order'] . '.product_id', $product_id);
+        $qr_result = $this->db->select('*')
+                ->from($this->tables['product_purchase_order'])
+                ->get()
+                ->result_array();
+        return !(empty($qr_result));
     }
+
+    public function add_purchase_order($purchased_product_list, $add_stock_list) {
+        
+        foreach ($purchased_product_list as $product_data) {
+            if ($this->purchase_product_order_no_check($product_data['purchase_order_no'], $product_data['product_id'])) {
+                continue;
+            }
+            echo 'product data: ';
+            var_dump($product_data);
+            $this->db->insert($this->tables['product_purchase_order'], $product_data);
+        }
+        if (!empty($add_stock_list)) {
+            $this->db->insert_batch($this->tables['stock_info'], $add_stock_list);
+        }
+        
+
+//        $this->trigger_events('pre_add_purchase_order');
+//        if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
+//            $this->set_error('add_purchase_order_duplicate_purchase_order_no');
+//            return FALSE;
+//        }
+//        $this->db->trans_begin();
+        //filter out any data passed that doesnt have a matching column in the users table
+//        $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
+//
+//        $this->db->insert($this->tables['purchase_order'], $purchase_data);
+//
+//        $id = $this->db->insert_id();
+//        if($id > 0)
+//        {
+////          if($supplier_payment_data['amount'] > 0)
+//            {
+//                $this->db->insert($this->tables['supplier_payment_info'], $supplier_payment_data);
+//            }            
+//            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);
+//            $this->db->insert_batch($this->tables['product_purchase_order'], $purchased_product_list);
+                     
+//        }
+
+//        $this->trigger_events('post_add_purchase_order');
+//        $this->db->trans_commit();
+//        return (isset($id)) ? $id : FALSE;
+    }
+    
     public function raise_purchase_order($additional_data, $new_purchased_product_list, $add_stock_list, $supplier_transaction_info_array)
     {
         $this->trigger_events('pre_raise_purchase_order');
@@ -303,17 +327,17 @@ class Purchase_model extends Ion_auth_model
      * @param $shop_id, shop id
      * @Author Nazmul on 14th January 2015
      */
-    public function get_purchased_product_list($purchase_order_no, $shop_id = 0)
+    public function get_purchased_product_list($purchase_order_no)
     {
-        if($shop_id == 0)
-        {
-            $shop_id = $this->session->userdata('shop_id');
-        }
+//        if($shop_id == 0)
+//        {
+//            $shop_id = $this->session->userdata('shop_id');
+//        }
         $this->db->where($this->tables['product_purchase_order'].'.purchase_order_no', $purchase_order_no);
-        $this->db->where($this->tables['product_purchase_order'].'.shop_id', $shop_id);
-        return $this->db->select($this->tables['product_purchase_order'].'.product_id,'.$this->tables['product_purchase_order'].'.unit_price,'.$this->tables['product_info'].'.name as product_name')
+//        $this->db->where($this->tables['product_purchase_order'].'.shop_id', $shop_id);
+       return $this->db->select('*')
                     ->from($this->tables['product_purchase_order'])
-                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_purchase_order'].'.product_id')
+//                    ->join($this->tables['product_info'], $this->tables['product_info'].'.id='.$this->tables['product_purchase_order'].'.product_id')
                     ->get();
     }
 }
