@@ -51,58 +51,59 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#input_raise_purchase_order_no").change(function() {
+        $("#input_purchase_order_no").change(function() {
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/get_purchase_info_from_lot_no",
+                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
                 data: {
-                    lot_no: $("#input_raise_purchase_order_no").val()
+                    lot_no: $("#input_purchase_order_no").val()
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
                     var purchased_product_list = data['purchased_product_list'];
-                    var supplier_due = data['supplier_due'];
+                    var purchased_product_info = data['purchased_product_info'];
+//                    var supplier_due = data['supplier_due'];
                     set_purchased_product_list(purchased_product_list);
                     if(supplier_info.supplier_id)
                     {
                         $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
-                        $("#input_raise_purchase_supplier_id").val(supplier_info.supplier_id);
-                        $("#input_raise_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
-                        $("#input_raise_purchase_phone").val(supplier_info.phone);
-                        $("#input_raise_purchase_company").val(supplier_info.company);
-                        $('#input_raise_purchase_product').attr('type', 'text');
+                        $("#input_purchase_supplier_id").val(supplier_info.supplier_id);
+                        $("#input_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
+                        $("#input_purchase_phone").val(supplier_info.phone);
+                        $("#input_purchase_company").val(supplier_info.company);
+                        $('#input_purchase_product').attr('type', 'text');
                         $("#total_purchase_price").val('');
-                        $("#previous_due").val(supplier_due);
-                        $("#current_due").val(supplier_due);
-                        $("#return_balance").val('');
+//                        $("#previous_due").val(supplier_due);
+//                        $("#current_due").val(supplier_due);
+//                        $("#return_balance").val('');
                     }
                     else
                     {
-                        $("#input_raise_purchase_supplier_id").val('');
-                        $("#input_raise_purchase_supplier").val('');
-                        $("#input_raise_purchase_phone").val('');
-                        $("#input_raise_purchase_company").val('');
-                        $('#input_raise_purchase_product').attr('type', 'hidden');
+                        $("#input_purchase_supplier_id").val('');
+                        $("#input_purchase_supplier").val('');
+                        $("#input_purchase_phone").val('');
+                        $("#input_purchase_company").val('');
+                        $('#input_purchase_product').attr('type', 'hidden');
                         $("#total_purchase_price").val('');
-                        $("#previous_due").val('');
-                        $("#current_due").val('');
-                        $("#return_balance").val('');
+//                        $("#previous_due").val('');
+//                        $("#current_due").val('');
+//                        $("#return_balance").val('');
                     }
                 }
             });
         });
         
-        $("#button_raise_purchase_order").on("click", function() {
+        $("#button_purchase_order").on("click", function() {
             //validation checking of purchase order
             //checking whether supplier is assigned or not
-            if ($("#input_raise_purchase_supplier_id").val().length === 0 || $("#input_raise_purchase_supplier_id").val() < 0)
+            if ($("#input_purchase_supplier_id").val().length === 0 || $("#input_purchase_supplier_id").val() < 0)
             {
                 alert('Please assign correct Lot #');
                 return;
             }
             //checking whether purchase order no is assigned or not
-            if ($("#input_raise_purchase_order_no").val().length === 0)
+            if ($("#input_purchase_order_no").val().length === 0)
             {
                 alert('Please assign Lot #');
                 return;
@@ -140,7 +141,7 @@
                         {
                             product_info.setProductId($(this).attr("id"));
                             product_info.setQuantity($(this).attr("value"));
-                            product_info.setPurchaseOrderNo($("#input_raise_purchase_order_no").val());
+                            product_info.setPurchaseOrderNo($("#input_purchase_order_no").val());
                         }
                         if ($(this).attr("name") === "price")
                         {
@@ -160,8 +161,8 @@
                     return;
                 }
                 var purchase_info = new Purchase();
-                purchase_info.setOrderNo($("#input_raise_purchase_order_no").val());
-                purchase_info.setSupplierId($("#input_raise_purchase_supplier_id").val());
+                purchase_info.setOrderNo($("#input_purchase_order_no").val());
+                purchase_info.setSupplierId($("#input_purchase_supplier_id").val());
                 purchase_info.setRemarks($("#purchase_remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
                 $.ajax({
@@ -171,30 +172,30 @@
                     data: {
                         product_list: product_list,
                         purchase_info: purchase_info,
-                        current_due: $("#current_due").val(),
-                        return_balance: $("#return_balance").val()
+//                        current_due: $("#current_due").val(),
+//                        return_balance: $("#return_balance").val()
                     },
                     success: function(data) {
-                        if (data['status'] === '0')
+                        if (data['status'] == '0')
                         {
                             alert(data['message']);
                         }
-                        else if (data['status'] === '1')
+                        else if (data['status'] == '1')
                         {
                             alert('Trascaction is executed successfully.');
-                            $("#input_raise_purchase_order_no").val('');
+                            $("#input_purchase_order_no").val('');
                             $("#tbody_selected_product_list").html('');
-                            $("#input_raise_purchase_supplier_id").val('');
-                            $("#input_raise_purchase_supplier").val('');
-                            $("#input_raise_purchase_phone").val('');
-                            $("#input_raise_purchase_company").val('');
-                            $('#input_raise_purchase_product').attr('type', 'hidden');
+                            $("#input_purchase_supplier_id").val('');
+                            $("#input_purchase_supplier").val('');
+                            $("#input_purchase_phone").val('');
+                            $("#input_purchase_company").val('');
+                            $('#input_purchase_product').attr('type', 'hidden');
                             $("#purchase_order_no").val('');
                             $("#purchase_remarks").val('');
                             $("#total_purchase_price").val('');
-                            $("#previous_due").val('');
-                            $("#current_due").val('');
-                            $("#return_balance").val('');
+//                            $("#previous_due").val('');
+//                            $("#current_due").val('');
+//                            $("#return_balance").val('');
                         }
                     }
                 });
@@ -240,17 +241,17 @@
             });
             $("#total_purchase_price").val(total_purchase_price);
             //$("#return_balance").val(total_purchase_price);
-            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
-            if(current_due >=0 )
-            {
-                $("#current_due").val(current_due);
-                $("#return_balance").val('0');
-            }
-            else
-            {
-                $("#current_due").val('0');
-                $("#return_balance").val(-current_due);
-            }
+//            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
+//            if(current_due >=0 )
+//            {
+//                $("#current_due").val(current_due);
+//                $("#return_balance").val('0');
+//            }
+//            else
+//            {
+//                $("#current_due").val('0');
+//                $("#return_balance").val(-current_due);
+//            }
         });
     });
 </script>
@@ -276,46 +277,46 @@
             <div class="row">
                 <div class ="col-md-7 form-horizontal margin-top-bottom">
                     <div class="form-group">
-                        <label for="input_raise_purchase_supplier" class="col-md-3 control-label requiredField">
+                        <label for="input_purchase_supplier" class="col-md-3 control-label requiredField">
                             Supplier Name
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_raise_purchase_supplier_id', 'id' => 'input_raise_purchase_supplier_id', 'type'=>'hidden', 'class' => 'form-control')); ?>
-                            <?php echo form_input(array('name' => 'input_raise_purchase_supplier', 'id' => 'input_raise_purchase_supplier', 'readonly'=>'true', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_supplier_id', 'id' => 'input_purchase_supplier_id', 'type'=>'hidden', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_supplier', 'id' => 'input_purchase_supplier', 'readonly'=>'true', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="input_raise_purchase_phone" class="col-md-3 control-label requiredField">
+                        <label for="input_purchase_phone" class="col-md-3 control-label requiredField">
                             Phone No
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_raise_purchase_phone', 'id' => 'input_raise_purchase_phone', 'readonly'=>'true', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_phone', 'id' => 'input_purchase_phone', 'readonly'=>'true', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="input_raise_purchase_company" class="col-md-3 control-label requiredField">
+                        <label for="input_purchase_company" class="col-md-3 control-label requiredField">
                             Company
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_raise_purchase_company', 'id' => 'input_raise_purchase_company', 'readonly'=>'true', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_company', 'id' => 'input_purchase_company', 'readonly'=>'true', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="input_raise_purchase_product" class="col-md-3 control-label requiredField">
+                        <label for="input_purchase_product" class="col-md-3 control-label requiredField">
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_raise_purchase_product', 'id' => 'input_raise_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_purchased_product')); ?>
+                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_purchased_product')); ?>
                         </div> 
                     </div>
                 </div>
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
-                        <label for="input_raise_purchase_order_no" class="col-md-4 control-label requiredField">
+                        <label for="input_purchase_order_no" class="col-md-4 control-label requiredField">
                             Lot No
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_raise_purchase_order_no', 'id' => 'input_raise_purchase_order_no', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_order_no', 'id' => 'input_purchase_order_no', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                 </div>
@@ -369,12 +370,36 @@
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>     
+<!--                    <div class="form-group">
+                        <label for="previous_due" class="col-md-7 control-label requiredField">
+                            Previous Due
+                        </label>
+                        <div class ="col-md-3">
+                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
                     <div class="form-group">
-                        <label for="button_raise_purchase_order" class="col-md-2 control-label requiredField">
+                        <label for="current_due" class="col-md-7 control-label requiredField">
+                            Current Due
+                        </label>
+                        <div class ="col-md-3">
+                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="return_balance" class="col-md-7 control-label requiredField">
+                            Return balance
+                        </label>
+                        <div class ="col-md-3">
+                            <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>-->
+                    <div class="form-group">
+                        <label for="button_purchase_order" class="col-md-2 control-label requiredField">
 
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_button(array('name' => 'button_raise_purchase_order', 'id' => 'button_raise_purchase_order', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
+                            <?php echo form_button(array('name' => 'button_purchase_order', 'id' => 'button_purchase_order', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                 </div>

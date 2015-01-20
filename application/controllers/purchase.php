@@ -902,8 +902,8 @@ class Purchase extends CI_Controller {
         $current_time = now();
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
-        $current_due = $_POST['current_due'];
-        $return_balance = $_POST['return_balance'];
+//        $current_due = $_POST['current_due'];
+//        $return_balance = $_POST['return_balance'];
         $selected_product_list = $_POST['product_list'];
         $purchase_info = $_POST['purchase_info']; 
         $order_no = $purchase_info['order_no'];        
@@ -919,18 +919,18 @@ class Purchase extends CI_Controller {
         $stock_out_list = array();        
         foreach($selected_product_list as $key => $prod_info)
         {
-            $supplier_transaction_info = array(
-                'shop_id' => $shop_id,
-                'supplier_id' => $purchase_info['supplier_id'],
-                'created_on' => $current_time,
-                'lot_no' => $order_no,
-                'name' => $prod_info['name'],
-                'quantity' => '-'.$prod_info['quantity'],
-                'unit_price' => $prod_info['unit_price'],
-                'sub_total' => '-'.$prod_info['sub_total'],
-                'payment_status' => 'Return goods'
-            );
-            $supplier_transaction_info_array[] = $supplier_transaction_info;
+//            $supplier_transaction_info = array(
+//                'shop_id' => $shop_id,
+//                'supplier_id' => $purchase_info['supplier_id'],
+//                'created_on' => $current_time,
+//                'lot_no' => $order_no,
+//                'name' => $prod_info['name'],
+//                'quantity' => '-'.$prod_info['quantity'],
+//                'unit_price' => $prod_info['unit_price'],
+//                'sub_total' => '-'.$prod_info['sub_total'],
+//                'payment_status' => 'Return goods'
+//            );
+//            $supplier_transaction_info_array[] = $supplier_transaction_info;
             if ( array_key_exists($prod_info['product_id'].'_'.$order_no, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no] >= $prod_info['quantity'] ) ) {
                 $add_stock_info = array(
                     'product_id' => $prod_info['product_id'],
@@ -950,51 +950,52 @@ class Purchase extends CI_Controller {
                 return;
             }                    
         }
-        $supplier_transaction_info = array(
-            'shop_id' => $shop_id,
-            'supplier_id' => $purchase_info['supplier_id'],
-            'created_on' => $current_time,
-            'lot_no' => '',
-            'name' => '',
-            'quantity' => '',
-            'unit_price' => '',
-            'sub_total' => $current_due,
-            'payment_status' => 'Total due'
-        );
-        $supplier_transaction_info_array[] = $supplier_transaction_info;
-        $additional_data = array(
-            'purchase_order_no' => $order_no,
-            'shop_id' => $shop_id,
-            'remarks' => $purchase_info['remarks'],
-            'modified_on' => $current_time,
-            'modified_by' => $user_id
-        ); 
-        $return_balance_info = array();
-        if($return_balance > 0)
-        {
-            $return_balance_info = array(
-                'shop_id' => $shop_id,
-                'purchase_order_no' => $order_no,
-                'supplier_id' => $purchase_info['supplier_id'],
-                'amount' => $return_balance,
-                'created_on' => $current_time,
-                'created_by' => $user_id
-            );
-            $supplier_transaction_info = array(
-                'shop_id' => $shop_id,
-                'supplier_id' => $purchase_info['supplier_id'],
-                'created_on' => $current_time,
-                'lot_no' => '',
-                'name' => '',
-                'quantity' => '',
-                'unit_price' => '',
-                'sub_total' => $return_balance,
-                'payment_status' => 'Return balance'
-            );
-            $supplier_transaction_info_array[] = $supplier_transaction_info;
-        }
+//        $supplier_transaction_info = array(
+//            'shop_id' => $shop_id,
+//            'supplier_id' => $purchase_info['supplier_id'],
+//            'created_on' => $current_time,
+//            'lot_no' => '',
+//            'name' => '',
+//            'quantity' => '',
+//            'unit_price' => '',
+//            'sub_total' => $current_due,
+//            'payment_status' => 'Total due'
+//        );
+//        $supplier_transaction_info_array[] = $supplier_transaction_info;
+//        $additional_data = array(
+//            'purchase_order_no' => $order_no,
+//            'shop_id' => $shop_id,
+//            'remarks' => $purchase_info['remarks'],
+//            'modified_on' => $current_time,
+//            'modified_by' => $user_id
+//        ); 
+//        $return_balance_info = array();
+//        if($return_balance > 0)
+//        {
+//            $return_balance_info = array(
+//                'shop_id' => $shop_id,
+//                'purchase_order_no' => $order_no,
+//                'supplier_id' => $purchase_info['supplier_id'],
+//                'amount' => $return_balance,
+//                'created_on' => $current_time,
+//                'created_by' => $user_id
+////            );
+//            $supplier_transaction_info = array(
+//                'shop_id' => $shop_id,
+//                'supplier_id' => $purchase_info['supplier_id'],
+//                'created_on' => $current_time,
+//                'lot_no' => '',
+//                'name' => '',
+//                'quantity' => '',
+//                'unit_price' => '',
+//                'sub_total' => $return_balance,
+//                'payment_status' => 'Return balance'
+//            );
+//            $supplier_transaction_info_array[] = $supplier_transaction_info;
+//        }
         
-        $status = $this->purchase_library->return_purchase_order($additional_data, $stock_out_list, $supplier_transaction_info_array, $return_balance_info);
+//        $status = $this->purchase_library->return_purchase_order($additional_data, $stock_out_list, $supplier_transaction_info_array, $return_balance_info);
+        $status = $this->purchase_library->return_purchase_order($stock_out_list);
         if( $status === TRUE )
         {
             $response['status'] = '1';

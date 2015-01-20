@@ -258,27 +258,27 @@ class Purchase_model extends Ion_auth_model
         return TRUE;
     }
     
-    public function return_purchase_order($additional_data, $stock_out_list, $supplier_transaction_info_array, $return_balance_info)
+    public function return_purchase_order($stock_out_list)
     {
         $this->trigger_events('pre_return_purchase_order');
         $this->db->trans_begin();
         //filter out any data passed that doesnt have a matching column in the users table
-        $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
-        $this->db->update($this->tables['purchase_order'], $purchase_data, array('purchase_order_no' => $purchase_data['purchase_order_no'], 'shop_id' => $purchase_data['shop_id'] ));
+//        $purchase_data = $this->_filter_data($this->tables['purchase_order'], $additional_data);
+//        $this->db->update($this->tables['purchase_order'], $purchase_data, array('purchase_order_no' => $purchase_data['purchase_order_no'], 'shop_id' => $purchase_data['shop_id'] ));
         if ($this->db->trans_status() === FALSE) 
         {
             $this->db->trans_rollback();
             return FALSE;
         }
-        if( !empty($return_balance_info) )
-        {
-            $return_balance_info = $this->_filter_data($this->tables['supplier_returned_payment_info'], $return_balance_info);
-            $this->db->insert($this->tables['supplier_returned_payment_info'], $return_balance_info);         
-        }
-        if( !empty($supplier_transaction_info_array) )
-        {
-            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);       
-        }
+//        if( !empty($return_balance_info) )
+//        {
+//            $return_balance_info = $this->_filter_data($this->tables['supplier_returned_payment_info'], $return_balance_info);
+//            $this->db->insert($this->tables['supplier_returned_payment_info'], $return_balance_info);         
+//        }
+//        if( !empty($supplier_transaction_info_array) )
+//        {
+//            $this->db->insert_batch($this->tables['supplier_transaction_info'], $supplier_transaction_info_array);       
+//        }
         if( !empty($stock_out_list) )
         {
             $this->db->insert_batch($this->tables['stock_info'], $stock_out_list);            
