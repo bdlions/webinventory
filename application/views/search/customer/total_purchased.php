@@ -1,43 +1,62 @@
-		<script type="text/javascript">
-    $(function() {
-        $("#button_search_customer").on("click", function() {
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_customers_by_total_purchased",
-                data: {
-                    total_purchased: $("#total_purchased").val()
-                },
-                success: function(data) {
-                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data['customer_list']));                      
-                }
-            });
-            return false;
-        });
-        
-    });
-</script>
 <script type="text/javascript">
-function get_char_count(limit)
-{
-    var tarea= document.getElementById("description");
-    var countDisplay = document.getElementById("char_count");
-    var charcount = tarea.value.length;
-    var countRemains = limit - charcount;
-    countDisplay.innerHTML = "Total characters: " + charcount + ".&nbsp;&nbsp;&nbsp;  Remaining: " + countRemains;
-}
+    var searched_customer_list = [];
+    function search_cust() {
+        
+        
+//        A DUMMY ARRAY IS RETURNED FROM search_customers_by_total_purchased
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + "search/search_customers_by_total_purchased",
+            data: {
+                total_purchased: $("#total_purchased").val()
+            },
+            success: function (data) {
+                $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data['customer_list']));
+                searched_customer_list = data['customer_list'];
+            }
+        });
+    }
+    function download_result(){
+        if(searched_customer_list.length<1){
+            alert('Please complete customer search');
+            return;
+        }
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + 'search/download_result_search_customer_by_total_purchase',
+            data: {
+                searched_customer_list: JSON.stringify(searched_customer_list),
+                select_option_for_download: $("#select_option_for_download").val()
+            },
+            success: function (data) {
+            }
+        });
+    }
+    
+    function get_char_count(limit)
+    {
+        var tarea = document.getElementById("description");
+        var countDisplay = document.getElementById("char_count");
+        var charcount = tarea.value.length;
+        var countRemains = limit - charcount;
+        countDisplay.innerHTML = "Total characters: " + charcount + ".&nbsp;&nbsp;&nbsp;  Remaining: " + countRemains;
+    }
 </script>
 <script type="text/x-tmpl" id="tmpl_customer_list">
     {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(customer_info){ %}
-    <tr>s
+    <tr>
     <td ><?php echo '{%= customer_info.first_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
-    <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><td ><?php echo '{%= customer_info.card_no%}'; ?></td><?php endif;?>
+<?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL): ?>
+        <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
+<?php endif; ?>
     <td><a href="">Show</a></td>
-    <td><?php echo 'active'?></td> 
+    <td><?php echo 'active' ?></td> 
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -51,74 +70,48 @@ function get_char_count(limit)
                     <div class="row">
                         <div class ="col-md-10 margin-top-bottom">
                             <div class="form-group">
-                            <?php echo form_open("search/download_search_customers_total_purchased", array('id' => 'form_download_search_customers_total_purchased', 'class' => 'form-horizontal')); ?>
                                 <label for="total_purchased" class="col-md-4 control-label requiredField">
                                     Total Purchased
                                 </label>
                                 <div class ="col-md-5">
                                     <?php echo form_input($total_purchased + array('class' => 'form-control')); ?>
                                 </div>
-                                <label for="button_search_customer" class="control-label requiredField">
+                                <label for="button_search_customer" class="control-label requiredField"></label>
+                                <div class ="col-md-3">
+                                    <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success', 'onclick' => 'search_cust()')); ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group">    
+                                <label for="expense_categories" class="col-md-4 control-label requiredField">
+                                    Select Type
+                                </label>
+                                <div class ="col-md-5">
+                                    <?php
+                                    $options = array(
+                                        'name' => 'Name',
+                                        'mobile_no' => 'Mobile No',
+                                        'both' => 'Both'
+                                    );
+
+                                    echo form_dropdown('select_option_for_download', $options, 'both', 'class="form-control" id="select_option_for_download"');
+                                    ?>
+                                </div>
+                                <label for="button_download_customer" class="control-label requiredField">
+
                                 </label>
                                 <div class ="col-md-3">
-                                    <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
+                                    <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success', 'onclick' => 'download_result()')); ?>
                                 </div>
-                                <?php if ($user_group['id'] != USER_GROUP_SALESMAN): ?>
-                                <?php echo form_close(); ?>
+                            </div>
+                            <div class="form-group">
+                                <div class ="col-md-offset-2 col-md-2">
+                                    <a onclick="open_modal_active_confirm()">Active all</a>
                                 </div>
-
-                                <!--                            <div class="form-group">
-                                                                <label for="button_search_customer" class="col-md-6 control-label requiredField">
-                                                                </label>
-                                                                <div class ="col-md-6">
-                                                                </div> 
-                                                            </div>-->
-
-                                <div class="form-group">
-                                    <?php echo form_open("user/download_search_customer", array('id' => 'form_download_search_customer_by_card_no_range', 'class' => 'form-horizontal')); ?>
-                                    <label for="expense_categories" class="col-md-4 control-label requiredField">
-                                        Select Type
-                                    </label>
-                                    <div class ="col-md-5">
-                                        <?php 
-                                            $options = array(
-                                                  'name'  => 'Name',
-                                                  'mobile_no'    => 'Mobile No',
-                                                  'both'   => 'Both'
-                                                );
-
-                                            echo form_dropdown('select_option_for_download', $options, 'both','class="form-control" id="select_option_for_download"');
-                                        ?>
-                                    </div>
-                                    <label for="button_download_customer" class="control-label requiredField">
-
-                                    </label>
-                                    <div class ="col-md-3">
-                                        <?php echo form_input($button_download_customer+array('class'=>'form-control btn-success')); ?>
-                                    </div>
-                                    <?php echo form_close(); ?>
+                                <div class="col-md-3">
+                                    <a onclick="open_modal_inactive_confirm()">Inactive all</a>
                                 </div>
-                                <div class="form-group">
-                                    <div class ="col-md-offset-2 col-md-2">
-                                        <a onclick="open_modal_active_confirm(<?php echo $total_purchased['id'] ?>)">Active all</a>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <a onclick="open_modal_inactive_confirm(<?php echo $total_purchased['id'] ?>)">Inactive all</a>
-                                    </div>
-                                </div>
-
-
-
-                                <!--                            <div class="form-group">
-                                                                <label for="button_download_customer" class="col-md-6 control-label requiredField">
-                                
-                                                                </label>
-                                                                <div class ="col-md-6">
-                                <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
-                                                                </div> 
-                                                            </div>-->
-                            <?php endif; ?>
-                            <?php echo form_close(); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,6 +137,7 @@ function get_char_count(limit)
                     <?php echo form_input($button_message_send + array('class' => 'form-control btn-success')); ?>
                 </div>
             </div>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>
@@ -158,16 +152,16 @@ function get_char_count(limit)
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <?php if($shop_info['shop_type_id']==SHOP_TYPE_SMALL):?><th>Card No</th><?php endif;?>
+                    <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL): ?><th>Card No</th><?php endif; ?>
                     <th>Transactions</th>
                     <th>Status </th>
                 </tr>
             </thead>
             <tbody id="tbody_customer_list">                
-            
+
             </tbody>
         </table>
     </div>
 </div>
-<?php $this->load->view("search/customer/active_status_confirmation_modal");?>
-<?php $this->load->view("search/customer/inactive_status_confirmation_modal");?>
+<?php $this->load->view("search/customer/active_status_confirmation_modal"); ?>
+<?php $this->load->view("search/customer/inactive_status_confirmation_modal"); ?>

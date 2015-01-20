@@ -1,12 +1,17 @@
 <script type="text/javascript">
     $(function() {
         $("#button_active").on("click", function() {
+            var id_array = [];
+            $.each(searched_customer_list, function (index, value ){
+                id_array.push(value.id);
+            });
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "",
+                url: '<?php echo base_url(); ?>' + "search/update_users",
                 data: {
-                    client_id: $("#input_user_id").val()
+                    id_array: JSON.stringify(id_array),
+                    status: '1'
                 },
                 success: function(data) {
                     alert(data['message']);
@@ -16,8 +21,7 @@
             });
         });
     });
-    function open_modal_active_confirm(user_id) {
-        $('#input_user_id').val(user_id);
+    function open_modal_active_confirm() {
         $("#admin_status_confirm_modal").modal('show');
     }
 </script>
