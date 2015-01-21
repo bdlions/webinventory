@@ -1,8 +1,6 @@
 <script type="text/javascript">
     var searched_customer_list = [];
     function search_cust() {
-        
-        
 //        A DUMMY ARRAY IS RETURNED FROM search_customers_by_total_purchased
         $.ajax({
             dataType: 'json',
@@ -17,11 +15,23 @@
             }
         });
     }
+    
+    function download_result_form_submit()
+    {
+        if(searched_customer_list.length<1){
+            alert('Please complete the customer search first.');
+            return;
+        }
+        $("#searched_customer_list").val(JSON.stringify(searched_customer_list));
+//        console.log($("#form_download_search_result").serializeArray());
+        $("#form_download_search_result").submit();
+    }
     function download_result(){
         if(searched_customer_list.length<1){
             alert('Please complete customer search');
             return;
         }
+        
         $.ajax({
             dataType: 'json',
             type: "POST",
@@ -37,7 +47,7 @@
     
     function get_char_count(limit)
     {
-        var tarea = document.getElementById("description");
+        var tarea = document.getElementById("message_body");
         var countDisplay = document.getElementById("char_count");
         var charcount = tarea.value.length;
         var countRemains = limit - charcount;
@@ -69,6 +79,7 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="row">
                         <div class ="col-md-10 margin-top-bottom">
+                            <?php echo form_open("search/download_result_search_customer_by_total_purchase", array('id' => 'form_download_search_result', 'name' => 'form_download_search_result', 'class' => 'form-horizontal'));?>
                             <div class="form-group">
                                 <label for="total_purchased" class="col-md-4 control-label requiredField">
                                     Total Purchased
@@ -82,7 +93,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">    
+                            <div class="form-group">
                                 <label for="expense_categories" class="col-md-4 control-label requiredField">
                                     Select Type
                                 </label>
@@ -101,7 +112,9 @@
 
                                 </label>
                                 <div class ="col-md-3">
-                                    <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success', 'onclick' => 'download_result()')); ?>
+                                    <input type="hidden" name="searched_customer_list" id="searched_customer_list">
+                                    <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success', 'onclick' => 'download_result_form_submit()')); ?>
+                                    <?php //echo form_input($button_download_customer + array('class' => 'form-control btn-success', 'type' => 'submit')); ?>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -112,13 +125,14 @@
                                     <a onclick="open_modal_inactive_confirm()">Inactive all</a>
                                 </div>
                             </div>
+                            <?php echo form_close();?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <?php echo form_open("search/create_customer_message", array('id' => 'form_create_message_customers_total_purchased', 'class' => 'form-horizontal')); ?>
+            <?php echo form_open("customer/send_custom_sms", array('id' => 'form_create_message_customers_total_purchased', 'class' => 'form-horizontal')); ?>
             <div class="row form-group">
                 <label class="col-md-2">SMS Title:</label>
                 <div class="col-md-8">
@@ -127,8 +141,8 @@
             </div>
             <div class="row form-group">
                 <label class="col-md-2">SMS Body:</label>
-                <div class="col-md-8"id="message_body">
-                    <textarea name="description" id="description" rows="5" value="sdf" onkeyup="get_char_count(160)" class="form-control" style="resize: vertical"/></textarea>
+                <div class="col-md-8">
+                    <textarea name="message_body" id="message_body" rows="5" onkeyup="get_char_count(160)" class="form-control" style="resize: vertical"/></textarea>
                 </div>
             </div>
             <div class="row form-group">
