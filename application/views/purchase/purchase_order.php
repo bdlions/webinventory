@@ -176,11 +176,11 @@
 //                        return_balance: $("#return_balance").val()
                     },
                     success: function(data) {
-                        if (data['status'] === '0')
+                        if (data['status'] == '0')
                         {
                             alert(data['message']);
                         }
-                        else if (data['status'] === '1')
+                        else if (data['status'] == '1')
                         {
                             alert('Trascaction is executed successfully.');
                             $("#input_purchase_order_no").val('');
@@ -268,7 +268,7 @@
     });
 </script>
 
-<h3>Purchase Order</h3>
+<h3> Raise Purchase Order</h3>
 <div class ="top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        
