@@ -80,7 +80,7 @@
         $("#save_sale_order").on("click", function() {
             //validation checking of sale order
             //checking whether staff is selected or not
-            if ($("#salesman_list").val().length === 0)
+            if ($("#staff_list").val().length === 0)
             {
                 alert('Please select a staff.');
                 return;
@@ -163,7 +163,7 @@
                 sale_info.setOrderNo($("#sale_order_no").val());
                 sale_info.setCustomerId($("#input_add_sale_customer_id").val());
                 sale_info.setRemarks($("#sale_remarks").val());
-                sale_info.setCreatedBy($("#salesman_list").val());
+                sale_info.setCreatedBy($("#staff_list").val());
                 sale_info.setTotal($("#total_sale_price").val());
                 sale_info.setCashPaid($("#cash_paid_amount").val());
                 sale_info.setCheckPaid('0');
@@ -460,7 +460,7 @@
                             Select Staff
                         </label>
                         <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_dropdown('salesman_list', array(''=>'Select')+$salesman_list, '', 'class="form-control" id="salesman_list"'); ?>
+                            <?php echo form_dropdown('staff_list', array(''=>'Select')+$staff_list, '', 'class="form-control" id="staff_list"'); ?>
                         </div> 
                     </div>
                     <div class="form-group">

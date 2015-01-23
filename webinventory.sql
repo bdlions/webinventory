@@ -98,6 +98,8 @@ INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`
 (4, '\0\0', 'supplier', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'supplier@supplier.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Supplier', 'Supplier', '0');
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
 (5, '\0\0', 'customer', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'customer@customer.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Customer', 'Customer', '0');
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `account_status_id`, `first_name`, `last_name`, `phone`) VALUES
+(6, '\0\0', 'staff', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'staff@staff.com', '', NULL, NULL, NULL, 1268889823, 1373438882, 1, 'Staff', 'Staff', '0');
 
 -- Users and groups relationship
 CREATE TABLE IF NOT EXISTS `users_groups` (
@@ -117,7 +119,8 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (2, 2, 2),
 (3, 3, 3),
 (4, 4, 4),
-(5, 5, 5);
+(5, 5, 5),
+(6, 6, 6);
 
 -- Users and Shops relationship
 CREATE TABLE IF NOT EXISTS `users_shop_info` (
@@ -137,7 +140,8 @@ INSERT INTO `users_shop_info` (`id`, `user_id`, `shop_id`) VALUES
 (2, 2, 1),
 (3, 3, 1),
 (4, 4, 1),
-(5, 5, 1);
+(5, 5, 1),
+(6, 6, 1);
 
 -- Supplier Info
 CREATE TABLE IF NOT EXISTS `suppliers` (
