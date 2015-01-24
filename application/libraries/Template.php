@@ -31,13 +31,16 @@ class Template {
         if($this->CI->ion_auth->get_current_user_type() == ADMIN){
             $current_template = ADMIN_LOGIN_SUCCESS_TEMPLATE;
         }
-        else if($this->CI->ion_auth->get_current_user_type() == CUSTOMER){
-            $current_template = CUSTOMER_LOGIN_SUCCESS_TEMPLATE;
+//        else if($this->CI->ion_auth->get_current_user_type() == CUSTOMER){
+//            $current_template = CUSTOMER_LOGIN_SUCCESS_TEMPLATE;
+//        }
+//        else if($this->CI->ion_auth->get_current_user_type() == SALESMAN){
+//            $current_template = SALESMAN_LOGIN_SUCCESS_TEMPLATE;
+//        }
+        else if($this->CI->ion_auth->is_manager()){
+            $current_template = MANAGER_LOGIN_SUCCESS_TEMPLATE;
         }
-        else if($this->CI->ion_auth->get_current_user_type() == SALESMAN){
-            $current_template = SALESMAN_LOGIN_SUCCESS_TEMPLATE;
-        }
-        else if($this->CI->ion_auth->get_current_user_type() == MANAGER){
+        else if($this->CI->ion_auth->is_staff()){
             $current_template = MANAGER_LOGIN_SUCCESS_TEMPLATE;
         }
         return $current_template;

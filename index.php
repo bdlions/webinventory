@@ -13,12 +13,6 @@ date_default_timezone_set('Asia/Dacca');
 define("PAYMENT_PURCHASE_PAYMENT",1);
 define("PAYMENT_EXPENSE_PAYMENT",2);
 /***************** Custom constant **********************/
-define('CUSTOMER', 'customer');
-define('SUPPLIER', 'supplier');
-define('SALESMAN', 'salesman');
-define('MANAGER', 'manager');
-define('ADMIN', 'admin');
-
 define('SALESMAN_LOGIN_URI', 'user/salesman_login');
 define('SALESMAN_LOGIN_SUCCESS_URI', 'user/salesman_login');
 define('SALESMAN_LOGIN_TEMPLATE', 'salesman/templates/login');
@@ -27,13 +21,7 @@ define('SALESMAN_LOGIN_VIEW', 'salesman/login');
 define('SALESMAN_LOGIN_SUCCESS_VIEW', 'salesman/home');
 
 define('MANAGER_SIGNUP_URI', 'user/manager_signup');
-define('MANAGER_LOGIN_URI', 'user/manager_login');
-define('MANAGER_LOGIN_SUCCESS_URI', 'user/manager_login');
-define('MANAGER_LOGIN_TEMPLATE', 'manager/templates/login');
-define('MANAGER_LOGIN_SUCCESS_TEMPLATE', 'manager/templates/main');
-//define('MANAGER_LOGIN_VIEW', 'manager/login');
-define('MANAGER_LOGIN_VIEW', 'liggin');
-define('MANAGER_LOGIN_SUCCESS_VIEW', 'manager/home');
+
 
 define('ACCOUNT_VALIDATION_SMS_TEMPLATE', 'sms/templates/main');
 define('ACCOUNT_VALIDATION_SMS_VIEW', 'sms/check_sms_validation');
@@ -53,9 +41,7 @@ define('ADMIN_LOGIN_VIEW', 'admin/login');
 define('ADMIN_LOGIN_SUCCESS_TEMPLATE', 'admin/templates/main');
 define('ADMIN_LOGIN_SUCCESS_VIEW', 'admin/home');
 
-define('LOGIN_TEMPLATE', 'templates/login');
-define('LOGIN_VIEW', 'login');
-define('LOGIN_URI', 'user/login');
+
 /***************** Custom constant End **********************/
 
 /*

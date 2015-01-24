@@ -3,12 +3,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Sale extends CI_Controller {
-    /*
-     * Holds account status list
-     * 
-     * $var array
-     */
-
     protected $payment_type_list = array();
     protected $payment_category_list = array();
 
@@ -44,7 +38,10 @@ class Sale extends CI_Controller {
     function index() {
         
     }
-
+    /*
+     * Sale order
+     * @Author Nazmul on 23rd January 2015
+     */
     function sale_order() {
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
@@ -54,14 +51,14 @@ class Sale extends CI_Controller {
         }
         $this->data['shop_info'] = $shop_info;
         
-        $salesman_list = array();
-        $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
-        if (!empty($salesman_list_array)) {
-            foreach ($salesman_list_array as $key => $salesman_info) {
-                $salesman_list[$salesman_info['user_id']] = $salesman_info['first_name'] . ' ' . $salesman_info['last_name'];
+        $staff_list = array();
+        $staff_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        if (!empty($staff_list_array)) {
+            foreach ($staff_list_array as $key => $staff_info) {
+                $staff_list[$staff_info['user_id']] = $staff_info['first_name'] . ' ' . $staff_info['last_name'];
             }
         }
-        $this->data['salesman_list'] = $salesman_list;
+        $this->data['staff_list'] = $staff_list;
         $this->data['user_info'] = array();
         $user_info_array = $this->ion_auth->user()->result_array();
         if (!empty($user_info_array)) {
@@ -96,6 +93,10 @@ class Sale extends CI_Controller {
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) {$this->template->load(null, 'sales/sales_order_med', $this->data);}
     }
     
+    /*
+     * Ajax call to add a sale order
+     * @Author Nazmul on 23rd January 2015
+     */
     function add_sale() {
         $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
@@ -303,6 +304,11 @@ class Sale extends CI_Controller {
         echo json_encode($response);
     }
     
+    /*
+     * Ajax Call
+     * This method will retunr slae info
+     * @Author Nazmul on 23rd January 2015
+     */
     public function get_sale_info_from_sale_order_no() {
         $result = array();
         $customer_info = array();
@@ -322,7 +328,6 @@ class Sale extends CI_Controller {
             }
         }        
         $sale_product_list_array = $this->sale_library->get_sale_product_list($sale_order_no)->result_array();
-       // echo '<pre/>';print_r($sale_product_list_array);exit;
         if(!empty($sale_product_list_array))
         {
             $sale_product_list = $sale_product_list_array;            
@@ -333,24 +338,22 @@ class Sale extends CI_Controller {
         echo(json_encode($result));
     }
 
-    public function return_sale_order($sale_order_no = '') {
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
+    /*
+     * return sale order page
+     * @Author Nazmul on 23rd January 2015
+     */
+    public function return_sale_order($sale_order_no = '') 
+    {        
+        $user_group = $this->ion_auth->get_users_groups()->result_array();        
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-           
-            
-            if($user_group['id'] == USER_GROUP_SALESMAN)
+            if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER)
             {
                 $this->session->set_flashdata('message',"You have no permission to view that page");
-                redirect('user/salesman_login',"refresh");
+                redirect('user/staff_login',"refresh");
             }
-        }
-        
-        
-        
+        }        
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
         if(!empty($shop_info_array))
@@ -358,14 +361,14 @@ class Sale extends CI_Controller {
             $shop_info = $shop_info_array[0];
         }
         $this->data['shop_info'] = $shop_info;
-        $salesman_list = array();
-        $salesman_list_array = $this->ion_auth->get_all_salesman()->result_array();
-        if (!empty($salesman_list_array)) {
-            foreach ($salesman_list_array as $key => $salesman_info) {
-                $salesman_list[$salesman_info['user_id']] = $salesman_info['first_name'] . ' ' . $salesman_info['last_name'];
+        $staff_list = array();
+        $staff_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        if (!empty($staff_list_array)) {
+            foreach ($staff_list_array as $key => $staff_info) {
+                $staff_list[$staff_info['user_id']] = $staff_info['first_name'] . ' ' . $staff_info['last_name'];
             }
         }
-        $this->data['salesman_list'] = $salesman_list;
+        $this->data['staff_list'] = $staff_list;
         $this->data['user_info'] = array();
         $user_info_array = $this->ion_auth->user()->result_array();
         if (!empty($user_info_array)) {
@@ -381,7 +384,8 @@ class Sale extends CI_Controller {
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'sales/return_sale_order_med', $this->data);}
     }
     /*
-     * Ajax Call
+     * Ajax Call to return sale order
+     * @Author Nazmul on 23rd January 2015
      */
     function update_return_sale_order() {
         $current_time = now();

@@ -645,6 +645,6 @@ class Customer extends User {
      */
     public function send_custom_sms()
     {
-        
+//        post: form_create_message_customers_total_purchased, message_body, message_title, button_message_send
     }
 }

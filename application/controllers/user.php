@@ -3,15 +3,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
-    /*
-     * Holds account status list
-     * 
-     * $var array
-     */
-
     protected $user_group;
     protected $account_status_list;
     public $user_type;
+    
     public $login_uri;
     public $login_success_uri;
     public $login_template;
@@ -42,18 +37,23 @@ class User extends CI_Controller {
         
     }
 
+    /*
+     * This mehtod will load manager login 
+     * @Author Nazmul on 23rd January 2015
+     */
     function manager_login() {
-
         $this->user_type = MANAGER;
-
-        $this->login_success_uri = MANAGER_LOGIN_SUCCESS_URI;
         $this->login_uri = MANAGER_LOGIN_URI;
         $this->login_template = MANAGER_LOGIN_TEMPLATE;
         $this->login_view = MANAGER_LOGIN_VIEW;
-
+        $this->login_success_uri = MANAGER_LOGIN_SUCCESS_URI;
         if (!$this->ion_auth->logged_in()) {
             $this->login();
         } else {
+            if (!$this->ion_auth->is_manager()) {
+                $this->session->set_flashdata('message1', "Please login as an admin.");
+                redirect(LOGIN_URI, 'refresh'); 
+            }
             //set the
             //set flash data error message if there is one
             $user_info_array = $this->ion_auth->get_user_info()->result_array();
@@ -66,44 +66,33 @@ class User extends CI_Controller {
             $this->template->load(MANAGER_LOGIN_SUCCESS_TEMPLATE, MANAGER_LOGIN_SUCCESS_VIEW, $this->data);
         }
     }
-
-    function salesman_login() {
-
-        $this->user_type = SALESMAN;
-
-        $this->login_success_uri = SALESMAN_LOGIN_SUCCESS_URI;
-        $this->login_uri = SALESMAN_LOGIN_URI;
-        $this->login_template = SALESMAN_LOGIN_TEMPLATE;
-        $this->login_view = SALESMAN_LOGIN_VIEW;
-
+    /*
+     * This mehtod will load staff login 
+     * @Author Nazmul on 23rd January 2015
+     */
+    function staff_login() {
+        $this->user_type = STAFF;
+        $this->login_uri = STAFF_LOGIN_URI;
+        $this->login_template = STAFF_LOGIN_TEMPLATE;
+        $this->login_view = STAFF_LOGIN_VIEW;
+        $this->login_success_uri = STAFF_LOGIN_SUCCESS_URI;
         if (!$this->ion_auth->logged_in()) {
             $this->login();
-        } else {
-            //set the
-            //set flash data error message if there is one
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            $this->template->load(SALESMAN_LOGIN_SUCCESS_TEMPLATE, SALESMAN_LOGIN_SUCCESS_VIEW, $this->data);
+        } 
+        else {
+            if (!$this->ion_auth->is_staff()) {
+                $this->session->set_flashdata('message1', "Please login as a staff.");
+                redirect(LOGIN_URI, 'refresh'); 
+            }
+            $this->data['message'] = $this->session->flashdata('message');
+            $this->template->load(STAFF_LOGIN_SUCCESS_TEMPLATE, STAFF_LOGIN_SUCCESS_VIEW, $this->data);
         }
     }
 
-    function customer_login() {
-
-        $this->user_type = CUSTOMER;
-
-        $this->login_success_uri = CUSTOMER_LOGIN_SUCCESS_URI;
-        $this->login_uri = CUSTOMER_LOGIN_URI;
-        $this->login_template = CUSTOMER_LOGIN_TEMPLATE;
-        $this->login_view = CUSTOMER_LOGIN_VIEW;
-
-        if (!$this->ion_auth->logged_in()) {
-            $this->login();
-        } else {
-            //set the flash data error message if there is one
-            $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-            $this->template->load(CUSTOMER_LOGIN_SUCCESS_TEMPLATE, CUSTOMER_LOGIN_SUCCESS_VIEW, $this->data);
-        }
-    }
-
+    /*
+     * This mehtod will load login page 
+     * @Author Nazmul on 23rd January 2015
+     */
     public function login() {
         $this->data['message1'] = '';
         $this->data['message2'] = '';
@@ -117,13 +106,12 @@ class User extends CI_Controller {
                 //check for "remember me"
                 $remember = (bool) $this->input->post('remember');
                 if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember)) {
-                    //if the login is successful
-                    //redirect them back to the home page
                     $this->session->set_flashdata('message1', $this->ion_auth->messages());
-                    $this->user_type = $this->ion_auth->get_current_user_type();
-                    if ($this->user_type == SALESMAN) {
-                        $this->login_success_uri = SALESMAN_LOGIN_SUCCESS_URI;
-                    } else if ($this->user_type == MANAGER) {
+                    //$this->user_type = $this->ion_auth->get_current_user_type();
+                    if ($this->ion_auth->is_staff()) {
+                        $this->login_success_uri = STAFF_LOGIN_SUCCESS_URI;
+                    } 
+                    else if ($this->ion_auth->is_manager()) {
                         $this->login_success_uri = MANAGER_LOGIN_SUCCESS_URI;
                         $user_info_array = $this->ion_auth->get_user_info()->result_array();
                         $user_info = $user_info_array[0];
@@ -135,6 +123,11 @@ class User extends CI_Controller {
                         if (empty($shop_info)) {
                             redirect('shop/create_shop', 'refresh');
                         }
+                    }
+                    else
+                    {
+                        $this->session->set_flashdata('message1', "Sorry! You are not allowed to login.");
+                        redirect(LOGIN_URI, 'refresh');
                     }
                     $shop_info_array = $this->shop_library->get_shop()->result_array();
                     $shop_info = $shop_info_array[0];

@@ -356,6 +356,10 @@ class Ion_auth {
             {
                 $user->user_type = SALESMAN;
             }
+            if($this->in_group(STAFF, $user->id))
+            {
+                $user->user_type = STAFF;
+            }
             if($this->in_group(CUSTOMER, $user->id))
             {
                 $user->user_type = CUSTOMER;
@@ -452,6 +456,15 @@ class Ion_auth {
         $admin_group = $this->config->item('admin_group', 'ion_auth');
 
         return $this->in_group($admin_group, $id);
+    }
+    
+    public function is_manager($id = false) {
+        $this->ion_auth_model->trigger_events('is_manager');
+        return $this->in_group(MANAGER, $id);
+    }
+    public function is_staff($id = false) {
+        $this->ion_auth_model->trigger_events('is_staff');
+        return $this->in_group(STAFF, $id);
     }
 
     public function get_current_user_type(){
