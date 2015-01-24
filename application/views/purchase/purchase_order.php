@@ -1,55 +1,11 @@
 <script type="text/javascript">
+    var stock_purc_prod_list;
+    var ware_purc_prod_list;
     $(document).ready(function() {
         var product_data = <?php echo json_encode($product_list_array) ?>;        
         set_product_list(product_data);
         $("#total_purchase_price").val('');        
     });
-</script>
-<script>
-    function append_selected_product(prod_info)
-    {
-        prod_info['unit_price'] = '';
-        var is_product_previously_selected = false;
-        $("input", "#tbody_selected_product_list").each(function() {
-            if ($(this).attr("name") === "quantity")
-            {
-                if ($(this).attr("id") === prod_info['id'])
-                {
-                    is_product_previously_selected = true;
-                }
-            }
-        });
-        if (is_product_previously_selected === true)
-        {
-            alert('The product is already selected. Please update product quantity.');
-            return;
-        }
-        var purchased_product_list = get_purchased_product_list();
-        for(var counter = 0; counter < purchased_product_list.length ; counter++)
-        {
-            var purchased_product_info = purchased_product_list[counter];
-            if(purchased_product_info['product_id']=== prod_info['id'])
-            {
-                prod_info['unit_price'] = purchased_product_info['unit_price']; 
-            }
-        }
-        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
-        var total_purchase_price = 0;
-        $("input", "#tbody_selected_product_list").each(function() {
-            if ($(this).attr("name") === "product_buy_price")
-            {
-                total_purchase_price = +total_purchase_price + +$(this).val();
-            }
-        });
-        $("#total_purchase_price").val(total_purchase_price);        
-    }
-
-    function isNumber(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-    }
-</script>
-
-<script type="text/javascript">
     $(function() {
         $("#input_purchase_order_no").change(function() {
             $.ajax({
@@ -61,9 +17,8 @@
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
-                    var purchased_product_list = data['purchased_product_list'];
-                    var purchased_product_info = data['purchased_product_info'];
-//                    var supplier_due = data['supplier_due'];
+                    ware_purc_prod_list = data['purchased_product_list'];
+                    stock_purc_prod_list = data['stock_purchased_product_list'];
                     set_purchased_product_list(purchased_product_list);
                     if(supplier_info.supplier_id)
                     {
@@ -74,9 +29,6 @@
                         $("#input_purchase_company").val(supplier_info.company);
                         $('#input_purchase_product').attr('type', 'text');
                         $("#total_purchase_price").val('');
-//                        $("#previous_due").val(supplier_due);
-//                        $("#current_due").val(supplier_due);
-//                        $("#return_balance").val('');
                     }
                     else
                     {
@@ -86,9 +38,6 @@
                         $("#input_purchase_company").val('');
                         $('#input_purchase_product').attr('type', 'hidden');
                         $("#total_purchase_price").val('');
-//                        $("#previous_due").val('');
-//                        $("#current_due").val('');
-//                        $("#return_balance").val('');
                     }
                 }
             });
@@ -160,20 +109,12 @@
                     alert('Calculation error. Please try again.');
                     return;
                 }
-//                var purchase_info = new Purchase();
-//                purchase_info.setOrderNo($("#input_purchase_order_no").val());
-//                purchase_info.setSupplierId($("#input_purchase_supplier_id").val());
-//                purchase_info.setRemarks($("#purchase_remarks").val());
-//                purchase_info.setTotal($("#total_purchase_price").val());
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
                     url: '<?php echo base_url(); ?>' + "purchase/add_purchase",
                     data: {
                         product_list: product_list,
-//                        purchase_info: purchase_info,
-//                        current_due: $("#current_due").val(),
-//                        return_balance: $("#return_balance").val()
                     },
                     success: function(data) {
                         if (data['status'] == '0')
@@ -193,9 +134,6 @@
                             $("#purchase_order_no").val('');
                             $("#purchase_remarks").val('');
                             $("#total_purchase_price").val('');
-//                            $("#previous_due").val('');
-//                            $("#current_due").val('');
-//                            $("#return_balance").val('');
                         }
                     }
                 });
@@ -240,23 +178,8 @@
                 }
             });
             $("#total_purchase_price").val(total_purchase_price);
-            //$("#return_balance").val(total_purchase_price);
-//            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
-//            if(current_due >=0 )
-//            {
-//                $("#current_due").val(current_due);
-//                $("#return_balance").val('0');
-//            }
-//            else
-//            {
-//                $("#current_due").val('0');
-//                $("#return_balance").val(-current_due);
-//            }
         });
-    });
-</script>
-<script type="text/javascript">
-    $(function() {
+        
         $('.dropdown-toggle').dropdown();
         $(".dropdown-menu").on("click", function(e) {
             e.stopPropagation();
@@ -266,6 +189,46 @@
             e.stopPropagation();
         });
     });
+
+    
+    function append_selected_product(prod_info)
+    {
+        var is_product_previously_selected = false;
+        $("input", "#tbody_selected_product_list").each(function() {
+            if ($(this).attr("name") === "quantity")
+            {
+                if ($(this).attr("id") === prod_info['id'])
+                {
+                    is_product_previously_selected = true;
+                }
+            }
+        });
+        if (is_product_previously_selected === true)
+        {
+            alert('The product is already selected. Please update product quantity.');
+            return;
+        }
+        $.each(stock_purc_prod_list, function( index, stocked_product ) {
+            if( stocked_product['product_id'] == prod_info['id'] )
+            {
+                prod_info['unit_price'] = stocked_product['unit_price']; 
+                prod_info['readonly'] = 'true';
+            }
+        });
+        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        var total_purchase_price = 0;
+        $("input", "#tbody_selected_product_list").each(function() {
+            if ($(this).attr("name") === "product_buy_price")
+            {
+                total_purchase_price = +total_purchase_price + +$(this).val();
+            }
+        });
+        $("#total_purchase_price").val(total_purchase_price);        
+    }
+
+    function isNumber(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
 </script>
 
 <h3> Raise Purchase Order</h3>
@@ -339,11 +302,17 @@
                             {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                             {% while(product_info){ %}
                             <tr>
-                            <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
-                            <td><?php echo '{%= product_info.category_unit %}'; ?></td>
-                            <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
-                            <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
+                                <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
+                                <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
+                                <td><?php echo '{%= product_info.category_unit %}'; ?></td>
+
+                                 {% if(product_info.readonly == 'true') { %}
+                                <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="<?php echo '{%= product_info.unit_price %}';?>"/></td>
+                                {% }else{ %} 
+                                <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
+                                {% } %}
+
+                                <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
                             </tr>
                             {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                             {% } %}
@@ -370,30 +339,6 @@
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>     
-<!--                    <div class="form-group">
-                        <label for="previous_due" class="col-md-7 control-label requiredField">
-                            Previous Due
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="current_due" class="col-md-7 control-label requiredField">
-                            Current Due
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="return_balance" class="col-md-7 control-label requiredField">
-                            Return balance
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>-->
                     <div class="form-group">
                         <label for="button_purchase_order" class="col-md-2 control-label requiredField">
 

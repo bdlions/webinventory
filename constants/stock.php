@@ -10,4 +10,3 @@
     define("WAREHOUSE_STOCK_PURCHASE_IN",                         1);
     define("WAREHOUSE_STOCK_PURCHASE_PARTIAL_IN",                 2);
     define("WAREHOUSE_STOCK_PURCHASE_PARTIAL_OUT",                3);
-    define("WAREHOUSE_STOCK_PURCHASE_DELETE",                     4);

@@ -5,6 +5,7 @@ function Purchase()
     var remarks;
     var total;
     var paid;
+    var fast_forward;
     Purchase.prototype.setOrderNo = function(value)
     {
         this.order_no = value;
@@ -44,6 +45,14 @@ function Purchase()
     Purchase.prototype.getPaid = function()
     {
         return this.paid;
+    }
+    Purchase.prototype.setFastForward = function(value)
+    {
+        this.fast_forward = value;
+    }
+    Purchase.prototype.getFastForward = function()
+    {
+        return this.fast_forward;
     }
 }
 

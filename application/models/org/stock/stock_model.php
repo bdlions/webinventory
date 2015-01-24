@@ -97,6 +97,26 @@ class Stock_model extends Ion_auth_model
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $this->db->where($this->tables['warehouse_stock_info'].'.shop_id', $shop_id);
+        $this->db->where($this->tables['suppliers'].'.id', $supplier_id);
+        $this->db->where_in($this->tables['warehouse_stock_info'].'.transaction_category_id', array(WAREHOUSE_STOCK_PURCHASE_IN, WAREHOUSE_STOCK_PURCHASE_PARTIAL_IN, WAREHOUSE_STOCK_PURCHASE_PARTIAL_OUT));
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.purchase_order_no');
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.product_id');
+        return $this->db->select($this->tables['warehouse_stock_info'].'.product_id,'.$this->tables['warehouse_stock_info'].'.purchase_order_no,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['warehouse_product_purchase_order'].'.unit_price,sum(stock_in)-sum(stock_out) as total_purchased')
+                    ->from($this->tables['warehouse_stock_info'])
+                    ->join($this->tables['purchase_order'], $this->tables['purchase_order'].'.purchase_order_no='.$this->tables['warehouse_stock_info'].'.purchase_order_no AND '.$this->tables['purchase_order'].'.shop_id ='.$this->tables['warehouse_stock_info'].'.shop_id')
+                    ->join($this->tables['warehouse_product_purchase_order'], $this->tables['warehouse_product_purchase_order'].'.purchase_order_no='.$this->tables['warehouse_stock_info'].'.purchase_order_no AND '.$this->tables['warehouse_product_purchase_order'].'.product_id='.$this->tables['warehouse_stock_info'].'.product_id')
+                    ->join($this->tables['product_info'], $this->tables['warehouse_stock_info'].'.product_id='.$this->tables['product_info'].'.id ')
+                    ->join($this->tables['suppliers'], $this->tables['suppliers'].'.id='.$this->tables['purchase_order'].'.supplier_id')
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->get(); 
+    }
+    /*public function get_supplier_purchase_list($supplier_id, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
         $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
         $this->db->where($this->tables['suppliers'].'.id', $supplier_id);
         $this->db->where_in($this->tables['stock_info'].'.transaction_category_id', array(STOCK_PURCHASE_IN, STOCK_PURCHASE_PARTIAL_IN, STOCK_PURCHASE_PARTIAL_OUT, STOCK_PURCHASE_OUT));
@@ -110,7 +130,7 @@ class Stock_model extends Ion_auth_model
                     ->join($this->tables['suppliers'], $this->tables['suppliers'].'.id='.$this->tables['purchase_order'].'.supplier_id')
                     ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->get(); 
-    }
+    }*/
     /*
      * This method will return customer purchase list
      * @param $customer_id, customer id

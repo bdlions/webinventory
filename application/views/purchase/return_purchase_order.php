@@ -55,15 +55,14 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
+                url: '<?php echo base_url(); ?>' + "purchase/get_purchase_info_from_lot_no",
                 data: {
                     lot_no: $("#input_purchase_order_no").val()
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
                     var purchased_product_list = data['purchased_product_list'];
-                    var purchased_product_info = data['purchased_product_info'];
-//                    var supplier_due = data['supplier_due'];
+                    var supplier_due = data['supplier_due'];
                     set_purchased_product_list(purchased_product_list);
                     if(supplier_info.supplier_id)
                     {
@@ -74,9 +73,9 @@
                         $("#input_purchase_company").val(supplier_info.company);
                         $('#input_purchase_product').attr('type', 'text');
                         $("#total_purchase_price").val('');
-//                        $("#previous_due").val(supplier_due);
-//                        $("#current_due").val(supplier_due);
-//                        $("#return_balance").val('');
+                        $("#previous_due").val(supplier_due);
+                        $("#current_due").val(supplier_due);
+                        $("#return_balance").val('');
                     }
                     else
                     {
@@ -86,9 +85,9 @@
                         $("#input_purchase_company").val('');
                         $('#input_purchase_product').attr('type', 'hidden');
                         $("#total_purchase_price").val('');
-//                        $("#previous_due").val('');
-//                        $("#current_due").val('');
-//                        $("#return_balance").val('');
+                        $("#previous_due").val('');
+                        $("#current_due").val('');
+                        $("#return_balance").val('');
                     }
                 }
             });
@@ -172,15 +171,15 @@
                     data: {
                         product_list: product_list,
                         purchase_info: purchase_info,
-//                        current_due: $("#current_due").val(),
-//                        return_balance: $("#return_balance").val()
+                        current_due: $("#current_due").val(),
+                        return_balance: $("#return_balance").val()
                     },
                     success: function(data) {
-                        if (data['status'] == '0')
+                        if (data['status'] === '0')
                         {
                             alert(data['message']);
                         }
-                        else if (data['status'] == '1')
+                        else if (data['status'] === '1')
                         {
                             alert('Trascaction is executed successfully.');
                             $("#input_purchase_order_no").val('');
@@ -193,9 +192,9 @@
                             $("#purchase_order_no").val('');
                             $("#purchase_remarks").val('');
                             $("#total_purchase_price").val('');
-//                            $("#previous_due").val('');
-//                            $("#current_due").val('');
-//                            $("#return_balance").val('');
+                            $("#previous_due").val('');
+                            $("#current_due").val('');
+                            $("#return_balance").val('');
                         }
                     }
                 });
@@ -241,17 +240,17 @@
             });
             $("#total_purchase_price").val(total_purchase_price);
             //$("#return_balance").val(total_purchase_price);
-//            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
-//            if(current_due >=0 )
-//            {
-//                $("#current_due").val(current_due);
-//                $("#return_balance").val('0');
-//            }
-//            else
-//            {
-//                $("#current_due").val('0');
-//                $("#return_balance").val(-current_due);
-//            }
+            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
+            if(current_due >=0 )
+            {
+                $("#current_due").val(current_due);
+                $("#return_balance").val('0');
+            }
+            else
+            {
+                $("#current_due").val('0');
+                $("#return_balance").val(-current_due);
+            }
         });
     });
 </script>
@@ -370,7 +369,7 @@
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>     
-<!--                    <div class="form-group">
+                    <div class="form-group">
                         <label for="previous_due" class="col-md-7 control-label requiredField">
                             Previous Due
                         </label>
@@ -393,7 +392,7 @@
                         <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
-                    </div>-->
+                    </div>
                     <div class="form-group">
                         <label for="button_purchase_order" class="col-md-2 control-label requiredField">
 

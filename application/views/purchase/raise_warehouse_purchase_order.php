@@ -333,6 +333,7 @@
                             <td><?php echo '{%= product_info.category_unit %}'; ?></td>
                             <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
                             {% }else{ %} 
+                            <td><?php echo '{%= product_info.category_unit %}'; ?></td>
                             <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
                             {% } %}
                             <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>

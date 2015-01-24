@@ -57,7 +57,7 @@
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/get_purchase_info_from_lot_no",
+                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
                 data: {
                     lot_no: $("#input_raise_purchase_order_no").val()
                 },
@@ -255,7 +255,7 @@
     });
 </script>
 
-<h3>Raise Purchase Order</h3>
+<h3>Raise test Purchase Order</h3>
 <div class ="top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        
