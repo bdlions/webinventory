@@ -148,7 +148,8 @@
                     data: {
                         product_list: product_list,
                         purchase_info: purchase_info,
-                        current_due: $("#current_due").val()
+                        current_due: $("#current_due").val(),
+                        forward_showroom:($("#checkbox_forward_showroom").prop('checked'))?1:0
                     },
                     success: function(data) {
                         var response = JSON.parse(data);
@@ -407,7 +408,7 @@
                             Forward to Showroom
                         </label>
                         <div class ="col-md-3">
-                            <input type="checkbox"/>
+                            <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
                         </div> 
                     </div>
                     <div class="form-group">

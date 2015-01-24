@@ -37,7 +37,7 @@ class Purchase_model extends Ion_auth_model
      * This method will add warehouse purchase order
      * @Author Nazmul on 14th January 2015
      */
-    public function add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array,$fast_forward=true)
+    public function add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array, $forward_showroom = 0)
     {
         $this->trigger_events('pre_add_purchase_order');
         if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
@@ -63,18 +63,20 @@ class Purchase_model extends Ion_auth_model
             {
                 $this->db->insert_batch($this->tables['warehouse_stock_info'], $add_warehouse_stock_list);            
             }
-            if($fast_forward){
-              $this->db->insert_batch($this->tables['product_purchase_order'], $warehouse_purchased_product_list);  
-              $stock_list = array();
-              foreach($add_warehouse_stock_list as $stock_info)
-              {
-                  $sotck_info['transaction_category_id'] = STOCK_PURCHASE_IN;
-                  $stock_list[] = $stock_info;
-              }
-               $this->db->insert_batch($this->tables['stock_info'], $stock_list);
+            if($forward_showroom == 1){
+                $this->db->insert_batch($this->tables['product_purchase_order'], $warehouse_purchased_product_list);  
+                if(!empty($add_warehouse_stock_list))
+                {
+                    $stock_list = array();
+                    foreach($add_warehouse_stock_list as $stock_info)
+                    {
+                        $stock_info['transaction_category_id'] = STOCK_PURCHASE_IN;
+                        $stock_list[] = $stock_info;
+                    }
+                    $this->db->insert_batch($this->tables['stock_info'], $stock_list);
+                }              
             }
         }
-
         $this->trigger_events('post_add_purchase_order');
         $this->db->trans_commit();
         return (isset($id)) ? $id : FALSE;

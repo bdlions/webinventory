@@ -76,6 +76,7 @@ class Purchase extends CI_Controller {
      */
     function add_warehouse_purchase()
     {
+        $forward_showroom = $this->input->post('forward_showroom');
         $current_time = now();
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
@@ -197,7 +198,7 @@ class Purchase extends CI_Controller {
             'reference_id' => $prod_info['purchase_order_no'],
             'created_on' => $current_time
         );
-        $purchase_id = $this->purchase_library->add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array);
+        $purchase_id = $this->purchase_library->add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array, $forward_showroom);
         if( $purchase_id !== FALSE )
         {
             /*$purchase_info_array = $this->purchase_library->get_purchase_order_info($purchase_id)->result_array();
@@ -273,7 +274,7 @@ class Purchase extends CI_Controller {
                 'shop_id' => $shop_id,
                 'stock_in' => $prod_info['quantity'],
                 'created_on' => $current_time,
-                'transaction_category_id' => STOCK_PURCHASE_PARTIAL_IN
+                'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_IN
             );
             $add_warehouse_stock_list[] = $add_warehouse_stock_info;
         }
@@ -587,7 +588,7 @@ class Purchase extends CI_Controller {
                     'shop_id' => $shop_id,
                     'stock_out' => $prod_info['quantity'],
                     'created_on' => $current_time,
-                    'transaction_category_id' => STOCK_PURCHASE_PARTIAL_OUT
+                    'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_OUT
                 );
                 $stock_out_list[] = $add_stock_info;
             }
