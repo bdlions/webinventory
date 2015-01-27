@@ -4,21 +4,8 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth
- *
- * Author: Ben Edmunds
- * 		  ben.edmunds@gmail.com
- *         @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- *
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Sale Library
+ * @Author Nazmul on 26th January 2015
  * Requirements: PHP5 or above
  *
  */
@@ -107,5 +94,47 @@ class Sale_library {
      */
     public function __get($var) {
         return get_instance()->$var;
+    }
+    
+    /*
+     * This method will return customer list based on total purchase
+     * @param $total_purchase, total purchase
+     * @Author Nazmul on 26th January 2015
+     */
+    public function get_customer_list_by_total_purchased($total_purchased)
+    {
+        $customer_list = array();
+        $customer_id_list = array();
+        $customer_id_total_products_map = array();
+        $sale_list_array = $this->sale_model->get_all_sales()->result_array();
+        foreach($sale_list_array as $sale_info)
+        {
+            if(!array_key_exists($sale_info['customer_id'], $customer_id_total_products_map))
+            {
+                $customer_id_total_products_map[$sale_info['customer_id']] = $sale_info['total_sale'];
+            }
+            else
+            {
+                $customer_id_total_products_map[$sale_info['customer_id']] = $customer_id_total_products_map[$sale_info['customer_id']] + $sale_info['total_sale'];
+            }
+        }
+        foreach($customer_id_total_products_map as $customer_id => $total_products)
+        {
+            if($total_products == $total_purchased)
+            {
+                $customer_id_list[] = $customer_id;
+            }
+        }
+        if(!empty($customer_id_list))
+        {
+            $shop_info = array();
+            $shop_info_array = $this->shop_library->get_shop()->result_array();
+            if(!empty($shop_info_array))
+            {
+                $shop_info = $shop_info_array[0];
+                $customer_list = $this->ion_auth->get_customer_list($customer_id_list, $shop_info['shop_id'], $shop_info['shop_type_id'])->result_array(); 
+            }            
+        }
+        return $customer_list;
     }
 }

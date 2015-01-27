@@ -612,102 +612,22 @@ class Search extends CI_Controller {
         if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_phone_med', $this->data);}
     }
     
-    public function download_search_customers_total_purchased()
-    {
-        $content = '';
-        $total_purchased = $this->input->post('total_purchased');
-        $customer_list = array();
-        $customer_id_list = array();
-        $customer_id_total_products_map = array();
-        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
-        foreach($sale_list_array as $sale_info)
-        {
-            if(!array_key_exists($sale_info['customer_id'], $customer_id_total_products_map))
-            {
-                $customer_id_total_products_map[$sale_info['customer_id']] = $sale_info['total_sale'];
-            }
-            else
-            {
-                $customer_id_total_products_map[$sale_info['customer_id']] = $customer_id_total_products_map[$sale_info['customer_id']] + $sale_info['total_sale'];
-            }
-        }
-        foreach($customer_id_total_products_map as $customer_id => $total_products)
-        {
-            if($total_products == $total_purchased)
-            {
-                $customer_id_list[] = $customer_id;
-            }
-        }
-        if(!empty($customer_id_list))
-        {
-            $shop_info = array();
-            $shop_info_array = $this->shop_library->get_shop()->result_array();
-            if(!empty($shop_info_array))
-            {
-                $shop_info = $shop_info_array[0];
-                $customer_list = $this->ion_auth->get_customer_list($customer_id_list, $shop_info['shop_id'], $shop_info['shop_type_id'])->result_array(); 
-            }            
-        }
-        foreach($customer_list as $customer_info)
-        {
-            $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";           
-        }        
-        $file_name = now();
-        header("Content-Type:text/plain");
-        header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
-        echo $content;
-    }
-    
+    /*
+     * Ajax Call
+     * This method will return customer list based on total puchased
+     * @Author Nazmul on 26th January 2015
+     */
     public function search_customers_by_total_purchased()
     {
-        //responds to search ajax
-        $dummy_customer = array();
-        $dummy_customer['customer_list'][0] = array(
-            'first_name' => 'Tanveer',
-            'last_name' => 'ahmed',
-            'phone' => '0144',
-            'address' => 'azi',
-            'card_no' => '9855',
-            'id' => '11',
-            'status' => '1'
-        );
-        echo json_encode($dummy_customer);        return;
-        $total_purchased = $_POST['total_purchased'];
-        $customer_list = array();
-        $customer_id_list = array();
-        $customer_id_total_products_map = array();
-        $sale_list_array = $this->sale_library->get_all_sales()->result_array();
-        foreach($sale_list_array as $sale_info)
-        {
-            if(!array_key_exists($sale_info['customer_id'], $customer_id_total_products_map))
-            {
-                $customer_id_total_products_map[$sale_info['customer_id']] = $sale_info['total_sale'];
-            }
-            else
-            {
-                $customer_id_total_products_map[$sale_info['customer_id']] = $customer_id_total_products_map[$sale_info['customer_id']] + $sale_info['total_sale'];
-            }
-        }
-        foreach($customer_id_total_products_map as $customer_id => $total_products)
-        {
-            if($total_products == $total_purchased)
-            {
-                $customer_id_list[] = $customer_id;
-            }
-        }
-        if(!empty($customer_id_list))
-        {
-            $shop_info = array();
-            $shop_info_array = $this->shop_library->get_shop()->result_array();
-            if(!empty($shop_info_array))
-            {
-                $shop_info = $shop_info_array[0];
-                $customer_list = $this->ion_auth->get_customer_list($customer_id_list, $shop_info['shop_id'], $shop_info['shop_type_id'])->result_array(); 
-            }            
-        }
-        $result_array['customer_list'] =  $customer_list;
+        $total_purchased = $this->input->post('total_purchased');
+        $result_array['customer_list'] =  $this->sale_library->get_customer_list_by_total_purchased($total_purchased);
         echo json_encode($result_array);
     }
+    
+    /*
+     * This method will local search customer by total purchased page
+     * @Author Nazmul on 26th January 2015
+     */
     public function search_customers_total_purchased()
     {
         //loads view page
@@ -755,26 +675,21 @@ class Search extends CI_Controller {
         $this->data['user_group'] = $user_group;
         $this->template->load(null, 'search/customer/total_purchased', $this->data);
     }
-    public function download_result_search_customer_by_total_purchase(){
-        //download resulr as text file
+    
+    /*
+     * This method will download customer list
+     * Author Nazmul on 26th January 2015
+     */
+    public function download_customer_info_by_total_purchase(){
+        $total_purchased = $this->input->post('total_purchased');
+        $customer_list_array = $this->sale_library->get_customer_list_by_total_purchased($total_purchased);
         $content = '';
-//        $customer_list_array[]= array(
-//            'first_name' => 'Tanveer',
-//            'last_name' => 'ahmed',
-//            'phone' => '0144',
-//            'address' => 'azi',
-//            'card_no' => '9855',
-//            'status' => '1'
-//        );
-//        $select_value = 'both';
+
         $select_value = $this->input->post('select_option_for_download');
-        $customer_list_array = $this->input->post('searched_customer_list');
-        
-        $customer_list_array = json_decode($customer_list_array, TRUE);
         foreach ($customer_list_array as $customer_info) {
-            if ($select_value == 'mobile_no') {
+            if ($select_value == DOWNLOAD_CUSTOMER_BY_MOBILE_NO_ID) {
                 $content = $content . $customer_info['phone'] . "\r\n";
-            } else if ($select_value == 'name') {
+            } else if ($select_value == DOWNLOAD_CUSTOMER_BY_NAME_ID) {
                 $content = $content . $customer_info['first_name'] . ' ' . $customer_info['last_name'] . "\r\n";
             } else {
                 $content = $content . $customer_info['phone'] . '-' . $customer_info['first_name'] . ' ' . $customer_info['last_name'] . "\r\n";
@@ -786,12 +701,49 @@ class Search extends CI_Controller {
         header("Content-Disposition: 'attachment'; filename=" . $file_name . ".txt");
         echo $content;
     }
+    
+    /*
+     * This method will send sms to customers
+     * @Author Nazmul on 26th January 2015
+     */
+    public function send_sms_to_customers_by_total_purchased()
+    {
+        $total_purchased = $this->input->post('total_purchased');
+        $message_title = $this->input->post('message_title');
+        $message_body = $this->input->post('message_body');
+        $customer_list =  $this->sale_library->get_customer_list_by_total_purchased($total_purchased);
+        
+    }
+    
+    /*
+     * This method will update user account status from search custome by total purchase page
+     * @Author Nazmul on 26th January 2015
+     */
     public function update_users()
     {
-        $id_array = $this->input->post('id_array');
-        $user_id_list = json_decode($id_array, TRUE);
+        $result = array();
+        $user_id_list = array();
+        $total_purchased = $this->input->post('total_purchased');
+        $customer_list =  $this->sale_library->get_customer_list_by_total_purchased($total_purchased);
+        foreach($customer_list as $customer_info)
+        {
+            $user_id_list[] = $customer_info['user_id']; 
+        }
         $status = $this->input->post('status');
-        $this->ion_auth->update_users( $user_id_list, $status );
+        if(!empty($user_id_list))
+        {
+            $additional_data = array(
+                'account_status_id' => $status
+            );
+            $this->ion_auth->update_users( $user_id_list, $additional_data );
+            $result['message'] = "Accounts successfully updated.";
+        }
+        else
+        {
+            $result['message'] = "No such customers to update.";
+        }
+        $result['customer_list'] = $customer_list;
+        echo json_encode($result);
     }
 
         //---------------------------------------- Customer Search -------------------------------------------

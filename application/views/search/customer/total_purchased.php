@@ -1,49 +1,35 @@
 <script type="text/javascript">
-    var searched_customer_list = [];
-    function search_cust() {
-//        A DUMMY ARRAY IS RETURNED FROM search_customers_by_total_purchased
-        $.ajax({
-            dataType: 'json',
-            type: "POST",
-            url: '<?php echo base_url(); ?>' + "search/search_customers_by_total_purchased",
-            data: {
-                total_purchased: $("#total_purchased").val()
-            },
-            success: function (data) {
-                $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data['customer_list']));
-                searched_customer_list = data['customer_list'];
-            }
+    $(function(){
+        $("#button_search_customer").on("click", function() {
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "search/search_customers_by_total_purchased",
+                data: {
+                    total_purchased: $("#total_purchased").val()
+                },
+                success: function (data) {
+                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data['customer_list']));
+                }
+            });
         });
-    }
-    
-    function download_result_form_submit()
-    {
-        if(searched_customer_list.length<1){
-            alert('Please complete the customer search first.');
-            return;
-        }
-        $("#searched_customer_list").val(JSON.stringify(searched_customer_list));
-//        console.log($("#form_download_search_result").serializeArray());
-        $("#form_download_search_result").submit();
-    }
-    function download_result(){
-        if(searched_customer_list.length<1){
-            alert('Please complete customer search');
-            return;
-        }
         
-        $.ajax({
-            dataType: 'json',
-            type: "POST",
-            url: '<?php echo base_url(); ?>' + 'search/download_result_search_customer_by_total_purchase',
-            data: {
-                searched_customer_list: JSON.stringify(searched_customer_list),
-                select_option_for_download: $("#select_option_for_download").val()
-            },
-            success: function (data) {
-            }
+        $("#button_message_send").on("click", function() {
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "search/send_sms_to_customers_by_total_purchased",
+                data: {
+                    message_title: $("#message_title").val(),
+                    message_body: $("#message_body").val(),
+                    total_purchased: $("#total_purchased").val()
+                },
+                success: function (data) {
+                    //
+                }
+            });
         });
-    }
+    });
     
     function get_char_count(limit)
     {
@@ -65,8 +51,8 @@
 <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL): ?>
         <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
 <?php endif; ?>
-    <td><a href="">Show</a></td>
-    <td><?php echo 'active' ?></td> 
+    <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= customer_info.customer_id%}">Show</a>';?></td>
+    <td ><?php echo '{%= customer_info.account_status%}'; ?></td>
     </tr>
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -79,7 +65,7 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="row">
                         <div class ="col-md-10 margin-top-bottom">
-                            <?php echo form_open("search/download_result_search_customer_by_total_purchase", array('id' => 'form_download_search_result', 'name' => 'form_download_search_result', 'class' => 'form-horizontal'));?>
+                            <?php echo form_open("search/download_customer_info_by_total_purchase", array('id' => 'form_download_search_result', 'name' => 'form_download_search_result', 'class' => 'form-horizontal'));?>
                             <div class="form-group">
                                 <label for="total_purchased" class="col-md-4 control-label requiredField">
                                     Total Purchased
@@ -89,7 +75,7 @@
                                 </div>
                                 <label for="button_search_customer" class="control-label requiredField"></label>
                                 <div class ="col-md-3">
-                                    <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success', 'onclick' => 'search_cust()')); ?>
+                                    <?php echo form_input($button_search_customer + array('class' => 'form-control btn-success')); ?>
                                 </div>
                             </div>
 
@@ -100,9 +86,9 @@
                                 <div class ="col-md-5">
                                     <?php
                                     $options = array(
-                                        'name' => 'Name',
-                                        'mobile_no' => 'Mobile No',
-                                        'both' => 'Both'
+                                        DOWNLOAD_CUSTOMER_BY_NAME_ID => 'Name',
+                                        DOWNLOAD_CUSTOMER_BY_MOBILE_NO_ID => 'Mobile No',
+                                        DOWNLOAD_CUSTOMER_BY_NAME_MOBILE_NO_ID => 'Both'
                                     );
 
                                     echo form_dropdown('select_option_for_download', $options, 'both', 'class="form-control" id="select_option_for_download"');
@@ -112,9 +98,7 @@
 
                                 </label>
                                 <div class ="col-md-3">
-                                    <input type="hidden" name="searched_customer_list" id="searched_customer_list">
-                                    <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success', 'onclick' => 'download_result_form_submit()')); ?>
-                                    <?php //echo form_input($button_download_customer + array('class' => 'form-control btn-success', 'type' => 'submit')); ?>
+                                    <?php echo form_input($button_download_customer + array('class' => 'form-control btn-success')); ?>
                                 </div>
                             </div>
                             <div class="form-group">

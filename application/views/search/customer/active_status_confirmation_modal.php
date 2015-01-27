@@ -1,31 +1,28 @@
 <script type="text/javascript">
     $(function() {
         $("#button_active").on("click", function() {
-            var id_array = [];
-            $.each(searched_customer_list, function (index, value ){
-                id_array.push(value.id);
-            });
             $.ajax({
                 dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "search/update_users",
                 data: {
-                    id_array: JSON.stringify(id_array),
-                    status: '1'
+                    total_purchased: $("#total_purchased").val(),
+                    status: <?php echo ACCOUNT_STATUS_ACTIVE?>
                 },
                 success: function(data) {
-                    alert(data['message']);
-                    $("#admin_status_confirm_modal").modal('hide');
+                    $("#active_users_confirm_modal").modal('hide');
+                    alert(data.message);
+                    $("#total_purchased").val('');
                     window.location.reload();
                 }
             });
         });
     });
     function open_modal_active_confirm() {
-        $("#admin_status_confirm_modal").modal('show');
+        $("#active_users_confirm_modal").modal('show');
     }
 </script>
-<div class="modal fade" id="admin_status_confirm_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="active_users_confirm_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -7,4 +7,8 @@
     
     define("SMS_CUSTOMER_REGISTRATION_MESSAGE",                            "Congratulation for successfully registration.");
     define("SMS_SUPPLIER_REGISTRATION_MESSAGE",                            "We hope that we can establish a good business relationship with you.");
+    
+    define("DOWNLOAD_CUSTOMER_BY_NAME_ID",                      1);
+    define("DOWNLOAD_CUSTOMER_BY_MOBILE_NO_ID",                 2);
+    define("DOWNLOAD_CUSTOMER_BY_NAME_MOBILE_NO_ID",            3);
 ?>

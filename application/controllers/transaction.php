@@ -5,13 +5,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Added in Class Diagram
  */
 class Transaction extends CI_Controller {
+    public $tables = array();
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('org/sale/sale_library');
         $this->load->library('org/shop/shop_library');
         $this->load->library('org/transaction/transaction_library');
         $this->load->helper('url');
-
+        $this->tables = $this->config->item('tables', 'ion_auth');
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
                         $this->load->library('mongo_db') :
@@ -72,13 +74,24 @@ class Transaction extends CI_Controller {
             $customer_info = $customer_info_array[0];
         }
         $this->data['customer_info'] = $customer_info;
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) 
-        {   
-            $this->template->load(null, 'customer/show_customer_transactions',$this->data);        
-        }
-        else if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) 
+        
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $total_profit = 0;
+        $where = array(
+            $this->tables['customers'].'.id' => $customer_id
+        );
+        $customer_sales_array = $this->sale_library->where($where)->get_customer_sales()->result_array();
+        foreach($customer_sales_array as $sale_info)
         {
-            $this->template->load(null, 'customer/show_customer_transactions_medium',$this->data);       
+            $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+            $total_quantity = $total_quantity + $sale_info['total_sale'];
+            $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];            
         }
+        $this->data['total_sale_price'] = $total_sale_price;
+        $this->data['total_quantity'] = $total_quantity;
+        $this->data['total_profit'] = $total_profit;
+        
+        $this->template->load(null, 'customer/show_customer_transactions',$this->data);  
     }    
 }

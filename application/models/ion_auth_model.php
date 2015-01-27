@@ -2464,10 +2464,11 @@ class Ion_auth_model extends CI_Model {
         {
             $this->db->where_in($this->tables['customers'].'.id', $customer_id_list);
         }
-        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address')
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address,'.$this->tables['account_status'].'.description as account_status')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
                     ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->join($this->tables['account_status'], $this->tables['users'].'.account_status_id='.$this->tables['account_status'].'.id')
                     ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
                     ->get();  
     }

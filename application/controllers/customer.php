@@ -611,40 +611,4 @@ class Customer extends User {
         );        
         $this->template->load(null, 'customer/update_customer', $this->data);
     }
-    
-    /*
-     * This method will download customer information 
-     * @Author Nazmul on 20th January 2015
-     */
-    public function download_customer_total_purchased()
-    {
-        
-    }
-    
-    /*
-     * Ajax Call from Search customre by Lot Number page
-     * @Author Nazmul on 20th January 2015
-     */
-    public function activate_users_account_status()
-    {
-        
-    }
-    
-    
-    /*
-     * Ajax Call from Search customre by Lot Number page
-     * @Author Nazmul on 20th January 2015
-     */
-    public function inactivate_users_account_status()
-    {
-        
-    }
-    
-    /*
-     * ajax call this fuction.
-     */
-    public function send_custom_sms()
-    {
-//        post: form_create_message_customers_total_purchased, message_body, message_title, button_message_send
-    }
 }
