@@ -90,9 +90,9 @@ class Search extends CI_Controller {
     function search_product_order()
     {
         $result_array = array();
-        $search_category_name = $_POST['search_category_name'];
-        $search_category_value = $_POST['search_category_value'];
-        $product_list_array = $this->product_library->search_product($search_category_name, $search_category_value)->result_array();
+        $search_category_name = $this->input->post('search_category_name');
+        $search_category_value = $this->input->post('search_category_value');
+        $product_list_array = $this->stock_library->like($search_category_name, $search_category_value)->get_products_current_stock()->result_array();
         if( count($product_list_array) > 0)
         {
             $result_array = $product_list_array;

@@ -46,18 +46,12 @@
         $("#button_add_select_product").on("click", function() {
             var selected_array = Array();
             $("#tbody_product_list tr").each(function() {
-                //console.log($("td:first input:checkbox",$(this)));
                 $("td:first input:checkbox", $(this)).each(function() {
 
                     if (this.checked == true)
                     {
                         selected_array.push(this.id);
                     }
-                    
-                    //console.log(this.checked + this.id);
-                    /*if($(this).attr("id") == true) {
-                     console.log(this.checked + this.id);
-                     }*/
                 });
             });
 
@@ -76,7 +70,6 @@
             }
             $('div[class="clr dropdown open"]').removeClass('open');
             $('#modal_select_product').modal('hide');
-            //console.log(selected_array);
         });
         
         // clear input of modal when modal close
@@ -94,7 +87,7 @@
     <tr>
     <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="checkbox[]" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
-    <td>500 pieces</td>
+    <td><?php echo '{%= product_info.available_stock%}'; ?></td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -124,7 +117,7 @@
                                     <tr>
                                         <td style="width: 20px; padding: 0px" ><label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;"><input id="<?php echo $product['id'] ?>" name="checkbox[]" class="" type="checkbox"></label></td>
                                         <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
-                                        <td>500 pieces</td>
+                                        <td><?php echo $product['available_stock'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 

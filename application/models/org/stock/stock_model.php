@@ -165,4 +165,30 @@ class Stock_model extends Ion_auth_model
                     ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
                     ->get(); 
     }
+    
+    /*
+     * This method will return product list with available stocks
+     * @param $shop_id, shop id
+     * @Author Nazmul on 27th January 2015
+     */
+    public function get_products_current_stock($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if (isset($this->_ion_like) && !empty($this->_ion_like)) {
+            foreach ($this->_ion_like as $like) {
+                $this->db->or_like($like);
+            }
+            $this->_ion_like = array();
+        }
+        $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
+        $this->db->group_by($this->tables['stock_info'].'.product_id');
+        return $this->db->select($this->tables['product_info'].'.*,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['product_unit_category'].'.description as category_unit,'.'product_id, sum(stock_in)-sum(stock_out) as available_stock')
+                    ->from($this->tables['stock_info'])
+                    ->join($this->tables['product_info'], $this->tables['stock_info'].'.product_id='.$this->tables['product_info'].'.id ')
+                    ->join($this->tables['product_unit_category'],  $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id')
+                    ->get();
+    }
 }
