@@ -2029,13 +2029,19 @@ class Ion_auth_model extends CI_Model {
     /*
      * This method will return all staffs of a shop
      * @param $shop_id, shop id
+     * @param $staff_id_list, staff id list
+     * @param $only_active, whether to return only active staffs or not
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_staffs($shop_id = 0, $staff_id_list = array())
+    public function get_all_staffs($shop_id = 0, $staff_id_list = array(), $only_active = true)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if($only_active)
+        {
+            $this->db->where($this->tables['users'].'.account_status_id',ACCOUNT_STATUS_ACTIVE); 
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_STAFF_ID);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
@@ -2055,13 +2061,18 @@ class Ion_auth_model extends CI_Model {
     /*
      * This method will return all managers of a shop
      * @param $shop_id, shop id
+     * @param $only_active, whether to return only active managers or not
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_managers($shop_id = 0)
+    public function get_all_managers($shop_id = 0, $only_active = true)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if($only_active)
+        {
+            $this->db->where($this->tables['users'].'.account_status_id',ACCOUNT_STATUS_ACTIVE); 
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_MANAGER);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
@@ -2077,13 +2088,19 @@ class Ion_auth_model extends CI_Model {
     /*
      * This method will return all salesmen of a shop
      * @param $shop_id, shop id
+     * @param $salesman_id_list, salesman id list
+     * @param $only_active, whether to return only active salesmen or not
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_salesmen($shop_id = 0, $salesman_id_list = array())
+    public function get_all_salesmen($shop_id = 0, $salesman_id_list = array(), $only_active = true)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if($only_active)
+        {
+            $this->db->where($this->tables['users'].'.account_status_id',ACCOUNT_STATUS_ACTIVE); 
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_SALESMAN);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);

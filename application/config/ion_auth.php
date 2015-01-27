@@ -45,6 +45,7 @@ $config['tables']['customers']                      = 'customers';
 $config['tables']['purchase_order']                 = 'purchase_order';
 $config['tables']['product_purchase_order']         = 'product_purchase_order';
 $config['tables']['stock_info']                     = 'stock_info';
+$config['tables']['stock_transaction_category']     = 'stock_transaction_category';
 $config['tables']['sale_order']                     = 'sale_order';
 $config['tables']['product_sale_order']             = 'product_sale_order';
 $config['tables']['product_sale_price']             = 'product_sale_price';

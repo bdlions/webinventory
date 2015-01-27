@@ -422,7 +422,7 @@ class Purchase extends CI_Controller {
                 'shop_id' => $shop_id,
                 'stock_in' => $prod_info['quantity'],
                 'created_on' => $current_time,
-                'transaction_category_id' => STOCK_PURCHASE_IN
+                'transaction_category_id' => STOCK_PURCHASE_PARTIAL_IN
             );
             $add_stock_list[] = $add_stock_info;
         }
@@ -851,12 +851,27 @@ class Purchase extends CI_Controller {
         echo json_encode($response);
     }
     
+    public function get_supplier_transaction_list_by_lot_no() {
+        $transcation_info = array();
+        if ($this->input->post()){
+            $lot_no = $this->input->post('lot_no');
+            $transcation_info = $this->purchase_library->get_supplier_transaction_info($lot_no)->result_array();
+            if (!empty($transcation_info)) {
+                echo json_encode($transcation_info);
+            }
+        }
+    }
+    
+    /*
+     * This method will load showroom purchase transaction list
+     * @Author Nazmul on 27th January 2015
+     */
     public function show_showroom_purchase_transactions()
     {
         $this->data['message'] = "";
-        $this->data['lot_no'] = array(
-            'name' => 'lot_no',
-            'id' => 'lot_no',
+        $this->data['purchase_order_no'] = array(
+            'name' => 'purchase_order_no',
+            'id' => 'purchase_order_no',
             'type' => 'text'
         );
         $this->data['button_search_transactions'] = array(
@@ -867,15 +882,18 @@ class Purchase extends CI_Controller {
         );
         $this->template->load(null, 'purchase/show_showroom_purchase_transactions',$this->data);
     }
-    public function get_supplier_transaction_list_by_lot_no() {
-        $transcation_info = array();
-        if ($this->input->post()){
-            $lot_no = $this->input->post('lot_no');
-            $transcation_info = $this->purchase_library->get_supplier_transaction_info($lot_no)->result_array();
-            if (!empty($transcation_info)) {
-                echo json_encode($transcation_info);
-            }
-        }
+    
+    /*
+     * Ajax Call
+     * This method will return showroom purchase transactions
+     * @Author Nazmul on 27th January 2015
+     */
+    public function get_showroom_purchase_transactions()
+    {
+        $result = array();
+        $purchase_order_no = $this->input->post('purchase_order_no');
+        $result['purchase_list'] = $this->stock_library->get_showroom_purchase_transactions($purchase_order_no);
+        echo json_encode($result); 
     }
 
 }

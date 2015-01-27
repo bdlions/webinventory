@@ -133,7 +133,7 @@ class Salesman extends User {
      */
     public function show_all_salesmen() {
         $this->data['salesman_list'] = array();
-        $salesman_list_array = $this->ion_auth->get_all_salesmen()->result_array();
+        $salesman_list_array = $this->ion_auth->get_all_salesmen(0, array(), false)->result_array();
         if (!empty($salesman_list_array)) {
             $this->data['salesman_list'] = $salesman_list_array;
         }

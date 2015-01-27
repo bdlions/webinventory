@@ -4,47 +4,12 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Name:  Ion Auth
- *
- * Author: Ben Edmunds
- * 		  ben.edmunds@gmail.com
- *         @benedmunds
- *
- * Added Awesomeness: Phil Sturgeon
- *
- * Location: http://github.com/benedmunds/CodeIgniter-Ion-Auth
- *
- * Created:  10.01.2009
- *
- * Description:  Modified auth system based on redux_auth with extensive customization.  This is basically what Redux Auth 2 should be.
- * Original Author name has been kept but that does not mean that the method has not been modified.
- *
+ * Name:  Stock Library
+ * @Autor Nazmul on 27th January 2015
  * Requirements: PHP5 or above
  *
  */
 class Stock_library {
-
-    /**
-     * account status ('not_activated', etc ...)
-     *
-     * @var string
-     * */
-    protected $status;
-
-    /**
-     * extra where
-     *
-     * @var array
-     * */
-    public $_extra_where = array();
-
-    /**
-     * extra set
-     *
-     * @var array
-     * */
-    public $_extra_set = array();
-
     /**
      * __construct
      *
@@ -56,6 +21,7 @@ class Stock_library {
         $this->load->library('email');
         $this->lang->load('ion_auth');
         $this->load->helper('cookie');
+        $this->load->library('org/common/utils');
         $this->load->model('org/stock/stock_model');
 
         // Load the session, CI2 as a library, CI3 uses it as a driver
@@ -107,5 +73,36 @@ class Stock_library {
      */
     public function __get($var) {
         return get_instance()->$var;
+    }
+    
+    /*
+     * This method will retunr showroom purchase list
+     * @param $purchase_order_no, purchase order no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 27th January 2015
+     */
+    public function get_showroom_purchase_transactions($purchase_order_no, $shop_id = 0)
+    {
+        $transaction_list = array();
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $transactions_array = $this->stock_model->get_showroom_purchase_transactions($purchase_order_no, $shop_id)->result_array();
+        foreach($transactions_array as $transactions_info)
+        {
+            $transactions_info['created_on'] = $this->utils->process_time($transactions_info['created_on']);
+            $transactions_info['quantity'] = 0;
+            if($transactions_info['transaction_category_id'] == STOCK_PURCHASE_PARTIAL_IN)
+            {
+                $transactions_info['quantity'] = $transactions_info['stock_in'];
+            }
+            else if($transactions_info['transaction_category_id'] == STOCK_PURCHASE_PARTIAL_OUT)
+            {
+                $transactions_info['quantity'] = $transactions_info['stock_out'];
+            }
+            $transaction_list[] = $transactions_info;
+        }
+        return $transaction_list;
     }
 }

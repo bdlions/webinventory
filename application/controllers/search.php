@@ -351,7 +351,7 @@ class Search extends CI_Controller {
     public function search_sales()
     {
         $employee_list = array();
-        $employee_list_array = $this->ion_auth->get_all_salesman()->result_array();
+        $employee_list_array = $this->ion_auth->get_all_staffs()->result_array();
         if(!empty($employee_list_array))
         {
             foreach($employee_list_array as $key => $employee_info)

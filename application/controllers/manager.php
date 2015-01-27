@@ -133,7 +133,7 @@ class Manager extends User {
      */
     public function show_all_managers() {
         $this->data['manager_list'] = array();
-        $manager_list_array = $this->ion_auth->get_all_managers()->result_array();
+        $manager_list_array = $this->ion_auth->get_all_managers(0, false)->result_array();
         if (!empty($manager_list_array)) {
             $this->data['manager_list'] = $manager_list_array;
         }
