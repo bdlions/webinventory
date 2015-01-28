@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-include APPPATH.'controllers/User.php';
+include APPPATH.'controllers/user.php';
 class Supplier extends User {
     function __construct() {
         parent::__construct();
