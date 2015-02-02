@@ -41,7 +41,7 @@ class Template {
             $current_template = MANAGER_LOGIN_SUCCESS_TEMPLATE;
         }
         else if($this->CI->ion_auth->is_staff()){
-            $current_template = MANAGER_LOGIN_SUCCESS_TEMPLATE;
+            $current_template = STAFF_LOGIN_SUCCESS_TEMPLATE;
         }
         return $current_template;
     }
