@@ -333,6 +333,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
                                 <th>Product Unit</th>
@@ -446,4 +447,4 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php $this->load->view("purchase/modal_select_supplier"); ?>
-<?php $this->load->view("purchase/modal_select_product"); ?>
+<?php $this->load->view("purchase/modal_select_warehouse_purchased_product"); ?>

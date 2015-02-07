@@ -55,10 +55,10 @@
             <input type="hidden" name="message_id" id="message_id" value="<?php echo isset($sup_info)?$sup_info['id']:'';?>"></input>
             <div class="form-group">
                 <div class ="col-md-offset-3 col-md-2">
-                    <?php echo form_input($submit_update_message+array('class'=>'form-control btn-success')); ?>
+                    <?php echo form_input($submit_update_message+array('class'=>'form-control btn-success','id'=>'submit_update_message','style'=>'display:none')); ?>
                 </div>
                 <div class ="col-md-offset-4 col-md-2">
-                    <?php echo form_input($submit_create_message+array('class'=>'form-control btn-success')); ?>
+                    <?php echo form_input($submit_create_message+array('class'=>'form-control btn-success','id'=>'submit_create_message')); ?>
                 </div> 
             </div>
 
@@ -116,7 +116,7 @@
                             },*/
                     header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Supplier Message</div>',
                     template: [
-                        '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-envelope">{{value}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
+                        '<div class="row"><div class="tt-suggestions col-md-11 col-md-offset-1"><div class="form-horizontal"><span class="glyphicon glyphicon-envelope">{{value}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div></div>'
                       ].join(''),
                     engine: Hogan,
                 }
@@ -125,6 +125,8 @@
              {
                  update_fields_selected_message(datum);
              }
+             $('#submit_update_message').show();
+             $('#submit_create_message').hide();
          });  
 
     });

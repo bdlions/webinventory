@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var stock_purc_prod_list;
+//    var stock_purc_prod_list;
     var ware_purc_prod_list;
     $(document).ready(function() {
         var product_data = <?php echo json_encode($product_list_array) ?>;        
@@ -17,12 +17,13 @@
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
-                    ware_purc_prod_list = data['purchased_product_list'];
-                    stock_purc_prod_list = data['stock_purchased_product_list'];
+                    var purchased_product_list = data['purchased_product_list'];
+                    var supplier_due = data['supplier_due'];
                     set_purchased_product_list(purchased_product_list);
+                    stock_purc_prod_list = data['stock_purchased_product_list'];
                     if(supplier_info.supplier_id)
                     {
-                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
+//                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
                         $("#input_purchase_supplier_id").val(supplier_info.supplier_id);
                         $("#input_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
                         $("#input_purchase_phone").val(supplier_info.phone);
@@ -269,7 +270,7 @@
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_purchased_product')); ?>
+                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_raise_purchased_product')); ?>
                         </div> 
                     </div>
                 </div>
@@ -373,4 +374,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/modal_select_purchased_product"); ?>
+<?php $this->load->view("purchase/modal_select_raise_purchased_product"); ?>

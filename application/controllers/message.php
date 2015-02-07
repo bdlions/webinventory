@@ -135,14 +135,12 @@ class Message extends CI_Controller {
         
         $this->data['submit_update_message'] = array(
             'name' => 'submit_update_message',
-            'id' => 'submit_update_message',
             'type' => 'submit',
             'value' => 'Update',
         );
         
         $this->data['submit_create_message'] = array(
             'name' => 'submit_create_message',
-            'id' => 'submit_create_message',
             'type' => 'submit',
             'value' => 'Create',
         );

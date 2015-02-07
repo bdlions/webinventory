@@ -1,6 +1,6 @@
+
 <script type="text/javascript">
-    
-         function check_all_checkbox(checked_all){
+    function check_all_checkbox(checked_all){
         if( $(checked_all).is(':checked') ){
             $('input[name^="product_checkbox_"]').each(function(){
             $(this).prop('checked', true);
@@ -11,6 +11,9 @@
         });
         }
     }
+
+
+    
     $(function() {
         $("#button_search_product").on("click", function() {
             if ($("#dropdown_search_product")[0].selectedIndex == 0)
@@ -32,15 +35,14 @@
                     search_category_value: $("#input_search_product").val()
                 },
                 success: function(data) {
-                    $("#tbody_product_list").html(tmpl("tmpl_product_list",  data));
+                    $("#tbody_product_list").html(tmpl("tmpl_product_list", data));
                 }
             });
         });
         
-        
-        $("#tbody_product_list").on("click", "td", function(){
+        $("#tbody_product_list").on("click", "td", function()
+        {
             var p_list = get_product_list();
-			
             for (var counter = 0; counter < p_list.length; counter++)
             {
                 var prod_info = p_list[counter];
@@ -48,13 +50,13 @@
                 {
                     append_selected_product(prod_info);
                     $('div[class="clr dropdown open"]').removeClass('open');
-                    $('#modal_select_product').modal('hide');
+                    $('#modal_select_raise_purchased_product').modal('hide');
                     return;
                 }
             }
-            
+
         });
-		
+
         $("#button_add_select_product").on("click", function() {
             var selected_array = Array();
             $("#tbody_product_list tr").each(function() {
@@ -66,31 +68,33 @@
                     }
                 });
             });
-
+            
+            
+            
             var p_list = get_product_list();
             for (var counter = 0; counter < p_list.length; counter++)
             {
                 var prod_info = p_list[counter];
                 for (var i = 0; i < selected_array.length; i++) {
-
                     if (selected_array[i] === prod_info['id'])
                     {
                         append_selected_product(prod_info);
-
                     }
                 }
             }
             $('div[class="clr dropdown open"]').removeClass('open');
-            $('#modal_select_product').modal('hide');
+            $('#modal_select_raise_purchased_product').modal('hide');
         });
+
         
         // clear input of modal when modal close
-        $('#modal_select_product').on('hidden.bs.modal', function (e) {
+        $('#modal_select_raise_purchased_product').on('hidden.bs.modal', function (e) {
             $(this).find("input,textarea,select").val('').end()
               .find("input[type=checkbox], input[type=radio]")
                  .prop("checked", "")
                  .end();
-        });
+          });
+        
     });
 </script>
 <script type="text/x-tmpl" id="tmpl_product_list">
@@ -99,13 +103,13 @@
     <tr>
     <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="checkbox[]" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
-    <td><?php echo '{%= product_info.available_stock%}'; ?></td>
+    <td>700 pieces</td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
 
-<div class="modal fade" id="modal_select_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_select_raise_purchased_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -119,51 +123,53 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></th>
+                                        <th><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check box</span></th>
                                         <th>Name</th>
                                         <th>Current stock</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_product_list">
-                                <?php foreach ($product_list_array as $key => $product) : ?>
-                                    <tr>
-                                        <td style="width: 20px; padding: 0px" ><label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;"><input id="<?php echo $product['id'] ?>" name="product_checkbox_<?php echo $product['id'] ?>" class="" type="checkbox"></label></td>
-                                        <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
-                                        <td><?php echo $product['available_stock'] ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                    <?php
+                                    foreach ($product_list_array as $key => $product) {
+                                        ?>
+                                        <tr>
+                                            <!--<td style="width: 20px; padding: 0px" ><label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;"><input id="<?php echo $product['id'] ?>" name="checkbox[]" class="" type="checkbox"></label></td>-->
+                                            <td style="width: 20px; padding: 0px" ><label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;"><input name="product_checkbox_<?php echo $product['id'] ?>" id="<?php echo $product['id'] ?>" type="checkbox"></label></td>
+                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
+                                            <td>700 pieces</td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
                                 
                                 </tbody>
                             </table>                            
                         </div>
-                        <div class ="row form-group">
-                            <div class="col-md-3 pull-right">
-                                    <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
-                            </div>
+                        <div class ="row col-md-3 pull-right top-bottom-padding form-group">
+                            <?php echo form_button(array('name' => 'button_add_select_product', 'class' => 'form-control btn btn-success', 'id' => 'button_add_select_product', 'content' => 'Add')); ?>
                         </div>
                     </div>
                     <div class ="row col-md-11 top-bottom-padding">
                         <div class ="col-md-3">
                             <span class="" style="vertical-align: top; font-size: 24px; line-height: 12px;">Search</span>
                         </div>
-                        <div class ="col-md-3">
-                            <?php echo form_dropdown('dropdown_search_product', $product_search_category, '0', 'id="dropdown_search_product"'); ?>
-                        </div>
-                        <div class ="col-md-6">
-                            <div class="row form-group">
-                                <div class="col-md-12">
+                        <div class="col-md-9 form-horizontal">
+                            <div class="col-md-6">
+                                <?php echo form_dropdown('dropdown_search_product', $product_search_category, '0', 'id="dropdown_search_product"'); ?>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="row form-group">
                                     <?php echo form_input(array('name' => 'input_search_product', 'id' => 'input_search_product', 'class' => 'form-control')); ?>
                                 </div>
-                            </div>                            
-                            <div class ="row form-group">
-                                <div class="col-md-12">
+                                <div class="row form-group">
                                     <?php echo form_button(array('name' => 'button_search_product', 'class' => 'form-control btn btn-success', 'id' => 'button_search_product', 'content' => 'Search')); ?>
                                 </div>
                             </div>
-                        </div>                   
+                        </div>
                     </div>
                     
-<!--                    <div class ="row col-md-11 top-bottom-padding">
+                   <div class ="row col-md-11 top-bottom-padding">
                         <div class ="row col-md-4">
                             <span class="" style="vertical-align: top; font-size: 24px; line-height: 12px;">
                                 Add New
@@ -202,6 +208,7 @@
                                 </div>
                             </div>
 
+
                             <div class="form-group">
                                 <label class="col-md-5 control-label requiredField" for="button_add_supplier">
                                 </label>
@@ -210,7 +217,8 @@
                                 </div> 
                             </div>
                         </div>
-                    </div>-->
+                    </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -239,6 +247,7 @@
                 data: { unit_name: unit_name },
                 success: function(data) {
                     alert(data.message);
+                    
                     if (data['status'] === 1)
                     {
                         $("#dropdown").append("<option value='"+data['product_category_info'].id+"'>"+data['product_category_info'].description+"</option>");
@@ -287,3 +296,4 @@
     });
     
 </script>
+

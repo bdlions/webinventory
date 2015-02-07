@@ -427,4 +427,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/modal_select_warehouse_purchased_product"); ?>
+<?php $this->load->view("purchase/modal_select_return_warehouse_purchased_product"); ?>

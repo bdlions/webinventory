@@ -413,4 +413,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/modal_select_product"); ?>
+<?php $this->load->view("purchase/modal_select_raise_warehouse_purchased_product"); ?>
