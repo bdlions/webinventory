@@ -95,22 +95,6 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Tools<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("./upload/upload_cover");?>">Upload Cover</a></li>
-        <li><a href="<?php echo base_url("./staff/create_staff");?>">Create Staff</a></li>
-        <li><a href="<?php echo base_url("./staff/show_all_staffs");?>">Show All Staffs</a></li>
-        <li><a href="<?php echo base_url("./salesman/create_salesman");?>">Create Equipment Supplier</a></li>
-        <li><a href="<?php echo base_url("./salesman/show_all_salesmen");?>">Show All Equipment Suppliers</a></li>
-        <li><a href="<?php echo base_url("./manager/create_manager");?>">Create Admin</a></li>
-        <li><a href="<?php echo base_url("./manager/show_all_managers");?>">Show All Admins</a></li>    
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         SMS<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -142,5 +126,21 @@
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url()?>queue">Queue</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Settings<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./upload/upload_cover");?>">Upload Cover</a></li>
+        <li><a href="<?php echo base_url("./staff/create_staff");?>">Create Staff</a></li>
+        <li><a href="<?php echo base_url("./staff/show_all_staffs");?>">Show All Staffs</a></li>
+        <li><a href="<?php echo base_url("./salesman/create_salesman");?>">Create Equipment Supplier</a></li>
+        <li><a href="<?php echo base_url("./salesman/show_all_salesmen");?>">Show All Equipment Suppliers</a></li>
+        <li><a href="<?php echo base_url("./manager/create_manager");?>">Create Admin</a></li>
+        <li><a href="<?php echo base_url("./manager/show_all_managers");?>">Show All Admins</a></li>    
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>
     </ul>
 </div>

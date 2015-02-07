@@ -73,7 +73,16 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Tools<span class="caret"></span>
+        Notebook<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu"> 
+       <li><a href="<?php echo base_url("./message/update_custom_message");?>">Create/Update Message</a></li>
+       <li><a href="<?php echo base_url("./message/view_custom_messages");?>">View Message</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Settings<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
         <li><a href="<?php echo base_url("./upload/upload_cover");?>">Upload Cover</a></li>
@@ -85,14 +94,5 @@
         <li><a href="<?php echo base_url("./manager/show_all_managers");?>">Show All Admins</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>        
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Notebook<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu"> 
-       <li><a href="<?php echo base_url("./message/update_custom_message");?>">Create/Update Message</a></li>
-       <li><a href="<?php echo base_url("./message/view_custom_messages");?>">View Message</a></li>
     </ul>
 </div>
