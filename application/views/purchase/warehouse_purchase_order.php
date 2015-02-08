@@ -28,6 +28,8 @@
             return;
         }
         $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        $('.purchase_order_number_td').hide();
+        color_setter();
         var total_purchase_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
             if ($(this).attr("name") === "product_buy_price")
@@ -313,7 +315,7 @@
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_product')); ?>
+                            <?php echo form_input(array('name' => 'input_add_purchase_supplier', 'id' => 'input_add_purchase_supplier', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#common_modal_select_product')); ?>
                         </div> 
                     </div>
                 </div>
@@ -339,12 +341,12 @@
                                 <th>Product Unit</th>
                                 <th>Unit Price</th>
                                 <th>Sub Total</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
                         </tbody>
-                        <?php //echo '<pre/>'; print_r($product_list_array);exit;?>
-                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
+<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
                             {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                             {% while(product_info){ %}
                             <tr>
@@ -357,7 +359,7 @@
                             </tr>
                             {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                             {% } %}
-                        </script>
+                        </script>-->
                     </table>
                 </div>
             </div>
@@ -447,4 +449,5 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php $this->load->view("purchase/modal_select_supplier"); ?>
-<?php $this->load->view("purchase/modal_select_warehouse_purchased_product"); ?>
+<?php $this->load->view("purchase/common_modal_select_product"); ?>
+<?php $this->load->view("purchase/common_append_template"); ?>

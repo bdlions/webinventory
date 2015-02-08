@@ -1,4 +1,17 @@
 <script type="text/javascript">
+      function check_all_checkbox(checked_all){
+        if( $(checked_all).is(':checked') ){
+            $('input[name^="product_checkbox_"]').each(function(){
+            $(this).prop('checked', true);
+            $(this).parents('tr').css('background-color', '#B5E61D');
+        });
+        }else{
+            $('input[name^="product_checkbox_"]').each(function(){
+            $(this).prop('checked', false);
+            $(this).parents('tr').css('background-color', '#E4F2D9');
+        });
+        }
+    }
     $(function() {
         $("#tbody_purchased_product_list").on("click", "td", function() 
         {            
@@ -10,7 +23,7 @@
                 {
                     append_selected_product(prod_info);
                     $('div[class="clr dropdown open"]').removeClass('open');
-                    $('#modal_select_return_purchased_product').modal('hide');
+                    $('#common_modal_select_return_product').modal('hide');
                     return;
                 }
             }
@@ -30,7 +43,7 @@
     {% } %}
 </script>
 
-<div class="modal fade" id="modal_select_return_purchased_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="common_modal_select_return_product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

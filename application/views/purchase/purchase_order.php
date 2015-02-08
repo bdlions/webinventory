@@ -217,6 +217,8 @@
             }
         });
         $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        $('.purchase_order_number_td').hide();
+        color_setter();
         var total_purchase_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
             if ($(this).attr("name") === "product_buy_price")
@@ -270,7 +272,7 @@
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_raise_purchased_product')); ?>
+                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#common_modal_select_product')); ?>
                         </div> 
                     </div>
                 </div>
@@ -290,16 +292,18 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
                                 <th>Product Unit</th>
                                 <th>Unit Price</th>
                                 <th>Sub Total</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
                         </tbody>
-                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
+<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
                             {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                             {% while(product_info){ %}
                             <tr>
@@ -317,7 +321,7 @@
                             </tr>
                             {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                             {% } %}
-                        </script>
+                        </script>-->
                     </table>
                 </div>
             </div>
@@ -374,4 +378,5 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/modal_select_raise_purchased_product"); ?>
+<?php $this->load->view("purchase/common_modal_select_product"); ?>
+<?php $this->load->view("purchase/common_append_template"); ?>

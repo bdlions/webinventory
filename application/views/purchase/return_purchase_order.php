@@ -305,7 +305,7 @@
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_return_purchased_product')); ?>
+                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#common_modal_select_return_product')); ?>
                         </div> 
                     </div>
                 </div>
@@ -334,7 +334,7 @@
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
                         </tbody>
-                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
+<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
                             {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                             {% while(product_info){ %}
                             <tr>
@@ -346,7 +346,7 @@
                             </tr>
                             {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                             {% } %}
-                        </script>
+                        </script>-->
                     </table>
                 </div>
             </div>
@@ -427,4 +427,5 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/modal_select_return_purchased_product"); ?>
+<?php $this->load->view("purchase/common_modal_select_return_product"); ?>
+<?php $this->load->view("purchase/common_return_append_template"); ?>
