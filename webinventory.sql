@@ -232,6 +232,7 @@ INSERT INTO `product_unit_category` (`description`, `shop_id`) VALUES
  CREATE TABLE IF NOT EXISTS `product_info` (
 	`id` int NOT NULL auto_increment,
 	`name` varchar(200) NOT NULL,
+	`serial_no` varchar(200) NOT NULL,
 	`code` varchar(200)  DEFAULT '',
 	`size` varchar(200) DEFAULT '',
 	`weight` varchar(200) DEFAULT '',

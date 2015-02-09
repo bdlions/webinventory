@@ -45,6 +45,7 @@ class Product extends CI_Controller {
     {
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name', 'Product Name', 'xss_clean|required');
+        $this->form_validation->set_rules('serial_no', 'Serial No', 'xss_clean|required');
         $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
         $this->form_validation->set_rules('weight', 'Product Weight', 'xss_clean');
         $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
@@ -58,6 +59,7 @@ class Product extends CI_Controller {
             if($this->form_validation->run() == true)
             {
                 $additional_data = array(
+                    'serial_no' => $this->input->post('serial_no'),
                     'size' => $this->input->post('size'),
                     'weight' => $this->input->post('weight'),
                     'warranty' => $this->input->post('warranty'),
@@ -108,6 +110,12 @@ class Product extends CI_Controller {
             'id' => 'name',
             'type' => 'text',
             'value' => $this->form_validation->set_value('name'),
+        );
+        $this->data['serial_no'] = array(
+            'name' => 'serial_no',
+            'id' => 'serial_no',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('serial_no'),
         );
         $this->data['size'] = array(
             'name' => 'size',
@@ -227,6 +235,7 @@ class Product extends CI_Controller {
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name', 'Product Name', 'xss_clean|required');
+        $this->form_validation->set_rules('serial_no', 'Serial No', 'xss_clean|required');
         $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
         $this->form_validation->set_rules('weight', 'Product Weight', 'xss_clean');
         $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
@@ -267,6 +276,7 @@ class Product extends CI_Controller {
             {
                 $additional_data = array(
                     'name' => $this->input->post('name'),
+                    'serial_no' => $this->input->post('serial_no'),
                     'size' => $this->input->post('size'),
                     'weight' => $this->input->post('weight'),
                     'warranty' => $this->input->post('warranty'),
@@ -306,6 +316,12 @@ class Product extends CI_Controller {
             'id' => 'name',
             'type' => 'text',
             'value' => $product_info['name']
+        );
+        $this->data['serial_no'] = array(
+            'name' => 'serial_no',
+            'id' => 'serial_no',
+            'type' => 'text',
+            'value' => $product_info['serial_no']
         );
         $this->data['size'] = array(
             'name' => 'size',

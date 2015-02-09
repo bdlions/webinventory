@@ -8,11 +8,19 @@
                 <div class="col-md-8"><?php echo $message; ?></div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-md-6 control-label requiredField">
+                <label for="product_name" class="col-md-6 control-label requiredField">
                     Product Name
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($name+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="serial_no" class="col-md-6 control-label requiredField">
+                    Serial No
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($serial_no+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">

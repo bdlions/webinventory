@@ -65,7 +65,7 @@ class Message extends CI_Controller {
                 );
                 //echo '<pre/>';print_r($data);exit;
                 $this->messages->update_message_info($id,$data);
-                redirect("message/update_custom_message","refresh");
+                redirect("message/view_custom_messages","refresh");
             }
             else
             {
@@ -88,7 +88,7 @@ class Message extends CI_Controller {
                 if( $id !== FALSE )
                 {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
-                    redirect("message/update_custom_message","refresh");
+                    redirect("message/view_custom_messages","refresh");
                 }
                 else
                 {
@@ -145,8 +145,12 @@ class Message extends CI_Controller {
             'value' => 'Create',
         );
         $this->data['custom_messages'] = $this->get_custom_message();
-        
+        if($message_id!=''){
         $this->template->load(null, 'message/update_custom_message',$this->data);
+        }  else {
+        $this->template->load(null, 'message/create_custom_message',$this->data);
+            
+        }
     }
     
     /*

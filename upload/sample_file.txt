@@ -1,1 +1,1 @@
-Name~Size~weight~warranty~quality~unit_categroy_name~brand_name~unit_price
+Name~serial_no~Size~weight~warranty~quality~unit_categroy_name~brand_name~unit_price

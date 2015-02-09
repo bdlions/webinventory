@@ -4,7 +4,7 @@
         if( $(checked_all).is(':checked') ){
             $('input[name^="product_checkbox_"]').each(function(){
             $(this).prop('checked', true);
-            $(this).parents('tr').css('background-color', '#B5E61D');
+            $(this).parents('tr').css('background-color', '#47A447');
         });
         }else{
             $('input[name^="product_checkbox_"]').each(function(){
@@ -128,9 +128,14 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></th>
-                                        <th>Name</th>
-                                        <th>Current stock</th>
+                                        <th>
+                                            <label style="padding: 5px 5px;">
+                                                <input type="checkbox" onclick="check_all_checkbox(this)">
+                                                <span style="padding-left: 2px">Check All</span>
+                                            </label>
+                                        </th>
+                                        <th style="padding: 15px 0">Name</th>
+                                        <th style="padding: 15px 0">Current stock</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_product_list">
@@ -138,7 +143,11 @@
                                     foreach ($product_list_array as $key => $product) {
                                         ?>
                                         <tr>
-                                            <td style="width: 20px; padding: 0px" ><label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;"><input id="<?php echo $product['id'] ?>" name="product_checkbox_<?php echo $product['id'] ?>" class="" type="checkbox"></label></td>
+                                            <td style="width: 20px; padding: 0px" >
+                                                <label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;">
+                                                    <input id="<?php echo $product['id'] ?>" name="product_checkbox_<?php echo $product['id'] ?>" type="checkbox">
+                                                </label>
+                                            </td>
                                             <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
                                             <td>700 pieces</td>
                                         </tr>

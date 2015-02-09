@@ -19,7 +19,7 @@
     {% } %}
         
     <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
-        <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>
+    <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -29,7 +29,7 @@
     function color_setter(){
         $('input[name^="product_checkbox_"]').on('click', function(){
             if( $(this).is(':checked') ){
-                $(this).parents('tr').css('background-color', '#B5E61D');
+                $(this).parents('tr').css('background-color', '#47A447');
             }
             else{
                 $(this).parents('tr').css('background-color', '#E4F2D9');
@@ -38,4 +38,4 @@
     }
     $(color_setter());
 </script>
-<td id="purchase_order_number_td" style="display: none"></td>
+<!--<td id="purchase_order_number_td" style="display: none"></td>-->

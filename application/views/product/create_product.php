@@ -16,6 +16,14 @@
                 </div> 
             </div>
             <div class="form-group">
+                <label for="serial_no" class="col-md-6 control-label requiredField">
+                    Serial No
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($serial_no+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
                     Product Size
                 </label>

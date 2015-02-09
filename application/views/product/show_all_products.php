@@ -5,6 +5,7 @@
             <thead>
                 <tr>
                     <th>Product Name</th>
+                    <th>Serial No</th>
                     <th>Product Size</th>
                     <th>Product Weight</th>
                     <th>Product Unit</th>
@@ -20,6 +21,7 @@
                 ?>
                     <tr>
                         <td><?php echo $product_info['name'] ?></td>
+                        <td><?php echo $product_info['serial_no'] ?></td>
                         <td><?php echo $product_info['size'] ?></td>
                         <td><?php echo $product_info['weight'] ?></td>
                         <td><?php echo $product_info['category_unit'] ?></td>

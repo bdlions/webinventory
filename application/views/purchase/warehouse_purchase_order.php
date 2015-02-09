@@ -335,13 +335,13 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></th>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
-                                <th>Delete</th>
+                                <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
+                                <th style="padding: 18px">Product Name</th>
+                                <th style="padding: 18px">Quantity</th>
+                                <th style="padding: 18px">Product Unit</th>
+                                <th style="padding: 18px">Unit Price</th>
+                                <th style="padding: 18px">Sub Total</th>
+                                <th style="padding: 18px">Delete</th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        

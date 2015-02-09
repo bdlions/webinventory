@@ -31,9 +31,12 @@
             if(purchased_product_info['product_id']=== prod_info['id'])
             {
                 prod_info['unit_price'] = purchased_product_info['unit_price']; 
+                prod_info['readonly'] = 'true';
             }
         }
         $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        $('.purchase_order_number_td').hide();
+        color_setter();
         var total_purchase_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
             if ($(this).attr("name") === "product_buy_price")
@@ -325,11 +328,13 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
+                                <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
+                                <th style="padding: 18px">Product Name</th>
+                                <th style="padding: 18px">Quantity</th>
+                                <th style="padding: 18px">Product Unit</th>
+                                <th style="padding: 18px">Unit Price</th>
+                                <th style="padding: 18px">Sub Total</th>
+                                <th style="padding: 18px">Delete</th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
@@ -428,4 +433,4 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php $this->load->view("purchase/common_modal_select_return_product"); ?>
-<?php $this->load->view("purchase/common_return_append_template"); ?>
+<?php $this->load->view("purchase/common_append_template"); ?>

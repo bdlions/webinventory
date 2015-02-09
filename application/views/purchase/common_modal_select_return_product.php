@@ -3,7 +3,7 @@
         if( $(checked_all).is(':checked') ){
             $('input[name^="product_checkbox_"]').each(function(){
             $(this).prop('checked', true);
-            $(this).parents('tr').css('background-color', '#B5E61D');
+            $(this).parents('tr').css('background-color', '#47A447');
         });
         }else{
             $('input[name^="product_checkbox_"]').each(function(){

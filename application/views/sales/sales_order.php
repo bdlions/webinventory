@@ -1,5 +1,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#input_add_sale_product').on('click',function(){
+           $('#new_product_add_div').hide();
+           $('#common_modal_select_product').modal();
+        });
         var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
         
@@ -8,11 +12,17 @@
         $("#cash_paid_amount").val(0);
         $("#current_due").val(0);
     });
+    function set_all_lot_no(lot_no_value){
+        $('input[name^=purchase_order_no]').each(function(){
+            $(this).val($(lot_no_value).val());
+        });
+    }
 </script>
 <script>
     function append_selected_product(prod_info)
     {
         $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        color_setter();
         var total_sale_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
             if ($(this).attr("name") === "product_sale_price")
@@ -75,6 +85,7 @@
 
 <script type="text/javascript">
     $(function() {
+        
         $("#button_due_collect").on("click", function() {
             $('#modal_due_collect').modal('show');
         });
@@ -364,11 +375,27 @@
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_add_sale_product', 'id' => 'input_add_sale_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#modal_select_product')); ?>
+                            <?php echo form_input(array('name' => 'input_add_sale_product', 'id' => 'input_add_sale_product', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                 </div>
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
+                    <div class="form-group">
+                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
+                            lot No.
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="button_lot_no" class="col-md-4 control-label requiredField">
+                            &nbsp;
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_button(array('name' => 'button_purchase_order_no', 'id' => 'button_purchase_order_no', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
+                        </div> 
+                    </div>
                     <div class="form-group">
                         <label for="sale_order_no" class="col-md-4 control-label requiredField">
                             Order No.
@@ -387,24 +414,25 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-md-11">
+            <div class="row col-md-12">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Lot No</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
-                                <th>Delete Row</th>
+                                <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
+                                <th style="padding-bottom: 16px">Product Name</th>
+                                <th style="padding-bottom: 16px"><span style="padding-right: 2px;">Lot No</span><input type="text" name="purchase_order_no" onkeyup="set_all_lot_no(this)" style="width: 70px; height: 20px;"></th>
+                                <th style="padding-bottom: 16px">Quantity</th>
+                                <th style="padding-bottom: 16px">Product Unit</th>
+                                <th style="padding-bottom: 16px">Unit Price</th>
+                                <th style="padding-bottom: 16px">Sub Total</th>
+                                <th style="padding-bottom: 16px">Delete</th>
                             </tr>
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
                         </tbody>
                         <?php //echo '<pre/>';print_r($product_list_array);exit;?>
-                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
+<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
                             {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
                             {% while(product_info){ %}
                             <tr>
@@ -418,7 +446,7 @@
                             </tr>
                             {% product_info = ((o instanceof Array) ? o[i++] : null); %}
                             {% } %}
-                        </script>
+                        </script>-->
                     </table>
                 </div>
             </div>
@@ -509,4 +537,5 @@
 </div><!-- /.modal -->
 <?php $this->load->view("sales/modal_due_collect"); ?>
 <?php $this->load->view("sales/modal_select_customer"); ?>
-<?php $this->load->view("sales/modal_select_product"); ?>
+<?php $this->load->view("purchase/common_modal_select_product"); ?>
+<?php $this->load->view("purchase/common_append_template"); ?>
