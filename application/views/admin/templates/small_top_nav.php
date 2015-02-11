@@ -82,6 +82,7 @@
         <li><a href="<?php echo base_url("search/search_customer_card_no");?>">Search Customer by Card No</a></li>
         <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>
         <li><a href="<?php echo base_url("search/search_customer_card_no_range");?>">Search Customer by Card No Range</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_by_total_due");?>">Search Customer by Total Due</a></li>
     </ul>
 </div>
 <div class="btn-group">

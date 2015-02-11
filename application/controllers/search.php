@@ -1090,6 +1090,19 @@ class Search extends CI_Controller {
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
     }  
     
+    public function search_customer_by_total_due()
+    {
+       
+        $this->data['button_search_customer_due'] = array(
+            'name' => 'button_search_customer_due',
+            'id' => 'button_search_customer_due',
+            'type' => 'submit',
+            'value' => 'Search',
+        );
+    
+        $this->template->load(null, 'search/customer/total_due',$this->data);
+    }  
+    
     /*
      * This method will load search due collect by date range page
      * @Author Nazmul on 17th January 2015
