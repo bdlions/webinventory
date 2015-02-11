@@ -40,7 +40,7 @@
         color_setter();
         var total_purchase_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
-            if ($(this).attr("name") === "product_buy_price")
+            if ($(this).attr("name") === "product_price")
             {
                 total_purchase_price = +total_purchase_price + +$(this).val();
             }
@@ -147,7 +147,7 @@
                         {
                             product_info.setUnitPrice($(this).attr("value"));
                         }
-                        if ($(this).attr("name") === "product_buy_price")
+                        if ($(this).attr("name") === "product_price")
                         {
                             product_info.setSubTotal($(this).attr("value"));
                             total_purchase_price = +total_purchase_price + +$(this).attr("value");
@@ -204,7 +204,7 @@
         $("#tbody_selected_product_list").on("change", "input", function() {
             var product_id = '';
             var product_quantity = 1;
-            var product_buy_price = 100;
+            var product_price = 100;
             $("input", $(this).parent().parent()).each(function() {
                 if ($(this).attr("name") === "quantity")
                 {
@@ -221,18 +221,18 @@
                     {
                         product_id = $(this).attr("id");
                         $(this).attr('value', $(this).val());
-                        product_buy_price = $(this).val();
+                        product_price = $(this).val();
                     }
                 }
-                if ($(this).attr("name") === "product_buy_price")
+                if ($(this).attr("name") === "product_price")
                 {
-                    $(this).attr('value', product_quantity * product_buy_price);
-                    $(this).val(product_quantity * product_buy_price);
+                    $(this).attr('value', product_quantity * product_price);
+                    $(this).val(product_quantity * product_price);
                 }
             });
             var total_purchase_price = 0;
             $("input", "#tbody_selected_product_list").each(function() {
-                if ($(this).attr("name") === "product_buy_price")
+                if ($(this).attr("name") === "product_price")
                 {
                     total_purchase_price = +total_purchase_price + +$(this).val();
                 }
@@ -326,29 +326,6 @@
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
                         </tbody>
-                        <?php //echo '<pre/>';print_r($product_list_array);exit;?>
-<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
-                            {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                            {% while(product_info){ %}
-                            <tr>
-                            <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
-                                
-                                
-                            {% if(product_info.readonly == 'true') { %}
-                            <td><?php echo '{%= product_info.category_unit %}'; ?></td>
-                            <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
-                            {% }else{ %} 
-                            <td><?php echo '{%= product_info.category_unit %}'; ?></td>
-                                
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
-                            {% } %}
-                        
-                            <td><input class="input-width-table" name="product_buy_price" type="text" readonly="true" value=""/></td>
-                            </tr>
-                            {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                            {% } %}
-                        </script>-->
                     </table>
                 </div>
             </div>

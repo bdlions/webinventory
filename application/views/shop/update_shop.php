@@ -40,6 +40,14 @@
                 </div> 
             </div>
             <div class="form-group">
+                <label for="purchsae_order_no" class="col-md-6 control-label requiredField">
+                    Lot No
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($purchase_order_no+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
 
                 </label>

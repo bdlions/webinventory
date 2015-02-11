@@ -45,7 +45,7 @@ class Product extends CI_Controller {
     {
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name', 'Product Name', 'xss_clean|required');
-        $this->form_validation->set_rules('serial_no', 'Serial No', 'xss_clean|required');
+        $this->form_validation->set_rules('serial_no', 'Serial No', 'xss_clean');
         $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
         $this->form_validation->set_rules('weight', 'Product Weight', 'xss_clean');
         $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
@@ -235,7 +235,7 @@ class Product extends CI_Controller {
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
         $this->form_validation->set_rules('name', 'Product Name', 'xss_clean|required');
-        $this->form_validation->set_rules('serial_no', 'Serial No', 'xss_clean|required');
+        $this->form_validation->set_rules('serial_no', 'Serial No', 'xss_clean');
         $this->form_validation->set_rules('size', 'Product Size', 'xss_clean');
         $this->form_validation->set_rules('weight', 'Product Weight', 'xss_clean');
         $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');

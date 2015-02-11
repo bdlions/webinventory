@@ -25,7 +25,7 @@
         color_setter();
         var total_sale_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
-            if ($(this).attr("name") === "product_sale_price")
+            if ($(this).attr("name") === "product_price")
             {
                 total_sale_price = +total_sale_price + +$(this).val();
             }
@@ -69,18 +69,6 @@
             result += chars[Math.round(Math.random() * (chars.length - 1))];
         return result;
     }
-</script>
-
-<!--Written By Omar for remove selected product -->
-<script type="text/javascript">
-    $(function () {
-        $("#tbody_selected_product_list").on("click", "button", function(e) {
-            //console.log(this.id);
-            var target = e.target;
-            //console.log(target);
-            $(target).closest('tr').remove();
-        })
-    });
 </script>
 
 <script type="text/javascript">
@@ -156,7 +144,7 @@
                         {
                             product_info.setPurchaseOrderNo($(this).attr("value"));
                         }
-                        if ($(this).attr("name") === "unit_price")
+                        if ($(this).attr("name") === "price")
                         {
                             product_info.setUnitPrice($(this).attr("value"));
                         }
@@ -164,7 +152,7 @@
                         {
                             product_info.setDiscount($(this).attr("value"));
                         }
-                        if ($(this).attr("name") === "product_sale_price")
+                        if ($(this).attr("name") === "product_price")
                         {
                             product_info.setSubTotal($(this).attr("value"));
                         }
@@ -272,7 +260,7 @@
                         product_quantity = $(this).val();
                     }
                 }
-                if ($(this).attr("name") === "unit_price")
+                if ($(this).attr("name") === "price")
                 {
                     /*if ($(this).val() === '' || $(this).val() < 0 || !isNumber($(this).val()))
                     {
@@ -301,7 +289,7 @@
                     $(this).attr('value', $(this).val());
                     product_discount = $(this).val();
                 }*/
-                if ($(this).attr("name") === "product_sale_price")
+                if ($(this).attr("name") === "product_price")
                 {
                     //total_product_price = (product_quantity * product_unit_price) - (product_quantity * product_unit_price * product_discount / 100);
                     total_product_price = (product_quantity * product_unit_price) ;
@@ -312,7 +300,7 @@
 
             var total_sale_price = 0;
             $("input", "#tbody_selected_product_list").each(function() {
-                if ($(this).attr("name") === "product_sale_price")
+                if ($(this).attr("name") === "product_price")
                 {
                     total_sale_price = +total_sale_price + +$(this).val();
                 }
@@ -431,22 +419,7 @@
                         </thead>
                         <tbody id="tbody_selected_product_list">                        
                         </tbody>
-                        <?php //echo '<pre/>';print_r($product_list_array);exit;?>
-<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
-                            {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                            {% while(product_info){ %}
-                            <tr>
-                            <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
-                            <td><?php echo '{%= product_info.category_unit%}'; ?></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="unit_price" type="text" value=""/></td>
-                            <td><input class="input-width-table" name="product_sale_price" type="text" readonly="true" value="0"/></td>
-                            <td id=""><button id="<?php echo '{%= product_info.id%}'; ?>" class="glyphicon glyphicon-trash"></button></td>
-                            </tr>
-                            {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                            {% } %}
-                        </script>-->
+
                     </table>
                 </div>
             </div>

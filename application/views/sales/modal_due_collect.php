@@ -116,7 +116,7 @@
                                     <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.first_name%}' . ' ' . '{%= customer_info.last_name%}'; ?></td>
                                     <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.phone%}'; ?></td>
                                     <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.card_no%}'; ?></td>
-                                    <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.due_amount%}'; ?></td>
+                                    <td id="<?php echo '{%= customer_info.customer_id%}'; ?>"><?php echo '{%= customer_info.customer_due_amount%}'; ?></td>
                                     <td><input class="input-width-table" id="input_due_amount" name="input_due_amount" type="text" value="0"/></td>
                                     </tr>
                                     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}

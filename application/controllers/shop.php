@@ -72,6 +72,7 @@ class Shop extends CI_Controller {
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
         $this->form_validation->set_rules('shop_type','Shop Type','xss_clean|required');
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
+        $this->form_validation->set_rules('purchase_order_no', 'Lot No', 'xss_clean');
         if ($this->input->post('submit_create_shop')) 
         {
             if ($this->form_validation->run() == true) 
@@ -82,6 +83,7 @@ class Shop extends CI_Controller {
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
                     'shop_type_id' => $this->input->post('shop_type'),
+                    'purchase_order_no' => $this->input->post('purchase_order_no'),
                     'created_on' => now()
                 );
                 $shop_id = $this->shop_library->create_shop($additional_data);
@@ -157,6 +159,12 @@ class Shop extends CI_Controller {
             'type' => 'text',
             'value' => $this->form_validation->set_value('shop_address'),
         );
+         $this->data['purchase_order_no'] = array(
+            'name' => 'purchase_order_no',
+            'id' => 'purchase_order_no',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('shop_name'),
+        );
         $this->data['submit_create_shop'] = array(
             'name' => 'submit_create_shop',
             'id' => 'submit_create_shop',
@@ -223,6 +231,7 @@ class Shop extends CI_Controller {
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
+        $this->form_validation->set_rules('purchase_order_no', 'Lot No', 'xss_clean');
         
         if ($this->input->post('submit_update_shop')) 
         {
@@ -233,6 +242,7 @@ class Shop extends CI_Controller {
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
+                    'purchase_order_no' => $this->input->post('purchase_order_no'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
                 if( $this->shop_library->update_shop($shop_id, $data) !== FALSE)
@@ -285,6 +295,12 @@ class Shop extends CI_Controller {
             'id' => 'shop_address',
             'type' => 'text',
             'value' => $shop_info['address'],
+        );
+        $this->data['purchase_order_no'] = array(
+            'name' => 'purchase_order_no',
+            'id' => 'purchase_order_no',
+            'type' => 'text',
+            'value' => $shop_info['purchase_order_no'],
         );
         
         $this->data['submit_update_shop'] = array(

@@ -63,23 +63,29 @@ class Search extends CI_Controller {
         echo json_encode($suppliers);
     }
     /*
-     * This method will return customer list based on search parameter
+     * This method will return customer list with current due based on search parameter
      * @param search_category_name, column name of customer or user table
      * @param search_category_value, value of coumn of customer or user table
      * @return customer list
-     * @author Nazmul on 16th January 2015
+     * @author Rashida on 11th february
      */
     function search_customer_sale_order()
     {
+        $customer_info = array();
         $result_array = array();
         $search_category_name = $this->input->post('search_category_name');
         $search_category_value = $this->input->post('search_category_value');
         $customer_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_CUSTOMER_SALE_ORDER_LIMIT)->search_customer($search_category_name, $search_category_value)->result_array();
-        if( count($customer_list_array) > 0)
-        {
-            $result_array = $customer_list_array;
+        $customer_id = $customer_list_array[0]['customer_id'];
+        if($customer_id!=null){
+            $customer_current_due = $this->payments->get_customer_current_due($customer_id);
         }
-        echo json_encode($result_array);
+        if(!empty($customer_current_due))
+        {
+            $customer_info = $customer_list_array[0];
+            $customer_info['customer_due_amount'] = (string)$customer_current_due; 
+        }
+        echo json_encode($customer_info);
     }
     /*
      * This method will return product list based on search parameter either from sale or purchase page

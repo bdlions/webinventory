@@ -36,8 +36,9 @@ class Message extends CI_Controller {
         
     }
     /*
-     * This method will update custom message
-     * @Author Nazmul on 17th May 2014
+     * form submit
+     * This method will create/update custom message
+     * @ Author Rashida on 11 february 2015
      */
     public function update_custom_message($message_id=0)
     {
