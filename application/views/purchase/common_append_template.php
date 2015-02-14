@@ -50,10 +50,10 @@
     $(function () 
     {
         $('#button_tr_delete').on('click', function(){
-           var selection_id_fiddenfiled= $("#delete_hidden_field").val(); 
-           var selection_id= $('.row_selection:checked').val();
+          var selection_id_fiddenfiled= $("#delete_hidden_field").val(); 
+           var selection_id= $('input[name=delete_type]:checked').val();
+          
            if(selection_id==1){
-               
                 $("#tbody_selected_product_list tr").each(function() {
                 $("td:first input:checkbox", $(this)).each(function() {
 
@@ -76,7 +76,7 @@
                     }
                 });
              });
-           }else{
+           }else if(selection_id==3){
                $("#tbody_selected_product_list tr").each(function() {
                   if(this.id=="product_row_"+selection_id_fiddenfiled){
                   $(this).remove();//kaj ka o korte pare
@@ -84,16 +84,12 @@
                   } 
                });
                
-//               alert('Please select a option');
+           }else{
+               alert('Please select an option');
            }
+           $('input[name=delete_type]:checked').attr('checked', false);
+           $('#modal_td_delete').modal('hide');
         });
-        
-//        $('#modal_td_delete').on('hidden.bs.modal', function (e) {
-//            $(this).find("input,textarea,select").val('').end()
-//              .find("input[type=checkbox], input[type=radio]")
-//                 .prop("checked", "")
-//                 .end();
-//          });
     });
    
 </script>
@@ -105,19 +101,30 @@
                 <h4 class="modal-title" id="myModalLabel">Delete products</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
                     <div class="row form-group">
-                            <div class="col-sm-2"></div>
-                            <div class ="col-sm-4">
-                                <input type="checkbox" name="selected_row" class="row_selection" value="1"><span style="padding-left: 2px">delete selected items?</span>
-                            </div>
-                            <div class ="col-sm-4">
-                                <input type="checkbox" name="unseleted_row" class="row_selection" value="2" ><span style="padding-left: 2px">delete unselected items?</span>
-                            </div> 
-                            <input type="hidden" id="delete_hidden_field">
-                    </div>
+                        <div class="col-sm-4"></div>
+                        <div class ="col-sm-4">
+                            <input type="radio" name="delete_type" class="row_selection" value="3"><span style="padding-left: 2px">delete this items only?</span>
+                        </div>
+                        <input type="hidden" id="delete_hidden_field">
+                        <div class="col-sm-4"></div>
+                    </div>   
+                    <div class="row form-group">
+                        <div class="col-sm-4"></div>
+                        <div class ="col-sm-4">
+                            <input type="radio" name="delete_type" class="row_selection" value="1"><span style="padding-left: 2px">delete selected items?</span>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>   
+                    <div class="row form-group">
+                        <div class="col-sm-4"></div>
+                        <div class ="col-sm-4">
+                            <input type="radio" name="delete_type" class="row_selection" value="2" ><span style="padding-left: 2px">delete unselected items?</span>
+                            
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>   
                 </div>                
-            </div>
             <div class="modal-footer">
                 <div class ="col-md-6">
                     
