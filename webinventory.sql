@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
 	`created_on` int(11) unsigned DEFAULT NULL,
 	`modified_on` int(11) unsigned DEFAULT NULL,
 	`shop_type_id` int(11) DEFAULT NULL,
+	`purchase_order_no` varchar(500) default '',
 	PRIMARY KEY  (`id`),
 	KEY `shop_type_id` (`shop_type_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
