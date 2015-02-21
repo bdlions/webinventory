@@ -137,4 +137,33 @@ class Sale_library {
         }
         return $customer_list;
     }
+    
+    //not reusable yet
+    function sale_pdf_generation($sale_array = NULL) {
+
+        $pdf = new Risk_register_pdf('L');
+
+        $style_xml = simplexml_load_file(base_url().'resources/pdf/xml/sale_pdf_style/sale_pdf_style.xml');
+        $arr = json_decode(json_encode($style_xml), TRUE);
+        $style_array = $arr['document'];
+        
+        $xml = simplexml_load_file(base_url().'resources/pdf/xml/sale_data_xml.xml');
+        $arr = json_decode(json_encode($xml), TRUE);
+//        foreach ($arr as $key => $value) {
+//            var_dump($key);
+//            var_dump($value);
+//        }
+//        var_dump($arr['risk-register']['report-request']['risk-register-rows']);exit;
+        $pdf->load_data($arr, $style_array);
+        $pdf->AddPage();
+        $pdf->AliasNbPages();
+        $pdf->generate_pdf();
+        $file_path = '././assets/receipt/';
+        
+        $file_name = uniqid(date("d-m-yy")).'.pdf';
+        $pdf->Output($file_path.'pdf_sample', 'F');
+        
+        echo "Your generated pdf is : ".$file_path.$file_name;
+       
+    }
 }

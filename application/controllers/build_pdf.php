@@ -7,7 +7,8 @@ class Build_pdf extends CI_Controller {
         $this->load->helper('url');
         $this->load->library('session');
         $this->load->library('pdf/xml_parser');
-        $this->load->library('pdf/risk_register_pdf');
+//        $this->load->library('pdf/risk_register_pdf');
+        $this->load->library('pdf/sale_pdf');
 
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
@@ -35,6 +36,32 @@ class Build_pdf extends CI_Controller {
         $arr = json_decode(json_encode($xml), TRUE);
 
         $pdf->load_data($arr, $style_array);
+        $pdf->AddPage();
+        $pdf->AliasNbPages();
+        $pdf->generate_pdf();
+        $file_path = '././assets/receipt/';
+        
+        $file_name = uniqid(date("d-m-yy")).'.pdf';
+        $pdf->Output($file_path.$file_name, 'F');
+        
+        echo "Your generated pdf is : ".$file_path.$file_name;
+       
+    }
+
+    function sale_pdf_generation() {
+
+        $pdf = new Sale_pdf('L');
+
+        $style_xml = simplexml_load_file(base_url().'resources/pdf/xml/sale_pdf_style/sale_pdf_style.xml');
+        $arr = json_decode(json_encode($style_xml), TRUE);
+        $style_array = $arr['document'];
+        
+        $xml = simplexml_load_file(base_url().'resources/pdf/xml/sale_data_xml.xml');
+        $data_array = json_decode(json_encode($xml), TRUE);
+        
+//        echo '<pre>'; print_r($data_array);exit;
+
+        $pdf->load_data($data_array, $style_array);
         $pdf->AddPage();
         $pdf->AliasNbPages();
         $pdf->generate_pdf();

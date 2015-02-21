@@ -299,7 +299,8 @@
                     success: function(data) {
                         if (data['status'] === '1')
                         {
-                            alert('Sale order is executed successfully.');
+                            printPDF();
+//                            alert('Sale order is executed successfully.');// replace this w
                             $("#tbody_selected_product_list").html('');
                             $("#input_add_sale_customer_id").val('');
                             $("#input_add_sale_customer").val('');
