@@ -8,6 +8,8 @@ function Sale()
     var cash_paid;
     var check_paid;
     var check_description;
+    var previous_due;
+    var current_due;
     Sale.prototype.setOrderNo = function(value)
     {
         this.sale_order_no = value;
@@ -71,6 +73,22 @@ function Sale()
     Sale.prototype.getCheckDescription = function()
     {
         return this.check_description;
+    }
+    Sale.prototype.setPreviousDue = function(value)
+    {
+        this.previous_due = value;
+    }
+    Sale.prototype.getPreviousDue = function()
+    {
+        return this.previous_due;
+    }
+    Sale.prototype.setCurrentDue = function(value)
+    {
+        this.current_due = value;
+    }
+    Sale.prototype.getCurrentDue = function()
+    {
+        return this.current_due;
     }
 }
 

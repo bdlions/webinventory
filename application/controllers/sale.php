@@ -10,12 +10,14 @@ class Sale extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('ion_auth');
+        $this->load->library('pdf/sale_pdf');
         $this->load->library('org/common/payments');
         $this->load->library('org/product/product_library');
         $this->load->library('org/sale/sale_library');
         $this->load->library('org/shop/shop_library');
         $this->load->library('org/stock/stock_library');
         $this->load->library('org/purchase/purchase_library');
+        $this->load->library('org/utility/utils2');
         $this->load->helper('url');
 
         // Load MongoDB library instead of native db driver if required
@@ -101,11 +103,11 @@ class Sale extends CI_Controller {
     function add_sale() {
         $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
-        $selected_product_list = $_POST['product_list'];
+        $selected_product_list = $this->input->post('product_list');
         $sale_product_list = array();
         $stock_out_list = array();
-        $sale_info = $_POST['sale_info'];
-        $current_due = $_POST['current_due'];
+        $sale_info = $this->input->post('sale_info');
+        $current_due = $sale_info['current_due'];
 
         $product_lot_map = array();
         foreach ($selected_product_list as $key => $prod_info) 
@@ -297,7 +299,78 @@ class Sale extends CI_Controller {
         );
         $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $stock_out_list, $customer_payment_data_array, $customer_transaction_info_array);
         if ($sale_id !== FALSE) {
-            $response['status'] = '1';
+            $response['status'] = '1';            
+            $print_table_rows = array();
+            $serial_no = 1;
+            foreach ($selected_product_list as $product_info) {
+                $print_table_row = array(
+                    SRA_RISK_ID => $serial_no,
+                    DATE => $product_info['name'],
+                    SOURCE_REGISTER => $product_info['quantity'],
+                    PRACTICE_AREA => $product_info['unit_price'],
+                    TRIGGER_EVENT => $product_info['sub_total']
+                );
+                $serial_no++;    
+                $print_table_rows[] = $print_table_row;
+            }
+            $print_table_row_total = array(
+                SRA_RISK_ID => '',
+                DATE => '',
+                SOURCE_REGISTER => '',
+                PRACTICE_AREA => 'Total',
+                TRIGGER_EVENT => $sale_info['total']
+            );
+            $print_table_rows[] = $print_table_row_total;
+            $print_table_row_previous_due = array(
+                SRA_RISK_ID => '',
+                DATE => '',
+                SOURCE_REGISTER => '',
+                PRACTICE_AREA => 'Previous Due',
+                TRIGGER_EVENT => $sale_info['previous_due']
+            );
+            $print_table_rows[] = $print_table_row_previous_due;
+            $print_table_row_current_due = array(
+                SRA_RISK_ID => '',
+                DATE => '',
+                SOURCE_REGISTER => '',
+                PRACTICE_AREA => 'Current Due',
+                TRIGGER_EVENT => ($sale_info['total']+$sale_info['previous_due'])
+            );
+            $print_table_rows[] = $print_table_row_current_due;
+            $print_table_row_payment = array(
+                SRA_RISK_ID => '',
+                DATE => '',
+                SOURCE_REGISTER => '',
+                PRACTICE_AREA => 'Payment',
+                TRIGGER_EVENT => ($sale_info['cash_paid'] + $sale_info['check_paid'])
+            );
+            $print_table_rows[] = $print_table_row_payment;
+            $print_table_row_total_due = array(
+                SRA_RISK_ID => '',
+                DATE => '',
+                SOURCE_REGISTER => '',
+                PRACTICE_AREA => 'Total Due',
+                TRIGGER_EVENT => $sale_info['current_due']
+            );
+            $print_table_rows[] = $print_table_row_total_due;            
+            $sale_rows = array(
+                'sale_row' => $print_table_rows
+            ); 
+            $report_request = array(
+                'memo_header' => '',
+                'user_name' => '',
+                'report_date' => $this->utils2->get_unix_to_human_date($current_time, 1),
+                'sale_rows' => $sale_rows
+            );
+            $sale_report = array(
+                'report-request' => $report_request
+            );
+            $print_content = array(
+                'sale_report' => $sale_report,
+                'print_file_name' => $sale_info['sale_order_no']
+            );
+            $this->sale_pdf_generation($print_content);
+            
         } else {
             $response['status'] = '0';
             $response['message'] = $this->ion_auth->errors_alert();
@@ -654,5 +727,21 @@ class Sale extends CI_Controller {
             $response['message'] = $this->sale_library->errors_alert();
         }
         return $response;
+    }
+    
+    function sale_pdf_generation($print_content) {
+
+        $pdf = new Sale_pdf('L');
+        $style_xml = simplexml_load_file(base_url().'resources/pdf/xml/sale_pdf_style/sale_pdf_style.xml');
+        $arr = json_decode(json_encode($style_xml), TRUE);
+        $style_array = $arr['document'];
+        $pdf->load_data($print_content, $style_array);
+        $pdf->AddPage();
+        $pdf->AliasNbPages();
+        $pdf->generate_pdf();
+        $file_path = '././assets/receipt/';        
+        $file_name = $print_content['print_file_name'].'.pdf';
+        $pdf->Output($file_path.$file_name, 'F');
+       
     }
 }

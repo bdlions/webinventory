@@ -7,6 +7,7 @@ include './constants/shop.php';
 include './constants/sms.php';
 include './constants/payment.php';
 include './constants/expense.php';
+include './constants/print.php';
 /***************** Custom constant **********************/
 date_default_timezone_set('Asia/Dacca');
 

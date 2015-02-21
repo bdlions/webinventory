@@ -287,6 +287,8 @@
                 sale_info.setCashPaid($("#cash_paid_amount").val());
                 sale_info.setCheckPaid('0');
                 sale_info.setCheckDescription('');
+                sale_info.setPreviousDue($("#previous_due").val());
+                sale_info.setCurrentDue($("#current_due").val());
                 $.ajax({
                     dataType: 'json',
                     type: "POST",

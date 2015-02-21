@@ -33,7 +33,7 @@
                 </font>
             </paragraph>
             <paragraph>
-                <id>created_on</id>
+                <id>product_name</id>
                 <backgournd_color>#FFFFFF</backgournd_color>
                 <font>
                     <weight>B</weight> 
@@ -74,7 +74,7 @@
                         </font>
                     </col>
                     <col>
-                        <id>created_on</id>
+                        <id>product_name</id>
                         <header_text>Product Name</header_text>
                         <font>
                             <weight></weight> 
