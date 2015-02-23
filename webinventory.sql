@@ -19,7 +19,6 @@ INSERT INTO `shop_type` (`id`, `type`) VALUES
 -- shop info
 CREATE TABLE IF NOT EXISTS `shop_info` (
 	`id` int NOT NULL auto_increment,
-	`shop_no` varchar(200) NOT NULL default '',	
 	`name` varchar(200) NOT NULL default '',
 	`address` varchar(500) NOT NULL default '',
 	`shop_phone` varchar(200) NOT NULL default '',	
@@ -27,14 +26,15 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
 	`created_on` int(11) unsigned DEFAULT NULL,
 	`modified_on` int(11) unsigned DEFAULT NULL,
 	`shop_type_id` int(11) DEFAULT NULL,
-	`purchase_order_no` varchar(500) default '',
+	`sale_default_purchase_order_no` varchar(500) default '',
+	`purchase_default_purchase_order_no` varchar(500) default '',
 	PRIMARY KEY  (`id`),
 	KEY `shop_type_id` (`shop_type_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `shop_info`
   ADD CONSTRAINT `shop_info_ibfk_1` FOREIGN KEY (`shop_type_id`) REFERENCES `shop_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-INSERT INTO `shop_info` (`id`, `shop_no`, `name`, `shop_type_id`) VALUES
-(1, 1, 'Apurbo', 1);
+INSERT INTO `shop_info` (`id`, `name`, `shop_type_id`) VALUES
+(1, 'Apurbo', 1);
 
 -- user groups
 CREATE TABLE IF NOT EXISTS `groups` (

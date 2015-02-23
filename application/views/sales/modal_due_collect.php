@@ -104,7 +104,7 @@
                                         <th>Name</th>
                                         <th>Phone</th>
                                         <th>Card No</th>
-                                        <th>Current Due Amount</th>
+                                        <th>Previous Due Amount</th>
                                         <th>Due Amount</th>
                                     </tr>
                                 </thead>

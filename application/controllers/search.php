@@ -95,15 +95,19 @@ class Search extends CI_Controller {
      */
     function search_product_order()
     {
-        $result_array = array();
+        $product_list = array();
         $search_category_name = $this->input->post('search_category_name');
         $search_category_value = $this->input->post('search_category_value');
-        $product_list_array = $this->stock_library->like($search_category_name, $search_category_value)->get_products_current_stock()->result_array();
-        if( count($product_list_array) > 0)
+        $order_type = $this->input->post('order_type');
+        if($order_type == ORDER_TYPE_ADD_SALE || $order_type == ORDER_TYPE_RAISE_SHOWROOM_PURCHASE)
         {
-            $result_array = $product_list_array;
+            $product_list = $this->stock_library->like($search_category_name, $search_category_value)->get_products_current_stock()->result_array();
         }
-        echo json_encode($result_array);
+        else if($order_type == ORDER_TYPE_ADD_WAREHOUSE_PURCHASE || $order_type == ORDER_TYPE_RAISE_WAREHOUSE_PURCHASE)
+        {
+            $product_list = $this->stock_library->like($search_category_name, $search_category_value)->get_products_warehouse_current_stock()->result_array();
+        }
+        echo json_encode($product_list);
     }
     
     //---------------------------------------- Sale Search ----------------------------------------------
@@ -1096,19 +1100,6 @@ class Search extends CI_Controller {
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
     }  
     
-    public function search_customer_by_total_due()
-    {
-       
-        $this->data['button_search_customer_due'] = array(
-            'name' => 'button_search_customer_due',
-            'id' => 'button_search_customer_due',
-            'type' => 'submit',
-            'value' => 'Search',
-        );
-    
-        $this->template->load(null, 'search/customer/total_due',$this->data);
-    }  
-    
     /*
      * This method will load search due collect by date range page
      * @Author Nazmul on 17th January 2015
@@ -1166,4 +1157,53 @@ class Search extends CI_Controller {
         $result['due_collect_list'] = $due_collect_list;
         echo json_encode($result);
     }
+    public function search_customer_by_total_due()
+    {       
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        if($this->input->post('search_category_name'))
+        {
+            $result = array();
+            $customer_list = array();
+            $customer_list_array = array();
+            $search_category_name = $this->input->post('search_category_name');
+            $search_category_value = $this->input->post('search_category_value');
+            if($search_category_name != 0)
+            {
+                $customer_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_CUSTOMER_SALE_ORDER_LIMIT)->search_customer($search_category_name, $search_category_value)->result_array();
+            
+            }
+            foreach($customer_list_array as $customer_info)
+            {
+                $customer_current_due = $this->payments->get_customer_current_due($customer_info['customer_id']);
+                if($customer_current_due > 0)
+                {
+                    $customer_info['due'] = $customer_current_due;
+                    $customer_list[] = $customer_info;
+                }
+            }
+            $result['customer_list'] = $customer_list;
+            echo json_encode($result);
+            return;
+        }
+        $this->data['customer_search_category'] = array();
+        $this->data['customer_search_category']['phone'] = "Phone";
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->data['customer_search_category']['card_no'] = "Card No";}
+        $this->data['customer_search_category']['first_name'] = "First Name";
+        $this->data['customer_search_category']['last_name'] = "Last Name";
+        $this->data['customer_search_category']['0'] = "All";
+        
+        $this->data['button_search_customer_due'] = array(
+            'name' => 'button_search_customer_due',
+            'id' => 'button_search_customer_due',
+            'type' => 'submit',
+            'value' => 'Search',
+        );
+    
+        $this->template->load(null, 'search/customer/total_due',$this->data);
+    }  
 }

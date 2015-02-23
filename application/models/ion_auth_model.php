@@ -2210,7 +2210,7 @@ class Ion_auth_model extends CI_Model {
         $this->db->update($this->tables['suppliers'], $data, array('user_id' => $user_id));
         return true;
     }
-    // ------------------------------------------- Customer Module --------------------------------
+    // ------------------------------------------- Customer Module --------------------------------//
     /*
      * This method will ad new institution
      * @param $additional_data, institution data
@@ -2457,6 +2457,27 @@ class Ion_auth_model extends CI_Model {
                     ->get();  
     }
     
+    //------------------------------------------- Shop Module ---------------------------------//
+    /*
+     * This method will return shop info
+     * @param $shop_id, shop id
+     * @Author Nazmul on 22nd February 2015
+     */
+    public function get_shop_info($shop_id = 0)
+    {
+        if( $shop_id == 0 )
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('id', $shop_id);
+        $this->response = $this->db->select($this->tables['shop_info'].".*,".$this->tables['shop_info'].'.id as shop_id')
+                                ->from($this->tables['shop_info'])
+                                ->get();
+        return $this;
+    }
+    //--------------------------------------Ion Auth Model Ends -----------------------------------//
+    
+
     //--------------------------------------------Customer related queries-----------------------------------------
     
     /*
@@ -2566,21 +2587,7 @@ class Ion_auth_model extends CI_Model {
                     ->get();  
     }
     
-    //---------------------------------- Manager Module ---------------------------------------
-    /*public function get_all_managers($shop_id = '')
-    {
-        if(empty($shop_id))
-        {
-            $shop_id = $this->session->userdata('shop_id');
-        }
-        return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address')
-                    ->from($this->tables['users'])
-                    ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
-                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
-                    ->where($this->tables['users_groups'].'.group_id',$this->user_group_list['manager_id'])
-                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
-                    ->get();  
-    }*/
+    ////////////////////////////////////////////////////////////////////////
     public function get_manager($user_id)
     {
         $this->db->where($this->tables['users'].'.id', $user_id);
@@ -2820,19 +2827,5 @@ class Ion_auth_model extends CI_Model {
         } else {
             return false;
         }
-    }
-    
-
-    public function get_shop_info($shop_id = 0)
-    {
-        if( $shop_id == 0 )
-        {
-            $shop_id = $this->session->userdata('shop_id');
-        }
-        $this->db->where('id', $shop_id);
-        $this->response = $this->db->select($this->tables['shop_info'].".*,".$this->tables['shop_info'].'.id as shop_id')
-                                ->from($this->tables['shop_info'])
-                                ->get();
-        return $this;
-    }       
+    }          
 }

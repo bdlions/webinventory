@@ -290,6 +290,7 @@
                             <?php echo form_input(array('name' => 'input_return_sale_phone', 'id' => 'input_return_sale_phone', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
+                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <div class="form-group">
                         <label for="input_return_sale_card_no" class="col-md-3 control-label requiredField">
                             Card No.
@@ -298,6 +299,7 @@
                             <?php echo form_input(array('name' => 'input_return_sale_card_no', 'id' => 'input_return_sale_card_no', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
+                    <?php }?>
                     <div class="form-group">
                         <label for="input_return_sale_product" class="col-md-3 control-label requiredField">
                             Product
@@ -318,38 +320,7 @@
                     </div>                    
                 </div>
             </div>
-            <div class="row col-md-11">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Lot No</th>
-                                <th>Quantity</th>
-                                <th>Product Unit</th>
-                                <th>Unit Price</th>
-                                <th>Sub Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_selected_product_list">                        
-                        </tbody>
-<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
-                            {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                            {% while(product_info){ %}
-                            <tr>
-                            <td id="{%= product_info.product_id%}"><input name="name" type="hidden" value="{%= product_info.product_name%}"/>{%= product_info.product_name%}</td>
-                            <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="purchase_order_no" type="text" value="{%= product_info.purchase_order_no%}"/></td>
-                            <td><input class="input-width-table" id="{%= product_info.product_id%}" name="quantity" type="text" value=""/></td>
-                            <td><?php echo '{%= product_info.categort_unit %}'; ?></td>
-                            <td><input readonly="readonly" class="input-width-table" id="{%= product_info.product_id%}" name="unit_price" type="text" value="{%= product_info.unit_price%}"/></td>
-                            <td><input readonly="readonly" class="input-width-table" name="product_sale_price" type="text" value="0"/></td>
-                            </tr>
-                            {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                            {% } %}
-                        </script>-->
-                    </table>
-                </div>
-            </div>
+            <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
@@ -435,5 +406,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/common_modal_select_return_product"); ?>
-<?php $this->load->view("purchase/common_return_append_template"); ?>
+<?php $this->load->view("purchase/common_modal_select_return_product");

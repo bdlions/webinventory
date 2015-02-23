@@ -58,7 +58,7 @@ class Build_pdf extends CI_Controller {
         $xml = simplexml_load_file(base_url().'resources/pdf/xml/sale_data_xml.xml');
         $data_array = json_decode(json_encode($xml), TRUE);
         
-        echo '<pre>'; print_r($data_array);exit;
+        //echo '<pre>'; print_r($data_array);exit;
 
         $pdf->load_data($data_array, $style_array);
         $pdf->AddPage();

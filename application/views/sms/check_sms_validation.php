@@ -9,7 +9,7 @@
                <?php echo form_open("user/account_validation_sms") ?>
                <div class="form-group">
                     <label for="password" class="col-md-6 control-label requiredField">
-                        Enter the supplied code here
+                        We sent you a code number in your mobile or mail. Enter the supplied code here
                     </label>
                     <div class ="col-md-6">
                         <?php echo form_input($code + array('class' => 'form-control')); ?>

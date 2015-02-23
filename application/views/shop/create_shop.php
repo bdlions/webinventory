@@ -8,14 +8,6 @@
                 <div class="col-md-8"><?php echo $message; ?></div>
             </div>
             <div class="form-group">
-                <label for="phone" class="col-md-6 control-label requiredField">
-                    Shop No
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($shop_no+array('class'=>'form-control')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
                 <label for="first_name" class="col-md-6 control-label requiredField">
                     Shop Name *
                 </label>
@@ -44,16 +36,8 @@
                     Shop Type
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_dropdown('shop_type', $shop_type+array('' => 'Select'), '', 'class=form-control'); ?>
+                    <?php echo form_dropdown('shop_type', $shop_type, '', 'class=form-control'); ?>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="purchase_order_no" class="col-md-6 control-label requiredField">
-                    Lot No
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($purchase_order_no+array('class'=>'form-control')); ?>
-                </div> 
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">

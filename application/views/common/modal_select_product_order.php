@@ -1,20 +1,18 @@
 <script type="text/javascript">
     //select all check box
-     function check_all_checkbox(checked_all){
+     function select_product_check_all_checkboxes(checked_all){
         if( $(checked_all).is(':checked') ){
-            $('input[name^="product_checkbox_"]').each(function(){
-            $(this).prop('checked', true);
-            $(this).parents('tr').css('background-color', '#47A447');
-           
-        });
+            $('input[name^="product_select_checkbox_"]').each(function(){
+                $(this).prop('checked', true);
+                //$(this).parents('tr').css('background-color', '#47A447');
+            });
         }else{
-            $('input[name^="product_checkbox_"]').each(function(){
-            $(this).prop('checked', false);
-            $(this).parents('tr').css('background-color', '#E4F2D9');
-        });
+            $('input[name^="product_select_checkbox_"]').each(function(){
+                $(this).prop('checked', false);
+                //$(this).parents('tr').css('background-color', '#E4F2D9');
+            });
         }
-    }
-    
+    }    
     $(function() {
         //close button for modal hide
         $('#modal_button_hide').on('click', function(){
@@ -38,7 +36,8 @@
                 url: '<?php echo base_url(); ?>' + "search/search_product_order",
                 data: {
                     search_category_name: $("#dropdown_search_product").val(),
-                    search_category_value: $("#input_search_product").val()
+                    search_category_value: $("#input_search_product").val(),
+                    order_type:'<?php echo $order_type?>'
                 },
                 success: function(data) {
                     $("#tbody_product_list").html(tmpl("tmpl_product_list", data));
@@ -108,7 +107,7 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr>
-    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="product_checkbox_<? echo '{%=product_info.id%}';?>" class="" type="checkbox"></label></td>
+    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="product_select_checkbox_<? echo '{%=product_info.id%}';?>" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
     <td><?php echo '{%= product_info.current_stock%}'; ?></td>
     </tr>
@@ -132,7 +131,7 @@
                                     <tr>
                                         <th>
                                             <label style="padding: 5px 5px;">
-                                                <input type="checkbox" onclick="check_all_checkbox(this)">
+                                                <input type="checkbox" onclick="select_product_check_all_checkboxes(this)">
                                                 <span style="padding-left: 2px">Check All</span>
                                             </label>
                                         </th>
@@ -147,7 +146,7 @@
                                         <tr>
                                             <td style="width: 20px; padding: 0px" >
                                                 <label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;">
-                                                    <input id="<?php echo $product['id'] ?>" name="product_checkbox_<?php echo $product['id'] ?>" type="checkbox">
+                                                    <input id="<?php echo $product['id'] ?>" name="product_select_checkbox_<?php echo $product['id'] ?>" type="checkbox">
                                                 </label>
                                             </td>
                                             <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>

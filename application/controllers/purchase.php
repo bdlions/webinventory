@@ -47,7 +47,7 @@ class Purchase extends CI_Controller {
         }
         $this->data['purchase_order_no'] = $purchase_order_no;
         $this->data['product_list_array'] = array();
-        $product_list_array = $this->product_library->get_all_products()->result_array();
+        $product_list_array = $this->stock_library->get_products_warehouse_current_stock()->result_array();
         if( count($product_list_array) > 0)
         {
             $this->data['product_list_array'] = $product_list_array;
@@ -65,6 +65,7 @@ class Purchase extends CI_Controller {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
         }
+        $this->data['order_type'] = ORDER_TYPE_ADD_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/warehouse_purchase_order',$this->data);
     }
     /*
@@ -365,7 +366,7 @@ class Purchase extends CI_Controller {
         }
         $this->data['purchase_order_no'] = $purchase_order_no;
         $this->data['product_list_array'] = array();
-        $product_list_array = $this->product_library->get_all_products()->result_array();
+        $product_list_array = $this->stock_library->get_products_current_stock()->result_array();
         if( count($product_list_array) > 0)
         {
             $this->data['product_list_array'] = $product_list_array;
@@ -383,6 +384,7 @@ class Purchase extends CI_Controller {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
         }
+        $this->data['order_type'] = ORDER_TYPE_RAISE_SHOWROOM_PURCHASE;
         $this->template->load(null, 'purchase/purchase_order',$this->data);
     }
     
@@ -527,7 +529,7 @@ class Purchase extends CI_Controller {
         
         
         $this->data['product_list_array'] = array();
-        $product_list_array = $this->product_library->get_all_products()->result_array();
+        $product_list_array = $this->stock_library->get_products_warehouse_current_stock()->result_array();
         if( count($product_list_array) > 0)
         {
             $this->data['product_list_array'] = $product_list_array;
@@ -545,6 +547,7 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
+        $this->data['order_type'] = ORDER_TYPE_RAISE_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/raise_warehouse_purchase_order',$this->data);
     }
     function return_warehouse_purchase()
@@ -771,6 +774,7 @@ class Purchase extends CI_Controller {
         {
             $this->data['product_list_array'] = $product_list_array;
         }
+        $this->data['order_type'] = ORDER_TYPE_RETURN_SHOWROOM_PURCHASE;
         $this->template->load(null, 'purchase/return_purchase_order',$this->data);
     }
     function return_warehouse_purchase_order()
@@ -793,6 +797,7 @@ class Purchase extends CI_Controller {
         {
             $this->data['product_list_array'] = $product_list_array;
         }
+        $this->data['order_type'] = ORDER_TYPE_RETURN_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/return_warehouse_purchase_order',$this->data);
     }
     /*

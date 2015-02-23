@@ -12,7 +12,32 @@ class Shop_model extends Ion_auth_model {
     protected $shop_identity_column;
     public function __construct() {
         parent::__construct();  
+        $this->load->model('org/common/sms_configuration_model','sms_model');
         $this->shop_identity_column = $this->config->item('shop_identity_column', 'ion_auth');      
+    }
+    /*
+     * This method will return all shop types
+     * @Author Nazmul on 23rd February 2015
+     */
+    public function get_all_shop_types()
+    {
+        $this->trigger_events('pre_get_all_shop_types');
+        return $this->db->select("*")
+                ->from($this->tables['shop_type'])
+                ->get();
+    }
+    
+    /*
+     * This method will return shop types of a user other than super admin
+     * @Author Nazmul on 23rd February 2015
+     */
+    public function get_user_shop_types()
+    {
+        $this->trigger_events('pre_get_user_shop_types');
+        $this->db->where('id', SHOP_TYPE_MEDIUM);
+        return $this->db->select("*")
+                ->from($this->tables['shop_type'])
+                ->get();
     }
     /**
      * Shop Identity check
@@ -29,10 +54,8 @@ class Shop_model extends Ion_auth_model {
                 ->count_all_results($this->tables['shop_info']) > 0;
     }
     /*
-     * Create a new shop
-     * @return newly created shop id
-     * 
-     * @author Nazmul on 23rd January 2014
+     * This method will create a news shop inserting default message configuration     * 
+     * @author Nazmul on 23rd February 2015
      * 
      */
     public function create_shop($additional_data)
@@ -52,26 +75,25 @@ class Shop_model extends Ion_auth_model {
         
         if($shop_id != FALSE)
         {
-            $data = array(
+            $customer_message_category_data = array(
                 'shop_id' => $shop_id,
                 'type_id' => SMS_MESSAGE_CATEGORY_CUSTOMER_REGISTRATION_TYPE_ID,
                 'description' => SMS_MESSAGE_CATEGORY_CUSTOMER_REGISTRATION_DESCRIPTION,
                 'created_on' => now()
-            );
-            
-            $message_category_id = $this->create_sms_message_category($data);
-            
-            if($message_category_id != FALSE)
+            );       
+            $customer_message_category_id = $this->sms_model->create_sms_message_category($customer_message_category_data);
+            //$customer_message_category_id = $this->create_sms_message_category($customer_message_category_data);            
+            if($customer_message_category_id != FALSE)
             {
                 $data = array(
                     'shop_id' => $shop_id,
-                    'message_category_id' => $message_category_id,
+                    'message_category_id' => $customer_message_category_id,
                     'message_description' => SMS_CUSTOMER_REGISTRATION_MESSAGE,
                     'created_on' => now()
-                );
-                
-                $id = $this->create_sms_message($data, $shop_id);
-                if($id == FALSE)
+                );       
+                $customer_message_id = $this->sms_model->create_sms_message($data, $shop_id);
+                //$customer_message_id = $this->create_sms_message($data, $shop_id);
+                if($customer_message_id == FALSE)
                 {
                     $this->db->trans_rollback();
                     return FALSE;
@@ -81,28 +103,26 @@ class Shop_model extends Ion_auth_model {
             {
                 $this->db->trans_rollback();
                 return FALSE;
-            }
-            
-            $data = array(
+            }            
+            $supplier_message_category_data = array(
                 'shop_id' => $shop_id,
                 'type_id' => SMS_MESSAGE_CATEGORY_SUPPLIER_REGISTRATION_TYPE_ID,
                 'description' => SMS_MESSAGE_CATEGORY_SUPPLIER_REGISTRATION_DESCRIPTION,
                 'created_on' => now()
-            );
-            
-            $message_category_id = $this->create_sms_message_category($data);
-            
-            if($message_category_id != FALSE)
+            ); 
+            $supplier_message_category_id = $this->sms_model->create_sms_message_category($supplier_message_category_data);            
+            //$supplier_message_category_id = $this->create_sms_message_category($supplier_message_category_data);            
+            if($supplier_message_category_id != FALSE)
             {
                 $data = array(
                     'shop_id' => $shop_id,
-                    'message_category_id' => $message_category_id,
+                    'message_category_id' => $supplier_message_category_id,
                     'message_description' => SMS_SUPPLIER_REGISTRATION_MESSAGE,
                     'created_on' => now()
-                );
-                
-                $id = $this->create_sms_message($data, $shop_id);
-                if($id == FALSE)
+                );                
+                $supplier_message_id = $this->sms_model->create_sms_message($data, $shop_id);
+                //$supplier_message_id = $this->create_sms_message($data, $shop_id);
+                if($supplier_message_id == FALSE)
                 {
                     $this->db->trans_rollback();
                     return FALSE;
@@ -118,44 +138,13 @@ class Shop_model extends Ion_auth_model {
         {
             $this->db->trans_rollback();
             return FALSE;
-        }
-        
+        }        
         $this->db->trans_commit();
         $this->set_message('shop_create_successful');
         $this->trigger_events('post_create_shop');
         return (isset($shop_id)) ? $shop_id : FALSE;
     }
     
-    /*
-     * 
-     */
-    public function create_sms_message_category($additional_data)
-    {
-        //filter out any data passed that doesnt have a matching column in the message_category table
-        $message_category_data = $this->_filter_data($this->tables['message_category'], $additional_data);
-  
-        $this->db->insert($this->tables['message_category'], $message_category_data);
-        $id = $this->db->insert_id();
-        return (isset($id)) ? $id : FALSE;
-    }
-    /*
-     * 
-     */
-    public function create_sms_message($additional_data, $shop_id = 0)
-    {
-        if( 0 == $shop_id )
-        {
-            $shop_id = $this->session->userdata('shop_id');
-        }
-        $data = array(
-            'shop_id' => $shop_id
-        );
-        //filter out any data passed that doesnt have a matching column in the message_category table
-        $message_data = array_merge($this->_filter_data($this->tables['message_info'], $additional_data), $data);
-        $this->db->insert($this->tables['message_info'], $message_data);
-        $id = $this->db->insert_id();
-        return (isset($id)) ? $id : FALSE;
-    }
     /**
      * Update shop info
      * @return bool
@@ -225,5 +214,5 @@ class Shop_model extends Ion_auth_model {
                                 ->get();
         return $this;
     }
-
+        
 }

@@ -25,6 +25,7 @@
         </title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/bootstrap3/css/custom_styles.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" >
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/spinner.css" >
         
         <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-1.10.2.min.js"></script>
         <script src="<?php echo base_url() ?>assets/bootstrap3/js/bootstrap.min.js"></script>
@@ -32,13 +33,14 @@
         
         
         <script src="<?php echo base_url(); ?>assets/js/order/common.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/order/customer.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/product.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/purchase.js"></script>
         <script src="<?php echo base_url(); ?>assets/js/order/sale.js"></script>
         <script src="<?php echo base_url(); ?>assets/bootstrap3/js/tmpl.js"></script>
     </head>
     <body>
-        <?php $this->load->view("manager/templates/header"); ?>
+        <?php $this->load->view("templates/sections/header"); ?>
         <div class ="container">
             <div class ="row">
                 <!-- Header part -->
@@ -48,7 +50,7 @@
                 <?php echo $contents ?>
             </div>
             <div class ="row">
-                <?php $this->load->view("manager/templates/footer"); ?>
+                <?php $this->load->view("templates/sections/footer"); ?>
             </div>
         </div>
     </body>

@@ -92,8 +92,8 @@ class Sale extends CI_Controller {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
         }
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {$this->template->load(null, 'sales/sales_order', $this->data);}
-        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) {$this->template->load(null, 'sales/sales_order_med', $this->data);}
+        $this->data['order_type'] = ORDER_TYPE_ADD_SALE;
+        $this->template->load(null, 'sales/sales_order', $this->data);        
     }
     
     /*
@@ -107,6 +107,7 @@ class Sale extends CI_Controller {
         $sale_product_list = array();
         $stock_out_list = array();
         $sale_info = $this->input->post('sale_info');
+        $customer_info = $this->input->post('customer_info');
         $current_due = $sale_info['current_due'];
 
         $product_lot_map = array();
@@ -358,7 +359,7 @@ class Sale extends CI_Controller {
             ); 
             $report_request = array(
                 'memo_header' => '',
-                'user_name' => '',
+                'customer_name' => $customer_info['full_name'],
                 'report_date' => $this->utils2->get_unix_to_human_date($current_time, 1),
                 'sale_rows' => $sale_rows
             );
@@ -454,8 +455,8 @@ class Sale extends CI_Controller {
             $this->data['product_list_array'] = $product_list_array;
         }
         $this->data['sale_order_no'] = $sale_order_no;
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'sales/return_sale_order', $this->data);}
-        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'sales/return_sale_order_med', $this->data);}
+        $this->data['order_type'] = ORDER_TYPE_RETURN_SALE;
+        $this->template->load(null, 'sales/return_sale_order', $this->data);        
     }
     /*
      * Ajax Call to return sale order

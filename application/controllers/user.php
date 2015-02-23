@@ -119,7 +119,6 @@ class User extends CI_Controller {
                             redirect('user/account_validation_sms', 'refresh');
                         }
                         $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
-
                         if (empty($shop_info)) {
                             redirect('shop/create_shop', 'refresh');
                         }
@@ -174,8 +173,13 @@ class User extends CI_Controller {
                     $groups = array('id' => $this->user_group['manager_id']);
                     $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
                     if ($user_id !== FALSE) {
-                        $this->ion_auth->admin_registration_email(array(), $email);
-                        $this->sms_library->send_sms($this->input->post('phone'), $additional_data['sms_code'], false);
+                        $email_data = array(
+                            'user_name' => $additional_data['first_name'].' '.$additional_data['last_name'],
+                            'sms_code' => $additional_data['sms_code']
+                        );
+                        $this->ion_auth->admin_registration_email($email_data, $email);                        
+                        $sms_body = "Dear ".$additional_data['first_name'].' '.$additional_data['last_name'].', here is your code number '.$additional_data['sms_code'].' please enter the code. apurbobrand.com';
+                        $this->sms_library->send_sms($this->input->post('phone'), $sms_body, false);
                         $this->session->set_flashdata('message2', $this->ion_auth->messages());
                         $this->ion_auth->login($user_name, $password);
                         redirect("user/account_validation_sms", "refresh");

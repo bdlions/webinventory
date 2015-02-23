@@ -119,18 +119,55 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
+        set_default_values_at_sale();
         $('#input_add_sale_product').on('click',function(){
-           $('#new_product_add_div').hide();
-           $('#common_modal_select_product').modal();
+            //we are not allowing add product option during sale   
+            $('#new_product_add_div').hide();
+            $('#common_modal_select_product').modal();
         });
+        
         var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
         
+        $("#button_due_collect").on("click", function() {
+            $('#modal_due_collect').modal('show');
+        });
+        $('#div_lock_purchase_order_no').show();
+        $('#div_unlock_purchase_order_no').hide();
+        $("#button_sale_default_purchase_order_no_lock").on("click", function() {
+            $('#input_table_default_purchase_order_no').val($('#input_sale_default_purchase_order_no').val());
+            $('input[name^=purchase_order_no]').each(function(){
+                $(this).val($('#input_sale_default_purchase_order_no').val());
+                $(this).attr("disabled", true)
+            });
+            $('#input_sale_default_purchase_order_no').attr("disabled", true);
+            $('#div_unlock_purchase_order_no').show();
+            $('#div_lock_purchase_order_no').hide();
+        });
+        $("#button_sale_default_purchase_order_no_unlock").on("click", function() {
+            $('#input_sale_default_purchase_order_no').attr("disabled", false)
+            $('#div_unlock_purchase_order_no').hide();
+            $('#div_lock_purchase_order_no').show();
+            $('input[name^=purchase_order_no]').each(function(){
+                $(this).attr("disabled", false)
+            });
+        });
+    });
+    function set_default_values_at_sale()
+    {
+        $("#tbody_selected_product_list").html('');
+        $("#input_add_sale_customer_id").val('');
+        $("#input_add_sale_customer").val('');
+        $("#input_add_sale_company").val('');
+        $("#input_add_sale_phone").val('');
+        $("#input_add_sale_card_no").val('');
+        $("#sale_order_no").val('');
+        $("#sale_remarks").val('');
         $("#total_sale_price").val(0);
         $("#previous_due").val(0);
         $("#cash_paid_amount").val(0);
         $("#current_due").val(0);
-    });
+    }
     function set_all_lot_no(lot_no_value){
         $('input[name^=purchase_order_no]').each(function(){
             $(this).val($(lot_no_value).val());
@@ -193,9 +230,6 @@
 <script type="text/javascript">
     $(function() {
         
-        $("#button_due_collect").on("click", function() {
-            $('#modal_due_collect').modal('show');
-        });
         $("#save_sale_order").on("click", function() {
             //validation checking of sale order
             //checking whether staff is selected or not
@@ -289,6 +323,9 @@
                 sale_info.setCheckDescription('');
                 sale_info.setPreviousDue($("#previous_due").val());
                 sale_info.setCurrentDue($("#current_due").val());
+                var customer_info = new Customer();
+                customer_info.setFullName($("#input_add_sale_customer").val());
+                waitScreen.show();
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
@@ -296,6 +333,7 @@
                     data: {
                         product_list: product_list,
                         sale_info: sale_info,
+                        customer_info: customer_info,
                         current_due: $("#current_due").val()
                     },
                     success: function(data) {
@@ -303,23 +341,13 @@
                         {
                             printPDF();
 //                            alert('Sale order is executed successfully.');// replace this w
-                            $("#tbody_selected_product_list").html('');
-                            $("#input_add_sale_customer_id").val('');
-                            $("#input_add_sale_customer").val('');
-                            $("#input_add_sale_company").val('');
-                            $("#input_add_sale_phone").val('');
-                            $("#input_add_sale_card_no").val('');
-                            $("#sale_order_no").val('');
-                            $("#sale_remarks").val('');
-                            $("#total_sale_price").val(0);
-                            $("#previous_due").val(0);
-                            $("#cash_paid_amount").val(0);
-                            $("#current_due").val(0);
+                            set_default_values_at_sale();
                         }
                         else if (data['status'] === '0')
                         {
                             alert(data['message']);
                         }
+                        waitScreen.hide();
                     }
                 });
             }
@@ -446,9 +474,6 @@
 
     });
 </script>
-
-<input type="button" onClick="printPDF()" value="Print" />
-
 <h3>Sales Order</h3>
 <div class ="form-horizontal top-bottom-padding form-background">
     <div class="row">
@@ -474,6 +499,7 @@
                             <?php echo form_input(array('name' => 'input_add_sale_phone', 'id' => 'input_add_sale_phone', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
+                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <div class="form-group">
                         <label for="input_add_sale_card_no" class="col-md-3 control-label requiredField">
                             Card No.
@@ -482,6 +508,7 @@
                             <?php echo form_input(array('name' => 'input_add_sale_card_no', 'id' => 'input_add_sale_card_no', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
+                    <?php }?>
                     <div class="form-group">
                         <label for="product" class="col-md-3 control-label requiredField">
                             Product
@@ -493,19 +520,27 @@
                 </div>
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
-                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
+                        <label for="input_sale_default_purchase_order_no" class="col-md-4 control-label requiredField">
                             lot No.
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_sale_default_purchase_order_no', 'id' => 'input_sale_default_purchase_order_no', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
-                    <div class="form-group">
-                        <label for="button_lot_no" class="col-md-4 control-label requiredField">
+                    <div class="form-group" id="div_lock_purchase_order_no">
+                        <label for="button_sale_default_purchase_order_no_lock" class="col-md-4 control-label requiredField">
                             &nbsp;
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_button(array('name' => 'button_purchase_order_no', 'id' => 'button_purchase_order_no', 'content' => 'Update', 'class' => 'form-control btn-success')); ?>
+                            <?php echo form_button(array('name' => 'button_sale_default_purchase_order_no_lock', 'id' => 'button_sale_default_purchase_order_no_lock', 'content' => 'Lock', 'class' => 'form-control btn-success')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group" id="div_unlock_purchase_order_no">
+                        <label for="button_sale_default_purchase_order_no_unlock" class="col-md-4 control-label requiredField">
+                            &nbsp;
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_button(array('name' => 'button_sale_default_purchase_order_no_unlock', 'id' => 'button_sale_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
@@ -526,27 +561,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
-                                <th style="padding-bottom: 16px">Product Name</th>
-                                <th style="padding-bottom: 16px"><span style="padding-right: 2px;">Lot No</span><input type="text" name="purchase_order_no" onkeyup="set_all_lot_no(this)" style="width: 70px; height: 20px;"></th>
-                                <th style="padding-bottom: 16px">Quantity</th>
-                                <th style="padding-bottom: 16px">Product Unit</th>
-                                <th style="padding-bottom: 16px">Unit Price</th>
-                                <th style="padding-bottom: 16px">Sub Total</th>
-                                <th style="padding-bottom: 16px">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_selected_product_list">                        
-                        </tbody>
-
-                    </table>
-                </div>
-            </div>
+            <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
@@ -634,5 +649,5 @@
 </div><!-- /.modal -->
 <?php $this->load->view("sales/modal_due_collect"); ?>
 <?php $this->load->view("sales/modal_select_customer"); ?>
-<?php $this->load->view("purchase/common_modal_select_product"); ?>
-<?php $this->load->view("purchase/common_append_template"); ?>
+<?php $this->load->view("common/modal_select_product_order"); ?>
+<?php $this->load->view('common/wait_screen');

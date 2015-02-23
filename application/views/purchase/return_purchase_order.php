@@ -323,38 +323,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-md-11">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
-                                <th style="padding: 18px">Product Name</th>
-                                <th style="padding: 18px">Quantity</th>
-                                <th style="padding: 18px">Product Unit</th>
-                                <th style="padding: 18px">Unit Price</th>
-                                <th style="padding: 18px">Sub Total</th>
-                                <th style="padding: 18px">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_selected_product_list">                        
-                        </tbody>
-<!--                        <script type="text/x-tmpl" id="tmpl_selected_product_info">
-                            {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
-                            {% while(product_info){ %}
-                            <tr>
-                            <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
-                            <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
-                            <td><?php echo '{%= product_info.category_unit %}'; ?></td>
-                            <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
-                            <td><input class="input-width-table" name="product_price" type="text" readonly="true" value=""/></td>
-                            </tr>
-                            {% product_info = ((o instanceof Array) ? o[i++] : null); %}
-                            {% } %}
-                        </script>-->
-                    </table>
-                </div>
-            </div>
+            <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
@@ -432,5 +401,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/common_modal_select_return_product"); ?>
-<?php $this->load->view("purchase/common_append_template"); ?>
+<?php $this->load->view("purchase/common_modal_select_return_product");

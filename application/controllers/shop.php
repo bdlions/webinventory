@@ -51,23 +51,26 @@ class Shop extends CI_Controller {
         redirect("shop/show_all_shops","refresh");
     }
     
+    /*
+     * This method will create a shop
+     * @Author Nazmul on 23rd February 2015
+     */
     public function create_shop()
     {
         $shop_info = array();
         $user_info_array = $this->ion_auth->get_user_info()->result_array();
-        if(!empty($user_info))
+        if(!empty($user_info_array))
         {
             $user_info = $user_info_array[0];
             $shop_info = $this->ion_auth->get_user_shop_info($user_info['id'])->result_array();
         }
-        
-        if (!empty($shop_info)) {
+        //if there is a shop under a user other than super admin then it is not allowed to create another one shop
+        if (!empty($shop_info) && !$this->ion_auth->is_admin()) {
             redirect('user/manager_login',"refresh");
         }
         
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
         $this->form_validation->set_rules('shop_type','Shop Type','xss_clean|required');
@@ -78,12 +81,10 @@ class Shop extends CI_Controller {
             if ($this->form_validation->run() == true) 
             {
                 $additional_data = array(
-                    'shop_no' => $this->input->post('shop_no'),
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
                     'shop_type_id' => $this->input->post('shop_type'),
-                    'purchase_order_no' => $this->input->post('purchase_order_no'),
                     'created_on' => now()
                 );
                 $shop_id = $this->shop_library->create_shop($additional_data);
@@ -126,21 +127,22 @@ class Shop extends CI_Controller {
             $this->data['message'] = $this->session->flashdata('message'); 
         }
         
-        $shop_type_array = $this->shop_library->get_all_shop_type()->result_array();
-        
         $this->data['shop_type'] = array();
+        $shop_type_array = array();
+        if($this->ion_auth->is_admin())
+        {
+            $shop_type_array = $this->shop_library->get_all_shop_types()->result_array();
+        }
+        else
+        {
+            $shop_type_array = $this->shop_library->get_user_shop_types()->result_array();
+        }
         if( !empty($shop_type_array) )
         {
-            foreach ($shop_type_array as $key => $shop_type) {
-                $this->data['shop_type'][$shop_type['id']] = $shop_type['type'];
+            foreach ($shop_type_array as $shop_type_info) {
+                $this->data['shop_type'][$shop_type_info['id']] = $shop_type_info['type'];
             }
         }
-        $this->data['shop_no'] = array(
-            'name' => 'shop_no',
-            'id' => 'shop_no',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('shop_no'),
-        );
         $this->data['shop_name'] = array(
             'name' => 'shop_name',
             'id' => 'shop_name',
@@ -158,12 +160,6 @@ class Shop extends CI_Controller {
             'id' => 'shop_address',
             'type' => 'text',
             'value' => $this->form_validation->set_value('shop_address'),
-        );
-         $this->data['purchase_order_no'] = array(
-            'name' => 'purchase_order_no',
-            'id' => 'purchase_order_no',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('shop_name'),
         );
         $this->data['submit_create_shop'] = array(
             'name' => 'submit_create_shop',
@@ -227,7 +223,6 @@ class Shop extends CI_Controller {
         //check whether shop id valid or not
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
-        $this->form_validation->set_rules('shop_no', 'Shop No', 'xss_clean');
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
@@ -238,7 +233,6 @@ class Shop extends CI_Controller {
             if ($this->form_validation->run() == true) 
             {
                 $data = array(
-                    'shop_no' => $this->input->post('shop_no'),
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
@@ -272,12 +266,6 @@ class Shop extends CI_Controller {
             $shop_info = $shop_info_array[0];
         }
         $this->data['shop_info'] = $shop_info;
-        $this->data['shop_no'] = array(
-            'name' => 'shop_no',
-            'id' => 'shop_no',
-            'type' => 'text',
-            'value' => $shop_info['shop_no'],
-        );
         $this->data['shop_name'] = array(
             'name' => 'shop_name',
             'id' => 'shop_name',

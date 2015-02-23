@@ -470,7 +470,10 @@ class Ion_auth {
     public function get_current_user_type(){
         return $this->session->userdata('user_type');
     }
-    
+    /*
+     * This method will return shop type of current user
+     * @Author Nazmul on 22nd February 2015 
+     */
     public function get_current_shop_type()
     {
        $shop_type_id = 0;

@@ -203,13 +203,13 @@ class Customer extends User {
                     $this->data['profession_list'][$profession['id']] = $profession['description'];
                 }
             }
+            $this->data['card_no'] = array(
+                'name' => 'card_no',
+                'id' => 'card_no',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('card_no'),
+            );
         }
-        $this->data['card_no'] = array(
-            'name' => 'card_no',
-            'id' => 'card_no',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('card_no'),
-        );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
@@ -240,12 +240,7 @@ class Customer extends User {
             'type' => 'submit',
             'value' => 'Create',
         );
-        if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {
-            $this->template->load(null, 'customer/create_customer', $this->data);
-        }
-        if ($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM) {
-            $this->template->load(null, 'customer/create_customer_med', $this->data);
-        }
+        $this->template->load(null, 'customer/create_customer', $this->data);
     }
     
     /*

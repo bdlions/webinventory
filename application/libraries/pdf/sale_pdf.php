@@ -12,7 +12,7 @@ class Sale_pdf extends PDF {
 
     var $data;
     var $report_request_id;
-    var $firm_name;
+    var $customer_name;
     var $risk_register;
     var $report_date;
     var $header_height = 15;
@@ -51,7 +51,14 @@ class Sale_pdf extends PDF {
                 foreach ($this->risk_register[REPORT_REQUEST] as $key => $value) {
                     if ($key == REPORT_REQUEST_ID) {
                         $this->report_request_id = $value;
-                    } else if ($key == RISK_REGISTER) {
+                    } 
+                    else if ($key == CUSTOMER_NAME) {
+                        $this->customer_name = $value;
+                    }
+                    else if ($key == REPORT_DATE) {
+                        $this->report_date = $value;
+                    }
+                    else if ($key == RISK_REGISTER) {
                         $this->processRiskRegister($value);
                     }
                 }
@@ -115,7 +122,7 @@ class Sale_pdf extends PDF {
         $this->SetFont($this->firm_para->font_family, $this->firm_para->font_weight, $this->firm_para->font_size);
         $this->colorConverter->convertHex2RGB($this->firm_para->font_color);
         $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
-        $this->Cell(0, DEFAULT_CELL_HEIGHT, "Customer name: " . $this->firm_name, 0, 1);
+        $this->Cell(0, DEFAULT_CELL_HEIGHT, "Customer name: " . $this->customer_name, 0, 1);
 
         $this->SetXY($this->GetX() + $this->LineWidth - 70, 55);
         
@@ -234,8 +241,7 @@ class Sale_pdf extends PDF {
         $this->SetFont($this->date_para->font_family, $this->date_para->font_weight, $this->date_para->font_size);
         $this->colorConverter->convertHex2RGB($this->date_para->font_color);
         $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
-        //$this->Cell(0, DEFAULT_CELL_HEIGHT, "Signature: " . $this->report_date, 0, 1);
-        $this->Cell(0, DEFAULT_CELL_HEIGHT, "Signature: " . $this->report_date, 0, 1);
+        $this->Cell(0, DEFAULT_CELL_HEIGHT, "Signature: ", 0, 1);
     }
 
     function getColumnStyleById($id) {

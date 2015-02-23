@@ -323,25 +323,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row col-md-11">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="check_all_checkbox(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
-                                <th style="padding: 18px">Product Name</th>
-                                <th style="padding: 18px">Quantity</th>
-                                <th style="padding: 18px">Product Unit</th>
-                                <th style="padding: 18px">Unit Price</th>
-                                <th style="padding: 18px">Sub Total</th>
-                                <th style="padding: 18px">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_selected_product_list">                        
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
@@ -419,5 +401,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/common_modal_select_return_product"); ?>
-<?php $this->load->view("purchase/common_append_template"); ?>
+<?php $this->load->view("purchase/common_modal_select_return_product");

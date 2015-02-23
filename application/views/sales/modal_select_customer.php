@@ -39,35 +39,43 @@
         });
         
         $("#button_add_customer").on("click", function() {
-            if ($("#input_first_name").val().length == 0)
+            var first_name = $("#input_first_name").val();
+            var last_name = $("#input_last_name").val();
+            var phone = $("#input_phone_no").val();
+            var card_no = 0;
+            if (first_name.length == 0)
             {
                 alert("First Name is required.");
                 return;
             }
-            else if ($("#input_last_name").val().length == 0)
+            else if (last_name.length == 0)
             {
                 alert("Last Name is required.");
                 return;
             }
-            else if ($("#input_phone_no").val().length == 0)
+            else if (phone.length == 0)
             {
                 alert("Phone is required.");
                 return;
             }
+            <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
             else if ($("#input_card_no").val().length == 0)
             {
                 alert("Card No is required.");
                 return;
             }
+            <?php }else{?>
+                card_no = $("#input_card_no").val();
+            <?php }?>
             $.ajax({
                 dataType: 'json',    
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "customer/create_customer_sale_order",
                 data: {
-                    first_name: $("#input_first_name").val(),
-                    last_name: $("#input_last_name").val(),
-                    phone_no: $("#input_phone_no").val(),
-                    card_no: $("#input_card_no").val()
+                    first_name: first_name,
+                    last_name: last_name,
+                    phone_no: phone,
+                    card_no: card_no
                 },
                 success: function(data) {
                     
@@ -147,7 +155,8 @@
                                     <div class ="col-md-8">
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
-                                </div>                                
+                                </div>   
+                                <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                                 <div class="form-group">
                                     <label for="input_card_no" class="col-md-4 control-label requiredField">
                                         Card No
@@ -156,6 +165,7 @@
                                         <?php echo form_input(array('name' => 'input_card_no', 'id' => 'input_card_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
+                                <?php }?>
                                 <div class="form-group">
                                     <label for="button_add_customer" class="col-md-4 control-label requiredField">
                                     </label>
