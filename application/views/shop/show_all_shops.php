@@ -8,7 +8,6 @@
                     <th>Shop Phone</th>
                     <th>Shop Address</th>
                     <th>Shop Type</th>
-                    <th>Lot No</th>
                     <th>Manage</th>
                 </tr>
             </thead>
@@ -21,7 +20,6 @@
                         <td><?php echo $shop_info['shop_phone'] ?></td>
                         <td><?php echo $shop_info['address'] ?></td>
                         <td><?php echo $shop_info['shop_type'] ?></td>
-                        <td><?php echo $shop_info['purchase_order_no'] ?></td>
                         <td><a href="<?php echo base_url("./shop/update_shop/".$shop_info['id']);?>">Update</a></td>
                     </tr>
                 <?php

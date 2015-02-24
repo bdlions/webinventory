@@ -143,13 +143,37 @@
             $('#input_sale_default_purchase_order_no').attr("disabled", true);
             $('#div_unlock_purchase_order_no').show();
             $('#div_lock_purchase_order_no').hide();
+            $('#input_table_header_purchase_order_no').attr("disabled", true);
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "sale/update_shop_info",
+                data: {
+                    sale_default_purchase_order_no: $('#input_sale_default_purchase_order_no').val()
+                },
+                success: function(data) {
+                    
+                }
+            });
         });
         $("#button_sale_default_purchase_order_no_unlock").on("click", function() {
+            $('#input_table_header_purchase_order_no').attr("disabled", false);
             $('#input_sale_default_purchase_order_no').attr("disabled", false)
             $('#div_unlock_purchase_order_no').hide();
             $('#div_lock_purchase_order_no').show();
             $('input[name^=purchase_order_no]').each(function(){
                 $(this).attr("disabled", false)
+            });
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "sale/update_shop_info",
+                data: {
+                    sale_default_purchase_order_no: ''
+                },
+                success: function(data) {
+                    
+                }
             });
         });
     });
@@ -524,7 +548,7 @@
                             lot No.
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_sale_default_purchase_order_no', 'id' => 'input_sale_default_purchase_order_no', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_sale_default_purchase_order_no', 'id' => 'input_sale_default_purchase_order_no', 'class' => 'form-control', 'value' => $shop_info['sale_default_purchase_order_no'])); ?>
                         </div> 
                     </div>
                     <div class="form-group" id="div_lock_purchase_order_no">

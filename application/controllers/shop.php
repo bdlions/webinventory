@@ -205,7 +205,7 @@ class Shop extends CI_Controller {
     }
     
    public function update_shop($shop_id)
-    {
+   {
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         if(!empty($user_group))

@@ -28,6 +28,11 @@
 </script>
 
 <script>
+    function set_all_lot_no(lot_no_value){
+        $('input[name^=purchase_order_no]').each(function(){
+            $(this).val($(lot_no_value).val());
+        });
+    }
     function process_product_check_all_checkboxes(checked_all){
         if( $(checked_all).is(':checked') ){
             $('input[name^="product_checkbox_"]').each(function(){
@@ -114,7 +119,7 @@
                     <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="process_product_check_all_checkboxes(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
                     <th style="padding: 18px">Product Name</th>
                     <?php if($order_type == ORDER_TYPE_ADD_SALE){?>
-                    <th style="padding-bottom: 16px">Lot No</th>
+                    <th style="padding-bottom: 16px"><span style="padding-right: 2px;">Lot No</span><input type="text" id="input_table_header_purchase_order_no" name="input_table_header_purchase_order_no" onkeyup="set_all_lot_no(this)" style="width: 70px; height: 20px;"></th>
                     <?php } ?>
                     <th style="padding: 18px">Quantity</th>
                     <th style="padding: 18px">Product Unit</th>
