@@ -443,6 +443,19 @@ class Ion_auth {
         }
         return null;
     }
+    
+    /*
+     * This method will return shop id of user
+     * @Autohr Nazmul on 24th February 2015
+     */
+    public function get_shop_id()
+    {
+        $shop_id = $this->session->userdata('shop_id');
+        if (!empty($shop_id)) {
+            return $shop_id;
+        }
+        return null;
+    }
 
     /**
      * is_admin

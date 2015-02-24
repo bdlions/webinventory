@@ -72,7 +72,9 @@ $lang['email_registration_success_subject']            = 'Account Registered';
 $lang['product_creation_successful'] 	  	   = 'Product Successfully Created.';
 $lang['product_creation_unsuccessful'] 	 	   = 'Unable to Create Product.';
 $lang['product_creation_duplicate_product_name']   = 'Product Name Already Used or Invalid.';
+$lang['product_creation_duplicate_product_serial_no']   = 'Product Serial No Already Used or Invalid.';
 $lang['product_update_duplicate_product_name']     = 'Product Name Already Used or Invalid.';
+$lang['product_update_duplicate_product_serial_no']     = 'Product Serial No Already Used or Invalid.';
 $lang['product_creation_duplicate_product_code']   = 'Product Code Already Used or Invalid.';
 $lang['product_update_successful'] 	  	   = 'Product is Updated Successfully.';
 

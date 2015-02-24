@@ -233,7 +233,7 @@ INSERT INTO `product_unit_category` (`description`, `shop_id`) VALUES
  CREATE TABLE IF NOT EXISTS `product_info` (
 	`id` int NOT NULL auto_increment,
 	`name` varchar(200) NOT NULL,
-	`serial_no` varchar(200) NOT NULL,
+	`serial_no` int DEFAULT 0,
 	`code` varchar(200)  DEFAULT '',
 	`size` varchar(200) DEFAULT '',
 	`weight` varchar(200) DEFAULT '',
@@ -259,24 +259,24 @@ ALTER TABLE `product_info`
   ADD CONSTRAINT `fk_product_info_product_unit_category1` FOREIGN KEY (`unit_category_id`) REFERENCES `product_unit_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-INSERT INTO `product_info` (`id`, `name`, `shop_id`, `unit_category_id`) VALUES
-(1, '750', 1, 1),
-(2, '650', 1, 1),
-(3, '550', 1, 1),
-(4, '450', 1, 1),
-(5, 'jecket', 1, 1),
-(6, '350', 1, 1),
-(7, '290', 1, 1),
-(8, 'Eid collection', 1, 1),
-(9, 'wholesale', 1, 1),
-(10, '850', 1, 1),
-(11, '950', 1, 1),
-(12, '1050', 1, 1),
-(13, '1150', 1, 1),
-(14, '1250', 1, 1),
-(15, '1350', 1, 1),
-(16, '1450', 1, 1),
-(17, '1550', 1, 1);
+INSERT INTO `product_info` (`id`, `serial_no`, `name`, `shop_id`, `unit_category_id`) VALUES
+(1, 1,'750', 1, 1),
+(2, 2,'650', 1, 1),
+(3, 3,'550', 1, 1),
+(4, 4,'450', 1, 1),
+(5, 5,'jecket', 1, 1),
+(6, 6,'350', 1, 1),
+(7, 7,'290', 1, 1),
+(8, 8,'Eid collection', 1, 1),
+(9, 9,'wholesale', 1, 1),
+(10, 10,'850', 1, 1),
+(11, 11,'950', 1, 1),
+(12, 12,'1050', 1, 1),
+(13, 13,'1150', 1, 1),
+(14, 14,'1250', 1, 1),
+(15, 15,'1350', 1, 1),
+(16, 16,'1450', 1, 1),
+(17, 17,'1550', 1, 1);
 -- this table is not required actually. We will add a json object to store image list in product info table 
  CREATE TABLE IF NOT EXISTS `product_image_info` (
 	`id` int NOT NULL auto_increment,

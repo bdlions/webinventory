@@ -33,6 +33,39 @@ class Product_model extends Ion_auth_model
         $this->db->where($this->product_identity_column, $identity);
         return $this->db->count_all_results($this->tables['product_info']) > 0;
     }
+    /*
+     * This method will check product serial no
+     * @param $serial_no, product serial no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 24th February 2015
+     */
+    public function product_serial_check($serial_no = '', $shop_id = 0) {
+        $this->trigger_events('product_serial_check');
+        if (empty($serial_no)) {
+            return FALSE;
+        }
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('serial_no', $serial_no);
+        return $this->db->count_all_results($this->tables['product_info']) > 0;
+    }
+    /*
+     * This method will return next product serial no of a shop
+     * @param $shop_id, shop id
+     * @Author Nazmul on 24th February 2015
+     */
+    public function get_next_product_serial_no($shop_id = 0)
+    {
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $query = 'SELECT serial_no FROM product_info where shop_id ='.$shop_id.' order by serial_no desc limit 1';
+        return $this->db->query($query);
+    }
     /**
      * @author Nazmul on 22nd January 2014
      * Creating a new product
@@ -42,15 +75,35 @@ class Product_model extends Ion_auth_model
     public function create_product($product_name, $additional_data)
     {
         $this->trigger_events('pre_create_product');
+        $shop_id = 0;
+        if(array_key_exists('shop_id', $additional_data) && $additional_data['shop_id'] > 0)
+        {
+            $shop_id = $additional_data['shop_id'];
+        }
+        else
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $serial_no = 1;
+        $product_serial_array = $this->get_next_product_serial_no($shop_id)->result_array();
+        if(!empty($product_serial_array))
+        {
+            $serial_no = ($product_serial_array[0]['serial_no']+1);
+        }
         if ($this->product_identity_column == 'name' && $this->product_identity_check($product_name)) 
         {
             $this->set_error('product_creation_duplicate_product_name');
             return FALSE;
         } 
-        $shop_id = $this->session->userdata('shop_id');
+        if ($this->product_serial_check($serial_no)) 
+        {
+            $this->set_error('product_creation_duplicate_product_serial_no');
+            return FALSE;
+        }
         $data = array(
             'name' => $product_name,
             'shop_id' => $shop_id,
+            'serial_no' => $serial_no,
             'created_on' => now()
         );
         //filter out any data passed that doesnt have a matching column in the users table
@@ -83,6 +136,11 @@ class Product_model extends Ion_auth_model
         if (array_key_exists($this->product_identity_column, $data) && $this->identity_check($data[$this->product_identity_column]) && $product_info->{$this->product_identity_column} !== $data[$this->product_identity_column])
         {
             $this->set_error('product_update_duplicate_product_name');
+            return FALSE;
+        }
+        if (array_key_exists('serial_no', $data) && $this->product_serial_check($data['serial_no']) && $product_info->serial_no !== $data['serial_no'])
+        {
+            $this->set_error('product_update_duplicate_product_serial_no');
             return FALSE;
         }
         $data = $this->_filter_data($this->tables['product_info'], $data);
