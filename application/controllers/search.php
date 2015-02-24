@@ -1157,6 +1157,10 @@ class Search extends CI_Controller {
         $result['due_collect_list'] = $due_collect_list;
         echo json_encode($result);
     }
+    /*
+     * This method will search customer total due
+     * @Author Nazmul on 24th February 2015
+     */
     public function search_customer_by_total_due()
     {       
         $shop_info = array();
@@ -1168,24 +1172,30 @@ class Search extends CI_Controller {
         if($this->input->post('search_category_name'))
         {
             $result = array();
+            $total_due = 0;
             $customer_list = array();
             $customer_list_array = array();
             $search_category_name = $this->input->post('search_category_name');
             $search_category_value = $this->input->post('search_category_value');
-            if($search_category_name != 0)
+            if($search_category_name != SEARCH_CUSTOMER_DUE_ALL_CUSTOMERS_TYPE_ID)
             {
-                $customer_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_CUSTOMER_SALE_ORDER_LIMIT)->search_customer($search_category_name, $search_category_value)->result_array();
-            
+                $customer_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_CUSTOMER_DUE_COLLECT_LIMIT)->search_customer($search_category_name, $search_category_value)->result_array();
+            }
+            else
+            {
+                $customer_list_array = $this->ion_auth->get_all_customers($shop_info['shop_id'], $shop_info['shop_type_id'])->result_array();
             }
             foreach($customer_list_array as $customer_info)
             {
                 $customer_current_due = $this->payments->get_customer_current_due($customer_info['customer_id']);
                 if($customer_current_due > 0)
                 {
+                    $total_due = $total_due + $customer_current_due;
                     $customer_info['due'] = $customer_current_due;
                     $customer_list[] = $customer_info;
                 }
             }
+            $result['total_due'] = $total_due;
             $result['customer_list'] = $customer_list;
             echo json_encode($result);
             return;
@@ -1195,15 +1205,73 @@ class Search extends CI_Controller {
         if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->data['customer_search_category']['card_no'] = "Card No";}
         $this->data['customer_search_category']['first_name'] = "First Name";
         $this->data['customer_search_category']['last_name'] = "Last Name";
-        $this->data['customer_search_category']['0'] = "All";
-        
+        $this->data['customer_search_category'][SEARCH_CUSTOMER_DUE_ALL_CUSTOMERS_TYPE_ID] = "All";
         $this->data['button_search_customer_due'] = array(
             'name' => 'button_search_customer_due',
             'id' => 'button_search_customer_due',
             'type' => 'submit',
             'value' => 'Search',
-        );
-    
+        );    
+        $this->data['shop_info'] = $shop_info;
         $this->template->load(null, 'search/customer/total_due',$this->data);
     }  
+    
+    /*
+     * This method will search supplier total due
+     * @Author Nazmul on 24th February 2015
+     */
+    public function search_supplier_by_total_due()
+    {       
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        if($this->input->post('search_category_name'))
+        {
+            $result = array();
+            $total_due = 0;
+            $supplier_list = array();
+            $supplier_list_array = array();
+            $search_category_name = $this->input->post('search_category_name');
+            $search_category_value = $this->input->post('search_category_value');
+            if($search_category_name != SEARCH_SUPPLIER_DUE_ALL_SUPPLIERS_TYPE_ID)
+            {
+                $supplier_list_array = $this->ion_auth->limit(PAGINATION_SEARCH_SUPPLIER_DUE_COLLECT_LIMIT)->search_supplier($search_category_name, $search_category_value)->result_array();
+            }
+            else
+            {
+                $supplier_list_array = $this->ion_auth->get_all_suppliers($shop_info['shop_id'])->result_array();
+            }
+            foreach($supplier_list_array as $supplier_info)
+            {
+                $supplier_current_due = $this->payments->get_supplier_current_due($supplier_info['supplier_id']);
+                if($supplier_current_due > 0)
+                {
+                    $total_due = $total_due + $supplier_current_due;
+                    $supplier_info['due'] = $supplier_current_due;
+                    $supplier_list[] = $supplier_info;
+                }
+            }
+            $result['total_due'] = $total_due;
+            $result['supplier_list'] = $supplier_list;
+            echo json_encode($result);
+            return;
+        }
+        $this->data['supplier_search_category'] = array();
+        $this->data['supplier_search_category']['phone'] = "Phone";
+        $this->data['supplier_search_category']['first_name'] = "First Name";
+        $this->data['supplier_search_category']['last_name'] = "Last Name";
+        $this->data['supplier_search_category']['company'] = "Company";
+        $this->data['supplier_search_category'][SEARCH_SUPPLIER_DUE_ALL_SUPPLIERS_TYPE_ID] = "All";
+        $this->data['button_search_supplier_due'] = array(
+            'name' => 'button_search_supplier_due',
+            'id' => 'button_search_supplier_due',
+            'type' => 'submit',
+            'value' => 'Search',
+        );    
+        $this->data['shop_info'] = $shop_info;
+        $this->template->load(null, 'search/supplier/total_due',$this->data);
+    } 
 }

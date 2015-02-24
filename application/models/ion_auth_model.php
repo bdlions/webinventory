@@ -2210,6 +2210,32 @@ class Ion_auth_model extends CI_Model {
         $this->db->update($this->tables['suppliers'], $data, array('user_id' => $user_id));
         return true;
     }
+    /*
+     * This method will search supplier based on column name and value
+     * @param $key, column name
+     * @param $value, column value
+     * @param $shop_id, shop id
+     * @Author Nazmul on 24th February 2015
+     */
+    public function search_supplier($key, $value, $shop_id = '')
+    {
+        if(empty($shop_id))
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if (isset($this->_ion_limit)) {
+            $this->db->limit($this->_ion_limit);
+
+            $this->_ion_limit = NULL;
+        }
+        $this->db->like($key, $value); 
+        return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['suppliers'].'.company')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['suppliers'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->where($this->tables['users_shop_info'].'.shop_id',$shop_id)
+                    ->get();  
+    }
     // ------------------------------------------- Customer Module --------------------------------//
     /*
      * This method will ad new institution

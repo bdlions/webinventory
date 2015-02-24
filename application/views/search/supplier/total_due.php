@@ -1,51 +1,49 @@
 <script type="text/javascript">
     $(function()
     {
-        $("#button_search_customer_due").on("click", function() {
+        $("#button_search_supplier_due").on("click", function() {
             waitScreen.show();
             $.ajax({
                 dataType: 'json',
                 type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_customer_by_total_due",
+                url: '<?php echo base_url(); ?>' + "search/search_supplier_by_total_due",
                 data: {
-                    search_category_name: $("#dropdown_search_customer").val(),
+                    search_category_name: $("#dropdown_search_supplier").val(),
                     search_category_value: $("#input_search_value").val()
                 },
                 success: function(data) {
                     $("#label_total_due").html(data['total_due']);
-                    $("#tbody_customer_list").html(tmpl("tmpl_customer_list", data['customer_list']));                                   
+                    $("#tbody_supplier_list").html(tmpl("tmpl_supplier_list", data['supplier_list']));                                   
                     waitScreen.hide();
                 }
             });
         }); 
     });
 </script>
-<script type="text/x-tmpl" id="tmpl_customer_list">
-    {% var i=0, customer_info = ((o instanceof Array) ? o[i++] : o); %}
-    {% while(customer_info){ %}
+<script type="text/x-tmpl" id="tmpl_supplier_list">
+    {% var i=0, supplier_info = ((o instanceof Array) ? o[i++] : o); %}
+    {% while(supplier_info){ %}
     <tr>
-    <td ><?php echo '{%= customer_info.first_name%}'; ?></td>
-    <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
-    <td ><?php echo '{%= customer_info.phone%}'; ?></td>
-    <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
-    <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
-    <?php } ?>
-    <td ><?php echo '{%= customer_info.due%}'; ?></td>
-    <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= customer_info.customer_id%}">Show</a>';?></td>
+    <td ><?php echo '{%= supplier_info.first_name%}'; ?></td>
+    <td ><?php echo '{%= supplier_info.last_name%}'; ?></td>
+    <td ><?php echo '{%= supplier_info.phone%}'; ?></td>
+        <td ><?php echo '{%= supplier_info.company%}'; ?></td>
+    <td ><?php echo '{%= supplier_info.due%}'; ?></td>
+    <td ><?php echo '<a href="'.base_url().'transaction/show_supplier_transactions/{%= supplier_info.supplier_id%}">Show</a>';?></td>
     </tr>
-    {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
+    {% supplier_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Total Due</h3>
+<h3>Search Supplier by Total Due</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row" style="margin-top: 5px;">
         <div class="col-md-offset-1 col-md-5">
             <div class="row form-group">
                 <div class ="col-md-6">
-                    <label>Search Customer by Total Due:</label>
+                    <label>Search Supplier by Total Due:</label>
                 </div>
                 <div class ="col-md-6">
-                    <?php echo form_dropdown('dropdown_search_customer', $customer_search_category, '0', 'id="dropdown_search_customer" class="form-control"'); ?>
+                    <?php echo form_dropdown('dropdown_search_supplier', $supplier_search_category, '0', 'id="dropdown_search_supplier" class="form-control"'); ?>
                 </div>
                 <div class ="col-md-7"></div>
             </div>
@@ -56,7 +54,7 @@
             </div>
             <div class="row form-group">
                 <div class ="col-md-offset-8 col-md-4">
-                    <input id="button_search_customer_due" class="form-control btn-success" type="reset" value="Search" name="button_search_customer_due">
+                    <input id="button_search_supplier_due" class="form-control btn-success" type="reset" value="Search" name="button_search_supplier_due">
                 </div>
             </div>
         </div>
@@ -81,14 +79,12 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Phone</th>
-                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){ ?>
-                    <th>Card No</th>
-                    <?php } ?>
+                    <th>Company</th>
                     <th>Total Due</th>
                     <th>Transactions</th>
                 </tr>
             </thead>
-            <tbody id="tbody_customer_list">                
+            <tbody id="tbody_supplier_list">                
             
             </tbody>
         </table>

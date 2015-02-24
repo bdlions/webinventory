@@ -9,6 +9,7 @@ include './constants/payment.php';
 include './constants/expense.php';
 include './constants/print.php';
 include './constants/common.php';
+include './constants/search.php';
 /***************** Custom constant **********************/
 date_default_timezone_set('Asia/Dacca');
 
