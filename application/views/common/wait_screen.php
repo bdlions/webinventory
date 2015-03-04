@@ -3,7 +3,7 @@
         margin-top: 25%;
     }
 </style>
-<link rel='stylesheet' type='text/css' href='<?php echo base_url(); ?>resources/css/spinner/spinner.css'/>
+<link rel='stylesheet' type='text/css' href='<?php echo base_url(); ?>assets/css/spinner/spinner.css'/>
 <div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="pleaseWaitDialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-center">
         <div class="modal-content">

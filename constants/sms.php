@@ -11,4 +11,6 @@
     define("DOWNLOAD_CUSTOMER_BY_NAME_ID",                      1);
     define("DOWNLOAD_CUSTOMER_BY_MOBILE_NO_ID",                 2);
     define("DOWNLOAD_CUSTOMER_BY_NAME_MOBILE_NO_ID",            3);
-?>
+    
+    define("FREE_PRODUCT_SHOP_ID",                              1);
+    define("QUANTITY_FREE_PRODUCT",                             29);

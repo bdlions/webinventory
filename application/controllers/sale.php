@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Sale extends CI_Controller {
     protected $payment_type_list = array();
     protected $payment_category_list = array();
-
+    public $tables = array();
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
@@ -18,8 +18,9 @@ class Sale extends CI_Controller {
         $this->load->library('org/stock/stock_library');
         $this->load->library('org/purchase/purchase_library');
         $this->load->library('org/utility/utils2');
+        $this->load->library('sms_library');
         $this->load->helper('url');
-
+        $this->tables = $this->config->item('tables', 'ion_auth');
         // Load MongoDB library instead of native db driver if required
         $this->config->item('use_mongodb', 'ion_auth') ?
                         $this->load->library('mongo_db') :
@@ -371,6 +372,27 @@ class Sale extends CI_Controller {
                 'print_file_name' => $sale_info['sale_order_no']
             );
             $this->sale_pdf_generation($print_content);
+            
+            //sending sms after sale
+            $total_quantity= 0;
+            $where = array(
+                $this->tables['customers'].'.id' => $sale_info['customer_id']
+            );
+            $customer_sales_array = $this->sale_library->where($where)->get_customer_sales()->result_array();
+            foreach($customer_sales_array as $sale_info)
+            {
+                $total_quantity = $total_quantity + $sale_info['total_sale'];                
+            }
+            $sms_body = "";
+            if($total_quantity == QUANTITY_FREE_PRODUCT && $shop_id == FREE_PRODUCT_SHOP_ID)
+            {
+                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation !! Your Total score is '.$total_quantity.' point for FREE (550 Tk)jeans pant. you need MOOR '.(QUANTITY_FREE_PRODUCT - $total_quantity).' point. APURBO Brand. Chandrima market, New market. Dhaka';
+            }
+            else if($shop_id == FREE_PRODUCT_SHOP_ID)
+            {
+                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation!! you got 1 piece FREE(550 Tk) jeans pant. APURBO Brand. Chandrima market, New market. Dhaka';
+            }
+            $this->sms_library->send_sms($customer_info['phone'], $sms_body, TRUE);
             
         } else {
             $response['status'] = '0';

@@ -13,6 +13,10 @@
         }
     }
     $(function() {
+        //close button for modal hide
+        $('#button_close_modal').on('click', function(){
+           $('#common_modal_select_return_product').modal('hide') 
+        });
         $("#tbody_purchased_product_list").on("click", "td", function() 
         {            
             var p_list = get_product_list();
@@ -70,7 +74,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="button_close_modal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -88,14 +88,6 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Unit Price
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($unit_price+array('class'=>'form-control')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="address" class="col-md-6 control-label requiredField">
 
                 </label>
                 <div class ="col-md-3 col-md-offset-3">

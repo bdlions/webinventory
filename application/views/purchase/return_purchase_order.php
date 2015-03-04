@@ -76,9 +76,6 @@
                         $("#input_purchase_company").val(supplier_info.company);
                         $('#input_purchase_product').attr('type', 'text');
                         $("#total_purchase_price").val('');
-                        $("#previous_due").val(supplier_due);
-                        $("#current_due").val(supplier_due);
-                        $("#return_balance").val('');
                     }
                     else
                     {
@@ -88,9 +85,6 @@
                         $("#input_purchase_company").val('');
                         $('#input_purchase_product').attr('type', 'hidden');
                         $("#total_purchase_price").val('');
-                        $("#previous_due").val('');
-                        $("#current_due").val('');
-                        $("#return_balance").val('');
                     }
                 }
             });
@@ -173,9 +167,7 @@
                     url: '<?php echo base_url(); ?>' + "purchase/return_purchase",
                     data: {
                         product_list: product_list,
-                        purchase_info: purchase_info,
-                        current_due: $("#current_due").val(),
-                        return_balance: $("#return_balance").val()
+                        purchase_info: purchase_info
                     },
                     success: function(data) {
                         if (data['status'] === '0')
@@ -195,9 +187,6 @@
                             $("#purchase_order_no").val('');
                             $("#purchase_remarks").val('');
                             $("#total_purchase_price").val('');
-                            $("#previous_due").val('');
-                            $("#current_due").val('');
-                            $("#return_balance").val('');
                         }
                     }
                 });
@@ -242,18 +231,6 @@
                 }
             });
             $("#total_purchase_price").val(total_purchase_price);
-            //$("#return_balance").val(total_purchase_price);
-            var current_due = +$("#previous_due").val() - +$("#total_purchase_price").val();
-            if(current_due >=0 )
-            {
-                $("#current_due").val(current_due);
-                $("#return_balance").val('0');
-            }
-            else
-            {
-                $("#current_due").val('0');
-                $("#return_balance").val(-current_due);
-            }
         });
     });
 </script>
@@ -343,30 +320,6 @@
                             <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>     
-                    <div class="form-group">
-                        <label for="previous_due" class="col-md-7 control-label requiredField">
-                            Previous Due
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="current_due" class="col-md-7 control-label requiredField">
-                            Current Due
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="return_balance" class="col-md-7 control-label requiredField">
-                            Return balance
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'return_balance', 'id' => 'return_balance', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
                     <div class="form-group">
                         <label for="button_purchase_order" class="col-md-2 control-label requiredField">
 

@@ -4,8 +4,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Product Name</th>
                     <th>Serial No</th>
+                    <th>Product Name</th>
                     <th>Product Size</th>
                     <th>Product Weight</th>
                     <th>Product Unit</th>
@@ -20,8 +20,8 @@
                 foreach ($product_list as $key => $product_info) {
                 ?>
                     <tr>
-                        <td><?php echo $product_info['name'] ?></td>
                         <td><?php echo $product_info['serial_no'] ?></td>
+                        <td><?php echo $product_info['name'] ?></td>                        
                         <td><?php echo $product_info['size'] ?></td>
                         <td><?php echo $product_info['weight'] ?></td>
                         <td><?php echo $product_info['category_unit'] ?></td>

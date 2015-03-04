@@ -143,6 +143,7 @@
             $('#input_sale_default_purchase_order_no').attr("disabled", true);
             $('#div_unlock_purchase_order_no').show();
             $('#div_lock_purchase_order_no').hide();
+            $('#input_table_header_purchase_order_no').val($('#input_sale_default_purchase_order_no').val());
             $('#input_table_header_purchase_order_no').attr("disabled", true);
             $.ajax({
                 dataType: 'json',
@@ -349,6 +350,7 @@
                 sale_info.setCurrentDue($("#current_due").val());
                 var customer_info = new Customer();
                 customer_info.setFullName($("#input_add_sale_customer").val());
+                customer_info.setPhone($("#input_add_sale_phone").val());
                 waitScreen.show();
                 $.ajax({
                     dataType: 'json',
@@ -548,7 +550,7 @@
                             lot No.
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_sale_default_purchase_order_no', 'id' => 'input_sale_default_purchase_order_no', 'class' => 'form-control', 'value' => $shop_info['sale_default_purchase_order_no'])); ?>
+                            <?php echo form_input(array('name' => 'input_sale_default_purchase_order_no', 'id' => 'input_sale_default_purchase_order_no', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group" id="div_lock_purchase_order_no">
@@ -567,14 +569,7 @@
                             <?php echo form_button(array('name' => 'button_sale_default_purchase_order_no_unlock', 'id' => 'button_sale_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
-                    <div class="form-group">
-                        <label for="sale_order_no" class="col-md-4 control-label requiredField">
-                            Order No.
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'sale_order_no', 'id' => 'sale_order_no', 'class' => 'form-control')); ?>
-                        </div> 
-                    </div>
+                    <input type="hidden" id="sale_order_no" name="sale_order_no"/>
                     <div class="form-group">
                         <label for="status" class="col-md-4 control-label requiredField">
                             &nbsp;

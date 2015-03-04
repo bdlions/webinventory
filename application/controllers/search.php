@@ -30,7 +30,7 @@ class Search extends CI_Controller {
         $this->load->library('org/search/search_customer');
         $this->load->library('org/sale/sale_library');
         $this->load->library('org/common/search_typeahead');
-        
+        $this->load->library('sms_library');
         if(!$this->ion_auth->logged_in())
         {
             redirect("user/login","refresh");
@@ -722,7 +722,10 @@ class Search extends CI_Controller {
         $message_title = $this->input->post('message_title');
         $message_body = $this->input->post('message_body');
         $customer_list =  $this->sale_library->get_customer_list_by_total_purchased($total_purchased);
-        
+        foreach($customer_list as $customer_info)
+        {
+            $this->sms_library->send_sms($customer_info['phone'], $message_title.' '.$customer_info['first_name'].$customer_info['last_name'].' '.$message_body, TRUE);
+        }        
     }
     
     /*

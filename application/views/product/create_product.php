@@ -1,3 +1,28 @@
+<script type="text/javascript">
+    $(function() {
+        $("#unit_create").on("click", function() {
+            if ($("#unit_name").val().length == 0)
+            {
+                alert("Unit name is required.");
+                return;
+            }            
+            var unit_name = $("#unit_name").val();
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "product/create_product_unit",
+                data: { unit_name: unit_name },
+                success: function(data) {
+                    alert(data.message);
+                    if (data['status'] === 1)
+                    {
+                        $("#dropdown").append("<option value='"+data['product_category_info'].id+"'>"+data['product_category_info'].description+"</option>");
+                    }                    
+                }
+            });
+        });
+    });    
+</script>
 <h3>Create Product</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <?php echo form_open("product/create_product", array('id' => 'form_create_product', 'class' => 'form-horizontal')); ?>
@@ -77,14 +102,6 @@
             </div>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
-                    Unit Price
-                </label>
-                <div class ="col-md-6">
-                    <?php echo form_input($unit_price+array('class'=>'form-control')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="address" class="col-md-6 control-label requiredField">
 
                 </label>
                 <div class ="col-md-3 col-md-offset-3">
@@ -95,32 +112,3 @@
     </div>
     <?php echo form_close(); ?>
 </div>
-<script type="text/javascript">
-    $(function() {
-        $("#unit_create").on("click", function() {
-            if ($("#unit_name").val().length == 0)
-            {
-                alert("Unit name is required.");
-                return;
-            }
-            
-            var unit_name = $("#unit_name").val();
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "product/create_product_unit",
-                data: { unit_name: unit_name },
-                success: function(data) {
-                    alert(data.message);
-                    if (data['status'] === 1)
-                    {
-                        $("#dropdown").append("<option value='"+data['product_category_info'].id+"'>"+data['product_category_info'].description+"</option>");
-                    }
-                    
-                }
-            });
-            //alert('Hello');
-        });
-    });
-    
-</script>

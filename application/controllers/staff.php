@@ -35,19 +35,19 @@ class Staff extends User {
         $this->data['message'] = '';
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
-        $this->form_validation->set_rules('email', 'Email', 'xss_clean');
+        $this->form_validation->set_rules('staff_email', 'Email', 'xss_clean');
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
-        $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-        $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+        $this->form_validation->set_rules('staff_password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[staff_password_confirm]');
+        $this->form_validation->set_rules('staff_password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
         if ($this->input->post('submit_create_staff')) {
             if ($this->form_validation->run() == true) {
                 $user_name = $this->input->post('username');
-                $password = $this->input->post('password');
-                $email = $this->input->post('email');
+                $password = $this->input->post('staff_password');
+                $email = $this->input->post('staff_email');
                 $additional_data = array(
                     'account_status_id' => ACCOUNT_STATUS_ACTIVE,
                     'first_name' => $this->input->post('first_name'),
@@ -83,11 +83,11 @@ class Staff extends User {
             'type' => 'text',
             'value' => $this->form_validation->set_value('username'),
         );
-        $this->data['email'] = array(
-            'name' => 'email',
-            'id' => 'email',
+        $this->data['staff_email'] = array(
+            'name' => 'staff_email',
+            'id' => 'staff_email',
             'type' => 'text',
-            'value' => $this->form_validation->set_value('email'),
+            'value' => $this->form_validation->set_value('staff_email'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
@@ -107,17 +107,17 @@ class Staff extends User {
             'type' => 'textarea',
             'value' => $this->form_validation->set_value('address'),
         );
-        $this->data['password'] = array(
-            'name' => 'password',
-            'id' => 'password',
+        $this->data['staff_password'] = array(
+            'name' => 'staff_password',
+            'id' => 'staff_password',
             'type' => 'password',
-            'value' => $this->form_validation->set_value('password'),
+            'value' => $this->form_validation->set_value('staff_password'),
         );
-        $this->data['password_confirm'] = array(
-            'name' => 'password_confirm',
-            'id' => 'password_confirm',
+        $this->data['staff_password_confirm'] = array(
+            'name' => 'staff_password_confirm',
+            'id' => 'staff_password_confirm',
             'type' => 'password',
-            'value' => $this->form_validation->set_value('password_confirm'),
+            'value' => $this->form_validation->set_value('staff_password_confirm'),
         );
         $this->data['submit_create_staff'] = array(
             'name' => 'submit_create_staff',

@@ -1,14 +1,6 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Product extends CI_Controller {
-    /*
-     * Holds account status list
-     * 
-     * $var array
-     */
-
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
@@ -50,9 +42,6 @@ class Product extends CI_Controller {
         $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
         $this->form_validation->set_rules('quality', 'Product Quality', 'xss_clean');
         $this->form_validation->set_rules('brand_name', 'Brand Name', 'xss_clean');
-        $this->form_validation->set_rules('unit_price', 'Unit Price', 'xss_clean');
-        $this->form_validation->set_rules('remarks', 'Remarks', 'xss_clean');
-        
         if ($this->input->post('submit_create_product')) 
         {            
             if($this->form_validation->run() == true)
@@ -64,15 +53,12 @@ class Product extends CI_Controller {
                     'warranty' => $this->input->post('warranty'),
                     'quality' => $this->input->post('quality'),
                     'brand_name' => $this->input->post('brand_name'),
-                    'remarks' => $this->input->post('remarks'),
-                    'unit_price' => $this->input->post('unit_price')
-                );
-                
+                    'remarks' => $this->input->post('remarks')
+                );                
                 if($this->input->post('product_unit_category_list'))
                 {
                     $additional_data['unit_category_id'] = $this->input->post('product_unit_category_list');
-                }
-                
+                }                
                 $product_name = $this->input->post('name');
                 $product_id = $this->product_library->create_product($product_name, $additional_data);
                 if( $product_id !== FALSE )
@@ -93,8 +79,7 @@ class Product extends CI_Controller {
         else
         {
             $this->data['message'] = $this->session->flashdata('message'); 
-        }
-        
+        }        
         $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
         $this->data['product_unit_category_list'] = array();
         if( !empty($product_unit_category_list_array) )
@@ -102,8 +87,7 @@ class Product extends CI_Controller {
             foreach ($product_unit_category_list_array as $key => $unit_category) {
                 $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
             }
-        }
-        
+        }        
         $this->data['name'] = array(
             'name' => 'name',
             'id' => 'name',
@@ -134,23 +118,11 @@ class Product extends CI_Controller {
             'type' => 'text',
             'value' => $this->form_validation->set_value('quality'),
         );
-        $this->data['unit_price'] = array(
-            'name' => 'unit_price',
-            'id' => 'unit_price',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('unit_price'),
-        );
         $this->data['brand_name'] = array(
             'name' => 'brand_name',
             'id' => 'brand_name',
             'type' => 'text',
             'value' => $this->form_validation->set_value('brand_name'),
-        );
-        $this->data['remarks'] = array(
-            'name' => 'remarks',
-            'id' => 'remarks',
-            'type' => 'text',
-            'value' => $this->form_validation->set_value('remarks'),
         );
         $this->data['submit_create_product'] = array(
             'name' => 'submit_create_product',
@@ -234,8 +206,6 @@ class Product extends CI_Controller {
         $this->form_validation->set_rules('warranty', 'Product Warranty', 'xss_clean');
         $this->form_validation->set_rules('quality', 'Product Quality', 'xss_clean');
         $this->form_validation->set_rules('brand_name', 'Brand Name', 'xss_clean');
-        $this->form_validation->set_rules('unit_price', 'Unit Price', 'xss_clean|required');
-        $this->form_validation->set_rules('remarks', 'Remarks', 'xss_clean');
         
         $product_info = array();
         $product_info_array = $this->product_library->get_product_info($product_id)->result_array();
@@ -275,10 +245,8 @@ class Product extends CI_Controller {
                     'warranty' => $this->input->post('warranty'),
                     'quality' => $this->input->post('quality'),
                     'brand_name' => $this->input->post('brand_name'),
-                    'remarks' => $this->input->post('remarks'),
-                    'unit_price' => $this->input->post('unit_price')
-                );
-                
+                    'remarks' => $this->input->post('remarks')
+                );                
                 if($this->input->post('product_unit_category_list'))
                 {
                     $additional_data['unit_category_id'] = $this->input->post('product_unit_category_list');
@@ -340,23 +308,11 @@ class Product extends CI_Controller {
             'type' => 'text',
             'value' => $product_info['quality']
         );
-        $this->data['unit_price'] = array(
-            'name' => 'unit_price',
-            'id' => 'unit_price',
-            'type' => 'text',
-            'value' => $product_info['unit_price']
-        );
         $this->data['brand_name'] = array(
             'name' => 'brand_name',
             'id' => 'brand_name',
             'type' => 'text',
             'value' => $product_info['brand_name']
-        );
-        $this->data['remarks'] = array(
-            'name' => 'remarks',
-            'id' => 'remarks',
-            'type' => 'text',
-            'value' => $product_info['remarks']
         );
         $this->data['submit_update_product'] = array(
             'name' => 'submit_update_product',
@@ -446,15 +402,10 @@ class Product extends CI_Controller {
             }
         }
         
-
-        
         $this->data['message'] = '';
         $file_content = '';
         if($this->input->post('submit_upload_file'))
         {
-            //echo $this->session->userdata('shop_id'); exit("i m here");
-            //$file_content = $this->input->post('submit_upload_file');
-            //echo '<pre>';print_r($file_content);exit;
             $config['upload_path'] = './upload/';
             $config['allowed_types'] = 'txt';
             $config['max_size'] = '5000';
@@ -562,9 +513,7 @@ class Product extends CI_Controller {
                         'unit_category_id' => $category_name,
                         'brand_name' => $line_array[6],
                         'unit_price' => $line_array[7]                        
-                    );
-                    
-                    //echo '<pre/>';print_r($product_name);print_r($additional_data);exit;
+                    );                    
                     $product_id = $this->product_library->create_product($product_name, $additional_data);
                     if( $product_id !== FALSE )
                     {
@@ -579,10 +528,6 @@ class Product extends CI_Controller {
                 }
             }               
         }
-        
-        //print_r('Total duplicate product item:'.$total_duplicate);
-        //echo '<br>';
-        //print_r('Total stored product item:'.$counter);
         redirect('product/show_all_products','refresh');
     }
     

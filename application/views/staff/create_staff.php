@@ -50,27 +50,27 @@
                 </div> 
             </div>
             <div class="form-group">
-                <label for="email" class="col-md-6 control-label requiredField">
+                <label for="staff_email" class="col-md-6 control-label requiredField">
                     Email
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($email+array('class'=>'form-control')); ?>
+                    <?php echo form_input($staff_email+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">
-                <label for="password" class="col-md-6 control-label requiredField">
+                <label for="staff_password" class="col-md-6 control-label requiredField">
                     Password
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($password+array('class'=>'form-control')); ?>
+                    <?php echo form_input($staff_password+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">
-                <label for="password_confirm" class="col-md-6 control-label requiredField">
+                <label for="staff_password_confirm" class="col-md-6 control-label requiredField">
                     Confirm Password
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($password_confirm+array('class'=>'form-control')); ?>
+                    <?php echo form_input($staff_password_confirm+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">

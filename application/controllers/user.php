@@ -200,11 +200,13 @@ class User extends CI_Controller {
         $this->data['identity'] = array('name' => 'identity',
             'id' => 'identity',
             'type' => 'text',
+            'tabindex' => '1',
             'value' => $this->form_validation->set_value('identity'),
         );
         $this->data['password'] = array('name' => 'password',
             'id' => 'password',
-            'type' => 'password'
+            'type' => 'password',
+            'tabindex' => '2'
         );
 
         $this->data['first_name'] = array('type' => 'text', 'name' => 'first_name', 'id' => 'first_name', 'value' => $this->input->post('first_name'));

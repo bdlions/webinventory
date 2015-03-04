@@ -8,18 +8,14 @@
     <tr id="product_row_<?php echo '{%= product_info.id%}'; ?>">
     <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="product_checkbox_<?php echo '{%= product_info.id%}'; ?>" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
+    <td><?php echo '{%= product_info.category_unit %}'; ?></td>
     <td class="purchase_order_number_td"><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>           
     <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
-        
     {% if(product_info.readonly == 'true') { %}
-    <td><?php echo '{%= product_info.category_unit %}'; ?></td>
     <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
     {% }else{ %} 
-    <td><?php echo '{%= product_info.category_unit %}'; ?></td>
-
     <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value=""/></td>
     {% } %}
-        
     <td><input class="input-width-table" name="product_price" type="text" readonly="true" value=""/></td>
     <td id=""><button onclick="delete_row(<?php echo '{%= product_info.id%}'; ?>)" id="<?php echo '{%= product_info.id%}'; ?>" name="delete_product_<?php echo '{%= product_info.id%}'; ?>"  class="glyphicon glyphicon-trash"></button></td>
     </tr>
@@ -118,11 +114,11 @@
                 <tr>
                     <th><label style="padding: 5px 5px;"><input type="checkbox" onclick="process_product_check_all_checkboxes(this)" value="" style="margin: 10px,10px,0px,0px;"><span style="padding-left: 2px">Check All</span></label></th>
                     <th style="padding: 18px">Product Name</th>
+                    <th style="padding: 18px">Product Unit</th>
                     <?php if($order_type == ORDER_TYPE_ADD_SALE){?>
                     <th style="padding-bottom: 16px"><span style="padding-right: 2px;">Lot No</span><input type="text" id="input_table_header_purchase_order_no" name="input_table_header_purchase_order_no" onkeyup="set_all_lot_no(this)" style="width: 70px; height: 20px;"></th>
                     <?php } ?>
-                    <th style="padding: 18px">Quantity</th>
-                    <th style="padding: 18px">Product Unit</th>
+                    <th style="padding: 18px">Quantity</th>                    
                     <th style="padding: 18px">Unit Price</th>
                     <th style="padding: 18px">Sub Total</th>
                     <th style="padding: 18px">Delete</th>
