@@ -46,6 +46,15 @@ class Sale extends CI_Controller {
      * @Author Nazmul on 23rd January 2015
      */
     function sale_order() {
+        if($this->input->post('print_sale_order_no'))
+        {
+            $sale_order_no = $this->input->post('print_sale_order_no');
+            header("Content-type:application/pdf");
+            // It will be called downloaded.pdf
+            header("Content-Disposition:attachment;filename=".$sale_order_no.".pdf");
+            // The PDF source is in original.pdf
+            readfile("././assets/receipt/".$sale_order_no.".pdf");
+        }
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
         if(!empty($shop_info_array))
@@ -386,11 +395,11 @@ class Sale extends CI_Controller {
             $sms_body = "";
             if($total_quantity == QUANTITY_FREE_PRODUCT && $shop_id == FREE_PRODUCT_SHOP_ID)
             {
-                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation !! Your Total score is '.$total_quantity.' point for FREE (550 Tk)jeans pant. you need MOOR '.(QUANTITY_FREE_PRODUCT - $total_quantity).' point. APURBO Brand. Chandrima market, New market. Dhaka';
+                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation!! you got 1 piece FREE(550 Tk) jeans pant. APURBO Brand. Chandrima market, New market. Dhaka';
             }
             else if($shop_id == FREE_PRODUCT_SHOP_ID)
-            {
-                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation!! you got 1 piece FREE(550 Tk) jeans pant. APURBO Brand. Chandrima market, New market. Dhaka';
+            {                
+                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation !! Your Total score is '.$total_quantity.' point for FREE (550 Tk)jeans pant. you need more '.(QUANTITY_FREE_PRODUCT - $total_quantity).' point. APURBO Brand. Chandrima market, New market. Dhaka';
             }
             $this->sms_library->send_sms($customer_info['phone'], $sms_body, TRUE);
             
@@ -790,5 +799,10 @@ class Sale extends CI_Controller {
         }
         echo json_encode($result);
         return;
+    }
+    
+    public function download_sale_order()
+    {
+        
     }
 }

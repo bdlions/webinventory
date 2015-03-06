@@ -1,122 +1,3 @@
-<script type="text/javascript" src="<?php echo base_url()?>assets/js/deploy-java.js"></script>
-<script type="text/javascript">
-	deployQZ();
-	useDefaultPrinter();
-        
-        function deployQZ() {
-            var attributes = {id: "qz", code:'qz.PrintApplet.class', 
-            archive: '<?php echo base_url() ?>assets/java/qz-print.jar', width: 1, height: 1};
-            var parameters = {jnlp_href: '<?php echo base_url() ?>assets/java/qz-print_jnlp.jnlp',
-                cache_option: 'plugin', disable_logging: 'false',
-                initial_focus: 'false'};
-            if (deployJava.versionCheck("1.7+") == true) {
-            }
-            else if (deployJava.versionCheck("1.6+") == true) {
-                delete parameters['jnlp_href'];
-            }
-            deployJava.runApplet(attributes, parameters, '1.5');
-        }
-        function qzReady() {
-            window["qz"] = document.getElementById('qz');
-            if (qz) {
-                try {
-                    //qz printer loaded correctly
-                } catch (err) { // LiveConnect error, display a detailed meesage
-                    alert("ERROR:  \nThe applet did not load correctly.  Communication to the " +
-                            "applet has failed, likely caused by Java Security Settings.  \n\n" +
-                            "CAUSE:  \nJava 7 update 25 and higher block LiveConnect calls " +
-                            "once Oracle has marked that version as outdated, which " +
-                            "is likely the cause.  \n\nSOLUTION:  \n  1. Update Java to the latest " +
-                            "Java version \n          (or)\n  2. Lower the security " +
-                            "settings from the Java Control Panel.");
-                }
-            }
-        }
-        function notReady() {
-            // If applet is not loaded, display an error
-            if (!isLoaded()) {
-                return true;
-            }
-                // If a printer hasn't been selected, display a message.
-            else if (!qz.getPrinter()) {
-                alert('Please select a printer first by using the "Detect Printer" button.');
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Returns is the applet is not loaded properly
-         */
-        function isLoaded() {
-            if (!qz) {
-                alert('Error:\n\n\tPrint plugin is NOT loaded!');
-                return false;
-            } else {
-                try {
-                    if (!qz.isActive()) {
-                        alert('Error:\n\n\tPrint plugin is loaded but NOT active!');
-                        return false;
-                    }
-                } catch (err) {
-                    alert('Error:\n\n\tPrint plugin is NOT loaded properly!');
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /**
-         * Automatically gets called when "qz.print()" is finished.
-         */
-        function qzDonePrinting() {
-            // Alert error, if any
-            if (qz.getException()) {
-                alert('Error printing:\n\n\t' + qz.getException().getLocalizedMessage());
-                qz.clearException();
-                return;
-            }
-
-            // Alert success message
-            alert('Successfully sent print data to "' + qz.getPrinter() + '" queue.');
-        }
-        function useDefaultPrinter() {
-            if (isLoaded()) {
-                // Searches for default printer
-                qz.findPrinter();
-
-                // Automatically gets called when "qz.findPrinter()" is finished.
-                window['qzDoneFinding'] = function() {
-                    // Alert the printer name to user
-                    var printer = qz.getPrinter();
-                    //alert(printer !== null ? 'Default printer found: "' + printer + '"':'Default printer ' + 'not found');
-
-                    // Remove reference to this function
-                    window['qzDoneFinding'] = null;
-                };
-            }
-        }
-        function printPDF() {
-            if (notReady()) {
-                alert("Printer is not ready. Try again..........");
-                return;
-            }
-            // Append our pdf (only one pdf can be appended per print)
-            qz.appendPDF("<?php echo base_url()?>/resources/receipt/pdf_sample.pdf");
-
-            //qz.setCopies(3);
-            qz.setCopies(1);
-
-            // Automatically gets called when "qz.appendPDF()" is finished.
-            window['qzDoneAppending'] = function() {
-                // Tell the applet to print PostScript.
-                qz.printPS();
-
-                // Remove reference to this function
-                window['qzDoneAppending'] = null;
-            };
-        }
-</script>
 <script type="text/javascript">
     $(document).ready(function() {
         set_default_values_at_sale();
@@ -363,17 +244,28 @@
                         current_due: $("#current_due").val()
                     },
                     success: function(data) {
+                        waitScreen.hide();
                         if (data['status'] === '1')
                         {
-                            printPDF();
-//                            alert('Sale order is executed successfully.');// replace this w
+                            $("#print_sale_order_no").val($("#sale_order_no").val());
                             set_default_values_at_sale();
+                            if($("#checkbox_download_sale_order").prop('checked'))
+                            {
+                                $("#form_download_sale_order").submit();
+                            } 
+                            else
+                            {
+                                alert('Sale order is executed successfully.');
+                            }
+                            //printPDF();
+//                            alert('Sale order is executed successfully.');// replace this w
+                            
                         }
                         else if (data['status'] === '0')
                         {
                             alert(data['message']);
                         }
-                        waitScreen.hide();
+                        
                     }
                 });
             }
@@ -569,7 +461,7 @@
                             <?php echo form_button(array('name' => 'button_sale_default_purchase_order_no_unlock', 'id' => 'button_sale_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
-                    <input type="hidden" id="sale_order_no" name="sale_order_no"/>
+                    <input type="hidden" id="sale_order_no" name="sale_order_no" value=""/>
                     <div class="form-group">
                         <label for="status" class="col-md-4 control-label requiredField">
                             &nbsp;
@@ -584,53 +476,66 @@
             <div class="row margin-top-bottom">
                 <div class ="col-md-12 form-horizontal">
                     <div class="form-group">
-                        <label for="sale_remarks" class="col-md-2 control-label requiredField">
+                        <label for="sale_remarks" class="col-md-7 control-label requiredField">
                             Remarks
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_textarea(array('name' => 'sale_remarks', 'id' => 'sale_remarks', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
 
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="total_sale_price" class="col-md-2 control-label requiredField">
+                        <label for="total_sale_price" class="col-md-7 control-label requiredField">
                             Total
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'total_sale_price', 'id' => 'total_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="previous_due" class="col-md-2 control-label requiredField">
+                        <label for="previous_due" class="col-md-7 control-label requiredField">
                             Previous Due
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="cash_paid_amount" class="col-md-2 control-label requiredField">
+                        <label for="cash_paid_amount" class="col-md-7 control-label requiredField">
                             Cash Payment
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'cash_paid_amount', 'id' => 'cash_paid_amount', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="current_due" class="col-md-2 control-label requiredField">
+                        <label for="current_due" class="col-md-7 control-label requiredField">
                             Current Due
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="status" class="col-md-2 control-label requiredField">
+                        <label for="status" class="col-md-7 control-label requiredField">
                             Select Staff
                         </label>
-                        <div class ="col-md-3 col-md-offset-5">
+                        <div class ="col-md-3">
                             <?php echo form_dropdown('staff_list', array(''=>'Select')+$staff_list, '', 'class="form-control" id="staff_list"'); ?>
                         </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="checkbox_download_sale_order" class="col-md-7 control-label requiredField">
+                            Download sale order
+                        </label>
+                        <div class ="col-md-3">
+                            <input id="checkbox_download_sale_order" name="checkbox_download_sale_order" type="checkbox"/>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <?php echo form_open("sale/sale_order", array('id' => 'form_download_sale_order', 'class' => 'form-horizontal'));?>
+                        <input type="hidden" id="print_sale_order_no" name="print_sale_order_no" value=""/>
+                        <?php echo form_close();?>
                     </div>
                     <div class="form-group">
                         <label for="save_sale_order" class="col-md-2 control-label requiredField">
