@@ -563,12 +563,7 @@ class Search extends CI_Controller {
             echo json_encode($result_array);
             return;
         }
-        $this->data['button_search_sale'] = array(
-            'name' => 'button_search_sale',
-            'id' => 'button_search_sale',
-            'type' => 'reset',
-            'value' => 'Search',
-        );
+
         $this->template->load(null, 'search/sale/customer', $this->data);
     }
     

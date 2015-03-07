@@ -1,22 +1,42 @@
 <script type="text/javascript">
     $(function() {
-        $("#button_search_sale").on("click", function() {
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "search/search_customer_sales",
-                data: {
-                    customer_id: 1
-                },
-                success: function(data) {
+    $("#search_box_customer").typeahead([
+            {
+                name:"search_customer",
+                valuekey:"first_name",
+                remote:'<?php echo base_url()?>search/get_customers?query=%QUERY',
+                header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Customer</div>',
+                template: [
+                    '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{card_no}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'
+                  ].join(''),
+                engine: Hogan
+            }
+    ]).on('typeahead:selected', function (obj, datum) {
+           if(datum.customer_id)
+            {
+                waitScreen.show();
+                $.ajax({
+                    dataType: 'json',
+                    type: "POST",
+                    url: '<?php echo base_url(); ?>' + "search/search_customer_sales",
+                    data: {
+                        customer_id: datum.customer_id
+                    },
+                   success: function(data) {
+                    waitScreen.hide();
                     $("#label_total_sale_price").html(data['total_sale_price']);
                     $("#label_total_quantity").html(data['total_quantity']);
                     $("#label_total_profit").html(data['total_profit']);
                     $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));
+                    $("#search_box_customer").val('');
+                    
                 }
-            });
+                });                
+            }
         });
-    });
+      });
+    
+
 </script>
 <script type="text/x-tmpl" id="tmpl_customer_sale_list">
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
@@ -65,11 +85,20 @@
             <tbody>
                 <tr>
                     <td>
-                        <label for="card_no" class="col-md-6 control-label requiredField">
-                            
-                        </label>
-                        <div class ="col-md-6">
-                            <?php //echo form_input($card_no+array('class'=>'form-control')); ?>
+                        <div class="col-md-offset-1 col-md-6">
+                            <div class=" input-group search-box">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                <div class="twitter-typeahead" style="position: relative;">
+                                    <input type="text" disabled="" spellcheck="off" autocomplete="off" class="tt-hint form-control" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; background: none repeat scroll 0% 0% rgb(255, 255, 255);">
+                                    <input type="text" placeholder="Search for customer" class="form-control tt-query" id="search_box_customer" autocomplete="off" spellcheck="false" style="position: relative; vertical-align: top; background-color: transparent;" dir="auto">
+                                    <div style="position: absolute; left: -9999px; visibility: hidden; white-space: nowrap; font-family: Calibri,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;">
+                                        
+                                    </div>
+                                    <div class="tt-dropdown-menu dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none;">
+                                        
+                                    </div>    
+                                </div>
+                            </div>
                         </div> 
                     </td> 
                     <td>
@@ -90,13 +119,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
-
-                        </label>
-                        <div class ="col-md-6">
-                            <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
-                        </div>                        
+                    <td>                        
                     </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
@@ -165,3 +188,4 @@
         </table>
     </div>
 </div>
+<?php $this->load->view('common/wait_screen');
