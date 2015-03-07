@@ -97,7 +97,7 @@
         
         // clear input of modal when modal close @rashida
         $('#common_modal_select_product').on('hidden.bs.modal', function (e) {
-            $(this).find("input,textarea,select").val('').end()
+            $(this).find("input,textarea").val('').end()
               .find("input[type=checkbox], input[type=radio]")
                  .prop("checked", "")
                  .parents('tr').css('background-color', '')
