@@ -53,6 +53,7 @@
                 var prod_info = p_list[counter];
                 if ($(this).attr("id") === prod_info['id'])
                 {
+                    
                     append_selected_product(prod_info);
                     $('div[class="clr dropdown open"]').removeClass('open');
                     $('#common_modal_select_product').modal('hide');
@@ -81,7 +82,9 @@
             {
                 var prod_info = p_list[counter];
                 for (var i = 0; i < selected_array.length; i++) {
-                    if (selected_array[i] === prod_info['id'])
+                    var tmp_str = selected_array[i].toString();
+                    var temp_str = "modal_"+prod_info['id'].toString();
+                    if ( tmp_str === temp_str)
                     {
                         append_selected_product(prod_info);
                     }
@@ -107,7 +110,7 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr>
-    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="product_select_checkbox_<? echo '{%=product_info.id%}';?>" class="" type="checkbox"></label></td>
+    <td style="width: 20px; padding: 0px" ><label for="modal_<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="modal_<?php echo '{%= product_info.id%}'; ?>" name="product_select_checkbox_<? echo '{%=product_info.id%}';?>" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
     <td><?php echo '{%= product_info.current_stock%}'; ?></td>
     </tr>
@@ -145,8 +148,8 @@
                                         ?>
                                         <tr>
                                             <td style="width: 20px; padding: 0px" >
-                                                <label for="<?php echo $product['id'] ?>" style="padding: 5px 40px;">
-                                                    <input id="<?php echo $product['id'] ?>" name="product_select_checkbox_<?php echo $product['id'] ?>" type="checkbox">
+                                                <label for="modal_<?php echo $product['id'] ?>" style="padding: 5px 40px;">
+                                                    <input id="modal_<?php echo $product['id'] ?>" name="product_select_checkbox_<?php echo $product['id'] ?>" type="checkbox">
                                                 </label>
                                             </td>
                                             <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>

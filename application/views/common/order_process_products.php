@@ -6,7 +6,7 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr id="product_row_<?php echo '{%= product_info.id%}'; ?>">
-    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="product_checkbox_<?php echo '{%= product_info.id%}'; ?>" class="" type="checkbox"></label></td>
+    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="append_product_checkbox_<?php echo '{%= product_info.id%}'; ?>" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
     <td><?php echo '{%= product_info.category_unit %}'; ?></td>
     <td class="purchase_order_number_td"><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>           
@@ -37,12 +37,12 @@
     }
     function process_product_check_all_checkboxes(checked_all){
         if( $(checked_all).is(':checked') ){
-            $('input[name^="product_checkbox_"]').each(function(){
+            $('input[name^="append_product_checkbox_"]').each(function(){
                 $(this).prop('checked', true);
                 $(this).parents('tr').css('background-color', '#47A447');
             });
         }else{
-            $('input[name^="product_checkbox_"]').each(function(){
+            $('input[name^="append_product_checkbox_"]').each(function(){
                 $(this).prop('checked', false);
                 $(this).parents('tr').css('background-color', '#E4F2D9');
             });
@@ -50,7 +50,7 @@
     }
     //bgcolor set 
     function color_setter(){
-        $('input[name^="product_checkbox_"]').on('click', function(){
+        $('input[name^="append_product_checkbox_"]').on('click', function(){
             if( $(this).is(':checked') ){
                 $(this).parents('tr').css('background-color', '#47A447');
                 $('#delete_seleted_product').show();
