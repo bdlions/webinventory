@@ -69,6 +69,7 @@
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
         <li><a href="<?php echo base_url("search/search_due_collect_date_range");?>">Search Due Collect by Date Range</a></li>
         <li><a href="<?php echo base_url("search/search_sales_purchase_order_no");?>">Search Customer Sales by Lot No</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_sales");?>">Search Customer Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_name");?>">Search Customer Sales by Name</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_phone");?>">Search Customer Sales by Phone</a></li>
         <li class="divider"></li>

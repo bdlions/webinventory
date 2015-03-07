@@ -64,7 +64,7 @@ class Sale extends CI_Controller {
         $this->data['shop_info'] = $shop_info;
         
         $staff_list = array();
-        $staff_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        $staff_list_array = $this->ion_auth->get_all_staffs(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
         if (!empty($staff_list_array)) {
             foreach ($staff_list_array as $key => $staff_info) {
                 $staff_list[$staff_info['user_id']] = $staff_info['first_name'] . ' ' . $staff_info['last_name'];
@@ -113,6 +113,12 @@ class Sale extends CI_Controller {
     function add_sale() {
         $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop($shop_id)->result_array();
+        if( !empty($shop_info_array) )
+        {
+            $shop_info = $shop_info_array[0];
+        }
         $selected_product_list = $this->input->post('product_list');
         $sale_product_list = array();
         $stock_out_list = array();
@@ -316,7 +322,7 @@ class Sale extends CI_Controller {
             foreach ($selected_product_list as $product_info) {
                 $print_table_row = array(
                     SRA_RISK_ID => $serial_no,
-                    DATE => $product_info['name'],
+                    PRODUCT_NAME => $product_info['name'],
                     SOURCE_REGISTER => $product_info['quantity'],
                     PRACTICE_AREA => $product_info['unit_price'],
                     TRIGGER_EVENT => $product_info['sub_total']
@@ -326,7 +332,7 @@ class Sale extends CI_Controller {
             }
             $print_table_row_total = array(
                 SRA_RISK_ID => '',
-                DATE => '',
+                PRODUCT_NAME => '',
                 SOURCE_REGISTER => '',
                 PRACTICE_AREA => 'Total',
                 TRIGGER_EVENT => $sale_info['total']
@@ -334,7 +340,7 @@ class Sale extends CI_Controller {
             $print_table_rows[] = $print_table_row_total;
             $print_table_row_previous_due = array(
                 SRA_RISK_ID => '',
-                DATE => '',
+                PRODUCT_NAME => '',
                 SOURCE_REGISTER => '',
                 PRACTICE_AREA => 'Previous Due',
                 TRIGGER_EVENT => $sale_info['previous_due']
@@ -342,7 +348,7 @@ class Sale extends CI_Controller {
             $print_table_rows[] = $print_table_row_previous_due;
             $print_table_row_current_due = array(
                 SRA_RISK_ID => '',
-                DATE => '',
+                PRODUCT_NAME => '',
                 SOURCE_REGISTER => '',
                 PRACTICE_AREA => 'Current Due',
                 TRIGGER_EVENT => ($sale_info['total']+$sale_info['previous_due'])
@@ -350,7 +356,7 @@ class Sale extends CI_Controller {
             $print_table_rows[] = $print_table_row_current_due;
             $print_table_row_payment = array(
                 SRA_RISK_ID => '',
-                DATE => '',
+                PRODUCT_NAME => '',
                 SOURCE_REGISTER => '',
                 PRACTICE_AREA => 'Payment',
                 TRIGGER_EVENT => ($sale_info['cash_paid'] + $sale_info['check_paid'])
@@ -358,7 +364,7 @@ class Sale extends CI_Controller {
             $print_table_rows[] = $print_table_row_payment;
             $print_table_row_total_due = array(
                 SRA_RISK_ID => '',
-                DATE => '',
+                PRODUCT_NAME => '',
                 SOURCE_REGISTER => '',
                 PRACTICE_AREA => 'Total Due',
                 TRIGGER_EVENT => $sale_info['current_due']
@@ -369,8 +375,8 @@ class Sale extends CI_Controller {
             ); 
             $report_request = array(
                 'memo_header' => '',
-                'shop_name' => 'Shop name static from controller',
-                'shop_address' => 'addrs static from controller',
+                'shop_name' => $shop_info['name'],
+                'shop_address' => $shop_info['address'],
                 'customer_name' => $customer_info['full_name'],
                 'report_date' => $this->utils2->get_unix_to_human_date($current_time, 1),
                 'sale_rows' => $sale_rows
@@ -470,7 +476,7 @@ class Sale extends CI_Controller {
         }
         $this->data['shop_info'] = $shop_info;
         $staff_list = array();
-        $staff_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        $staff_list_array = $this->ion_auth->get_all_staffs(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
         if (!empty($staff_list_array)) {
             foreach ($staff_list_array as $key => $staff_info) {
                 $staff_list[$staff_info['user_id']] = $staff_info['first_name'] . ' ' . $staff_info['last_name'];

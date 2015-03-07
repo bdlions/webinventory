@@ -43,7 +43,17 @@ class Search extends CI_Controller {
     {
         
     }
-     /*
+    /*
+     * This method will return active customer list from typeahead request of active customers
+     * @author Nazmul on 16th January 2015
+     */
+    public function get_active_customers()
+    {
+        $search_value = $_GET['query'];
+        $customers = $this->search_typeahead->get_customers($search_value, 0, ACCOUNT_STATUS_ACTIVE);
+        echo json_encode($customers);
+    }
+    /*
      * This method will return customer list from typeahead request
      * @author Nazmul on 16th January 2015
      */

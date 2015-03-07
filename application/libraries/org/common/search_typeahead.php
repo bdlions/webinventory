@@ -67,16 +67,17 @@ class Search_typeahead {
      * This method will return customer list adding value field appending first_name, last_name, phone and card_no
      * @param $search_value, value to be searched in first_name/last_name/phone/card_no
      * @param $shop_id, shop id
+     * @param $account_status_id, account status id of a customer
      * @author Nazmul on 19th June 2014
      */
-    public function get_customers($search_value, $shop_id = 0)
+    public function get_customers($search_value, $shop_id = 0, $account_status_id = 0)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
         $customer_list = array();
-        $customers = $this->search_typeahead_model->get_customers($search_value, $shop_id);
+        $customers = $this->search_typeahead_model->get_customers($search_value, $shop_id, $account_status_id);
         foreach ($customers as  $customer) {
             $customer->value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
             array_push($customer_list, $customer);

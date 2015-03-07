@@ -28,7 +28,7 @@ class Attendance extends CI_Controller {
     {
         $this->data['message'] = '';
         $salesman_list = array();
-        $salesman_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        $salesman_list_array = $this->ion_auth->get_all_staffs(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
         if(!empty($salesman_list_array))
         {
             foreach($salesman_list_array as $salesman_info)

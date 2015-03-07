@@ -131,6 +131,7 @@ class Expense extends CI_Controller {
     {
         $result_array = array();
         $expense_type_id = $this->input->post('expense_type_id');
+        $access_type_id = $this->input->post('access_type_id');
         if( $expense_type_id == EXPENSE_SHOP_TYPE_ID)
         {
             $shop_list_array = $this->shop_library->get_shop()->result_array();
@@ -146,7 +147,16 @@ class Expense extends CI_Controller {
         }
         else if( $expense_type_id == EXPENSE_SUPPLIER_TYPE_ID)
         {
-            $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+            $supplier_list_array = array();
+            if($access_type_id == ACCESS_TYPE_CREATE)
+            {
+                $supplier_list_array = $this->ion_auth->get_all_suppliers(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
+            }
+            else if($access_type_id == ACCESS_TYPE_READ)
+            {
+                $supplier_list_array = $this->ion_auth->get_all_suppliers()->result_array();
+            }
+            
             $supplier_list = array();
             foreach($supplier_list_array as $key => $supplier_info)
             {
@@ -159,7 +169,15 @@ class Expense extends CI_Controller {
         }
         else if( $expense_type_id == EXPENSE_STAFF_TYPE_ID)
         {
-            $user_list_array = $this->ion_auth->get_all_staffs()->result_array();
+            $user_list_array = array();
+            if($access_type_id == ACCESS_TYPE_CREATE)
+            {
+                $user_list_array = $this->ion_auth->get_all_staffs(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
+            }
+            else if($access_type_id == ACCESS_TYPE_READ)
+            {
+                $user_list_array = $this->ion_auth->get_all_staffs()->result_array();
+            }
             $user_list = array();
             foreach($user_list_array as $key => $user_info)
             {
@@ -172,7 +190,15 @@ class Expense extends CI_Controller {
         }
         else if( $expense_type_id == EXPENSE_EQUIPMENT_SUPPLIER_TYPE_ID)
         {
-            $user_list_array = $this->ion_auth->get_all_salesmen()->result_array();
+            $user_list_array = array();
+            if($access_type_id == ACCESS_TYPE_CREATE)
+            {
+                $user_list_array = $this->ion_auth->get_all_salesmen(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
+            }
+            else if($access_type_id == ACCESS_TYPE_READ)
+            {
+                $user_list_array = $this->ion_auth->get_all_salesmen()->result_array();
+            }            
             $user_list = array();
             foreach($user_list_array as $key => $user_info)
             {

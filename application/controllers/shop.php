@@ -288,7 +288,7 @@ class Shop extends CI_Controller {
             'name' => 'purchase_order_no',
             'id' => 'purchase_order_no',
             'type' => 'text',
-            'value' => $shop_info['purchase_order_no'],
+            'value' => $shop_info['sale_default_purchase_order_no'],
         );
         
         $this->data['submit_update_shop'] = array(

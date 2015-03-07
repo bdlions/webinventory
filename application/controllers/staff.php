@@ -133,7 +133,7 @@ class Staff extends User {
      */
     public function show_all_staffs() {
         $this->data['staff_list'] = array();
-        $staff_list_array = $this->ion_auth->get_all_staffs(0, array(), false)->result_array();
+        $staff_list_array = $this->ion_auth->get_all_staffs()->result_array();
         if (!empty($staff_list_array)) {
             $this->data['staff_list'] = $staff_list_array;
         }

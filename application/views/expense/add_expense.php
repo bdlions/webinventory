@@ -13,7 +13,8 @@
             type: "POST",
             url: '<?php echo base_url(); ?>' + "expense/getItems",
             data: {
-                expense_type_id: $("#expense_categories").val()
+                expense_type_id: $("#expense_categories").val(),
+                access_type_id: '<?php echo ACCESS_TYPE_CREATE?>'
             },
             success: function(data) {
                 var result = JSON.parse(data);

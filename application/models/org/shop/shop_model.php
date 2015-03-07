@@ -214,5 +214,22 @@ class Shop_model extends Ion_auth_model {
                                 ->get();
         return $this;
     }
-        
+     
+    /**
+     * This method will return shop info
+     * @param $shop_id, shop id
+     * @author Nazmul on 7th March 2015
+     * */
+    public function get_shop_info($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where('id', $shop_id);
+        $this->response = $this->db->select($this->tables['shop_info'].".*,".$this->tables['shop_info'].'.id as shop_id')
+                                ->from($this->tables['shop_info'])
+                                ->get();
+        return $this;
+    }
 }

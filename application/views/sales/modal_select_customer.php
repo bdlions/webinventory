@@ -4,7 +4,7 @@
             {
                 name:"search_customer",
                 valuekey:"first_name",
-                remote:'<?php echo base_url()?>search/get_customers?query=%QUERY',
+                remote:'<?php echo base_url()?>search/get_active_customers?query=%QUERY',
                 header: '<div class="col-md-12" style="font-size: 15px; font-weight:bold">Customer</div>',
                 template: [
                     '<div class="row"><div class="tt-suggestions col-md-11"><div class="form-horizontal"><span class="glyphicon glyphicon-user col-md-12">{{first_name}} {{last_name}}</span><span class="glyphicon glyphicon-phone col-md-12">{{phone}}</span><span class="glyphicon glyphicon- col-md-12">{{card_no}}</span></div><div class="tt-suggestions col-md-12" style="border-top: 1px dashed #CCCCCC;margin: 6px 0;"></div></div>'

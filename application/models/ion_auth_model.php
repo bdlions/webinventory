@@ -2030,18 +2030,18 @@ class Ion_auth_model extends CI_Model {
      * This method will return all staffs of a shop
      * @param $shop_id, shop id
      * @param $staff_id_list, staff id list
-     * @param $only_active, whether to return only active staffs or not
+     * @param $account_status_id, user account status id
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_staffs($shop_id = 0, $staff_id_list = array(), $only_active = true)
+    public function get_all_staffs($shop_id = 0, $staff_id_list = array(), $account_status_id = 0)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        if($only_active)
+        if($account_status_id > 0)
         {
-            $this->db->where($this->tables['users'].'.account_status_id',ACCOUNT_STATUS_ACTIVE); 
+            $this->db->where($this->tables['users'].'.account_status_id',$account_status_id); 
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_STAFF_ID);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
@@ -2089,18 +2089,18 @@ class Ion_auth_model extends CI_Model {
      * This method will return all salesmen of a shop
      * @param $shop_id, shop id
      * @param $salesman_id_list, salesman id list
-     * @param $only_active, whether to return only active salesmen or not
+     * @param $account_status_id, user account status
      * @Author Nazmul on 15th January 2015
      */
-    public function get_all_salesmen($shop_id = 0, $salesman_id_list = array(), $only_active = true)
+    public function get_all_salesmen($shop_id = 0, $salesman_id_list = array(), $account_status_id = 0)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        if($only_active)
+        if($account_status_id > 0)
         {
-            $this->db->where($this->tables['users'].'.account_status_id',ACCOUNT_STATUS_ACTIVE); 
+            $this->db->where($this->tables['users'].'.account_status_id',$account_status_id); 
         }
         $this->db->where($this->tables['users_groups'].'.group_id',USER_GROUP_SALESMAN);
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
@@ -2140,9 +2140,10 @@ class Ion_auth_model extends CI_Model {
      * This method will return supplier list
      * @param $shop_id, shop id
      * @param $supplier_id_list, supplier id list
+     * @param $account_status_id, user account status id
      * @Author Nazmul on 16th January 2015
      */
-    public function get_all_suppliers($shop_id = 0, $supplier_id_list = array())
+    public function get_all_suppliers($shop_id = 0, $supplier_id_list = array(), $account_status_id = 0)
     {
         if (isset($this->_ion_limit) && isset($this->_ion_offset)) {
             $this->db->limit($this->_ion_limit, $this->_ion_offset);
@@ -2158,6 +2159,10 @@ class Ion_auth_model extends CI_Model {
         {
             $this->db->where_in($this->tables['suppliers'].'.id',$supplier_id_list);
         }
+        if($account_status_id > 0)
+        {
+            $this->db->where($this->tables['users'].'.account_status_id',$account_status_id); 
+        }        
         $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['suppliers'].'.id as supplier_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address , '.$this->tables['suppliers'].'.company,'.$this->tables['users'].'.account_status_id,'.$this->tables['account_status'].'.description as account_status')
                     ->from($this->tables['users'])
@@ -2380,9 +2385,10 @@ class Ion_auth_model extends CI_Model {
      * This method will return customer list of a shop
      * @param $shop_id, shop id
      * @param $shop_type_id, shop type id
+     * @param $account_status_id, account status id of the user
      * @Author Nazmul on 16th January 2015
      */
-    public function get_all_customers($shop_id = 0, $shop_type_id = 0)
+    public function get_all_customers($shop_id = 0, $shop_type_id = 0, $account_status_id = 0)
     {
         if (isset($this->_ion_limit) && isset($this->_ion_offset)) {
             $this->db->limit($this->_ion_limit, $this->_ion_offset);
@@ -2398,7 +2404,11 @@ class Ion_auth_model extends CI_Model {
         {
             $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
             $this->db->order_by($order_by);
-        }        
+        }  
+        if($account_status_id > 0)
+        {
+            $this->db->where($this->tables['users'].'.account_status_id',$account_status_id); 
+        }
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no,'.$this->tables['users'].'.address,'.$this->tables['users'].'.account_status_id,'.$this->tables['account_status'].'.description as account_status')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')

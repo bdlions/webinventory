@@ -18,9 +18,10 @@ class Search_typeahead_model extends Ion_auth_model {
      * This method will return customer list
      * @param $search_value, value to be searched in first_name/last_name/phone/card_no
      * @param $shop_id, shop id
+     * @param $account_status_id, account status id of a customer
      * @author Nazmul on 19th June 2014
      */
-    public function get_customers($search_value, $shop_id = 0)
+    public function get_customers($search_value, $shop_id = 0, $account_status_id = 0)
     {
         if($shop_id == 0)
         {
@@ -36,22 +37,27 @@ class Search_typeahead_model extends Ion_auth_model {
             $shop_info = $shop_info_array[0];
             $shop_type_id = $shop_info['shop_type_id'];
         }
+        
         if($shop_type_id == SHOP_TYPE_SMALL)
         {
             $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
-            $this->db->order_by($order_by);
+            $this->db->order_by($order_by);   
             
-            $this->db->like($this->tables['customers'].'.card_no', $search_value);
-            $this->db->or_like($this->tables['users'].'.first_name', $search_value);
+            $like = "(first_name LIKE '%".$search_value."%' OR last_name LIKE '%".$search_value."%' OR phone LIKE '%".$search_value."%' OR card_no LIKE '%".$search_value."%')";
         }
         else
         {
-            $this->db->like($this->tables['users'].'.first_name', $search_value);
-            $this->db->or_like($this->tables['users'].'.phone', $search_value);
-        }        
-        $this->db->or_like($this->tables['users'].'.last_name', $search_value);
-                
-        
+            $like = "(first_name LIKE '%".$search_value."%' OR last_name LIKE '%".$search_value."%' OR phone LIKE '%".$search_value."%')";
+        }
+        if($account_status_id > 0)
+        {
+            $where = $this->tables['users'].'.account_status_id = '.$account_status_id.' AND '.$like;
+        }
+        else
+        {
+            $where = $like;
+        }
+        $this->db->where($where);        
         $this->db->limit(50);
         $query = $this->db->select($this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])

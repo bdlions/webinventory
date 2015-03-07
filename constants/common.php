@@ -7,3 +7,6 @@
     define("ORDER_TYPE_ADD_SALE",                                 6);
     define("ORDER_TYPE_RETURN_SALE",                              7);
     
+    define("ACCESS_TYPE_CREATE",                                  1);
+    define("ACCESS_TYPE_READ",                                    2);
+    
