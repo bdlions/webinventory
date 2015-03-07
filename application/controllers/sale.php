@@ -369,6 +369,8 @@ class Sale extends CI_Controller {
             ); 
             $report_request = array(
                 'memo_header' => '',
+                'shop_name' => 'Shop name static from controller',
+                'shop_address' => 'addrs static from controller',
                 'customer_name' => $customer_info['full_name'],
                 'report_date' => $this->utils2->get_unix_to_human_date($current_time, 1),
                 'sale_rows' => $sale_rows

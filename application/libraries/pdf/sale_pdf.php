@@ -12,6 +12,8 @@ class Sale_pdf extends PDF {
 
     var $data;
     var $report_request_id;
+    var $shop_name;
+    var $shop_address;
     var $customer_name;
     var $risk_register;
     var $report_date;
@@ -49,9 +51,15 @@ class Sale_pdf extends PDF {
                 $this->risk_register = $data[RISK_REGISTER];
                 $this->report_request = $this->risk_register[REPORT_REQUEST];
                 foreach ($this->risk_register[REPORT_REQUEST] as $key => $value) {
-                    if ($key == REPORT_REQUEST_ID) {
+                    if ($key == MEMO_HEADER) {
                         $this->report_request_id = $value;
                     } 
+                    else if ($key == SHOP_NAME) {
+                        $this->shop_name = $value;
+                    }
+                    else if ($key == SHOP_ADDRESS) {
+                        $this->shop_address = $value;
+                    }
                     else if ($key == CUSTOMER_NAME) {
                         $this->customer_name = $value;
                     }
@@ -107,43 +115,60 @@ class Sale_pdf extends PDF {
     }
 
     function generate_pdf() {
-
-
         $this->SetFont($this->risk_register_para->font_family, $this->risk_register_para->font_weight, $this->risk_register_para->font_size);
         $this->colorConverter->convertHex2RGB($this->risk_register_para->font_color);
         $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
-        $this->Cell(0, 60, $this->report_request[REPORT_REQUEST_ID], 0, 1);
+        $shop_name_str = empty($this->shop_name)?"-Shop Name-":$this->shop_name;
+        $width_shop_name = $this->GetStringWidth($shop_name_str);
+        $tl_X = $this->GetX();
+        $tl_Y = $this->GetY();
+        $this->Cell(0, DEFAULT_CELL_HEIGHT, $shop_name_str, 0, 1, "C");
+        
+        $this->SetY($this->GetY()+DEFAULT_CELL_HEIGHT/2);
+        $this->SetFont($this->firm_para->font_family, $this->firm_para->font_weight, $this->firm_para->font_size);
+        $this->colorConverter->convertHex2RGB($this->firm_para->font_color);
+        $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
+        $shop_adrs_str = empty($this->shop_name)?"-Address-":$this->shop_address;
+        $address_str = "Times Square, NY";
+        $width_address = $this->GetStringWidth($shop_adrs_str);
+        $bigger_width = max($width_shop_name, $width_address);
+        $this->Cell(0, DEFAULT_CELL_HEIGHT, $shop_adrs_str, 0, 1, "C");
+        
+        $tlX = 145-($bigger_width/2);   $tlY = $tl_Y-5;
+        $trX = 155+($bigger_width/2);   $trY = $tlY;
+        $blX = $tlX;                    $blY = $this->GetY()+5;
+        $brX = $trX;                    $brY = $blY;
+        $this->Line($tlX, $tlY, $trX, $trY);
+        $this->Line($tlX, $tlY, $blX, $blY);
+        $this->Line($blX, $blY, $brX, $brY);
+        $this->Line($brX, $brY, $trX, $trY);
+        
+        $this->SetY($this->GetY()+DEFAULT_CELL_HEIGHT);
+        $this->SetFont($this->risk_register_para->font_family, $this->risk_register_para->font_weight, $this->risk_register_para->font_size);
+        $this->colorConverter->convertHex2RGB($this->risk_register_para->font_color);
+        $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
+        $this->Cell(0, DEFAULT_CELL_HEIGHT*2, $this->report_request[MEMO_HEADER], 0, 1);
 
         $style = array('width' => 0.4, 'color' => array(79, 129, 189));
-        $this->Line(10, 50, 285, 50, $style);
+        $this->Line($this->GetX(), $this->GetY(), 286, $this->GetY(), $style);
 
-        $this->SetXY($this->GetX(), 55);
+        $this->SetY($this->GetY()+DEFAULT_CELL_HEIGHT);
 
         $this->SetFont($this->firm_para->font_family, $this->firm_para->font_weight, $this->firm_para->font_size);
         $this->colorConverter->convertHex2RGB($this->firm_para->font_color);
         $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
-        $this->Cell(0, DEFAULT_CELL_HEIGHT, "Customer name: " . $this->customer_name, 0, 1);
-
-        $this->SetXY($this->GetX() + $this->LineWidth - 70, 55);
-        
-        //$this->SetXY($this->GetX() + $this->LineWidth - 70, 34);
-        $this->SetFont($this->date_para->font_family, $this->date_para->font_weight, $this->date_para->font_size);
-        $this->colorConverter->convertHex2RGB($this->date_para->font_color);
-        $this->SetTextColor($this->colorConverter->r, $this->colorConverter->g, $this->colorConverter->b);
+        $this->Cell(0, DEFAULT_CELL_HEIGHT, "Customer name: " . $this->customer_name, 0, 0);
+        $this->SetXY($this->GetX() + $this->LineWidth - 70, $this->GetY());
         $this->Cell(0, DEFAULT_CELL_HEIGHT, "Date: " . $this->report_date, 0, 1);
 
         $this->SetAutoPageBreak(false);
-        //$this->SetFont('Times', '', 12);
-        //$this->SetTextColor(0,0,0);
-        //$this->SetDrawColor(190, 190, 190);
-        
+
         $this->SetXY($this->GetX(), $this->GetY() + 5);
         $row_count = 1;
         $col_data = array();
         foreach ($this->risk_register_rows as $value) {
-
             $sra_riks_id = $this->getCellValue($value, SRA_RISK_ID);
-            $date = $this->getCellValue($value, DATE);
+            $date = $this->getCellValue($value, PRODUCT_NAME);
             $source_register = $this->getCellValue($value, SOURCE_REGISTER);
             $practice_area = $this->getCellValue($value, PRACTICE_AREA);
             $trigger_event = $this->getCellValue($value, TRIGGER_EVENT);
@@ -151,7 +176,6 @@ class Sale_pdf extends PDF {
             $action_taken = $this->getCellValue($value, ACTION_TAKEN);
             $comments = $this->getCellValue($value, COMMENTS);
 
-            
             $col_data = array();
             array_push($col_data, 
                 array(
@@ -161,10 +185,10 @@ class Sale_pdf extends PDF {
                     'cell_style' => $this->getColumnStyleById(SRA_RISK_ID)
                 ), 
                 array(
-                    'id' => DATE, 
+                    'id' => PRODUCT_NAME, 
                     'cell_width' => 60, 
                     'cell_value' => $date, 
-                    'cell_style' => $this->getColumnStyleById(DATE)
+                    'cell_style' => $this->getColumnStyleById(PRODUCT_NAME)
                 ), 
                 array(
                     'id' => SOURCE_REGISTER, 
@@ -184,23 +208,6 @@ class Sale_pdf extends PDF {
                     'cell_value' => $trigger_event, 
                     'cell_style' => $this->getColumnStyleById(TRIGGER_EVENT)
                 )
-//                array(
-//                    'id' => COMPLIANCE_OFFICER, 
-//                    'cell_width' => 35, 
-//                    'cell_value' => $compliance_officer, 
-//                    'cell_style' => $this->getColumnStyleById(COMPLIANCE_OFFICER)
-//                ), 
-//                array(
-//                        'id' => ACTION_TAKEN, 
-//                    'cell_width' => 50, 
-//                    'cell_value' => $action_taken,
-//                    'cell_style' => $this->getColumnStyleById(ACTION_TAKEN)
-//                ), array(
-//                    'id' => COMMENTS, 
-//                    'cell_width' => 40, 
-//                    'cell_value' => $comments, 
-//                    'cell_style' => $this->getColumnStyleById(COMMENTS)
-//                )
             );
 
             //the height that we need to add new row
@@ -261,7 +268,7 @@ class Sale_pdf extends PDF {
         $this->Cell(80);
         // Logo
         //image(filename, x, y, width)
-        $this->Image(base_url() . 'resources/pdf/images/' . $this->header->src, $this->header->x, $this->header->y, $this->header->width, $this->header->height);
+        //$this->Image(base_url() . 'resources/pdf/images/' . $this->header->src, $this->header->x, $this->header->y, $this->header->width, $this->header->height);
         $this->Ln();
     }
 

@@ -3,6 +3,8 @@
     <sale_report>
         <report-request>
             <memo_header>List of Product</memo_header>
+            <shop_name> PoOtato sshop</shop_name>
+            <shop_address> aadd sshop address</shop_address>
             <user_name> Webinventroy user</user_name>
             <report_date>report_date</report_date>
             <sale_rows>
