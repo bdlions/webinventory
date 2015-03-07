@@ -17,9 +17,16 @@
         $('#div_unlock_purchase_order_no').hide();
         $("#button_sale_default_purchase_order_no_lock").on("click", function() {
             $('#input_table_default_purchase_order_no').val($('#input_sale_default_purchase_order_no').val());
-            $('input[name^=purchase_order_no]').each(function(){
-                $(this).val($('#input_sale_default_purchase_order_no').val());
-                $(this).attr("disabled", true)
+//            $('input[name^=purchase_order_no]').each(function(){
+//                $(this).val($('#input_sale_default_purchase_order_no').val());
+//                $(this).attr("disabled", true);
+//            });
+            $("input", "#tbody_selected_product_list").each(function() {
+                if ($(this).attr("name") === "purchase_order_no")
+                {
+                    $(this).attr('value', $('#input_sale_default_purchase_order_no').val());
+                    $(this).attr("disabled", true);
+                }
             });
             $('#input_sale_default_purchase_order_no').attr("disabled", true);
             $('#div_unlock_purchase_order_no').show();
@@ -43,8 +50,14 @@
             $('#input_sale_default_purchase_order_no').attr("disabled", false)
             $('#div_unlock_purchase_order_no').hide();
             $('#div_lock_purchase_order_no').show();
-            $('input[name^=purchase_order_no]').each(function(){
-                $(this).attr("disabled", false)
+//            $('input[name^=purchase_order_no]').each(function(){
+//                $(this).attr("disabled", false);
+//            });
+            $("input", "#tbody_selected_product_list").each(function() {
+                if ($(this).attr("name") === "purchase_order_no")
+                {
+                    $(this).attr("disabled", false);
+                }
             });
             $.ajax({
                 dataType: 'json',

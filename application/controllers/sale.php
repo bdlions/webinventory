@@ -393,11 +393,11 @@ class Sale extends CI_Controller {
                 $total_quantity = $total_quantity + $sale_info['total_sale'];                
             }
             $sms_body = "";
-            if($total_quantity == QUANTITY_FREE_PRODUCT && $shop_id == FREE_PRODUCT_SHOP_ID)
+            if($total_quantity == QUANTITY_FREE_PRODUCT)
             {
                 $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation!! you got 1 piece FREE(550 Tk) jeans pant. APURBO Brand. Chandrima market, New market. Dhaka';
             }
-            else if($shop_id == FREE_PRODUCT_SHOP_ID)
+            else
             {                
                 $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation !! Your Total score is '.$total_quantity.' point for FREE (550 Tk)jeans pant. you need more '.(QUANTITY_FREE_PRODUCT - $total_quantity).' point. APURBO Brand. Chandrima market, New market. Dhaka';
             }

@@ -8,9 +8,11 @@ class Search extends CI_Controller {
      * 
      * $var array
      */
-
+    public $tables = array();
     function __construct() {
+        
         parent::__construct();
+        $this->tables = $this->config->item('tables', 'ion_auth');
         $this->load->library('form_validation');
         $this->load->helper('url');
 
@@ -257,6 +259,19 @@ class Search extends CI_Controller {
         {
             $shop_total_expenses_today = $shop_total_expenses_today_array[0]['total_expense'];
         }
+        //suppliers total payments and total payments of today
+        $suppliers_total_payment = 0;
+        $suppliers_total_payment_array = $this->payments->get_suppliers_total_payment()->result_array();
+        if(!empty($suppliers_total_payment_array))
+        {
+            $suppliers_total_payment = $suppliers_total_payment_array[0]['total_payment'];
+        }
+        $suppliers_total_payment_today = 0;
+        $suppliers_total_payment_today_array = $this->payments->get_suppliers_total_payment_today($time)->result_array();
+        if(!empty($suppliers_total_payment_today_array))
+        {
+            $suppliers_total_payment_today = $suppliers_total_payment_today_array[0]['total_payment'];
+        }
         //suppliers total returned payment and returned payment of today
         $suppliers_total_returned_payment = 0;
         $suppliers_total_returned_payment_array = $this->payments->get_suppliers_total_returned_payment()->result_array();
@@ -289,10 +304,10 @@ class Search extends CI_Controller {
         
         $result['total_due'] = $result['total_due'] + $result['customers_total_returned_payment_today'];
         
-        $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses;
+        $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses - $suppliers_total_payment;
         $result['current_balance'] = $current_balance;
         
-        $previous_balance = $current_balance - ($customers_total_payment_today + $suppliers_total_returned_payment_today - $customers_total_returned_payment_today - $shop_total_expenses_today);
+        $previous_balance = $current_balance - ($customers_total_payment_today + $suppliers_total_returned_payment_today - $customers_total_returned_payment_today - $shop_total_expenses_today - $suppliers_total_payment_today);
         $result['previous_balance'] = $previous_balance;
         return $result;
     }
@@ -516,6 +531,45 @@ class Search extends CI_Controller {
             'value' => 'Search',
         );
         $this->template->load(null, 'search/sale/customer_card_no', $this->data);
+    }
+    
+    public function search_customer_sales()
+    {
+        $this->data['message'] = '';
+        if($this->input->post('customer_id'))
+        {
+            $total_sale_price = 0;
+            $total_quantity= 0;
+            $total_profit = 0;
+            $sale_list = array();
+            $where = array(
+                $this->tables['customers'].'.id' => $this->input->post('customer_id')
+            );
+            $sale_list_array = $this->sale_library->where($where)->get_customer_sales()->result_array();
+            if( !empty($sale_list_array) )
+            {
+                foreach($sale_list_array as $sale_info)
+                {
+                    $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                    $total_quantity = $total_quantity + $sale_info['total_sale'];
+                    $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                    $sale_list[] = $sale_info;
+                }
+            }
+            $result_array['sale_list'] = $sale_list;  
+            $result_array['total_sale_price'] = $total_sale_price;
+            $result_array['total_profit'] = $total_profit;
+            $result_array['total_quantity'] = $total_quantity;  
+            echo json_encode($result_array);
+            return;
+        }
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'reset',
+            'value' => 'Search',
+        );
+        $this->template->load(null, 'search/sale/customer', $this->data);
     }
     
     /*

@@ -31,6 +31,40 @@ class Payments_model extends Ion_auth_model {
                             ->get();
     }
     /*
+     * This method will return total payment of all suppliers of a shop
+     * @param $shop_id, shop id
+     * @Author Nazmul on 7th March 2015
+     */
+    public function get_suppliers_total_payment($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        return $this->db->select('SUM(amount) as total_payment')
+                            ->from($this->tables['supplier_payment_info'])
+                            ->get();
+    }
+    /*
+     * This method will return total payment of all suppliers of a shop of today
+     * @param $time, time in milisecond
+     * @param $shop_id, shop id
+     * @Author Nazmul on 7th March 2015
+     */
+    public function get_suppliers_total_payment_today($time, $shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }        
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('created_on >=', $time);
+        return $this->db->select('SUM(amount) as total_payment')
+                            ->from($this->tables['supplier_payment_info'])
+                            ->get();
+    }
+    /*
      * This method will return total returned payment of a supplier of a shop
      * @param $supplier_id, supplier id
      * @param $shop_id, shop id
