@@ -53,14 +53,13 @@
 </script>
 
 <script type="text/javascript">
-    $(function() {
-        $("#input_purchase_order_no").change(function() {
-            $.ajax({
+    function return_purchase_info(){
+        $.ajax({
                 dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "purchase/get_purchase_info_from_lot_no",
                 data: {
-                    lot_no: $("#input_purchase_order_no").val()
+                    lot_no: $("#purchase_order_no").val()
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
@@ -88,6 +87,25 @@
                     }
                 }
             });
+        
+    }
+    function default_purchase_order_no_info(default_purchase_order_no){
+        $('#purchase_order_no').val(default_purchase_order_no);
+        $('#purchase_order_no').attr("disabled", true);
+        $('#div_unlock_purchase_order_no').show();
+        $('#div_lock_purchase_order_no').hide();
+//        $('#div_button_purchase_order').hide();
+        return_purchase_info();
+    }
+    function purchase_order_no_info(){
+        $('#purchase_order_no').attr("disabled", false);
+        $('#div_unlock_purchase_order_no').hide();
+        $('#div_lock_purchase_order_no').show();
+//        $('#div_button_purchase_order').show();
+    }
+    $(function() {
+        $("#purchase_order_no").change(function() {
+            return_purchase_info();
         });
         
         $("#button_purchase_order").on("click", function() {
@@ -99,7 +117,7 @@
                 return;
             }
             //checking whether purchase order no is assigned or not
-            if ($("#input_purchase_order_no").val().length === 0)
+            if ($("#purchase_order_no").val().length === 0)
             {
                 alert('Please assign Lot #');
                 return;
@@ -137,7 +155,7 @@
                         {
                             product_info.setProductId($(this).attr("id"));
                             product_info.setQuantity($(this).attr("value"));
-                            product_info.setPurchaseOrderNo($("#input_purchase_order_no").val());
+                            product_info.setPurchaseOrderNo($("#purchase_order_no").val());
                         }
                         if ($(this).attr("name") === "price")
                         {
@@ -157,7 +175,7 @@
                     return;
                 }
                 var purchase_info = new Purchase();
-                purchase_info.setOrderNo($("#input_purchase_order_no").val());
+                purchase_info.setOrderNo($("#purchase_order_no").val());
                 purchase_info.setSupplierId($("#input_purchase_supplier_id").val());
                 purchase_info.setRemarks($("#purchase_remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
@@ -177,7 +195,7 @@
                         else if (data['status'] === '1')
                         {
                             alert('Trascaction is executed successfully.');
-                            $("#input_purchase_order_no").val('');
+                            $("#purchase_order_no").val('');
                             $("#tbody_selected_product_list").html('');
                             $("#input_purchase_supplier_id").val('');
                             $("#input_purchase_supplier").val('');
@@ -291,11 +309,27 @@
                 </div>
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
-                        <label for="input_purchase_order_no" class="col-md-4 control-label requiredField">
+                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
                             Lot No
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_purchase_order_no', 'id' => 'input_purchase_order_no', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group" id="div_lock_purchase_order_no">
+                        <label for="button_purchase_default_purchase_order_no_lock" class="col-md-4 control-label requiredField">
+                            &nbsp;
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_button(array('name' => 'button_purchase_default_purchase_order_no_lock', 'id' => 'button_purchase_default_purchase_order_no_lock', 'content' => 'Lock', 'class' => 'form-control btn-success')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group" id="div_unlock_purchase_order_no">
+                        <label for="button_purchase_default_purchase_order_no_unlock" class="col-md-4 control-label requiredField">
+                            &nbsp;
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_button(array('name' => 'button_purchase_default_purchase_order_no_unlock', 'id' => 'button_purchase_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                 </div>
@@ -354,4 +388,14 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("purchase/common_modal_select_return_product");
+<?php $this->load->view("purchase/common_modal_select_return_product");?>
+<?php $this->load->view("purchase/common_lock_js"); ?>
+<?php 
+if(!empty($shop_info['purchase_default_purchase_order_no'])){
+  $default_purchase_order_no = $shop_info['purchase_default_purchase_order_no'] ;
+  print_r($default_purchase_order_no);
+  echo '<script>default_purchase_order_no_info('.$default_purchase_order_no.')</script>';  
+}else{
+    echo'<script>purchase_order_no_info()</script>';
+}
+?>

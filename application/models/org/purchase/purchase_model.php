@@ -285,6 +285,21 @@ class Purchase_model extends Ion_auth_model
         $query = 'SELECT purchase_order_no FROM purchase_order where shop_id ='.$shop_id.' order by id desc limit 1';
         return $this->db->query($query);
     }
+    /*
+     * This method will return default purchase order no of a shop
+     * @Author Rashida 8th march 2015
+     */
+    public function get_default_purchase_order_no($shop_id = 0)
+    {
+        if( $shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }  
+        $this->db->where($this->tables['shop_info'].'.id', $shop_id);
+        return $this->db->select($this->tables['shop_info'].'.purchase_default_purchase_order_no,')
+                ->from($this->tables['shop_info'])
+                ->get();
+    }
     
     /*
      * This method will return purchase order info

@@ -254,7 +254,21 @@
     });
 </script>
 <script type="text/javascript">
+    
+    function default_purchase_order_no_info(default_purchase_order_no){
+        $('#purchase_order_no').val(default_purchase_order_no);
+        $('#purchase_order_no').attr("disabled", true);
+        $('#div_unlock_purchase_order_no').show();
+        $('#div_lock_purchase_order_no').hide();
+        $('#div_button_purchase_order').hide();
+       }
+    function purchase_order_no_info(purchase_order_no){
+         $('#purchase_order_no').val(purchase_order_no);
+         $('#div_lock_purchase_order_no').show();
+         $('#div_unlock_purchase_order_no').hide();
+       }
     $(function() {
+        
         $('.dropdown-toggle').dropdown();
         $(".dropdown-menu").on("click", function(e) {
             e.stopPropagation();
@@ -262,6 +276,40 @@
         $(".btn-default").on("click", function(e) {
             $('#myModal').modal('hide');
             e.stopPropagation();
+        });
+         $("#button_purchase_default_purchase_order_no_lock").on("click", function() {
+            $('#purchase_order_no').attr("disabled", true);
+            $('#div_unlock_purchase_order_no').show();
+            $('#div_lock_purchase_order_no').hide();
+            $('#div_button_purchase_order').hide();
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "purchase/update_purchase_order_no_in_shop_info ",
+                data: {
+                    purchase_default_purchase_order_no: $('#purchase_order_no').val()
+                },
+                success: function(data) {
+                    
+                }
+            });
+        });
+        $("#button_purchase_default_purchase_order_no_unlock").on("click", function() {
+            $('#purchase_order_no').attr("disabled", false)
+            $('#div_unlock_purchase_order_no').hide();
+            $('#div_button_purchase_order').show();
+            $('#div_lock_purchase_order_no').show();
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "purchase/update_purchase_order_no_in_shop_info",
+                data: {
+                    purchase_default_purchase_order_no: ''
+                },
+                success: function(data) {
+                    $('#purchase_order_no').val(null);
+                }
+            });
         });
     });
 </script>
@@ -314,7 +362,24 @@
                             Lot No
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control','value' => $purchase_order_no)); ?>
+                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group" id="div_lock_purchase_order_no">
+                        <label for="button_purchase_default_purchase_order_no_lock" class="col-md-4 control-label requiredField">
+                            &nbsp;
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_button(array('name' => 'button_purchase_default_purchase_order_no_lock', 'id' => 'button_purchase_default_purchase_order_no_lock', 'content' => 'Lock', 'class' => 'form-control btn-success')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group" id="div_unlock_purchase_order_no">
+                        <label for="button_purchase_default_purchase_order_no_unlock" class="col-md-4 control-label requiredField">
+                            &nbsp;
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_button(array('name' => 'button_purchase_default_purchase_order_no_unlock', 'id' => 'button_purchase_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
                         </div> 
                     </div>
                 </div>
@@ -371,7 +436,7 @@
                             <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
                         </div> 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="div_button_purchase_order">
                         <label for="save" class="col-md-2 control-label requiredField">
 
                         </label>
@@ -407,3 +472,13 @@
 </div><!-- /.modal -->
 <?php $this->load->view("purchase/modal_select_supplier"); ?>
 <?php $this->load->view("common/modal_select_product_order"); ?>
+<?php // $this->load->view("purchase/common_lock_js"); ?>
+<?php 
+if(!empty($shop_info['purchase_default_purchase_order_no'])){
+  $default_purchase_order_no = $shop_info['purchase_default_purchase_order_no'] ;
+  echo '<script>default_purchase_order_no_info('.$default_purchase_order_no.')</script>';  
+}else{
+    echo'<script>purchase_order_no_info('.$purchase_order_no.')</script>';
+}
+?>
+

@@ -15,6 +15,7 @@ class Purchase extends CI_Controller {
         $this->load->library('org/common/payments');
         $this->load->library('org/product/product_library');
         $this->load->library('org/purchase/purchase_library');
+        $this->load->library('org/shop/shop_library');
         $this->load->library('org/stock/stock_library');
         $this->load->helper('url');
         
@@ -38,7 +39,13 @@ class Purchase extends CI_Controller {
     {
         redirect("purchase/purchase_order","refresh");
     }
+    
     function warehouse_purchase_order(){
+        $shop_info = $this->purchase_library->get_default_purchase_order_no()->result_array();
+
+        if(!empty($shop_info)){
+            $this->data['shop_info'] = $shop_info[0];
+        }
         $purchase_order_no = 1;
         $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
         if(!empty($purchase_order_no_array))
@@ -67,6 +74,29 @@ class Purchase extends CI_Controller {
         }
         $this->data['order_type'] = ORDER_TYPE_ADD_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/warehouse_purchase_order',$this->data);
+    }
+     /*
+     * Ajax Call
+     * This methdo will update update shop default purchase order no at purchase page
+     * @Author Rashida 8th March 2015
+     */
+    public function update_purchase_order_no_in_shop_info()
+    {
+        $result = array();
+        $additional_data = array(
+            'purchase_default_purchase_order_no' => $this->input->post('purchase_default_purchase_order_no')
+        );
+        $shop_id = $this->ion_auth->get_shop_id();
+        if($this->shop_library->update_shop($shop_id, $additional_data))
+        {
+            $result['status'] = 1;
+        }
+        else
+        {
+            $result['status'] = 0;
+        }
+        echo json_encode($result);
+        return;
     }
     /*
      * Ajax Call
@@ -358,6 +388,10 @@ class Purchase extends CI_Controller {
      */
     function purchase_order()
     {
+         $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
+        if(!empty($shop_info)){
+            $this->data['shop_info'] = $shop_info[0];
+        } 
         $purchase_order_no = 1;
         $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
         if(!empty($purchase_order_no_array))
@@ -516,6 +550,11 @@ class Purchase extends CI_Controller {
     }
     function raise_warehouse_purchase_order()
     {
+        
+        $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
+        if(!empty($shop_info)){
+            $this->data['shop_info'] = $shop_info[0];
+        }
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         if(!empty($user_group))
@@ -756,6 +795,10 @@ class Purchase extends CI_Controller {
     }
     function return_purchase_order()
     {
+        $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
+        if(!empty($shop_info)){
+            $this->data['shop_info'] = $shop_info[0];
+        } 
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         if(!empty($user_group))
@@ -777,8 +820,13 @@ class Purchase extends CI_Controller {
         $this->data['order_type'] = ORDER_TYPE_RETURN_SHOWROOM_PURCHASE;
         $this->template->load(null, 'purchase/return_purchase_order',$this->data);
     }
+    
     function return_warehouse_purchase_order()
     {
+        $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
+        if(!empty($shop_info)){
+            $this->data['shop_info'] = $shop_info[0];
+        }
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         if(!empty($user_group))
