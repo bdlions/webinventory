@@ -78,7 +78,7 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer sale by Card No</h3>
+<h3>Search Customer sale</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
