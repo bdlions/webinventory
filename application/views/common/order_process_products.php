@@ -7,17 +7,17 @@
     {% while(product_info){ %}
     <tr id="product_row_<?php echo '{%= product_info.id%}'; ?>">
     <td style="padding: 0px" >
-        <label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 13px 40px;">
+        <label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 10px 40px;">
             <input id="<?php echo '{%= product_info.id%}'; ?>" name="append_product_checkbox_<?php echo '{%= product_info.id%}'; ?>" class="" type="checkbox">
         </label>
     </td>
     <td id="<?php echo '{%= product_info.id%}'; ?>" style=" padding: 0px" >
-        <label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 13px 40px">
+        <label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 10px 40px">
             <input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?>
         </label>
     </td>
     <td style=" padding: 0px" >
-        <label for="<?php echo '{%= product_info.id%}'; ?>"  style="padding: 13px 40px">
+        <label for="<?php echo '{%= product_info.id%}'; ?>"  style="padding: 10px 40px">
             <?php echo '{%= product_info.category_unit %}'; ?>
         </label>
     </td>
