@@ -1,65 +1,26 @@
 <script type="text/javascript">
-   function purchase_raise_info(){
-    $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
-                data: {
-                    lot_no: $("#purchase_order_no").val()
-                },
-                success: function(data) {
-                    var supplier_info = data['supplier_info'];
-                    var purchased_product_list = data['purchased_product_list'];
-                    var supplier_due = data['supplier_due'];
-                    set_purchased_product_list(purchased_product_list);
-                    stock_purc_prod_list = data['stock_purchased_product_list'];
-                    if(supplier_info.supplier_id)
-                    {
-//                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
-                        $("#input_purchase_supplier_id").val(supplier_info.supplier_id);
-                        $("#input_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
-                        $("#input_purchase_phone").val(supplier_info.phone);
-                        $("#input_purchase_company").val(supplier_info.company);
-                        $('#input_purchase_product').attr('type', 'text');
-                        $("#total_purchase_price").val('');
-                    }
-                    else
-                    {
-                        $("#input_purchase_supplier_id").val('');
-                        $("#input_purchase_supplier").val('');
-                        $("#input_purchase_phone").val('');
-                        $("#input_purchase_company").val('');
-                        $('#input_purchase_product').attr('type', 'hidden');
-                        $("#total_purchase_price").val('');
-                    }
-                }
-            });   
-   }
-    function default_purchase_order_no_info(default_purchase_order_no){
-        $('#purchase_order_no').val(default_purchase_order_no);
-        $('#purchase_order_no').attr("disabled", true);
-        $('#div_unlock_purchase_order_no').show();
-        $('#div_lock_purchase_order_no').hide();
-//        $('#div_button_purchase_order').hide();
-        purchase_raise_info();
-    }
-    function purchase_order_no_info(){
-        $('#purchase_order_no').attr("disabled", false);
-        $('#div_unlock_purchase_order_no').hide();
-        $('#div_lock_purchase_order_no').show();
-//        $('#div_button_purchase_order').show();
-    }
+  
 //    var stock_purc_prod_list;
     var ware_purc_prod_list;
-    $(document).ready(function() {
-        var product_data = <?php echo json_encode($product_list_array) ?>;        
-        set_product_list(product_data);
-        $("#total_purchase_price").val('');        
-    });
+    
     $(function() {
+        var default_purchase_order_no = '<?php echo $shop_info['purchase_default_purchase_order_no'] ?>';
+        if( default_purchase_order_no != "")
+        {
+            purchase_default_info(default_purchase_order_no);
+            purchase_raise_info();
+        }
+        else
+        {
+            purchase_info();
+        }  
         $("#purchase_order_no").change(function() {
             purchase_raise_info();
         });
+        
+        var product_data = <?php echo json_encode($product_list_array) ?>;        
+        set_product_list(product_data);
+        $("#total_purchase_price").val('');
         
         $("#button_purchase_order").on("click", function() {
             //validation checking of purchase order
@@ -208,7 +169,6 @@
         });
     });
 
-    
     function append_selected_product(prod_info)
     {
         var is_product_previously_selected = false;
@@ -249,6 +209,42 @@
     function isNumber(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
+     function purchase_raise_info(){
+    $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
+                data: {
+                    lot_no: $("#purchase_order_no").val()
+                },
+                success: function(data) {
+                    var supplier_info = data['supplier_info'];
+                    var purchased_product_list = data['purchased_product_list'];
+                    var supplier_due = data['supplier_due'];
+                    set_purchased_product_list(purchased_product_list);
+                    stock_purc_prod_list = data['stock_purchased_product_list'];
+                    if(supplier_info.supplier_id)
+                    {
+//                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
+                        $("#input_purchase_supplier_id").val(supplier_info.supplier_id);
+                        $("#input_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
+                        $("#input_purchase_phone").val(supplier_info.phone);
+                        $("#input_purchase_company").val(supplier_info.company);
+                        $('#input_purchase_product').attr('type', 'text');
+                        $("#total_purchase_price").val('');
+                    }
+                    else
+                    {
+                        $("#input_purchase_supplier_id").val('');
+                        $("#input_purchase_supplier").val('');
+                        $("#input_purchase_phone").val('');
+                        $("#input_purchase_company").val('');
+                        $('#input_purchase_product').attr('type', 'hidden');
+                        $("#total_purchase_price").val('');
+                    }
+                }
+            });   
+   }
 </script>
 
 <h3> Raise Purchase Order</h3>
@@ -293,32 +289,7 @@
                         </div> 
                     </div>
                 </div>
-                <div class ="col-md-5 form-horizontal margin-top-bottom">
-                    <div class="form-group">
-                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
-                            Lot No
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group" id="div_lock_purchase_order_no">
-                        <label for="button_purchase_default_purchase_order_no_lock" class="col-md-4 control-label requiredField">
-                            &nbsp;
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_button(array('name' => 'button_purchase_default_purchase_order_no_lock', 'id' => 'button_purchase_default_purchase_order_no_lock', 'content' => 'Lock', 'class' => 'form-control btn-success')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group" id="div_unlock_purchase_order_no">
-                        <label for="button_purchase_default_purchase_order_no_unlock" class="col-md-4 control-label requiredField">
-                            &nbsp;
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_button(array('name' => 'button_purchase_default_purchase_order_no_unlock', 'id' => 'button_purchase_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
-                        </div> 
-                    </div>
-                </div>
+            <?php $this->load->view("purchase/common_purchase_lock"); ?>
             </div>
             <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
@@ -375,13 +346,4 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php $this->load->view("common/modal_select_product_order");?>
-<?php $this->load->view("purchase/common_lock_js"); ?>
-<?php 
-if(!empty($shop_info['purchase_default_purchase_order_no'])){
-  $default_purchase_order_no = $shop_info['purchase_default_purchase_order_no'] ;
-  print_r($default_purchase_order_no);
-  echo '<script>default_purchase_order_no_info('.$default_purchase_order_no.')</script>';  
-}else{
-    echo'<script>purchase_order_no_info()</script>';
-}
-?>
+

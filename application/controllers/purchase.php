@@ -88,11 +88,11 @@ class Purchase extends CI_Controller {
         $shop_id = $this->ion_auth->get_shop_id();
         if($this->shop_library->update_shop($shop_id, $additional_data))
         {
-            $result['status'] = 1;
+            $result['message'] = $this->shop_library->messages_alert();
         }
         else
         {
-            $result['status'] = 0;
+            $result['message'] = $this->shop_library->errors_alert();
         }
         echo json_encode($result);
         return;
@@ -387,9 +387,9 @@ class Purchase extends CI_Controller {
      */
     function purchase_order()
     {
-         $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
-        if(!empty($shop_info)){
-            $this->data['shop_info'] = $shop_info[0];
+        $shop_info_array = $this->shop_library->get_shop_info()->result_array();
+        if(!empty($shop_info_array)){
+            $this->data['shop_info'] = $shop_info_array[0];
         } 
         $purchase_order_no = 1;
         $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
@@ -550,9 +550,9 @@ class Purchase extends CI_Controller {
     function raise_warehouse_purchase_order()
     {
         
-        $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
-        if(!empty($shop_info)){
-            $this->data['shop_info'] = $shop_info[0];
+       $shop_info_array = $this->shop_library->get_shop_info()->result_array();
+        if(!empty($shop_info_array)){
+            $this->data['shop_info'] = $shop_info_array[0];
         }
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
@@ -794,9 +794,9 @@ class Purchase extends CI_Controller {
     }
     function return_purchase_order()
     {
-        $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
-        if(!empty($shop_info)){
-            $this->data['shop_info'] = $shop_info[0];
+       $shop_info_array = $this->shop_library->get_shop_info()->result_array();
+        if(!empty($shop_info_array)){
+            $this->data['shop_info'] = $shop_info_array[0];
         } 
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
@@ -822,9 +822,9 @@ class Purchase extends CI_Controller {
     
     function return_warehouse_purchase_order()
     {
-        $shop_info= $this->purchase_library->get_default_purchase_order_no()->result_array();
-        if(!empty($shop_info)){
-            $this->data['shop_info'] = $shop_info[0];
+        $shop_info_array = $this->shop_library->get_shop_info()->result_array();
+        if(!empty($shop_info_array)){
+            $this->data['shop_info'] = $shop_info_array[0];
         }
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         

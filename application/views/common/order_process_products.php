@@ -110,6 +110,13 @@
            $('input[name=delete_type]:checked').attr('checked', false);
            $('#modal_td_delete').modal('hide');
         });
+        
+       $("#tbody_selected_product_list").on("click", "td", function()
+        {
+            alert("gfgfh");
+            $(this).parent().find(':checkbox').prop("checked");
+        });
+           
     });
    
 </script>
@@ -135,6 +142,7 @@
         </table>
     </div>
 </div>
+
 <div class="modal fade" id="modal_td_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
