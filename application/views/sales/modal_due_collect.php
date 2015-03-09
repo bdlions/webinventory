@@ -40,17 +40,8 @@
                     if(data == 1)
                     {
                         alert('Due collect amount successfully stored.');
-                        var c_list = get_customer_list();
-                        for (var counter = 0; counter < c_list.length; counter++)
-                        {
-                            var cust_info = c_list[counter];
-                            if (cust_info['customer_id'] === customer_id)
-                            {
-                                update_fields_selected_customer(cust_info);
-                                $('#modal_due_collect').modal('hide');
-                                return;
-                            }
-                        }   
+                        $('#modal_due_collect').modal('hide');
+                         
                     }
                     else
                     {
