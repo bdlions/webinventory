@@ -93,7 +93,7 @@ class Stock_library {
         {
             $transactions_info['created_on'] = $this->utils->process_time($transactions_info['created_on']);
             $transactions_info['quantity'] = 0;
-            if($transactions_info['transaction_category_id'] == STOCK_PURCHASE_PARTIAL_IN)
+            if($transactions_info['transaction_category_id'] == STOCK_PURCHASE_PARTIAL_IN || $transactions_info['transaction_category_id'] == STOCK_PURCHASE_IN)
             {
                 $transactions_info['quantity'] = $transactions_info['stock_in'];
             }

@@ -155,7 +155,7 @@ class Stock_model extends Ion_auth_model
         }
         $this->db->where($this->tables['stock_info'].'.purchase_order_no', $purchase_order_no);
         $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
-        $this->db->where_in($this->tables['stock_info'].'.transaction_category_id', array(STOCK_PURCHASE_PARTIAL_IN, STOCK_PURCHASE_PARTIAL_OUT));
+        $this->db->where_in($this->tables['stock_info'].'.transaction_category_id', array(STOCK_PURCHASE_IN, STOCK_PURCHASE_PARTIAL_IN, STOCK_PURCHASE_PARTIAL_OUT));
         $this->db->order_by($this->tables['stock_info'].'.created_on','desc');
         return $this->db->select($this->tables['stock_info'].'.product_id,'.$this->tables['stock_info'].'.purchase_order_no,'.$this->tables['stock_info'].'.stock_in,'.$this->tables['stock_info'].'.stock_out,'.$this->tables['stock_info'].'.transaction_category_id,'.$this->tables['stock_info'].'.created_on,'.$this->tables['stock_transaction_category'].'.description as transaction_type,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['product_purchase_order'].'.unit_price')
                     ->from($this->tables['stock_info'])
