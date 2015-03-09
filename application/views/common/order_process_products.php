@@ -6,9 +6,21 @@
     {% var i=0, product_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(product_info){ %}
     <tr id="product_row_<?php echo '{%= product_info.id%}'; ?>">
-    <td style="width: 20px; padding: 0px" ><label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="<?php echo '{%= product_info.id%}'; ?>" name="append_product_checkbox_<?php echo '{%= product_info.id%}'; ?>" class="" type="checkbox"></label></td>
-    <td id="<?php echo '{%= product_info.id%}'; ?>"><input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?></td>
-    <td><?php echo '{%= product_info.category_unit %}'; ?></td>
+    <td style="width: 20px; padding: 0px" >
+        <label for="<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;">
+            <input id="<?php echo '{%= product_info.id%}'; ?>" name="append_product_checkbox_<?php echo '{%= product_info.id%}'; ?>" class="" type="checkbox">
+        </label>
+    </td>
+    <td id="<?php echo '{%= product_info.id%}'; ?>">
+        <label for="<?php echo '{%= product_info.id%}'; ?>">
+            <input name="name" type="hidden" value="<?php echo '{%= product_info.name%}'; ?>"/><?php echo '{%= product_info.name%}'; ?>
+        </label>
+    </td>
+    <td>
+        <label for="<?php echo '{%= product_info.id%}'; ?>">
+            <?php echo '{%= product_info.category_unit %}'; ?>
+        </label>
+    </td>
     <td class="purchase_order_number_td"><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>           
     <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
     {% if(product_info.readonly == 'true') { %}
@@ -60,7 +72,7 @@
             }
         });
     }
-    $(color_setter());
+//    $(color_setter());
     //remove selected product by modal window @rashida on 11th february
     function delete_row( product_id )
     {
@@ -111,11 +123,18 @@
            $('#modal_td_delete').modal('hide');
         });
         
-       $("#tbody_selected_product_list").on("click", "td", function()
-        {
-            alert("gfgfh");
-            $(this).parent().find(':checkbox').prop("checked");
-        });
+//       $("#tbody_selected_product_list").on("click", "tr", function()
+//        {
+//            
+//            if($('input[type=checkbox]')){
+//              $(this).attr('checked', true);  
+//              $(this).parents('tr').css('background-color', '#47A447');  
+//            }
+////            elseif($('input[type=checkbox]:checked')){
+////                $(this).attr('checked', false);  
+////              $(this).parents('tr').css('background-color', 'transparent');  
+////            }
+//        });
            
     });
    
