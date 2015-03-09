@@ -1,10 +1,3 @@
-<script type="text/javascript">
-    $(document).ready(function() {
-        var product_data = <?php echo json_encode($product_list_array) ?>;        
-        set_product_list(product_data);        
-        $("#total_purchase_price").val('');        
-    });
-</script>
 <script>
     function append_selected_product(prod_info)
     {
@@ -107,6 +100,27 @@
             });
     }
     $(function() {
+        var product_data = <?php echo json_encode($product_list_array) ?>;        
+        set_product_list(product_data);        
+        $("#total_purchase_price").val('');
+        $('.dropdown-toggle').dropdown();
+        $(".dropdown-menu").on("click", function(e) {
+            e.stopPropagation();
+        });
+        $(".btn-default").on("click", function(e) {
+            $('#myModal').modal('hide');
+            e.stopPropagation();
+        });
+        
+        var default_purchase_order_no = '<?php echo $shop_info['purchase_default_purchase_order_no'] ?>';
+        if( default_purchase_order_no != "")
+        {
+            default_purchase_order_no_info(default_purchase_order_no);
+        }
+        else
+        {
+            purchase_order_no_info();
+        }
         $("#purchase_order_no").change(function() {
             raise_warehouse_info();
         });
@@ -261,19 +275,6 @@
 
     });
 </script>
-<script type="text/javascript">
-    $(function() {
-        $('.dropdown-toggle').dropdown();
-        $(".dropdown-menu").on("click", function(e) {
-            e.stopPropagation();
-        });
-        $(".btn-default").on("click", function(e) {
-            $('#myModal').modal('hide');
-            e.stopPropagation();
-        });
-    });
-</script>
-
 <h3>Raise Warehouse Purchase Order</h3>
 <div class ="top-bottom-padding form-background">
     <div class="row">
@@ -414,13 +415,4 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php $this->load->view("common/modal_select_product_order");?>
-<?php $this->load->view("purchase/common_lock_js"); ?>
-<?php 
-if(!empty($shop_info['purchase_default_purchase_order_no'])){
-  $default_purchase_order_no = $shop_info['purchase_default_purchase_order_no'] ;
-  print_r($default_purchase_order_no);
-  echo '<script>default_purchase_order_no_info('.$default_purchase_order_no.')</script>';  
-}else{
-    echo'<script>purchase_order_no_info()</script>';
-}
-?>
+<?php $this->load->view("purchase/common_lock_js");

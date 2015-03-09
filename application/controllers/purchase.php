@@ -41,10 +41,9 @@ class Purchase extends CI_Controller {
     }
     
     function warehouse_purchase_order(){
-        $shop_info = $this->purchase_library->get_default_purchase_order_no()->result_array();
-
-        if(!empty($shop_info)){
-            $this->data['shop_info'] = $shop_info[0];
+        $shop_info_array = $this->shop_library->get_shop_info()->result_array();
+        if(!empty($shop_info_array)){
+            $this->data['shop_info'] = $shop_info_array[0];
         }
         $purchase_order_no = 1;
         $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
