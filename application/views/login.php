@@ -42,7 +42,7 @@
     <div class="header_background">
         <div class="row">
             <div class="col-md-offset-1 col-md-5">
-                <div class="col-xs-12 col-sm-12">
+                <div class="col-xs-12 col-sm-12" style="padding-top: 12px;">
                     <img src="<?php echo base_url(); ?>resources/images/webinventory.png">
                 </div>
             </div>
@@ -53,14 +53,13 @@
                         <div class="col-xs-12 col-sm-12"><label> <span class="user_login_style"><?php echo lang('login_identity_label', 'identity'); ?></span> </label></div>
                         <div class="col-xs-12 col-sm-12"><?php echo form_input($identity); ?></div>
                         <div class="col-xs-12 col-sm-12">
-                            <input type="checkbox">
-                            <span class="user_password_style"> keep me logged in</span>
+                            <div class="text_padding_top user_password_style"><input type="checkbox"> Keep me logged in</div>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="col-xs-12 col-sm-12"><label> <span class="user_login_style"> <?php echo lang('login_password_label', 'password'); ?> </span> </label></div>
                         <div class="col-xs-12 col-sm-12"><?php echo form_input($password); ?></div>
-                        <div class="col-xs-12 col-sm-12"><span class="user_password_style"><a href="#">Forgot your password? </a></span></div>
+                        <div class="col-xs-12 col-sm-12"><div class="text_padding_top user_password_style"><a href="#">Forgot your password? </a></div></div>
                     </div>
                     <div class="col-md-2">
                         <div class="col-xs-12 col-sm-12" ><input type="submit" value="Login" name="login_submit_btn" id="login_submit_btn" class="login_button_style"></div>
