@@ -785,29 +785,29 @@ class Sale extends CI_Controller {
        
     }
     
-    /*
-     * Ajax Call
-     * This methdo will update update shop default purchase order no at sale page
-     * @Author Nazmul on 24th February 2015
-     */
-    public function update_shop_info()
-    {
-        $result = array();
-        $additional_data = array(
-            'sale_default_purchase_order_no' => $this->input->post('sale_default_purchase_order_no')
-        );
-        $shop_id = $this->ion_auth->get_shop_id();
-        if($this->shop_library->update_shop($shop_id, $additional_data))
-        {
-            $result['status'] = 1;
-        }
-        else
-        {
-            $result['status'] = 0;
-        }
-        echo json_encode($result);
-        return;
-    }
+//    /*
+//     * Ajax Call
+//     * This methdo will update update shop default purchase order no at sale page
+//     * @Author Nazmul on 24th February 2015
+//     */
+//    public function update_shop_info()
+//    {
+//        $result = array();
+//        $additional_data = array(
+//            'sale_default_purchase_order_no' => $this->input->post('sale_default_purchase_order_no')
+//        );
+//        $shop_id = $this->ion_auth->get_shop_id();
+//        if($this->shop_library->update_shop($shop_id, $additional_data))
+//        {
+//            $result['message'] = $this->shop_library->messages_alert();
+//        }
+//        else
+//        {
+//            $result['message'] = $this->shop_library->errors_alert();
+//        }
+//        echo json_encode($result);
+//        return;
+//    }
     
     public function download_sale_order()
     {

@@ -74,29 +74,7 @@ class Purchase extends CI_Controller {
         $this->data['order_type'] = ORDER_TYPE_ADD_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/warehouse_purchase_order',$this->data);
     }
-     /*
-     * Ajax Call
-     * This methdo will update update shop default purchase order no at purchase page
-     * @Author Rashida 8th March 2015
-     */
-    public function update_purchase_order_no_in_shop_info()
-    {
-        $result = array();
-        $additional_data = array(
-            'purchase_default_purchase_order_no' => $this->input->post('purchase_default_purchase_order_no')
-        );
-        $shop_id = $this->ion_auth->get_shop_id();
-        if($this->shop_library->update_shop($shop_id, $additional_data))
-        {
-            $result['message'] = $this->shop_library->messages_alert();
-        }
-        else
-        {
-            $result['message'] = $this->shop_library->errors_alert();
-        }
-        echo json_encode($result);
-        return;
-    }
+    
     /*
      * Ajax Call
      * This method will store purchase info into the system
@@ -250,6 +228,7 @@ class Purchase extends CI_Controller {
     
     function raise_warehouse_purchase()
     {
+        $forward_showroom = $this->input->post('forward_showroom');
         $current_time = now();
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
@@ -327,7 +306,7 @@ class Purchase extends CI_Controller {
             'modified_on' => $current_time,
             'modified_by' => $user_id
         ); 
-        $status = $this->purchase_library->raise_warehouse_purchase_order($additional_data, $new_warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_transaction_info_array);
+        $status = $this->purchase_library->raise_warehouse_purchase_order($additional_data, $new_warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_transaction_info_array, $forward_showroom);
         if( $status === TRUE )
         {
             $response['status'] = '1';

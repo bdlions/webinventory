@@ -13,64 +13,14 @@
         $("#button_due_collect").on("click", function() {
             $('#modal_due_collect').modal('show');
         });
-        $('#div_lock_purchase_order_no').show();
-        $('#div_unlock_purchase_order_no').hide();
-        $("#button_sale_default_purchase_order_no_lock").on("click", function() {
-            $('#input_table_default_purchase_order_no').val($('#input_sale_default_purchase_order_no').val());
-//            $('input[name^=purchase_order_no]').each(function(){
-//                $(this).val($('#input_sale_default_purchase_order_no').val());
-//                $(this).attr("disabled", true);
-//            });
-            $("input", "#tbody_selected_product_list").each(function() {
-                if ($(this).attr("name") === "purchase_order_no")
-                {
-                    $(this).attr('value', $('#input_sale_default_purchase_order_no').val());
-                    $(this).attr("disabled", true);
-                }
-            });
-            $('#input_sale_default_purchase_order_no').attr("disabled", true);
-            $('#div_unlock_purchase_order_no').show();
-            $('#div_lock_purchase_order_no').hide();
-            $('#input_table_header_purchase_order_no').val($('#input_sale_default_purchase_order_no').val());
-            $('#input_table_header_purchase_order_no').attr("disabled", true);
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "sale/update_shop_info",
-                data: {
-                    sale_default_purchase_order_no: $('#input_sale_default_purchase_order_no').val()
-                },
-                success: function(data) {
-                    
-                }
-            });
-        });
-        $("#button_sale_default_purchase_order_no_unlock").on("click", function() {
-            $('#input_table_header_purchase_order_no').attr("disabled", false);
-            $('#input_sale_default_purchase_order_no').attr("disabled", false)
-            $('#div_unlock_purchase_order_no').hide();
-            $('#div_lock_purchase_order_no').show();
-//            $('input[name^=purchase_order_no]').each(function(){
-//                $(this).attr("disabled", false);
-//            });
-            $("input", "#tbody_selected_product_list").each(function() {
-                if ($(this).attr("name") === "purchase_order_no")
-                {
-                    $(this).attr("disabled", false);
-                }
-            });
-            $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "sale/update_shop_info",
-                data: {
-                    sale_default_purchase_order_no: ''
-                },
-                success: function(data) {
-                    
-                }
-            });
-        });
+        var default_purchase_order_no = '<?php echo $shop_info['sale_default_purchase_order_no'] ?>';
+        if( default_purchase_order_no != "")
+        {
+            $('#input_table_header_purchase_order_no').val(default_purchase_order_no);
+            $('.disabler_class').attr("disabled", true);
+        }
+        
+
     });
     function set_default_values_at_sale()
     {
@@ -97,6 +47,12 @@
     function append_selected_product(prod_info)
     {
         $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        if( $('#input_table_header_purchase_order_no').is(":disabled") ){
+            $('.disabler_class').attr("disabled", true);
+            $('input[name^=purchase_order_no]').each(function(){
+                $(this).val( $('#input_table_header_purchase_order_no').val() );
+            })
+        }
         color_setter();
         var total_sale_price = 0;
         $("input", "#tbody_selected_product_list").each(function() {
@@ -450,30 +406,7 @@
                     </div>
                 </div>
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
-                    <div class="form-group">
-                        <label for="input_sale_default_purchase_order_no" class="col-md-4 control-label requiredField">
-                            lot No.
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_sale_default_purchase_order_no', 'id' => 'input_sale_default_purchase_order_no', 'class' => 'form-control')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group" id="div_lock_purchase_order_no">
-                        <label for="button_sale_default_purchase_order_no_lock" class="col-md-4 control-label requiredField">
-                            &nbsp;
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_button(array('name' => 'button_sale_default_purchase_order_no_lock', 'id' => 'button_sale_default_purchase_order_no_lock', 'content' => 'Lock', 'class' => 'form-control btn-success')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group" id="div_unlock_purchase_order_no">
-                        <label for="button_sale_default_purchase_order_no_unlock" class="col-md-4 control-label requiredField">
-                            &nbsp;
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_button(array('name' => 'button_sale_default_purchase_order_no_unlock', 'id' => 'button_sale_default_purchase_order_no_unlock', 'content' => 'Unlock', 'class' => 'form-control btn-success')); ?>
-                        </div> 
-                    </div>
+
                     <input type="hidden" id="sale_order_no" name="sale_order_no" value=""/>
                     <div class="form-group">
                         <label for="status" class="col-md-4 control-label requiredField">

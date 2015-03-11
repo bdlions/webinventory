@@ -4,13 +4,11 @@
         var default_purchase_order_no = '<?php echo $shop_info['purchase_default_purchase_order_no'] ?>';
         if( default_purchase_order_no != "")
         {
-            purchase_default_info(default_purchase_order_no);
+            $('#purchase_order_no').val(default_purchase_order_no);
+            $('#purchase_order_no').attr("disabled", true);
             raise_warehouse_info();
         }
-        else
-        {
-            purchase_info();
-        }
+
         $("#purchase_order_no").change(function() {
             raise_warehouse_info();
         });
@@ -98,6 +96,7 @@
                 purchase_info.setSupplierId($("#input_raise_purchase_supplier_id").val());
                 purchase_info.setRemarks($("#purchase_remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
+                
                 $.ajax({
                     dataType: 'json',
                     type: "POST",
@@ -105,7 +104,8 @@
                     data: {
                         product_list: product_list,
                         purchase_info: purchase_info,
-                        current_due: $("#current_due").val()
+                        current_due: $("#current_due").val(),
+                        forward_showroom:($("#checkbox_forward_showroom").prop('checked'))?1:0
                     },
                     success: function(data) {
                         if (data['status'] === '0')
@@ -306,7 +306,16 @@
                         </div> 
                     </div>
                 </div>
-                <?php $this->load->view("purchase/common_purchase_lock");?>
+                <div class ="col-md-5 form-horizontal margin-top-bottom">
+                    <div class="form-group">
+                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
+                            Lot No
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
+                </div>
             </div>
             <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
@@ -342,6 +351,14 @@
                         </label>
                         <div class ="col-md-3">
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="current_due" class="col-md-7 control-label requiredField">
+                            Forward to Showroom
+                        </label>
+                        <div class ="col-md-3">
+                            <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
                         </div> 
                     </div>
                     <div class="form-group" id="div_button_purchase_order">

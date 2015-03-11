@@ -206,6 +206,7 @@ class Shop extends CI_Controller {
     
    public function update_shop($shop_id)
    {
+
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         if(!empty($user_group))
@@ -226,7 +227,8 @@ class Shop extends CI_Controller {
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
         $this->form_validation->set_rules('shop_address', 'Shop Address', 'xss_clean|required');
-        $this->form_validation->set_rules('purchase_order_no', 'Lot No', 'xss_clean');
+        $this->form_validation->set_rules('purchase_default_purchase_order_no', 'Default Purchase Lot No', 'xss_clean');
+        $this->form_validation->set_rules('sale_default_purchase_order_no', 'Default Sale Lot No', 'xss_clean');
         
         if ($this->input->post('submit_update_shop')) 
         {
@@ -236,7 +238,8 @@ class Shop extends CI_Controller {
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
                     'shop_phone' => $this->input->post('shop_phone'),
-                    'purchase_order_no' => $this->input->post('purchase_order_no'),
+                    'purchase_default_purchase_order_no' => $this->input->post('purchase_default_purchase_order_no'),
+                    'sale_default_purchase_order_no' => $this->input->post('sale_default_purchase_order_no'),
                     'modified_date' => date('Y-m-d H:i:s')
                 );
                 if( $this->shop_library->update_shop($shop_id, $data) !== FALSE)
@@ -284,9 +287,15 @@ class Shop extends CI_Controller {
             'type' => 'text',
             'value' => $shop_info['address'],
         );
-        $this->data['purchase_order_no'] = array(
-            'name' => 'purchase_order_no',
-            'id' => 'purchase_order_no',
+        $this->data['purchase_default_purchase_order_no'] = array(
+            'name' => 'purchase_default_purchase_order_no',
+            'id' => 'purchase_default_purchase_order_no',
+            'type' => 'text',
+            'value' => $shop_info['purchase_default_purchase_order_no'],
+        );
+        $this->data['sale_default_purchase_order_no'] = array(
+            'name' => 'sale_default_purchase_order_no',
+            'id' => 'sale_default_purchase_order_no',
             'type' => 'text',
             'value' => $shop_info['sale_default_purchase_order_no'],
         );
@@ -299,6 +308,7 @@ class Shop extends CI_Controller {
         );
         $this->template->load(null, 'shop/update_shop',$this->data);
     }
+
     /*
      * This method will update currently logged in shop of a user
      * @author Nazmul on 23rd January 2014

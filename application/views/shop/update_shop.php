@@ -32,11 +32,19 @@
                 </div> 
             </div>
             <div class="form-group">
-                <label for="purchsae_order_no" class="col-md-6 control-label requiredField">
-                    Lot No
+                <label for="purchase_default_purchase_order_no" class="col-md-6 control-label requiredField">
+                    Default Purchase Lot No
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($purchase_order_no+array('class'=>'form-control')); ?>
+                    <?php echo form_input($purchase_default_purchase_order_no+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="sale_default_purchase_order_no" class="col-md-6 control-label requiredField">
+                   Default Sale Lot No
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($sale_default_purchase_order_no+array('class'=>'form-control')); ?>
                 </div> 
             </div>
             <div class="form-group">

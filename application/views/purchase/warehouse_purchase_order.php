@@ -5,13 +5,15 @@
         var purchase_order_no = '<?php echo $purchase_order_no ?>';
         if( default_purchase_order_no != "")
         {
-            purchase_default_info(default_purchase_order_no);
+            $('#purchase_order_no').val(default_purchase_order_no);
+            $('#purchase_order_no').attr("disabled", true);
             $('#div_button_warehouse_purchase_order').hide();
         }
         else
         {
             $('#purchase_order_no').val(purchase_order_no);
-            purchase_info();
+            $('#purchase_order_no').attr("disabled", false);
+            $('#div_button_warehouse_purchase_order').show();
         }
         
         var product_data = <?php echo json_encode($product_list_array) ?>;        
@@ -315,7 +317,15 @@
                         </div> 
                     </div>
                 </div>
-                <?php $this->load->view("purchase/common_purchase_lock"); ?>
+                <div class ="col-md-5 form-horizontal margin-top-bottom">
+                    <div class="form-group">
+                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
+                            Lot No
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
             </div>
             <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
@@ -405,6 +415,4 @@
 </div><!-- /.modal -->
 <?php $this->load->view("purchase/modal_select_supplier"); ?>
 <?php $this->load->view("common/modal_select_product_order"); ?>
-<?php // $this->load->view("purchase/common_purchase_lock"); ?>
-
 

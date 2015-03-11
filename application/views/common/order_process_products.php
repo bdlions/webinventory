@@ -21,7 +21,7 @@
             <?php echo '{%= product_info.category_unit %}'; ?>
         </label>
     </td>
-    <td class="purchase_order_number_td"><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>           
+    <td class="purchase_order_number_td"><input class="disabler_class input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="purchase_order_no" type="text" value=""/></td>           
     <td><input class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="quantity" type="text" value=""/></td>
     {% if(product_info.readonly == 'true') { %}
     <td><input readonly="readonly" class="input-width-table" id="<?php echo '{%= product_info.id%}'; ?>" name="price" type="text" value="{%= product_info.unit_price %}"/></td>
@@ -148,7 +148,7 @@
                     <th style="padding: 18px">Product Name</th>
                     <th style="padding: 18px">Product Unit</th>
                     <?php if($order_type == ORDER_TYPE_ADD_SALE){?>
-                    <th style="padding-bottom: 16px"><span style="padding-right: 2px;">Lot No</span><input type="text" id="input_table_header_purchase_order_no" name="input_table_header_purchase_order_no" onkeyup="set_all_lot_no(this)" style="width: 70px; height: 20px;"></th>
+                    <th style="padding-bottom: 16px"><span style="padding-right: 2px;">Lot No</span><input type="text" id="input_table_header_purchase_order_no" name="input_table_header_purchase_order_no" class="disabler_class"onkeyup="set_all_lot_no(this)" style="width: 70px; height: 20px;"></th>
                     <?php } ?>
                     <th style="padding: 18px">Quantity</th>                    
                     <th style="padding: 18px">Unit Price</th>

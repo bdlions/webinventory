@@ -4,13 +4,10 @@
         var default_purchase_order_no = '<?php echo $shop_info['purchase_default_purchase_order_no'] ?>';
         if( default_purchase_order_no != "")
         {
-            purchase_default_info(default_purchase_order_no);
+            $('#purchase_order_no').val(default_purchase_order_no);
+            $('#purchase_order_no').attr("disabled", true);
             return_warehouse_info();
-        }
-        else
-        {
-            purchase_info();
-        }  
+        } 
         $("#purchase_order_no").change(function() {
             return_warehouse_info();
         });
@@ -319,7 +316,16 @@
                         </div> 
                     </div>
                 </div>
-            <?php $this->load->view("purchase/common_purchase_lock"); ?>
+                <div class ="col-md-5 form-horizontal margin-top-bottom">
+                    <div class="form-group">
+                        <label for="purchase_order_no" class="col-md-4 control-label requiredField">
+                            Lot No
+                        </label>
+                        <div class ="col-md-8">
+                            <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
+                </div>
             </div>
             <?php $this->load->view("common/order_process_products"); ?>
             <div class="row margin-top-bottom">
