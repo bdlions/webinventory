@@ -26,13 +26,13 @@
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add Warehouse Purchase</a></li>
-        <li><a href="<?php echo base_url("purchase/raise_warehouse_purchase_order");?>">Raise Warehouse Purchase Order</a></li>
-        <li><a href="<?php echo base_url("purchase/return_warehouse_purchase_order");?>">Return Warehouse Purchase Order</a></li>
+        <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add new purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/raise_warehouse_purchase_order");?>">Raise purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/return_warehouse_purchase_order");?>">Return purchase</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("purchase/purchase_order");?>">Raise Stock</a></li>
-        <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return Stock</a></li>
-        <li><a href="<?php echo base_url("purchase/show_showroom_purchase_transactions");?>">Show Purchase Transactions</a></li>
+        <li><a href="<?php echo base_url("purchase/purchase_order");?>">Raise stock</a></li>
+        <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return stock</a></li>
+        <li><a href="<?php echo base_url("purchase/show_showroom_purchase_transactions");?>">Show purchase transactions</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("./supplier/create_supplier");?>">Add New Supplier</a></li>
         <li><a href="<?php echo base_url("./supplier/show_all_suppliers/".PAGINATION_SUPPLIER_LIST_LIMIT);?>">Supplier List</a></li>
