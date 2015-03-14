@@ -127,6 +127,7 @@
                             $("#total_purchase_price").val('');
                             $("#previous_due").val('');
                             $("#current_due").val('');
+                            $("#checkbox_forward_showroom").removeAttr('checked');
                         }
                     }
                 });

@@ -36,6 +36,7 @@
         $("#previous_due").val(0);
         $("#cash_paid_amount").val(0);
         $("#current_due").val(0);
+        $("#checkbox_download_sale_order").removeAttr('checked');
     }
     function set_all_lot_no(lot_no_value){
         $('input[name^=purchase_order_no]').each(function(){
@@ -225,6 +226,7 @@
                             else
                             {
                                 alert('Sale order is executed successfully.');
+                                
                             }
                             //printPDF();
 //                            alert('Sale order is executed successfully.');// replace this w

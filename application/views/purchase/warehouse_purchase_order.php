@@ -125,6 +125,7 @@
                             $("#previous_due").val(0);
                             $("#paid_amount").val(0);
                             $("#current_due").val(0);
+                            $("#checkbox_forward_showroom").removeAttr('checked');
                         }
                     }
                 });
