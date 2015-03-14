@@ -204,19 +204,22 @@ class Shop extends CI_Controller {
         $this->template->load(null, 'shop/show_all_shops', $this->data);
     }
     
-   public function update_shop($shop_id)
-   {
-
+    public function update_shop($shop_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id'); 
+        }
         $user_group = $this->ion_auth->get_users_groups()->result_array();
         
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
             
-            if($user_group['id'] == USER_GROUP_MANAGER)
+            if($user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_MANAGER)
             {
                 $this->session->set_flashdata('message',"You have no permission to view that page");
-                redirect('user/manager_login',"refresh");
+                redirect('user/salesman_login',"refresh");
             }
         }
         

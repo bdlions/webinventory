@@ -353,6 +353,7 @@
                             <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
                         </div> 
                     </div>
+                    <?php if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER){?>
                     <div class="form-group">
                         <label for="current_due" class="col-md-7 control-label requiredField">
                             Forward to Showroom
@@ -361,6 +362,7 @@
                             <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
                         </div> 
                     </div>
+                    <?php } ?>
                     <div class="form-group" id="div_button_purchase_order">
                         <label for="button_raise_purchase_order" class="col-md-2 control-label requiredField">
 

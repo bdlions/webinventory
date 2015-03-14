@@ -33,6 +33,12 @@ class Purchase extends CI_Controller {
         {
             redirect("user/login","refresh");
         }
+        $user_group = $this->ion_auth->get_users_groups()->result_array();        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $this->data['user_group'] = $user_group;
+        }
     }
     
     function index()
@@ -533,18 +539,6 @@ class Purchase extends CI_Controller {
         if(!empty($shop_info_array)){
             $this->data['shop_info'] = $shop_info_array[0];
         }
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
-                redirect("user/login","refresh");
-            }
-        }
-        
-        
-        
         $this->data['product_list_array'] = array();
         $product_list_array = $this->stock_library->get_products_warehouse_current_stock()->result_array();
         if( count($product_list_array) > 0)

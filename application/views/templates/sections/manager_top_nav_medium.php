@@ -3,7 +3,7 @@
         Shop<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("shop/show_all_shops");?>">Shop List</a></li>
+        <li><a href="<?php echo base_url("shop/update_shop");?>">Update Shop</a></li>
     </ul>
 </div>
 <div class="btn-group">
@@ -24,11 +24,15 @@
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("purchase/purchase_order");?>">add new purchase</a></li>
-        <li><a href="<?php echo base_url("purchase/raise_purchase_order");?>">Raise Purchase Order</a></li>
-        <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return Purchase Order</a></li>
+        <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add news purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/raise_warehouse_purchase_order");?>">Raise purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/return_warehouse_purchase_order");?>">Return purchase</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("./supplier/create_supplier");?>">add new supplier</a></li>
+        <li><a href="<?php echo base_url("purchase/purchase_order");?>">Raise stock</a></li>
+        <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return stock</a></li>
+        <li><a href="<?php echo base_url("purchase/show_showroom_purchase_transactions");?>">Show purchase transactions</a></li>
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("./supplier/create_supplier");?>">Add New Supplier</a></li>
         <li><a href="<?php echo base_url("./supplier/show_all_suppliers/".PAGINATION_SUPPLIER_LIST_LIMIT);?>">Supplier List</a></li>
     </ul>
 </div>
@@ -63,11 +67,15 @@
         <li><a href="<?php echo base_url("search/search_sales");?>">Search Sales</a></li>
         <li><a href="<?php echo base_url("search/search_due_collect_date_range");?>">Search Due Collect by Date Range</a></li>
         <li><a href="<?php echo base_url("search/search_sales_purchase_order_no");?>">Search Customer Sales by Lot No</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_sales");?>">Search Customer Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_name");?>">Search Customer Sales by Name</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_phone");?>">Search Customer Sales by Phone</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("search/search_customers_total_purchased");?>">Search Customer by Total Purchased</a></li>
-        <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>        
+        <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>   
+        <li><a href="<?php echo base_url("search/search_customer_by_total_due");?>">Search Customer by Total Due</a></li>
+        <li class="divider"></li>
+        <li><a href="<?php echo base_url("search/search_supplier_by_total_due");?>">Search Supplier by Total Due</a></li>
     </ul>
 </div>
 <div class="btn-group">
