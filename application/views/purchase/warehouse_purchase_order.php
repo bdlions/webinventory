@@ -377,8 +377,10 @@
                             Forward to Showroom
                         </label>
                         <div class ="col-md-3">
-                            <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
-                        </div> 
+                                <div style="margin-top: 10px;">
+                                    <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
+                                </div>
+                            </div> 
                     </div>
                     <?php } ?>
                     <div class="form-group" id="div_button_warehouse_purchase_order">

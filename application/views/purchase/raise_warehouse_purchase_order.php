@@ -355,13 +355,15 @@
                     </div>
                     <?php if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER){?>
                     <div class="form-group">
-                        <label for="current_due" class="col-md-7 control-label requiredField">
-                            Forward to Showroom
-                        </label>
-                        <div class ="col-md-3">
-                            <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
-                        </div> 
-                    </div>
+                            <label for="current_due" class="col-md-7 control-label requiredField">
+                                Forward to Showroom
+                            </label>
+                            <div class ="col-md-3">
+                                <div style="margin-top: 10px;">
+                                    <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
+                                </div>
+                            </div> 
+                        </div>
                     <?php } ?>
                     <div class="form-group" id="div_button_purchase_order">
                         <label for="button_raise_purchase_order" class="col-md-2 control-label requiredField">

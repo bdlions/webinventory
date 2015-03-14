@@ -90,7 +90,7 @@
     <div class="row">
         <div class="col-md-7">
             <div class="col-xs-12 col-sm-12">
-                <img class="img-responsive" src="<?php echo base_url(); ?>resources/images/login_left_image.png">
+                <img class="img-responsive" src="<?php echo base_url(); ?>resources/images/login_left_image.jpg">
                 <div class="form-group"></div>
             </div>
         </div>

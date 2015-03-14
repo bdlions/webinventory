@@ -86,17 +86,13 @@
                 <tr>
                     <td>
                         <div class="col-md-offset-1 col-md-6">
-                            <div class=" input-group search-box">
+                            <div class="input-group search-box">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                                 <div class="twitter-typeahead" style="position: relative;">
                                     <input type="text" disabled="" spellcheck="off" autocomplete="off" class="tt-hint form-control" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; background: none repeat scroll 0% 0% rgb(255, 255, 255);">
                                     <input type="text" placeholder="Search for customer" class="form-control tt-query" id="search_box_customer" autocomplete="off" spellcheck="false" style="position: relative; vertical-align: top; background-color: transparent;" dir="auto">
                                     <div style="position: absolute; left: -9999px; visibility: hidden; white-space: nowrap; font-family: Calibri,Arial,Helvetica,sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;">
-                                        
                                     </div>
-                                    <div class="tt-dropdown-menu dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none;">
-                                        
-                                    </div>    
                                 </div>
                             </div>
                         </div> 
@@ -118,9 +114,10 @@
                         </label>
                     </td>
                 </tr>
+                
+                
                 <tr>
-                    <td>                        
-                    </td>
+                    <td class="col-md-offset-1 col-md-6"></td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
                             <?php 
@@ -131,6 +128,8 @@
                             ?>
                             
                         </label>
+                    </td>
+                    <td>
                         <label id="label_total_profit" class="col-md-6 control-label requiredField">
                             <?php 
                                 if($this->session->userdata('user_type') != SALESMAN)
@@ -139,9 +138,6 @@
                                 }
                             ?>
                         </label>
-                    </td>
-                    <td>
-                        
                     </td>
                 </tr>                
             </tbody>  
