@@ -33,17 +33,17 @@
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.sale_unit_price%}'; ?></td>
-        <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
         <?php 
-            if($this->session->userdata('user_type') != SALESMAN)
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
                 echo '<td>';
                 echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.total_sale%}'; 
                 echo '</td>';
             }        
         ?>
+        <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
         <?php 
-            if($this->session->userdata('user_type') != SALESMAN)
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
                 echo '<td>';
                 echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
@@ -51,7 +51,7 @@
             }        
         ?>
         <?php 
-            if($this->session->userdata('user_type') != SALESMAN)
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
                 echo '<td>';
                 echo '<a href="'.base_url().'sale/delete_sale/{%= sale_info.sale_order_no%}">Return</a>'; 
@@ -62,7 +62,7 @@
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer sale by Card No</h3>
+<h3>Search Customer sale by Phone</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -105,7 +105,7 @@
                     <td>
                         <label class="col-md-6 control-label requiredField">
                             <?php 
-                                if($this->session->userdata('user_type') != SALESMAN)
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                                 {                                    
                                     echo 'Total Profit : ';
                                 }
@@ -114,7 +114,7 @@
                         </label>
                         <label id="label_total_profit" class="col-md-6 control-label requiredField">
                             <?php 
-                                if($this->session->userdata('user_type') != SALESMAN)
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                                 {                                    
                                     //echo $total_profit;
                                 }
@@ -146,21 +146,21 @@
                     <th>Sale Unit Price</th>
                     <th>Total Purchase Price</th>
                     <th>Total Sale Price</th>
-                    <th>Transactions</th>
                     <?php 
-                        if($this->session->userdata('user_type') != SALESMAN)
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
                             echo '<th>Net Profit</th>';
                         }                            
-                    ?> 
+                    ?>
+                    <th>Transactions</th>
                     <?php 
-                        if($this->session->userdata('user_type') != SALESMAN)
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
                             echo '<th>Return</th>';
                         }                            
                     ?>
                     <?php 
-                        if($this->session->userdata('user_type') != SALESMAN)
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
                             echo '<th>Delete</th>';
                         }                            

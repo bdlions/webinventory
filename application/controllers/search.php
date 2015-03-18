@@ -9,6 +9,7 @@ class Search extends CI_Controller {
      * $var array
      */
     public $tables = array();
+    public $user_group = array();
     function __construct() {
         
         parent::__construct();
@@ -36,6 +37,13 @@ class Search extends CI_Controller {
         if(!$this->ion_auth->logged_in())
         {
             redirect("user/login","refresh");
+        }
+        $user_group = $this->ion_auth->get_users_groups()->result_array();        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $this->user_group = $user_group;
+            $this->data['user_group'] = $user_group;
         }
     }
     
@@ -210,12 +218,12 @@ class Search extends CI_Controller {
         
         //echo '<pre/>';print_r($sale_list);exit;
         $result['sale_list'] = $sale_list;
-        $result['total_product_sold'] = $total_product_sold;
+        $result['total_product_sold'] = ($total_product_sold>0)?$total_product_sold:'';
         if($this->session->userdata('user_type') != SALESMAN)
         {                                    
-            $result['total_profit'] = $total_profit;
+            $result['total_profit'] = ($total_profit>0)?$total_profit:'';
         }        
-        $result['total_sale_price'] = $total_sale_price;
+        $result['total_sale_price'] = ($total_sale_price>0)?$total_sale_price:'';
         
         //expense of today
         $total_expense = 0;
@@ -224,7 +232,7 @@ class Search extends CI_Controller {
         {
             $total_expense = $total_expense + $expense_info['expense_amount'];
         }
-        $result['total_expense'] = $total_expense;
+        $result['total_expense'] = ($total_expense>0)?$total_expense:'';
         //total customer payment
         $total_customer_payment = 0;
         $customer_payment_list_array = $this->payments->get_customers_sale_payment_today($time)->result_array();
@@ -232,7 +240,7 @@ class Search extends CI_Controller {
         {
             $total_customer_payment = $customer_payment_list_array[0]['total_customer_payment'];
         } 
-        $result['total_due'] = $total_sale_price - $total_customer_payment;
+        $result['total_due'] = (($total_sale_price - $total_customer_payment)>0)?($total_sale_price - $total_customer_payment):'';
         
         //total due collect
         $total_due_collect = 0;
@@ -241,7 +249,7 @@ class Search extends CI_Controller {
         {
             $total_due_collect = $payment_list_array[0]['total_due_collect'];
         }        
-        $result['total_due_collect'] = $total_due_collect;
+        $result['total_due_collect'] = ($total_due_collect>0)?$total_due_collect:'';
         
         //customers total payments and total payments of today
         $customers_total_payment = 0;
@@ -270,7 +278,8 @@ class Search extends CI_Controller {
             $shop_total_expenses_today = $shop_total_expenses_today_array[0]['total_expense'];
         }
         //suppliers total payments and total payments of today
-        $suppliers_total_payment = 0;
+        //supplier payment at puchase will not affect shop available or previous balance, it will come from investment
+        /*$suppliers_total_payment = 0;
         $suppliers_total_payment_array = $this->payments->get_suppliers_total_payment()->result_array();
         if(!empty($suppliers_total_payment_array))
         {
@@ -281,7 +290,7 @@ class Search extends CI_Controller {
         if(!empty($suppliers_total_payment_today_array))
         {
             $suppliers_total_payment_today = $suppliers_total_payment_today_array[0]['total_payment'];
-        }
+        }*/
         //suppliers total returned payment and returned payment of today
         $suppliers_total_returned_payment = 0;
         $suppliers_total_returned_payment_array = $this->payments->get_suppliers_total_returned_payment()->result_array();
@@ -312,13 +321,13 @@ class Search extends CI_Controller {
         $result['suppliers_total_returned_payment_today'] = $suppliers_total_returned_payment_today;
         $result['customers_total_returned_payment_today'] = $customers_total_returned_payment_today;
         
-        $result['total_due'] = $result['total_due'] + $result['customers_total_returned_payment_today'];
+        $result['total_due'] = (($result['total_due'] + $result['customers_total_returned_payment_today'])>0)?($result['total_due'] + $result['customers_total_returned_payment_today']):'';
         
-        $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses - $suppliers_total_payment;
-        $result['current_balance'] = $current_balance;
+        $current_balance = $customers_total_payment + $suppliers_total_returned_payment - $customers_total_returned_payment - $shop_total_expenses;
+        $result['current_balance'] = ($current_balance>0)?$current_balance:'';
         
-        $previous_balance = $current_balance - ($customers_total_payment_today + $suppliers_total_returned_payment_today - $customers_total_returned_payment_today - $shop_total_expenses_today - $suppliers_total_payment_today);
-        $result['previous_balance'] = $previous_balance;
+        $previous_balance = $current_balance - ($customers_total_payment_today + $suppliers_total_returned_payment_today - $customers_total_returned_payment_today - $shop_total_expenses_today);
+        $result['previous_balance'] = ($previous_balance>0)?$previous_balance:'';
         return $result;
     }
     
@@ -380,7 +389,14 @@ class Search extends CI_Controller {
         $result_array['sale_list'] = $sale_list;  
         $result_array['total_sale_price'] = $total_sale_price;  
         $result_array['total_quantity'] = $total_quantity;  
-        $result_array['total_profit'] = $total_profit;  
+        if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+        {
+                $result_array['total_profit'] = $total_profit;
+        }
+        else
+        {
+                $result_array['total_profit'] = '';
+        }
         echo json_encode($result_array);
     }
     public function search_sales()
@@ -468,7 +484,14 @@ class Search extends CI_Controller {
         $result_array['sale_list'] = $sale_list;  
         $result_array['total_sale_price'] = $total_sale_price;  
         $result_array['total_quantity'] = $total_quantity;  
-        $result_array['total_profit'] = $total_profit;  
+        if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+        {
+                $result_array['total_profit'] = $total_profit;
+        }
+        else
+        {
+                $result_array['total_profit'] = '';
+        } 
         echo json_encode($result_array);
     }
     public function search_sales_purchase_order_no()
@@ -523,7 +546,14 @@ class Search extends CI_Controller {
         }
         $result_array['sale_list'] = $sale_list;  
         $result_array['total_sale_price'] = $total_sale_price;
-        $result_array['total_profit'] = $total_profit;
+        if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+        {
+                $result_array['total_profit'] = $total_profit;
+        }
+        else
+        {
+                $result_array['total_profit'] = '';
+        }
         $result_array['total_quantity'] = $total_quantity;  
         echo json_encode($result_array);
     }
@@ -568,7 +598,15 @@ class Search extends CI_Controller {
             }
             $result_array['sale_list'] = $sale_list;  
             $result_array['total_sale_price'] = $total_sale_price;
-            $result_array['total_profit'] = $total_profit;
+            if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+            {
+                $result_array['total_profit'] = $total_profit;
+            }
+            else
+            {
+                $result_array['total_profit'] = '';
+            }
+            
             $result_array['total_quantity'] = $total_quantity;  
             echo json_encode($result_array);
             return;
@@ -600,7 +638,14 @@ class Search extends CI_Controller {
         }
         $result_array['sale_list'] = $sale_list;  
         $result_array['total_sale_price'] = $total_sale_price; 
-        $result_array['total_profit'] = $total_profit;
+        if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+        {
+                $result_array['total_profit'] = $total_profit;
+        }
+        else
+        {
+                $result_array['total_profit'] = '';
+        }
         $result_array['total_quantity'] = $total_quantity;  
         echo json_encode($result_array);
     }
@@ -653,7 +698,14 @@ class Search extends CI_Controller {
         $result_array['sale_list'] = $sale_list;  
         $result_array['total_sale_price'] = $total_sale_price;  
         $result_array['total_quantity'] = $total_quantity;  
-        $result_array['total_profit'] = $total_profit;
+        if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+        {
+                $result_array['total_profit'] = $total_profit;
+        }
+        else
+        {
+                $result_array['total_profit'] = '';
+        }
         //echo '<pre/>';print_r($result_array);exit;
         echo json_encode($result_array);
     }

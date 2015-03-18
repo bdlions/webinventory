@@ -276,7 +276,7 @@
 
 </script>
 
-<h3>Warehouse Purchase Order</h3>
+<h3>Add news purchase</h3>
 <div class ="form-horizontal top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        

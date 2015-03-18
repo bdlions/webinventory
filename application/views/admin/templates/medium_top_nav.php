@@ -75,9 +75,9 @@
         <li class="divider"></li>
         <li><a href="<?php echo base_url("search/search_customers_total_purchased");?>">Search Customer by Total Purchased</a></li>
         <li><a href="<?php echo base_url("search/search_customer_phone");?>">Search Customer by Mobile No</a></li>        
-        <li><a href="<?php echo base_url("search/search_customer_by_total_due");?>">Search Customer by Total Due</a></li>
+        <li><a href="<?php echo base_url("search/search_customer_by_total_due");?>">Search Customer Due</a></li>
         <li class="divider"></li>
-        <li><a href="<?php echo base_url("search/search_supplier_by_total_due");?>">Search Supplier by Total Due</a></li>
+        <li><a href="<?php echo base_url("search/search_supplier_by_total_due");?>">Search Supplier Due</a></li>
     </ul>
 </div>
 <div class="btn-group">

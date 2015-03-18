@@ -265,7 +265,7 @@
     }
    
 </script>
-<h3>Raise Warehouse Purchase Order</h3>
+<h3>Raise purchase</h3>
 <div class ="top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        
