@@ -2473,7 +2473,7 @@ class Ion_auth_model extends CI_Model {
      * @param $shop_id, shop id
      * @Author Nazmul on 16th Janurary 2015
      */
-    public function search_customer($key, $value, $shop_id = '')
+    public function search_customer($key = '', $value = '', $shop_id = '')
     {
         if(empty($shop_id))
         {
@@ -2484,7 +2484,16 @@ class Ion_auth_model extends CI_Model {
 
             $this->_ion_limit = NULL;
         }
-        $this->db->like($key, $value); 
+        if (isset($this->_ion_where) && !empty($this->_ion_where)) {
+            foreach ($this->_ion_where as $where) {
+                $this->db->where($where);
+            }
+            $this->_ion_where = array();
+        }
+        if(!empty($key) && !empty($value))
+        {
+            $this->db->like($key, $value); 
+        }        
         return $this->db->select($this->tables['users'].'.id as user_id,'.$this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
                     ->from($this->tables['users'])
                     ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')

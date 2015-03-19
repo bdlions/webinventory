@@ -218,16 +218,15 @@
                         if (data['status'] === '1')
                         {
                             $("#print_sale_order_no").val($("#sale_order_no").val());
-                            set_default_values_at_sale();
                             if($("#checkbox_download_sale_order").prop('checked'))
                             {
                                 $("#form_download_sale_order").submit();
                             } 
                             else
                             {
-                                alert('Sale order is executed successfully.');
-                                
+                                alert('Sale order is executed successfully.');                                
                             }
+                            set_default_values_at_sale();
                             //printPDF();
 //                            alert('Sale order is executed successfully.');// replace this w
                             

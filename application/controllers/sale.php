@@ -407,7 +407,7 @@ class Sale extends CI_Controller {
             }
             else
             {                
-                $sms_body = 'Dear, '.$customer_info['full_name'].' Congratulation !! Your Total score is '.$total_quantity.' point for FREE (550 Tk)jeans pant. you need more '.(QUANTITY_FREE_PRODUCT - $total_quantity).' point. APURBO Brand. Chandrima market, New market. Dhaka';
+                $sms_body = 'Dear, '.$customer_info['full_name'].' your Total score is '.$total_quantity.' point for FREE (550 Tk)jeans pant. you need more '.(QUANTITY_FREE_PRODUCT - $total_quantity).' point. APURBO Brand. Chandrima market, New market. Dhaka';
             }
             $this->sms_library->send_sms($customer_info['phone'], $sms_body, TRUE);
             
