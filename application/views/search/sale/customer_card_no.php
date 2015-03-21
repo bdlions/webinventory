@@ -25,9 +25,23 @@
         <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
-        <td ><?php echo '{%= sale_info.purchase_unit_price%}'; ?></td>
+            <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+            {                                    
+                echo '<td>';
+                echo '{%= sale_info.purchase_unit_price%}';
+                echo '</td>';
+            }        
+        ?>
         <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
-        <td ><?php echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; ?></td>
+            <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+            {                                    
+                echo '<td>';
+                echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}';
+                echo '</td>';
+            }        
+        ?>
         <td ><?php echo '{%= sale_info.total_sale*sale_info.sale_unit_price%}'; ?></td>
         <?php 
             if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
@@ -37,7 +51,14 @@
                 echo '</td>';
             }        
         ?>
-        <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
+        <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+            {                                    
+                echo '<td>';
+                echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';
+                echo '</td>';
+            }        
+        ?>
         <?php 
             if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
@@ -134,9 +155,19 @@
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Quantity</th>
-                    <th>Purchase Unit Price</th>
+                    <?php 
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                        {                                    
+                            echo '<th>Purchase Unit Price</th>';
+                        }                            
+                    ?>
                     <th>Sale Unit Price</th>
-                    <th>Total Purchase Price</th>
+                    <?php 
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                        {                                    
+                            echo '<th>Total Purchase Price</th>';
+                        }                            
+                    ?>
                     <th>Total Sale Price</th>
                     <?php 
                         if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
@@ -144,7 +175,12 @@
                             echo '<th>Net Profit</th>';
                         }                            
                     ?> 
-                    <th>Transactions</th>
+                    <?php 
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                        {                                    
+                            echo '<th>Transactions</th>';
+                        }                            
+                    ?> 
                     <?php 
                         if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    

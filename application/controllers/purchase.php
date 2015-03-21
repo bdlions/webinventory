@@ -68,6 +68,7 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
+        $this->data['product_search_category']['all_product'] = "Select All";
         
         $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
         $this->data['product_unit_category_list'] = array();
@@ -393,6 +394,7 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
+        $this->data['product_search_category']['all_product'] = "Select All";
         
         $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
         $this->data['product_unit_category_list'] = array();
@@ -558,6 +560,7 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category'] = array();
         $this->data['product_search_category'][0] = "Select an item";
         $this->data['product_search_category']['name'] = "Product Name";
+        $this->data['product_search_category']['all_product'] = "Select All";
         $this->data['order_type'] = ORDER_TYPE_RAISE_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/raise_warehouse_purchase_order',$this->data);
     }

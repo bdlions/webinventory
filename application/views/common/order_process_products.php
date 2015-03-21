@@ -195,14 +195,14 @@
                     </div>   
                 </div>                
             <div class="modal-footer">
-                <div class ="col-md-6">
+                <div class ="col-sm-6 from-group">
                     
                 </div>
-                <div class ="col-md-3">
-                    <button style="width:100%" id="button_tr_delete" name="button_tr_delete" value="" class="form-control btn btn-success pull-right">Delete</button>
+                <div class ="col-sm-3 form-group">
+                    <button  id="button_tr_delete" name="button_tr_delete" value="" class="form-control btn btn-success ">Delete</button>
                 </div>
-                <div class ="col-md-3">
-                    <button style="width:100%" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                <div class ="col-sm-3 from-group">
+                    <button  type="button" class="form-control btn btn-success" data-dismiss="modal">Cancel</button>
                 </div>
                 
             </div>

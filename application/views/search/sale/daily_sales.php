@@ -124,7 +124,14 @@ function startclock()
         <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
         <td >{%= sale_info.card_no%}</td>
         <?php }?>
-        <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
+        <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+            {                                    
+                echo '<td>';
+                echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';
+                echo '</td>';
+            }        
+        ?>
         <?php 
             if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
@@ -295,7 +302,12 @@ function startclock()
                     <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <th>Card No</th>
                     <?php }?>
-                    <th>Transactions</th>
+                    <?php 
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                        {                                    
+                            echo '<th>Transactions</th>';
+                        }                            
+                    ?>
                     <?php 
                         if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
@@ -332,7 +344,14 @@ function startclock()
                         <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                         <td><?php echo $sale_info['card_no'];?></td>
                         <?php }?>
-                        <td><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>'?></td> 
+                        <?php 
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                            {                                    
+                                echo '<td>';
+                                echo '<a href="'.base_url().'transaction/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>';
+                                echo '</td>';
+                            }                            
+                        ?>
                         <?php 
                             if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                             {                                    

@@ -1,4 +1,8 @@
 <script type="text/javascript">
+    var modal_product_list_html;
+    $(window).load(function(){
+        modal_product_list_html = $("#tbody_product_list").html();
+    });
     //select all check box
      function select_product_check_all_checkboxes(checked_all){
         if( $(checked_all).is(':checked') ){
@@ -14,8 +18,15 @@
         }
     }    
     $(function() {
+        $('#dropdown_search_product').on('change', function(){
+            if( $(this).val()=='all_product' ){
+                $("#tbody_product_list").html(modal_product_list_html);
+                $(this).prop('selectedIndex', 0);
+            }
+        });
         //close button for modal hide
         $('#modal_button_hide').on('click', function(){
+           $("#input_search_product").val(''); 
            $('#common_modal_select_product').modal('hide') 
         });
         //search product by product name
@@ -30,6 +41,7 @@
                 alert("Please assign value of search criteria");
                 return false;
             }
+                
             $.ajax({
                 dataType: 'json',
                 type: "POST",
