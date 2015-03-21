@@ -113,7 +113,7 @@ function startclock()
         <td >{%= sale_info.sale_unit_price%}</td>
         <td >{%= sale_info.total_sale*sale_info.sale_unit_price %}</td>        
         <?php 
-            if($this->session->userdata('user_type') != SALESMAN)
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
                 echo '<td>';
                 echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.total_sale %}'; 
@@ -121,10 +121,12 @@ function startclock()
             }        
         ?>
         <td >{%= sale_info.salesman_first_name%} {%=sale_info.salesman_last_name %}</td>
+        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
         <td >{%= sale_info.card_no%}</td>
+        <?php }?>
         <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';?></td>
         <?php 
-            if($this->session->userdata('user_type') != SALESMAN)
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
                 echo '<td>';
                 echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
@@ -132,7 +134,7 @@ function startclock()
             }        
         ?>
         <?php 
-            if($this->session->userdata('user_type') != SALESMAN)
+            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
             {                                    
                 echo '<td>';
                 echo '<a href="'.base_url().'sale/delete_sale/{%= sale_info.sale_order_no%}">Delete</a>'; 
@@ -238,7 +240,7 @@ function startclock()
                     <td>
                         <label class="col-md-6 control-label requiredField">
                             <?php 
-                                if($this->session->userdata('user_type') != SALESMAN)
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                                 {                                    
                                     echo 'Total Profit : ';
                                 }
@@ -247,7 +249,7 @@ function startclock()
                         </label>
                         <label id="label_total_profit" class="col-md-6 control-label requiredField">
                             <?php 
-                                if($this->session->userdata('user_type') != SALESMAN)
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                                 {                                    
                                     echo $total_profit;
                                 }
@@ -284,22 +286,24 @@ function startclock()
                     <th>Sale Unit Price</th>
                     <th>Sub Total</th>
                     <?php 
-                        if($this->session->userdata('user_type') != SALESMAN)
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
                             echo '<th>Profit</th>';
                         }                            
                     ?> 
                     <th>Sale by Staff</th>
+                    <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <th>Card No</th>
+                    <?php }?>
                     <th>Transactions</th>
                     <?php 
-                        if($this->session->userdata('user_type') != SALESMAN)
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
                             echo '<th>Return</th>';
                         }                            
                     ?>
                     <?php 
-                        if($this->session->userdata('user_type') != SALESMAN)
+                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                         {                                    
                             echo '<th>Delete</th>';
                         }                            
@@ -317,7 +321,7 @@ function startclock()
                         <td><?php echo $sale_info['sale_unit_price'];?></td>
                         <td><?php echo $sale_info['total_sale']*$sale_info['sale_unit_price'];?></td>
                         <?php 
-                            if($this->session->userdata('user_type') != SALESMAN)
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                             {                                    
                                 echo '<td>';
                                 echo ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
@@ -325,10 +329,12 @@ function startclock()
                             }                            
                         ?>
                         <td><?php echo $sale_info['salesman_first_name'].' '.$sale_info['salesman_last_name'];?></td>
+                        <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                         <td><?php echo $sale_info['card_no'];?></td>
+                        <?php }?>
                         <td><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>'?></td> 
                         <?php 
-                            if($this->session->userdata('user_type') != SALESMAN)
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                             {                                    
                                 echo '<td>';
                                 echo '<a href="'.base_url().'sale/return_sale_order/'.$sale_info['sale_order_no'].'">Return</a>';
@@ -336,7 +342,7 @@ function startclock()
                             }                            
                         ?>
                         <?php 
-                            if($this->session->userdata('user_type') != SALESMAN)
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                             {                                    
                                 echo '<td>';
                                 echo '<a href="'.base_url().'sale/delete_sale/'.$sale_info['sale_order_no'].'">Delete</a>';

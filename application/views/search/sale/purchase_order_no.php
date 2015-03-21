@@ -83,7 +83,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <label for="card_no" class="col-md-6 control-label requiredField">
+                        <label for="purchase_order_no" class="col-md-6 control-label requiredField">
                             Lot No
                         </label>
                         <div class ="col-md-6">

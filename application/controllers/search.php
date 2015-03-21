@@ -145,10 +145,16 @@ class Search extends CI_Controller {
         {
             $shop_info = $shop_info_array[0];
         }
+        $user_id = $this->session->userdata('user_id');        
+        $user_group = $this->ion_auth->get_users_groups($user_id)->result_array();        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+        }        
         $this->data = $this->process_daily_sale();
+        $this->data['user_group'] = $user_group;
         $this->data['shop_info'] = $shop_info;
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/daily_sales', $this->data);}
-        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/daily_sales_med', $this->data);}
+       $this->template->load(null, 'search/sale/daily_sales', $this->data);
     }
     /*
      * Ajax call
@@ -672,8 +678,7 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/customer_name', $this->data);}
-        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_name_med', $this->data);}
+        $this->template->load(null, 'search/sale/customer_name', $this->data);
     }
     
     /*
@@ -732,8 +737,7 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/sale/customer_phone', $this->data);}
-        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/sale/customer_phone_med', $this->data);}
+       $this->template->load(null, 'search/sale/customer_phone', $this->data);
     }
     
     /*
@@ -1135,8 +1139,7 @@ class Search extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
-        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->template->load(null, 'search/customer/phone',$this->data);}
-        if($shop_info['shop_type_id'] == SHOP_TYPE_MEDIUM){$this->template->load(null, 'search/customer/phone_med',$this->data);}
+        $this->template->load(null, 'search/customer/phone',$this->data);
     }
     
     /*
