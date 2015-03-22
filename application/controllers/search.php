@@ -793,14 +793,6 @@ class Search extends CI_Controller {
             $this->data['shop_info'] = $shop_info[0];
         }
         
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
         $this->template->load(null, 'search/customer/total_purchased', $this->data);
     }
     
@@ -905,16 +897,7 @@ class Search extends CI_Controller {
     
     public function search_customer_profession()
     {
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
-        
-        
+
         $profession_list_array = $this->ion_auth->get_all_professions()->result_array();
         
         $this->data['profession_list'] = array();
@@ -958,16 +941,7 @@ class Search extends CI_Controller {
         {
             $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";
         }
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
-        
+
         $file_name = now();
         header("Content-Type:text/plain");
         header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
@@ -996,16 +970,7 @@ class Search extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
-        
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
+
         $this->template->load(null, 'search/customer/institution',$this->data);
     }
     /*
@@ -1055,15 +1020,7 @@ class Search extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
+
         $this->template->load(null, 'search/customer/card_no',$this->data);
     }
     
@@ -1086,16 +1043,6 @@ class Search extends CI_Controller {
         {
             $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";
         }
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
-        
         $file_name = now();
         header("Content-Type:text/plain");
         header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
@@ -1111,17 +1058,6 @@ class Search extends CI_Controller {
             $shop_info = $shop_info_array[0];
         }
         $this->data['shop_info'] = $shop_info;
-        
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
-        
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',
@@ -1165,16 +1101,7 @@ class Search extends CI_Controller {
         {
             $content = $content.$customer_info['phone'].'-'.$customer_info['first_name'].' '.$customer_info['last_name']."\r\n";
         }
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
-        
+
         $file_name = now();
         header("Content-Type:text/plain");
         header("Content-Disposition: 'attachment'; filename=".$file_name.".txt");
@@ -1206,16 +1133,6 @@ class Search extends CI_Controller {
             'type' => 'submit',
             'value' => 'Download',
         );
-        
-        
-        $user_group = $this->ion_auth->get_users_groups()->result_array();
-        
-        if(!empty($user_group))
-        {
-            $user_group = $user_group[0];
-        }
-        
-        $this->data['user_group'] = $user_group;
         
         $this->template->load(null, 'search/customer/card_no_range',$this->data);
     }  
