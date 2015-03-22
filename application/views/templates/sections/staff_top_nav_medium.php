@@ -14,7 +14,7 @@
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add news purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add new purchase</a></li>
         <li><a href="<?php echo base_url("purchase/raise_warehouse_purchase_order");?>">Raise purchase</a></li>
         <li><a href="<?php echo base_url("purchase/return_warehouse_purchase_order");?>">Return purchase</a></li>
         <li class="divider"></li>
