@@ -476,7 +476,7 @@
                             Download sale order
                         </label>
                         <div class ="col-md-3">
-                            <input id="checkbox_download_sale_order" name="checkbox_download_sale_order" type="checkbox"/>
+                            <input style="margin-top: 10px;" id="checkbox_download_sale_order" name="checkbox_download_sale_order" type="checkbox"/>
                         </div> 
                     </div>
                     <div class="form-group">
