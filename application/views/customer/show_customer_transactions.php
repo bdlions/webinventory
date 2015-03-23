@@ -50,20 +50,41 @@
             <div class="row">
                 <div class="form-group">
                     <label for="" class="col-md-6 control-label">
-                        Total Purchased Price
+                         <?php 
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                                {                                    
+                                    echo 'Total Purchased Price';
+                                }
+                            ?>
+                        
                     </label>
                     <label for="" class="col-md-6 control-label">
-                        <?php echo $total_sale_price?>
+                        <?php 
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                                {                                    
+                                    echo $total_sale_price;
+                                }
+                            ?>
                     </label>
                 </div>
             </div>
             <div class="row">
                     <div class="form-group">
                         <label for="" class="col-md-6 control-label">
-                            Total Profit
+                            <?php 
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                                {                                    
+                                    echo 'Total Profit';
+                                }
+                            ?>
                         </label>
                         <label for="" class="col-md-6 control-label">
-                            <?php echo $total_profit?>
+                            <?php 
+                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                                {                                    
+                                    echo $total_profit;
+                                }
+                            ?>
                         </label>
                     </div>
                 </div>
