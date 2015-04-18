@@ -145,6 +145,7 @@ class User extends CI_Controller {
             $this->form_validation->set_rules('first_name', 'First Name', 'required');
             $this->form_validation->set_rules('last_name', 'Last Name', 'required');
             $this->form_validation->set_rules('email', 'Email', 'required');
+            $this->form_validation->set_rules('country_code', 'Country Code', 'required');
             $this->form_validation->set_rules('phone', 'Phone Number', 'required');
             $this->form_validation->set_rules('username', 'User Name', 'required');
             $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
@@ -160,11 +161,12 @@ class User extends CI_Controller {
                     $user_name = $this->input->post('username');
                     $email = $this->input->post('email');
                     $password = $this->input->post('password');
+                    $phone_no =$this->input->post('country_code').$this->input->post('phone');
                     $additional_data = array(
                         'account_status_id' => $this->account_status_list['active_id'],
                         'first_name' => $this->input->post('first_name'),
                         'last_name' => $this->input->post('last_name'),
-                        'phone' => $this->input->post('phone'),
+                        'phone' => $phone_no,
                         'address' => $this->input->post('address'),
                         'created_date' => date('Y-m-d H:i:s'),
                         'sms_code' => rand(1, 999999999)
@@ -212,6 +214,7 @@ class User extends CI_Controller {
         $this->data['first_name'] = array('type' => 'text', 'name' => 'first_name', 'id' => 'first_name', 'value' => $this->input->post('first_name'));
         $this->data['last_name'] = array('type' => 'text', 'name' => 'last_name', 'id' => 'last_name', 'value' => $this->input->post('last_name'));
         $this->data['email'] = array('type' => 'email', 'name' => 'email', 'id' => 'email', 'value' => $this->input->post('email'));
+        $this->data['country_code'] = array('type' => 'text', 'name' => 'country_code', 'id' => 'country_code', 'value' => $this->input->post('country_code'));
         $this->data['phone'] = array('type' => 'text', 'name' => 'phone', 'id' => 'phone', 'value' => $this->input->post('phone'));
         $this->data['username'] = array('type' => 'text', 'name' => 'username', 'id' => 'username', 'value' => $this->input->post('username'));
         $this->data['new_password'] = array('type' => 'new_password', 'name' => 'new_password', 'id' => 'new_password');

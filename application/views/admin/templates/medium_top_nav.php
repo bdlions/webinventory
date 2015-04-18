@@ -140,3 +140,11 @@
         <li><a href="<?php echo base_url("./user/logout");?>">Logout</a></li>
     </ul>
 </div>
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        Help<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="<?php echo base_url("./help/get_help_info");?>">Help</a></li>
+    </ul>
+</div>

@@ -71,6 +71,7 @@ class Shop extends CI_Controller {
         
         $this->data['message'] = '';
         $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
+        $this->form_validation->set_rules('country_code', 'Country Code', 'xss_clean|required');
         $this->form_validation->set_rules('shop_name', 'Shop Name', 'xss_clean|required');
         $this->form_validation->set_rules('shop_phone', 'Shop Phone', 'xss_clean');
         $this->form_validation->set_rules('shop_type','Shop Type','xss_clean|required');
@@ -80,10 +81,11 @@ class Shop extends CI_Controller {
         {
             if ($this->form_validation->run() == true) 
             {
+              $phone_no =$this->input->post('country_code').$this->input->post('shop_phone');   
                 $additional_data = array(
                     'name' => $this->input->post('shop_name'),
                     'address' => $this->input->post('shop_address'),
-                    'shop_phone' => $this->input->post('shop_phone'),
+                    'shop_phone' => $phone_no,
                     'shop_type_id' => $this->input->post('shop_type'),
                     'created_on' => now()
                 );
@@ -148,6 +150,12 @@ class Shop extends CI_Controller {
             'id' => 'shop_name',
             'type' => 'text',
             'value' => $this->form_validation->set_value('shop_name'),
+        );
+         $this->data['country_code'] = array(
+            'name' => 'country_code',
+            'id' => 'country_code',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('country_code'),
         );
         $this->data['shop_phone'] = array(
             'name' => 'shop_phone',

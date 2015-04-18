@@ -119,6 +119,11 @@
                 </div>
                 <div class="row form-group">
                     <div class ="col-md-12 col-xs-12 col-sm-12">
+                        <?php echo form_input($country_code + array('class' => 'form-control', 'placeholder' => 'Country Code')); ?>
+                    </div> 
+                </div>
+                <div class="row form-group">
+                    <div class ="col-md-12 col-xs-12 col-sm-12">
                         <?php echo form_input($phone + array('class' => 'form-control', 'placeholder' => 'Phone Number')); ?>
                     </div> 
                 </div>

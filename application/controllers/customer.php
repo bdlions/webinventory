@@ -131,6 +131,7 @@ class Customer extends User {
             $this->form_validation->set_rules('card_no', 'Card No', 'xss_clean|required');
         }
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
+        $this->form_validation->set_rules('country_code', 'Country Code', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
         $this->form_validation->set_rules('address', 'Address', 'xss_clean');
@@ -139,11 +140,12 @@ class Customer extends User {
                 $user_name = '';
                 $password = "password";
                 $email = "dummy@dummy.com";
+                 $phone_no =$this->input->post('country_code').$this->input->post('phone');
                 $additional_data = array(
                     'account_status_id' => $this->account_status_list['active_id'],
                     'first_name' => $this->input->post('first_name'),
                     'last_name' => $this->input->post('last_name'),
-                    'phone' => $this->input->post('phone'),
+                    'phone' => $phone_no,
                     'address' => $this->input->post('address'),
                     'created_on' => now()
                 );
@@ -215,6 +217,12 @@ class Customer extends User {
             'id' => 'phone',
             'type' => 'text',
             'value' => $this->form_validation->set_value('phone'),
+        );
+        $this->data['country_code'] = array(
+            'name' => 'country_code',
+            'id' => 'country_code',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('country_code'),
         );
         $this->data['first_name'] = array(
             'name' => 'first_name',
