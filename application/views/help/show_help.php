@@ -5,12 +5,12 @@
             
             <div class="form-group">
                 <label for="phone_no" class="col-md-12 control-label requiredField">
-                    <span style="font-size: 25px;color: green">   You can call this Phone Number:+8801715104245,+821042017799 </span>
+                    <span style="font-size: 25px;color: green;">   You can call this Phone Number: <span style="color: #47A447;">+8801715104245, +821042017799 </span></span>
                 </label>
             </div>
             <div class="form-group">
                 <label for="phone_no" class="col-md-8 control-label requiredField">
-                    <span style="font-size: 25px;color: green">   or visit Skype Id: buysalebook.com </span>
+                    <span style="font-size: 25px;color: green">   or visit Skype Id: <span style="color: #47A447;">buysalebook.com</span> </span>
                 </label>
             </div>
         </div>
