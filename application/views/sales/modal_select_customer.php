@@ -42,6 +42,7 @@
             var first_name = $("#input_first_name").val();
             var last_name = $("#input_last_name").val();
             var phone = $("#input_phone_no").val();
+            var country_code = $("#phone_country_code").val();
             var card_no = 0;
             if (first_name.length == 0)
             {
@@ -58,6 +59,12 @@
                 alert("Phone is required.");
                 return;
             }
+            else if (country_code.length == 0)
+            {
+                alert("phone Country Code is required.");
+                return;
+            }
+            
             <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
             else if ($("#input_card_no").val().length == 0)
             {
@@ -75,7 +82,8 @@
                     first_name: first_name,
                     last_name: last_name,
                     phone_no: phone,
-                    card_no: card_no
+                    card_no: card_no,
+                    country_code: country_code
                 },
                 success: function(data) {
                     
@@ -146,6 +154,14 @@
                                     </label>
                                     <div class ="col-md-8">
                                         <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="country_code" class="col-md-6 control-label requiredField">
+                                        Phone Country Code
+                                    </label>
+                                    <div class ="col-md-6">
+                                        <?php echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">

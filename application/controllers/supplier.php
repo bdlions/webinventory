@@ -148,7 +148,7 @@ class Supplier extends User {
         $shop_id = $this->session->userdata('shop_id');
         $first_name = $this->input->post('first_name');
         $last_name = $this->input->post('last_name');
-        $phone_no = $this->input->post('phone_no');
+        $phone_no = $this->input->post('country_code').$this->input->post('phone_no');
         $company = $this->input->post('company');
         $user_name = '';
         $password = "password";

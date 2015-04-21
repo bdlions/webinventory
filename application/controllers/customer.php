@@ -264,7 +264,8 @@ class Customer extends User {
         }
         $first_name = $this->input->post('first_name');
         $last_name = $this->input->post('last_name');
-        $phone_no = $this->input->post('phone_no');
+        $phone_no = $this->input->post('country_code').$this->input->post('phone_no');
+       
         $user_name = '';
         $password = "password";
         $email = "dummy@dummy.com";

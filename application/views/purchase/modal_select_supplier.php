@@ -13,6 +13,11 @@
                 alert("Last Name is required.");
                 return;
             }
+            else if ($("#phone_country_code").val().length == 0)
+            {
+                alert("Phone Country Code is required.");
+                return;
+            }
             else if ($("#input_phone_no").val().length == 0)
             {
                 alert("Phone is required.");
@@ -30,6 +35,7 @@
                 data: {
                     first_name: $("#input_first_name").val(),
                     last_name: $("#input_last_name").val(),
+                    country_code: $("#phone_country_code").val(),
                     phone_no: $("#input_phone_no").val(),
                     company: $("#input_company").val()
                 },
@@ -144,6 +150,14 @@
                                     </label>
                                     <div class ="col-md-8">
                                         <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="country_code" class="col-md-6 control-label requiredField">
+                                        Phone Country Code
+                                    </label>
+                                    <div class ="col-md-6">
+                                        <?php echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">

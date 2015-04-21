@@ -36,6 +36,7 @@ class Salesman extends User {
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('username', 'User Name', 'xss_clean|required');
         $this->form_validation->set_rules('email', 'Email', 'xss_clean');
+        $this->form_validation->set_rules('country_code', 'Country Code', 'xss_clean|required');
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
         $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
@@ -48,11 +49,12 @@ class Salesman extends User {
                 $user_name = $this->input->post('username');
                 $password = $this->input->post('password');
                 $email = $this->input->post('email');
+                $phone_no =$this->input->post('country_code').$this->input->post('phone');
                 $additional_data = array(
                     'account_status_id' => ACCOUNT_STATUS_ACTIVE,
                     'first_name' => $this->input->post('first_name'),
                     'last_name' => $this->input->post('last_name'),
-                    'phone' => $this->input->post('phone'),
+                    'phone' => $phone_no,
                     'address' => $this->input->post('address'),
                     'created_on' => now()
                 );
@@ -71,6 +73,12 @@ class Salesman extends User {
             $this->data['message'] = $this->session->flashdata('message');
         }
 
+        $this->data['country_code'] = array(
+            'name' => 'country_code',
+            'id' => 'country_code',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('country_code'),
+        );
         $this->data['phone'] = array(
             'name' => 'phone',
             'id' => 'phone',

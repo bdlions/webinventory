@@ -42,6 +42,14 @@
         </div>
         <div class ="col-md-5">
             <div class="form-group">
+                <label for="country_code" class="col-md-6 control-label requiredField">
+                    Phone Country Code
+                </label>
+                <div class ="col-md-6">
+                    <?php echo form_input($country_code+array('class'=>'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">
                     Phone No
                 </label>
