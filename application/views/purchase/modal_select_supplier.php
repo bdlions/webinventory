@@ -131,55 +131,55 @@
                         <br>
                         <br>
                     <div class ="row col-md-11">
-                        <div class ="col-md-5">
+                        <div class ="col-md-3">
                             <h3>Add New</h3>
                         </div>
-                        <div class ="col-md-7">
+                        <div class ="col-md-9">
                             <div class="form-horizontal">
                                 <div class="row form-group">
-                                    <label for="input_first_name" class="col-md-4 control-label requiredField">
+                                    <label for="input_first_name" class="col-md-5 control-label requiredField">
                                         First Name
                                     </label>
-                                    <div class ="col-md-8">
+                                    <div class ="col-md-7">
                                         <?php echo form_input(array('name' => 'input_first_name', 'id' => 'input_first_name', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="input_last_name" class="col-md-4 control-label requiredField">
+                                    <label for="input_last_name" class="col-md-5 control-label requiredField">
                                         Last Name
                                     </label>
-                                    <div class ="col-md-8">
+                                    <div class ="col-md-7">
                                         <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="country_code" class="col-md-6 control-label requiredField">
+                                    <label for="country_code" class="col-md-5 control-label requiredField">
                                         Phone Country Code
                                     </label>
-                                    <div class ="col-md-6">
+                                    <div class ="col-md-7">
                                         <?php echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="input_phone_no" class="col-md-4 control-label requiredField">
+                                    <label for="input_phone_no" class="col-md-5 control-label requiredField">
                                         Phone No.
                                     </label>
-                                    <div class ="col-md-8">
+                                    <div class ="col-md-7">
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="input_company" class="col-md-4 control-label requiredField">
+                                    <label for="input_company" class="col-md-5 control-label requiredField">
                                         Company
                                     </label>
-                                    <div class ="col-md-8">
+                                    <div class ="col-md-7">
                                         <?php echo form_input(array('name' => 'input_company', 'id' => 'input_company', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="button_add_supplier" class="col-md-4 control-label requiredField">
+                                    <label for="button_add_supplier" class="col-md-5 control-label requiredField">
                                     </label>
-                                    <div class ="col-md-8">
+                                    <div class ="col-md-7">
                                         <?php echo form_button(array('name' => 'button_add_supplier', 'class' => 'form-control btn btn-success', 'id' => 'button_add_supplier', 'content' => 'Submit')); ?>
                                     </div> 
                                 </div>
