@@ -151,7 +151,7 @@ class User extends CI_Controller {
             $this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
             $this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
 
-            $privatekey = "6LctLfISAAAAAP_6q1pftugclrynNTLprwXFIXOD"; //bdlions@gmail.com
+            $privatekey = "6LcIFQYTAAAAALelpEadeJmblxXOEo-NgpO-Q5s3"; //bdlions@gmail.com
             $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 
             if ($resp->is_valid) {

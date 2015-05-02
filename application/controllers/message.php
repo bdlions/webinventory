@@ -172,8 +172,8 @@ class Message extends CI_Controller {
         $messages = $this->messages->get_all_custom_message_for_typeahed($shop_id)->result();
         $temp_messages = array();
         foreach ($messages as  $message){
-            $message -> message = nl2br(strip_tags(html_entity_decode(html_entity_decode($message -> message))));
-            $message -> value = substr(strip_tags(html_entity_decode(html_entity_decode($message -> message))), 0, 20);
+            $message -> message = utf8_encode(nl2br(strip_tags(html_entity_decode(html_entity_decode($message -> message)))));
+            $message -> value = utf8_encode(substr(strip_tags(html_entity_decode(html_entity_decode($message -> message))), 0, 20));
             
             array_push($temp_messages, $message);
         }

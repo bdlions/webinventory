@@ -145,7 +145,7 @@
                 <div class="row form-group">
                     <div class ="col-md-11 col-xs-12 col-sm-12">
                         <?php
-                        $publickey = "6LctLfISAAAAAEWmA7GBCAJC7SL4bzFc5jZuDA0O";
+                        $publickey = "6LcIFQYTAAAAAEz35GE_UVbncmFeDqoP-34V38EP";
                         echo recaptcha_get_html($publickey);
                         ?>
                     </div> 
