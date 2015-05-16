@@ -283,4 +283,14 @@ input[type="radio"], input[type="checkbox"] {
 }
 }
 
+.btn_success_staff_style{
+  width: 124px;  
+}
+.btn_success_manager_style{
+  width: 111px;  
+}
+.btn_success_admin_style{
+  width: 92px;  
+}
+
 /*******************************************************************************************/

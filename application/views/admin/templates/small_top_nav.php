@@ -1,5 +1,5 @@
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Shop<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -9,7 +9,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Sales<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -24,7 +24,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Purchase<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -41,7 +41,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Manage Stock<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -54,7 +54,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Expnese<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -63,7 +63,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Reports<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -88,7 +88,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Attendance<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -97,7 +97,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         SMS<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -115,7 +115,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Notebook<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">  
@@ -124,7 +124,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Queue<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -132,7 +132,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Help<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -140,7 +140,7 @@
     </ul>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Settings<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
