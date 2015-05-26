@@ -249,7 +249,7 @@ class Search extends CI_Controller {
         {
             $total_customer_payment = $customer_payment_list_array[0]['total_customer_payment'];
         } 
-        $result['total_due'] = (($total_sale_price - $total_customer_payment)>0)?($total_sale_price - $total_customer_payment):'';
+        $result['total_due'] = ($total_sale_price - $total_customer_payment);
         
         //total due collect
         $total_due_collect = 0;
