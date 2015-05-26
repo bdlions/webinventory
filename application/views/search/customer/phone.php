@@ -24,6 +24,14 @@
     <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
+    <?php 
+        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+        {                                    
+            echo '<td>';
+            echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= customer_info.customer_id%}">Show</a>';
+            echo '</td>';
+        }        
+    ?>
     <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>   
     <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
     <?php }?>  
@@ -84,6 +92,12 @@
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Address</th>
+                    <?php 
+                    if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                    {                                    
+                        echo '<th>Transactions</th>';
+                    }                            
+                    ?>
                     <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <th>Card No</th>
                     <?php }?>
