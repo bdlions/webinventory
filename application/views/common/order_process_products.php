@@ -36,17 +36,17 @@
 </script>
 
 <script>
-    function set_all_lot_no(lot_no_value){
-        $("input", "#tbody_selected_product_list").each(function() {
-            if ($(this).attr("name") === "purchase_order_no")
-            {
-                $(this).attr('value', $("#input_table_header_purchase_order_no").val());
-            }
-        });        
+//    function set_all_lot_no(lot_no_value){
+//        $("input", "#tbody_selected_product_list").each(function() {
+//            if ($(this).attr("name") === "purchase_order_no")
+//            {
+////                $(this).attr('value', $("#input_table_header_purchase_order_no").val());
+//            }
+//        });        
 //        $('input[name^=purchase_order_no]').each(function(){
 //            $(this).val($(lot_no_value).val());
 //        });
-    }
+//    }
     function process_product_check_all_checkboxes(checked_all){
         if( $(checked_all).is(':checked') ){
             $('input[name^="append_product_checkbox_"]').each(function(){
