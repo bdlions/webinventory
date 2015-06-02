@@ -807,7 +807,7 @@ class Purchase extends CI_Controller {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN){
+            if($user_group['id'] != USER_GROUP_MANAGER && $user_group['id'] != USER_GROUP_ADMIN && $user_group['id'] != USER_GROUP_STAFF_ID){
                 redirect("user/login","refresh");
             }
         }
