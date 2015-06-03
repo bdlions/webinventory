@@ -15,6 +15,60 @@ class Search_typeahead_model extends Ion_auth_model {
     }
     
     /*
+     * This method will return customer list based on card no
+     * @param $search_value, value to be searched in card_no
+     * @param $shop_id, shop id
+     * @param $account_status_id, account status id of a customer
+     * @author Nazmul on 31st May 2015
+     */
+    public function get_customers_card_no($search_value, $shop_id = 0, $account_status_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $shop_type_id = 0;
+        $shop_info_array = $this->db->select($this->tables['shop_info'].".*,".$this->tables['shop_info'].'.id as shop_id')
+                                ->from($this->tables['shop_info'])
+                                ->where($this->tables['shop_info'].'.id', $shop_id)
+                                ->get()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_type_id = $shop_info_array[0]['shop_type_id'];
+        }
+        
+        if($shop_type_id == SHOP_TYPE_SMALL)
+        {
+            $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
+            $this->db->order_by($order_by);
+            $like = "(card_no LIKE '%".$search_value."%')";
+            if($account_status_id > 0)
+            {
+                $where = $this->tables['users'].'.account_status_id = '.$account_status_id.' AND '.$like;
+            }
+            else
+            {
+                $where = $like;
+            }
+            $this->db->where($where);        
+            $this->db->limit(50);
+            $query = $this->db->select($this->tables['customers'].'.id as customer_id,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone,'.$this->tables['customers'].'.card_no')
+                        ->from($this->tables['users'])
+                        ->join($this->tables['customers'], $this->tables['users'].'.id='.$this->tables['customers'].'.user_id')
+                        ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id AND '.$this->tables['users_shop_info'].'.shop_id = '.$shop_id)
+                        ->get();
+            if ($query->num_rows() >= 1) {
+                return $query->result();
+            } else {
+                return array();
+            }
+        }
+        else
+        {
+            return array();
+        }
+    }
+    /*
      * This method will return customer list
      * @param $search_value, value to be searched in first_name/last_name/phone/card_no
      * @param $shop_id, shop id
@@ -43,7 +97,7 @@ class Search_typeahead_model extends Ion_auth_model {
             $order_by = 'cast('.$this->tables['customers'].'.card_no as unsigned) asc';
             $this->db->order_by($order_by);   
             
-            $like = "(first_name LIKE '%".$search_value."%' OR last_name LIKE '%".$search_value."%' OR phone LIKE '%".$search_value."%' OR card_no LIKE '%".$search_value."%')";
+            $like = "(card_no LIKE '%".$search_value."%' OR first_name LIKE '%".$search_value."%' OR last_name LIKE '%".$search_value."%' OR phone LIKE '%".$search_value."%')";
         }
         else
         {

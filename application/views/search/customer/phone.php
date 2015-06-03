@@ -24,14 +24,7 @@
     <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
-    <?php 
-        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-        {                                    
-            echo '<td>';
-            echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= customer_info.customer_id%}">Show</a>';
-            echo '</td>';
-        }        
-    ?>
+    <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= customer_info.customer_id%}">Show</a>'; ?></td>
     <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>   
     <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
     <?php }?>  
@@ -39,7 +32,7 @@
     {% customer_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
 </script>
-<h3>Search Customer by Phone</h3>
+<h3>Search Customer by Mobile No</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
     <div class="row">
         <div class ="col-md-6">
@@ -92,12 +85,7 @@
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <?php 
-                    if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                    {                                    
-                        echo '<th>Transactions</th>';
-                    }                            
-                    ?>
+                    <th>Transactions</th>
                     <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                     <th>Card No</th>
                     <?php }?>

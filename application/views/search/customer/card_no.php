@@ -24,6 +24,7 @@
     <td ><?php echo '{%= customer_info.last_name%}'; ?></td>
     <td ><?php echo '{%= customer_info.phone%}'; ?></td>
     <td ><?php echo '{%= customer_info.address%}'; ?></td>
+    <td ><?php echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= customer_info.customer_id%}">Show</a>'; ?></td>
     <td ><?php echo '{%= customer_info.card_no%}'; ?></td>
     <td ><a onclick="open_modal_status_confirm(<?php echo '{%= customer_info.card_no%}'; ?>)">Inactive</a></td>
     </tr>
@@ -83,6 +84,7 @@
                     <th>Last Name</th>
                     <th>Phone</th>
                     <th>Address</th>
+                    <th>Transactions</th>
                     <th>Card No</th>
                     <th>Status</th>
                 </tr>

@@ -65,6 +65,7 @@ class Search_typeahead {
     
     /*
      * This method will return customer list adding value field appending first_name, last_name, phone and card_no
+     * Card no has hight priority during search
      * @param $search_value, value to be searched in first_name/last_name/phone/card_no
      * @param $shop_id, shop id
      * @param $account_status_id, account status id of a customer
@@ -76,11 +77,21 @@ class Search_typeahead {
         {
             $shop_id = $this->session->userdata('shop_id');
         }
+        $customer_id_list = array();
         $customer_list = array();
-        $customers = $this->search_typeahead_model->get_customers($search_value, $shop_id, $account_status_id);
-        foreach ($customers as  $customer) {
+        $customers_card_no = $this->search_typeahead_model->get_customers_card_no($search_value, $shop_id, $account_status_id);
+        foreach ($customers_card_no as  $customer) {
             $customer->value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
             array_push($customer_list, $customer);
+            $customer_id_list[] = $customer->customer_id;
+        }
+        $customers = $this->search_typeahead_model->get_customers($search_value, $shop_id, $account_status_id);
+        foreach ($customers as  $customer) {
+            if(!in_array($customer->customer_id, $customer_id_list))
+            {
+                $customer->value = $customer -> first_name . " ". $customer -> last_name . " ". $customer -> phone ." ". $customer->card_no ;
+                array_push($customer_list, $customer);
+            }            
         }
         return $customer_list;
     }

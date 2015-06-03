@@ -174,8 +174,8 @@ class Purchase extends CI_Controller {
                 'remarks' => ''
             );
             $supplier_transaction_info_array[] = $supplier_transaction_info;
-            if( $current_due > 0)
-            {
+            //if( $current_due > 0)
+            //{
                 $supplier_transaction_info = array(
                     'shop_id' => $shop_id,
                     'supplier_id' => $purchase_info['supplier_id'],
@@ -189,7 +189,7 @@ class Purchase extends CI_Controller {
                     'remarks' => ''
                 );
                 $supplier_transaction_info_array[] = $supplier_transaction_info;
-            }
+            //}
         }       
         
         $additional_data = array(
