@@ -83,6 +83,17 @@ class Purchase extends CI_Controller {
     }
     
     /*
+     * This method will purchase one/more than one purchases
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    function warehouse_purchase_orders()
+    {
+        $this->data['message'] = "";
+        $this->template->load(null, 'purchase/warehouse-purchase-orders',$this->data);
+    }
+    
+    /*
      * Ajax Call
      * This method will store purchase info into the system
      * @return status, 0 for error and 1 for success

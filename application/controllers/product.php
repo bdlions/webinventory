@@ -646,5 +646,92 @@ class Product extends CI_Controller {
         header("Content-Disposition: 'attachment'; filename=sample_file.txt");
         echo $file_read;
     }
-
+    
+    /*
+     * This method will show all product categories1 (sub lot no)
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function product_categories1()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'product/category1/index',$this->data);
+    }
+    
+    /*
+     * This method will create product category1 (sub lot no)
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function create_product_category1()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'product/category1/create-product-category1',$this->data);
+    }
+    
+    /*
+     * This method will update product category1 (sub lot no)
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function update_product_category1()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'product/category1/update-product-category1',$this->data);
+    }
+    
+    /*
+     * Ajax call
+     * This method will delete product category1 (sub lot no)
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function delete_product_category1()
+    {
+        
+    }
+    
+    /*
+     * This method will show all product sizes
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function product_sizes()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'product/size/index',$this->data);
+    }
+    
+    /*
+     * This method will create product size
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function create_product_size()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'product/size/create-size',$this->data);
+    }
+    
+    /*
+     * This method will update product size
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function update_product_size()
+    {
+        $this->data['message'] = '';
+        $this->template->load(null, 'product/size/update-size',$this->data);
+    }
+    
+    /*
+     * Ajax call
+     * This method will delete product size
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    public function delete_product_size()
+    {
+        
+    }
 }

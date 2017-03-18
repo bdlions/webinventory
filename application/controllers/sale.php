@@ -108,6 +108,17 @@ class Sale extends CI_Controller {
     }
     
     /*
+     * This method will sale one/more than one sales
+     * @author nazmul hasan
+     * @created on 18th march 17
+     */
+    function sale_orders() 
+    {
+        $this->data['message'] = "";
+        $this->template->load(null, 'sales/sales-orders',$this->data);
+    }
+    
+    /*
      * Ajax call to add a sale order
      * @Author Nazmul on 23rd January 2015
      */
