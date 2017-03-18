@@ -111,28 +111,7 @@ class Test extends CI_Controller {
     }
     public function test1()
     {
-        /*$counter = 0;
-        for($counter = 0 ; $counter < 1000 ; $counter++)
-        {
-            $first_name = 'Nazmul'.$counter;
-            $last_name = 'Hasan'.$counter;
-            $phone_no = $counter;
-            $card_no = $counter;
-            $user_name = '';
-            $password = "password";
-            $email = "dummy@dummy.com";
-            $additional_data = array(
-                'card_no' => $card_no,
-                'account_status_id' => 1,
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'phone' => $phone_no,
-                'created_date' => date('Y-m-d H:i:s')
-            );
-            $groups = array('id' => 5);
-            $user_id = $this->ion_auth->register($user_name, $password, $email, $additional_data, $groups);
-        }*/
-        print_r($this->payments->get_daily_sale_due_list());
+        $this->sms_library->send_sms("8801678112509", "Test message 2nd September 2015", FALSE);
     }
     
 }

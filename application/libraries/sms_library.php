@@ -103,11 +103,14 @@ class Sms_library {
                     return 0;
             }
         }*/
-        $client = new nusoap_client("http://cmp.robi.com.bd/WS/CMPWebService.asmx?wsdl", true);
+        //$client = new nusoap_client("http://cmp.robi.com.bd/WS/CMPWebService.asmx?wsdl", true);
+        $client = new nusoap_client("https://bmpws.robi.com.bd/ApacheGearWS/services/CMPWebServiceSoap?wsdl", true);
         //print_r($client);
         $params = array(
         'Username' => 'apurbo',
-        'Password' => '654321',
+        //'Password' => '654321',
+        //'Password' => 'Robi@1234',
+        'Password' => 'Apur@1234',
         'From' => '8801841104245',
         'To' => $phoneNumber,
         'Message' => $message
