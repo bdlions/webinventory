@@ -28,7 +28,7 @@
                     $("#label_total_sale_price").html(data['total_sale_price']);
                     $("#label_total_quantity").html(data['total_quantity']);
                     $("#label_total_profit").html(data['total_profit']);
-                    $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));                    
+                    $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));
                 }
             });
         });
@@ -38,61 +38,57 @@
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
-        <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
-        <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
-        <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-        <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
-        <td ><?php echo '{%= sale_info.category_unit%}'; ?></td>
-        <?php 
-            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-            {                                    
-                echo '<td>';
-                echo '{%= sale_info.purchase_unit_price%}';
-                echo '</td>';
-            }        
-        ?>    
-        <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
-        <?php 
-            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-            {                                    
-                echo '<td>';
-                echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}'; 
-                echo '</td>';
-            }        
-        ?> 
-        <td ><?php echo '{%= sale_info.total_sale*sale_info.sale_unit_price%}'; ?></td>
-        <?php 
-            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-            {                                    
-                echo '<td>';
-                echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.total_sale %}'; 
-                echo '</td>';
-            }        
-        ?>
-        <?php 
-            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-            {                                    
-                echo '<td>';
-                echo '<a href="'.base_url().'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';
-                echo '</td>';
-            }        
-        ?>
-        <?php 
-            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-            {                                    
-                echo '<td>';
-                echo '<a href="'.base_url().'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>'; 
-                echo '</td>';
-            }        
-        ?>
-        <?php 
-            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-            {                                    
-                echo '<td>';
-                echo '<a href="'.base_url().'sale/delete_sale/{%= sale_info.sale_order_no%}">Delete</a>'; 
-                echo '</td>';
-            }        
-        ?>
+    <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
+    <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
+    <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
+    <td >1</td>
+    <td >sm</td>
+    <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
+    <td ><?php echo '{%= sale_info.category_unit%}'; ?></td>
+    <?php
+    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+        echo '<td>';
+        echo '{%= sale_info.purchase_unit_price%}';
+        echo '</td>';
+    }
+    ?>    
+    <td ><?php echo '{%= sale_info.sale_unit_price%}'; ?></td>
+    <?php
+    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+        echo '<td>';
+        echo '{%= sale_info.total_sale*sale_info.purchase_unit_price%}';
+        echo '</td>';
+    }
+    ?> 
+    <td ><?php echo '{%= sale_info.total_sale*sale_info.sale_unit_price%}'; ?></td>
+    <?php
+    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+        echo '<td>';
+        echo '{%= (sale_info.sale_unit_price-sale_info.purchase_unit_price)*sale_info.total_sale %}';
+        echo '</td>';
+    }
+    ?>
+    <?php
+    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+        echo '<td>';
+        echo '<a href="' . base_url() . 'transaction/show_customer_transactions/{%= sale_info.customer_id%}">Show</a>';
+        echo '</td>';
+    }
+    ?>
+    <?php
+    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+        echo '<td>';
+        echo '<a href="' . base_url() . 'sale/return_sale_order/{%= sale_info.sale_order_no%}">Return</a>';
+        echo '</td>';
+    }
+    ?>
+    <?php
+    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+        echo '<td>';
+        echo '<a href="' . base_url() . 'sale/delete_sale/{%= sale_info.sale_order_no%}">Delete</a>';
+        echo '</td>';
+    }
+    ?>
     </tr>
     {% sale_info = ((o instanceof Array) ? o[i++] : null); %}
     {% } %}
@@ -108,15 +104,15 @@
                             Lot No
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_input($purchase_order_no+array('class'=>'form-control')); ?>
+                            <?php echo form_input($purchase_order_no + array('class' => 'form-control')); ?>
                         </div> 
-                    </td> 
+                    </td>
                     <td>
                         <label class="col-md-6 control-label requiredField">
                             Total Sale Price : 
                         </label>
                         <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
-                            <?php //echo $total_sale_price;?> 
+                            <?php //echo $total_sale_price; ?> 
                         </label>
                     </td>
                     <td>                        
@@ -124,25 +120,32 @@
                             Start Date
                         </label>
                         <div class ="col-md-6">
-                           <?php echo form_input($start_date+array('class'=>'form-control')); ?>
+                            <?php echo form_input($start_date + array('class' => 'form-control')); ?>
                         </div> 
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
-
-                        </label>
-                        <div class ="col-md-6">
-                            <?php echo form_input($button_search_sale+array('class'=>'form-control btn-success')); ?>
-                        </div>                        
+                        <div class="form-group">
+                            <label for="purchase_sub_order_no" class="col-md-6 control-label requiredField">
+                                Sub Lot No
+                            </label>
+                            <div class ="col-md-6">
+                                <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div> 
+                        </div>
                     </td>
+                   
                     <td>
                         <label class="col-md-6 control-label requiredField">
                             Total Quantity : 
                         </label>
                         <label id="label_total_quantity" class="col-md-6 control-label requiredField">
-                            <?php //echo $total_expense;?>
+                            <?php //echo $total_expense; ?>
                         </label>
                     </td>
                     <td>
@@ -150,36 +153,57 @@
                             End Date
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_input($end_date+array('class'=>'form-control')); ?>
+                            <?php echo form_input($end_date + array('class' => 'form-control')); ?>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                                               
-                    </td>
+                        <div class="form-group">
+                            <label for="purchase_order_product_size" class="col-md-6 control-label requiredField">
+                                Size
+                            </label>
+                            <div class ="col-md-6">
+                                <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
+                                    <option value="lg">lg</option>
+                                    <option value="xl">xl</option>
+                                    <option value="sm">sm</option>
+                                </select>
+                            </div> 
+                        </div>
+                    </td> 
                     <td>
                         <label class="col-md-6 control-label requiredField">
-                            <?php 
-                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                                {                                    
-                                    echo 'Total Profit : ';
-                                }
+                            <?php
+                            if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                                echo 'Total Profit : ';
+                            }
                             ?>
-                            
+
                         </label>
                         <label id="label_total_profit" class="col-md-6 control-label requiredField">
-                            <?php 
-                                if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                                {                                    
-                                    //echo $total_profit;
-                                }
+                            <?php
+                            if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                                //echo $total_profit;
+                            }
                             ?>
                         </label>                      
                     </td>
                     <td>
-                        
+
                     </td>
+                </tr>
+                <tr>
+                     <td>
+                        <label for="button_search_sale" class="col-md-6 control-label requiredField">
+
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_input($button_search_sale + array('class' => 'form-control btn-success')); ?>
+                        </div>                        
+                    </td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>  
         </table>
@@ -194,50 +218,46 @@
                     <th>Time & Date</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
+                    <th>Sub Lot No</th>
+                    <th>Size</th>
                     <th>Quantity</th>
                     <th>Product Unit</th>
-                    <?php 
-                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                        {                                    
-                            echo '<th>Purchase Unit Price</th>';
-                        }                            
+                    <?php
+                    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                        echo '<th>Purchase Unit Price</th>';
+                    }
                     ?> 
                     <th>Sale Unit Price</th>
-                    <?php 
-                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                        {                                    
-                            echo '<th>Total Purchase Price</th>';
-                        }                            
+                    <?php
+                    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                        echo '<th>Total Purchase Price</th>';
+                    }
                     ?> 
                     <th>Total Sale Price</th>
-                    <?php 
-                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                        {                                    
-                            echo '<th>Net Profit</th>';
-                        }                            
+                    <?php
+                    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                        echo '<th>Net Profit</th>';
+                    }
                     ?> 
-                    <?php 
-                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                        {                                    
-                            echo '<th>Transactions</th>';
-                        }                            
+                    <?php
+                    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                        echo '<th>Transactions</th>';
+                    }
                     ?> 
-                    <?php 
-                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                        {                                    
-                            echo '<th>Return</th>';
-                        }                            
+                    <?php
+                    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                        echo '<th>Return</th>';
+                    }
                     ?>
-                    <?php 
-                        if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
-                        {                                    
-                            echo '<th>Delete</th>';
-                        }                            
+                    <?php
+                    if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                        echo '<th>Delete</th>';
+                    }
                     ?>
                 </tr>
             </thead>
             <tbody id="tbody_customer_sale_list">                
-            
+
             </tbody>
         </table>
     </div>

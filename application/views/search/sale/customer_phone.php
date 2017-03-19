@@ -165,6 +165,8 @@
                     <?php }?>
                     <th>Product Name</th>
                     <th>Lot No</th>
+                    <th>Sub Lot No</th>
+                    <th>Size</th>
                     <th>Quantity</th>
                     <th>Product Unit</th>
                     <?php 

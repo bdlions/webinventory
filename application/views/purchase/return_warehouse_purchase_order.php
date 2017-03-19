@@ -319,10 +319,34 @@
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="purchase_order_no" class="col-md-4 control-label requiredField">
-                            Lot No
+                            Lot No 
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_sub_order_no" class="col-md-4 control-label requiredField">
+                            Sub Lot No
+                        </label>
+                        <div class ="col-md-8">
+                            <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_order_product_size" class="col-md-4 control-label requiredField">
+                            Size
+                        </label>
+                        <div class ="col-md-8">
+                            <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
+                                <option value="lg">lg</option>
+                                <option value="xl">xl</option>
+                                <option value="sm">sm</option>
+                            </select>
                         </div> 
                     </div>
                 </div>

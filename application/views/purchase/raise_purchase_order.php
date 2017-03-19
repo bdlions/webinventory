@@ -300,7 +300,7 @@
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="input_raise_purchase_order_no" class="col-md-4 control-label requiredField">
-                            Lot No
+                            Lot No 
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'input_raise_purchase_order_no', 'id' => 'input_raise_purchase_order_no', 'class' => 'form-control')); ?>

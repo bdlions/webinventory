@@ -89,7 +89,39 @@ class Purchase extends CI_Controller {
      */
     function warehouse_purchase_orders()
     {
-        $this->data['message'] = "";
+        //$this->data['message'] = "";
+        $shop_info_array = $this->shop_library->get_shop_info()->result_array();
+        if(!empty($shop_info_array)){
+            $this->data['shop_info'] = $shop_info_array[0];
+        }
+        $purchase_order_no = 1;
+        $purchase_order_no_array = $this->purchase_library->get_next_purchase_order_no()->result_array();
+        if(!empty($purchase_order_no_array))
+        {
+            $purchase_order_no = ($purchase_order_no_array[0]['purchase_order_no']+1);
+        }
+        $this->data['purchase_order_no'] = $purchase_order_no;
+        $this->data['product_list_array'] = array();
+        $product_list_array = $this->stock_library->get_products_warehouse_current_stock()->result_array();
+        if( count($product_list_array) > 0)
+        {
+            $this->data['product_list_array'] = $product_list_array;
+        }
+        
+        $this->data['product_search_category'] = array();
+        $this->data['product_search_category'][0] = "Select an item";
+        $this->data['product_search_category']['name'] = "Product Name";
+        $this->data['product_search_category']['all_product'] = "Select All";
+        
+        $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
+        $this->data['product_unit_category_list'] = array();
+        if( !empty($product_unit_category_list_array) )
+        {
+            foreach ($product_unit_category_list_array as $key => $unit_category) {
+                $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
+            }
+        }
+        $this->data['order_type'] = ORDER_TYPE_ADD_WAREHOUSE_PURCHASE;
         $this->template->load(null, 'purchase/warehouse-purchase-orders',$this->data);
     }
     

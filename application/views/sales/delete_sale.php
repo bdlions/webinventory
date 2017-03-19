@@ -19,6 +19,30 @@
                     <?php echo form_input($sale_order_no+array('class' => 'form-control')); ?>
                 </div> 
             </div>
+              <div class="form-group">
+                        <label for="sale_sub_order_no" class="col-md-4 control-label requiredField">
+                            Sub Lot No
+                        </label>
+                        <div class ="col-md-7">
+                            <select name="sale_sub_order_no" id="sale_sub_order_no" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="sale_order_product_size" class="col-md-4 control-label requiredField">
+                            Size
+                        </label>
+                        <div class ="col-md-7">
+                            <select name="sale_order_product_size" id="sale_order_product_size" class="form-control">
+                                <option value="lg">lg</option>
+                                <option value="xl">xl</option>
+                                <option value="sm">sm</option>
+                            </select>
+                        </div> 
+                    </div>
             <div class="form-group">
                 <label for="submit_delete_sale" class="col-md-7 control-label requiredField">
 

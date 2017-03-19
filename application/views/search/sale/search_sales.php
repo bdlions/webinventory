@@ -42,6 +42,8 @@
         <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
         <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
+        <td >1</td>
+        <td >sm</td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
         <td ><?php echo '{%= sale_info.category_unit %}'; ?></td>
         <?php 
@@ -200,6 +202,8 @@
                     <th>Time & Date</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
+                    <th>Sub Lot No</th>
+                    <th>Size</th>
                     <th>Quantity</th>
                     <th>Product Unit</th>
                     <?php 

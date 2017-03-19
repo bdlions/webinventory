@@ -9,7 +9,7 @@
                     purchase_order_no: $("#purchase_order_no").val()
                 },
                 success: function(data) {
-                    $("#tbody_purchase_list").html(tmpl("tmpl_purchase_list", data['purchase_list']));                      
+                    $("#tbody_purchase_list").html(tmpl("tmpl_purchase_list", data['purchase_list']));
                 }
             });
             return false;
@@ -21,7 +21,7 @@
     {% while(purchase_info){ %}
     <tr>
     <td ><?php echo '{%= purchase_info.created_on%}'; ?></td>
-    <td ><?php echo '{%= purchase_info.first_name%}'.' '.'{%= purchase_info.last_name%}'; ?></td>
+    <td ><?php echo '{%= purchase_info.first_name%}' . ' ' . '{%= purchase_info.last_name%}'; ?></td>
     <td ><?php echo '{%= purchase_info.purchase_order_no%}'; ?></td>
     <td ><?php echo '{%= purchase_info.product_name%}'; ?></td>
     <td ><?php echo '{%= purchase_info.unit_price%}'; ?></td>
@@ -44,7 +44,31 @@
                                     Lot No
                                 </label>
                                 <div class ="col-md-6">
-                                    <?php echo form_input($purchase_order_no+array('class'=>'form-control')); ?>
+                                    <?php echo form_input($purchase_order_no + array('class' => 'form-control')); ?>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="purchase_sub_order_no" class="col-md-6 control-label requiredField">
+                                    Sub Lot No
+                                </label>
+                                <div class ="col-md-6">
+                                    <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <label for="purchase_order_product_size" class="col-md-6 control-label requiredField">
+                                    Size
+                                </label>
+                                <div class ="col-md-6">
+                                    <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
+                                        <option value="lg">lg</option>
+                                        <option value="xl">xl</option>
+                                        <option value="sm">sm</option>
+                                    </select>
                                 </div> 
                             </div>
                             <div class="form-group">
@@ -52,7 +76,7 @@
 
                                 </label>
                                 <div class ="col-md-6">
-                                    <?php echo form_input($button_search_transactions+array('class'=>'form-control btn-success')); ?>
+                                    <?php echo form_input($button_search_transactions + array('class' => 'form-control btn-success')); ?>
                                 </div> 
                             </div>
                         </div>

@@ -1,24 +1,24 @@
 <script type="text/javascript">
-  
+
 //    var stock_purc_prod_list;
     var ware_purc_prod_list;
-    
+
     $(function() {
         var default_purchase_order_no = '<?php echo $shop_info['purchase_default_purchase_order_no'] ?>';
-        if( default_purchase_order_no != "")
+        if (default_purchase_order_no != "")
         {
             $('#purchase_order_no').val(default_purchase_order_no);
             $('#purchase_order_no').attr("disabled", true);
             purchase_raise_info();
-        }  
+        }
         $("#purchase_order_no").change(function() {
             purchase_raise_info();
         });
-        
-        var product_data = <?php echo json_encode($product_list_array) ?>;        
+
+        var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
         $("#total_purchase_price").val('');
-        
+
         $("#button_purchase_order").on("click", function() {
             //validation checking of purchase order
             //checking whether supplier is assigned or not
@@ -39,7 +39,7 @@
                 if ($(this).attr("name") === "quantity")
                 {
                     selected_product_counter++;
-                }                
+                }
             });
             if (selected_product_counter <= 0)
             {
@@ -50,7 +50,7 @@
             $('#myModal').modal('show');
         });
         $("#modal_button_confirm").on("click", function() {
-            if( get_modal_confirmation_category_id() === get_modal_confirmation_return_purchase_order_category_id() )
+            if (get_modal_confirmation_category_id() === get_modal_confirmation_return_purchase_order_category_id())
             {
                 var total_purchase_price = 0;
                 var product_list = new Array();
@@ -116,7 +116,7 @@
             }
             $('#myModal').modal('hide');
         });
-        
+
         $("#tbody_selected_product_list").on("change", "input", function() {
             var product_id = '';
             var product_quantity = 1;
@@ -155,7 +155,7 @@
             });
             $("#total_purchase_price").val(total_purchase_price);
         });
-        
+
         $('.dropdown-toggle').dropdown();
         $(".dropdown-menu").on("click", function(e) {
             e.stopPropagation();
@@ -183,14 +183,14 @@
             alert('The product is already selected. Please update product quantity.');
             return;
         }
-        $.each(stock_purc_prod_list, function( index, stocked_product ) {
-            if( stocked_product['product_id'] == prod_info['id'] )
+        $.each(stock_purc_prod_list, function(index, stocked_product) {
+            if (stocked_product['product_id'] == prod_info['id'])
             {
-                prod_info['unit_price'] = stocked_product['unit_price']; 
+                prod_info['unit_price'] = stocked_product['unit_price'];
                 prod_info['readonly'] = 'true';
             }
         });
-        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
+        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html() + tmpl("tmpl_selected_product_info", prod_info));
         $('.purchase_order_number_td').hide();
         color_setter();
         var total_purchase_price = 0;
@@ -200,48 +200,48 @@
                 total_purchase_price = +total_purchase_price + +$(this).val();
             }
         });
-        $("#total_purchase_price").val(total_purchase_price);        
+        $("#total_purchase_price").val(total_purchase_price);
     }
 
     function isNumber(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
-     function purchase_raise_info(){
-    $.ajax({
-                dataType: 'json',
-                type: "POST",
-                url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
-                data: {
-                    lot_no: $("#purchase_order_no").val()
-                },
-                success: function(data) {
-                    var supplier_info = data['supplier_info'];
-                    var purchased_product_list = data['purchased_product_list'];
-                    var supplier_due = data['supplier_due'];
-                    set_purchased_product_list(purchased_product_list);
-                    stock_purc_prod_list = data['stock_purchased_product_list'];
-                    if(supplier_info.supplier_id)
-                    {
+    function purchase_raise_info() {
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
+            data: {
+                lot_no: $("#purchase_order_no").val()
+            },
+            success: function(data) {
+                var supplier_info = data['supplier_info'];
+                var purchased_product_list = data['purchased_product_list'];
+                var supplier_due = data['supplier_due'];
+                set_purchased_product_list(purchased_product_list);
+                stock_purc_prod_list = data['stock_purchased_product_list'];
+                if (supplier_info.supplier_id)
+                {
 //                        $("#tbody_purchased_product_list").html(tmpl("tmpl_purchased_product_list",  data['purchased_product_list']));
-                        $("#input_purchase_supplier_id").val(supplier_info.supplier_id);
-                        $("#input_purchase_supplier").val(supplier_info.first_name+supplier_info.last_name);
-                        $("#input_purchase_phone").val(supplier_info.phone);
-                        $("#input_purchase_company").val(supplier_info.company);
-                        $('#input_purchase_product').attr('type', 'text');
-                        $("#total_purchase_price").val('');
-                    }
-                    else
-                    {
-                        $("#input_purchase_supplier_id").val('');
-                        $("#input_purchase_supplier").val('');
-                        $("#input_purchase_phone").val('');
-                        $("#input_purchase_company").val('');
-                        $('#input_purchase_product').attr('type', 'hidden');
-                        $("#total_purchase_price").val('');
-                    }
+                    $("#input_purchase_supplier_id").val(supplier_info.supplier_id);
+                    $("#input_purchase_supplier").val(supplier_info.first_name + supplier_info.last_name);
+                    $("#input_purchase_phone").val(supplier_info.phone);
+                    $("#input_purchase_company").val(supplier_info.company);
+                    $('#input_purchase_product').attr('type', 'text');
+                    $("#total_purchase_price").val('');
                 }
-            });   
-   }
+                else
+                {
+                    $("#input_purchase_supplier_id").val('');
+                    $("#input_purchase_supplier").val('');
+                    $("#input_purchase_phone").val('');
+                    $("#input_purchase_company").val('');
+                    $('#input_purchase_product').attr('type', 'hidden');
+                    $("#total_purchase_price").val('');
+                }
+            }
+        });
+    }
 </script>
 
 <h3> Raise Purchase Order</h3>
@@ -257,8 +257,8 @@
                             Supplier Name
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_purchase_supplier_id', 'id' => 'input_purchase_supplier_id', 'type'=>'hidden', 'class' => 'form-control')); ?>
-                            <?php echo form_input(array('name' => 'input_purchase_supplier', 'id' => 'input_purchase_supplier', 'readonly'=>'true', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_supplier_id', 'id' => 'input_purchase_supplier_id', 'type' => 'hidden', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_supplier', 'id' => 'input_purchase_supplier', 'readonly' => 'true', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
@@ -266,7 +266,7 @@
                             Phone No
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_purchase_phone', 'id' => 'input_purchase_phone', 'readonly'=>'true', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_phone', 'id' => 'input_purchase_phone', 'readonly' => 'true', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
@@ -274,7 +274,7 @@
                             Company
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('name' => 'input_purchase_company', 'id' => 'input_purchase_company', 'readonly'=>'true', 'class' => 'form-control')); ?>
+                            <?php echo form_input(array('name' => 'input_purchase_company', 'id' => 'input_purchase_company', 'readonly' => 'true', 'class' => 'form-control')); ?>
                         </div> 
                     </div>
                     <div class="form-group">
@@ -282,17 +282,41 @@
                             Product
                         </label>
                         <div class ="col-md-8">
-                            <?php echo form_input(array('type'=>'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#common_modal_select_product')); ?>
+                            <?php echo form_input(array('type' => 'hidden', 'name' => 'input_purchase_product', 'id' => 'input_purchase_product', 'class' => 'form-control', 'data-toggle' => 'modal', 'data-target' => '#common_modal_select_product')); ?>
                         </div> 
                     </div>
                 </div>
                 <div class ="col-md-5 form-horizontal margin-top-bottom">
                     <div class="form-group">
                         <label for="purchase_order_no" class="col-md-4 control-label requiredField">
-                            Lot No
+                            Lot No 
                         </label>
                         <div class ="col-md-8">
                             <?php echo form_input(array('name' => 'purchase_order_no', 'id' => 'purchase_order_no', 'class' => 'form-control')); ?>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_sub_order_no" class="col-md-4 control-label requiredField">
+                            Sub Lot No
+                        </label>
+                        <div class ="col-md-8">
+                            <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_order_product_size" class="col-md-4 control-label requiredField">
+                            Size
+                        </label>
+                        <div class ="col-md-8">
+                            <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
+                                <option value="lg">lg</option>
+                                <option value="xl">xl</option>
+                                <option value="sm">sm</option>
+                            </select>
                         </div> 
                     </div>
                 </div>
@@ -335,21 +359,21 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
-      </div>
-      <div class="modal-body">
-       Do You want to proceed?
-      </div>
-      <div class="modal-footer">          
-        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
+            </div>
+            <div class="modal-body">
+                Do You want to proceed?
+            </div>
+            <div class="modal-footer">          
+                <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<?php $this->load->view("common/modal_select_product_order");?>
+<?php $this->load->view("common/modal_select_product_order"); ?>
 

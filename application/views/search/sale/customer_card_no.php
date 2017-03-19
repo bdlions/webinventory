@@ -154,6 +154,8 @@
                 <tr>
                     <th>Product Name</th>
                     <th>Lot No</th>
+                    <th>Sub Lot No</th>
+                    <th>Size</th>
                     <th>Quantity</th>
                     <?php 
                         if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
