@@ -33,32 +33,39 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modal_product_category1_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
-      </div>
-      <div class="modal-body">
-       Do You want to proceed?
-      </div>
-      <div class="modal-footer">          
-        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
-        <button type="button" id ="modal_button_cancel" class="btn btn-default" data-dismiss="modal">No</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    <div class="modal-dialog">
+        <div class="modal-content modal_background_color">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="text-align: center; font-size: 20px;">
+                <div class="row">
+                    <div class="col-md-12">
+                          Do you want to proceed?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-offset-9 col-md-2">
+                        <input id="modal_ok_click_id" type="button" class="btn btn-success" data-dismiss="modal" aria-hidden="true" value="Ok">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $('#product_category1_delete_button_1').on('click', function() {
         $('#modal_product_category1_delete').modal('show');
     });
-     $('#modal_button_confirm').on('click', function() {
+     $('#modal_ok_click_id').on('click', function() {
         $('#modal_product_category1_delete').modal('hide');
         $('#product_category1_display_row_1').hide();
-    });
-    $('#modal_button_cancel').on('click', function() {
-        $('#modal_size_delete').modal('hide');
     });
 </script>
 

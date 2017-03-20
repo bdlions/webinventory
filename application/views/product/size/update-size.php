@@ -11,11 +11,7 @@
                     Product Size
                 </label>
                 <div class ="col-md-6">
-                    <select name="product_size" id="product_size" class="form-control">
-                        <option value="lg">lg</option>
-                        <option value="xl">xl</option>
-                        <option value="sm">sm</option>
-                    </select>
+                      <input name="product_size" id="product_size" class="form-control">
                 </div> 
             </div>
             <div class="form-group">

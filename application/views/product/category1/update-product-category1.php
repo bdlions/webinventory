@@ -11,11 +11,7 @@
                     Product Sub Lot No
                 </label>
                 <div class ="col-md-6">
-                      <select name="product_sub_lot_no" id="product_size" class="form-control">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
+                       <input name="product_sub_lot_no" id="product_sub_lot_no" class="form-control">
                 </div> 
             </div>
             <div class="form-group">
