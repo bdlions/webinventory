@@ -51,8 +51,11 @@
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-offset-9 col-md-2">
-                        <input id="modal_ok_click_id" type="button" class="btn btn-success" data-dismiss="modal" aria-hidden="true" value="Ok">
+                    <div class="col-md-offset-8 col-md-2">
+                        <input id="modal_ok_click_id" type="button" class="btn btn-success" data-dismiss="modal" aria-hidden="true" value="Yes">
+                    </div>
+                    <div class="col-md-2">
+                        <input id="modal_no_click_id" type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" value="No">
                     </div>
                 </div>
             </div>
@@ -60,6 +63,9 @@
     </div>
 </div>
 <script type="text/javascript">
+    $('#modal_no_click_id').on('click', function() {
+        $('#modal_size_delete').modal('hide');
+    });
     $('#product_size_delete_button_1').on('click', function() {
         $('#modal_size_delete').modal('show');
     });

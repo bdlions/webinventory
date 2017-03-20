@@ -90,6 +90,9 @@
 </div>
 <?php $this->load->view("sales/modal_delete_daily_sale_row"); ?>
 <script type="text/javascript">
+    $('#modal_no_click_id').on('click', function() {
+        $('#modal_daily_purchase_delete_row').modal('hide');
+    });
     $('#delete_row_button_1').on('click', function() {
         $('#modal_daily_sale_delete_row').modal('show');
     });

@@ -67,6 +67,9 @@
 
 <?php $this->load->view("purchase/modal_delete_daily_purchase_row"); ?>
 <script type="text/javascript">
+    $('#modal_no_click_id').on('click', function() {
+        $('#modal_daily_purchase_delete_row').modal('hide');
+    });
     $('#delete_row_button_1').on('click', function() {
         $('#modal_daily_purchase_delete_row').modal('show');
     });
