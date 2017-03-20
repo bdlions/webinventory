@@ -22,7 +22,7 @@
                         <input id="modal_ok_click_id" type="button" class="btn btn-success" data-dismiss="modal" aria-hidden="true" value="Yes">
                     </div>
                     <div class="col-md-2">
-                        <input id="modal_no_click_id" type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" value="No">
+                        <input id="modal_no_click_id" type="button" class="btn btn-success" data-dismiss="modal" aria-hidden="true" value="No">
                     </div>
                 </div>
             </div>
