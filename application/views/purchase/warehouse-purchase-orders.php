@@ -346,7 +346,6 @@
             <?php } ?>
             <div class="form-group" id="div_button_warehouse_purchase_order">
                 <label for="save" class="col-md-2 control-label requiredField">
-
                 </label>
                 <div class ="col-md-3 col-md-offset-5">
                     <?php echo form_button(array('name' => 'button_save_purchase_order', 'id' => 'button_save_purchase_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
@@ -354,13 +353,15 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script type="text/javascript">
-
     $('#button_add_row_1').on('click', function() {
         $('#daily_purchase_row_1').show();
+    });
+    $('#modal_button_confirm').on('click', function() {
+        $('#modal_delete_row_1').modal('hide');
+        $('#daily_purchase_row_1').hide();
     });
 </script>
 <?php $this->load->view("purchase/modal_select_supplier"); ?>

@@ -365,29 +365,18 @@
 <h3>Daily Sale</h3>
 <div class ="form-horizontal top-bottom-padding form-background">
             <div class="row">
-                <div class ="col-md-5 form-horizontal margin-top-bottom">
-                    <input type="hidden" id="sale_order_no" name="sale_order_no" value=""/>
-                    <div class="form-group">
-                        <label for="status" class="col-md-4 control-label requiredField">
-                            &nbsp;
-                        </label>
-                        <div class ="col-md-8">
-                            <?php echo form_button(array('name' => 'button_due_collect', 'id' => 'button_due_collect', 'content' => 'Due Collect', 'class' => 'form-control btn-success')); ?>
-                        </div> 
-                    </div>
-                </div>
-                <div class ="col-md-5 form-horizontal margin-top-bottom">
+                <div class ="col-md-offset-8 col-md-4 form-horizontal margin-top-bottom">
                     <div class="form-group" id="div_button_warehouse_purchase_order">
-                    <label for="save" class="col-md-2 control-label requiredField"></label>
-                    <div class ="col-md-8">
+                    <label for="save" class="col-md-4 control-label requiredField"></label>
+                    <div class ="col-md-6">
                         <?php echo form_button(array('name' => 'button_add_row_1', 'id' => 'button_add_row_1', 'content' => 'Add Row', 'class' => 'form-control btn-success')); ?>
                     </div> 
                 </div>
                 </div>
             </div>
-            <?php $this->load->view("common/order_process_products"); ?>
+            <?php $this->load->view("sales/order_process_products"); ?>
             <div class="row margin-top-bottom">
-                <div class ="col-md-12 form-horizontal">
+                <div class ="col-md-offset-1 col-md-10 form-horizontal">
                     <div class="form-group">
                         <label for="sale_remarks" class="col-md-7 control-label requiredField">
                             Remarks
@@ -430,14 +419,6 @@
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="status" class="col-md-7 control-label requiredField">
-                            Select Staff
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_dropdown('staff_list', array(''=>'Select')+$staff_list, '', 'class="form-control" id="staff_list"'); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
                         <label for="checkbox_download_sale_order" class="col-md-7 control-label requiredField">
                             Download sale order
                         </label>
@@ -460,7 +441,35 @@
                     </div>
                 </div>
             </div>
-<?php $this->load->view("sales/modal_due_collect"); ?>
+    
+<!-- Modal -->
+<div class="modal fade" id="modal_delete_row_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
+      </div>
+      <div class="modal-body">
+       Do You want to proceed?
+      </div>
+      <div class="modal-footer">          
+        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
+        <button type="button" id ="modal_button_cancel" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+    <script type="text/javascript">
+        $('#button_add_row_1').on('click', function() {
+        $('#daily_sale_row_1').show();
+    });
+     $('#modal_button_confirm').on('click', function() {
+        $('#modal_delete_row_1').modal('hide');
+        $('#daily_sale_row_1').hide();
+    });
+</script>
+
 <?php $this->load->view("sales/modal_select_customer"); ?>
 <?php $this->load->view("common/modal_select_product_order"); ?>
 <?php $this->load->view('common/wait_screen');

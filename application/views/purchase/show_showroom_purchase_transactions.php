@@ -23,6 +23,8 @@
     <td ><?php echo '{%= purchase_info.created_on%}'; ?></td>
     <td ><?php echo '{%= purchase_info.first_name%}' . ' ' . '{%= purchase_info.last_name%}'; ?></td>
     <td ><?php echo '{%= purchase_info.purchase_order_no%}'; ?></td>
+    <td >1</td>
+    <td >sm</td>
     <td ><?php echo '{%= purchase_info.product_name%}'; ?></td>
     <td ><?php echo '{%= purchase_info.unit_price%}'; ?></td>
     <td ><?php echo '{%= purchase_info.quantity%}'; ?></td>
@@ -95,6 +97,8 @@
                     <th>Time</th>
                     <th>Supplier</th>
                     <th>Lot No</th>  
+                    <th>Sub Lot No</th>  
+                    <th>Size</th>  
                     <th>Product Name</th> 
                     <th>Unit Price</th>
                     <th>Quantity</th> 

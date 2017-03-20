@@ -114,6 +114,67 @@ class Sale extends CI_Controller {
      */
     function sale_orders() 
     {
+        if($this->input->post('print_sale_order_no'))
+        {
+            $sale_order_no = $this->input->post('print_sale_order_no');
+            header("Content-type:application/pdf");
+            // It will be called downloaded.pdf
+            header("Content-Disposition:attachment;filename=".$sale_order_no.".pdf");
+            // The PDF source is in original.pdf
+            readfile("././assets/receipt/".$sale_order_no.".pdf");
+        }
+        $shop_info = array();
+        $shop_info_array = $this->shop_library->get_shop()->result_array();
+        if(!empty($shop_info_array))
+        {
+            $shop_info = $shop_info_array[0];
+        }
+        $this->data['shop_info'] = $shop_info;
+        
+        $staff_list = array();
+        $staff_list_array = $this->ion_auth->get_all_staffs(0, array(), ACCOUNT_STATUS_ACTIVE)->result_array();
+        if (!empty($staff_list_array)) {
+            foreach ($staff_list_array as $key => $staff_info) {
+                $staff_list[$staff_info['user_id']] = $staff_info['first_name'] . ' ' . $staff_info['last_name'];
+            }
+        }
+        $this->data['staff_list'] = $staff_list;
+        $this->data['user_info'] = array();
+        $user_info_array = $this->ion_auth->user()->result_array();
+        if (!empty($user_info_array)) {
+            $this->data['user_info'] = $user_info_array[0];
+        }
+
+        $this->data['product_list_array'] = array();
+        //$product_list_array = $this->product_library->get_all_products()->result_array();
+        $product_list_array = $this->stock_library->get_products_current_stock()->result_array();
+        if (count($product_list_array) > 0) {
+            $this->data['product_list_array'] = $product_list_array;
+        }
+        $this->data['customer_search_category'] = array();
+        $this->data['customer_search_category'][0] = "Select an item";
+        $this->data['customer_search_category']['phone'] = "Phone";
+        if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){$this->data['customer_search_category']['card_no'] = "Card No";}
+        $this->data['customer_search_category']['first_name'] = "First Name";
+        $this->data['customer_search_category']['last_name'] = "Last Name";
+
+        $this->data['product_search_category'] = array();
+        $this->data['product_search_category'][0] = "Select an item";
+        $this->data['product_search_category']['name'] = "Product Name";
+        $this->data['product_search_category']['all_product'] = "Select All";
+        
+        $product_unit_category_list_array = $this->product_library->get_all_product_unit_category()->result_array();
+        $this->data['product_unit_category_list'] = array();
+        if( !empty($product_unit_category_list_array) )
+        {
+            foreach ($product_unit_category_list_array as $key => $unit_category) {
+                $this->data['product_unit_category_list'][$unit_category['id']] = $unit_category['description'];
+            }
+        }
+        $this->data['order_type'] = ORDER_TYPE_ADD_SALE;
+        
+        
+        
         $this->data['message'] = "";
         $this->template->load(null, 'sales/sales-orders',$this->data);
     }
