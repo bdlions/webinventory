@@ -1,25 +1,25 @@
 <script type="text/javascript">
     $(document).ready(function() {
         set_default_values_at_sale();
-        $('#input_add_sale_product').on('click',function(){
+        $('#input_add_sale_product').on('click', function() {
             //we are not allowing add product option during sale   
             $('#new_product_add_div').hide();
             $('#common_modal_select_product').modal();
         });
-        
+
         var product_data = <?php echo json_encode($product_list_array) ?>;
         set_product_list(product_data);
-        
+
         $("#button_due_collect").on("click", function() {
             $('#modal_due_collect').modal('show');
         });
         var default_purchase_order_no = '<?php echo $shop_info['sale_default_purchase_order_no'] ?>';
-        if( default_purchase_order_no != "")
+        if (default_purchase_order_no != "")
         {
             $('#input_table_header_purchase_order_no').val(default_purchase_order_no);
             $('.disabler_class').attr("disabled", true);
         }
-        
+
 
     });
     function set_default_values_at_sale()
@@ -38,8 +38,8 @@
         $("#current_due").val(0);
         $("#checkbox_download_sale_order").removeAttr('checked');
     }
-    function set_all_lot_no(lot_no_value){
-        $('input[name^=purchase_order_no]').each(function(){
+    function set_all_lot_no(lot_no_value) {
+        $('input[name^=purchase_order_no]').each(function() {
             $(this).val($(lot_no_value).val());
         });
     }
@@ -47,11 +47,11 @@
 <script>
     function append_selected_product(prod_info)
     {
-        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html()+tmpl("tmpl_selected_product_info",  prod_info));
-        if( $('#input_table_header_purchase_order_no').is(":disabled") ){
+        $("#tbody_selected_product_list").html($("#tbody_selected_product_list").html() + tmpl("tmpl_selected_product_info", prod_info));
+        if ($('#input_table_header_purchase_order_no').is(":disabled")) {
             $('.disabler_class').attr("disabled", true);
-            $('input[name^=purchase_order_no]').each(function(){
-                $(this).val( $('#input_table_header_purchase_order_no').val() );
+            $('input[name^=purchase_order_no]').each(function() {
+                $(this).val($('#input_table_header_purchase_order_no').val());
             })
         }
         color_setter();
@@ -68,13 +68,13 @@
     function update_fields_selected_customer(cust_info)
     {
         $("#input_add_sale_customer_id").val(cust_info['customer_id']);
-        $("#input_add_sale_customer").val(cust_info['first_name']+' '+cust_info['last_name']);
+        $("#input_add_sale_customer").val(cust_info['first_name'] + ' ' + cust_info['last_name']);
         $("#input_add_sale_card_no").val(cust_info['card_no']);
         $("#input_add_sale_phone").val(cust_info['phone']);
 
         var rString = randomString(13, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
         $("#sale_order_no").val(rString);
-        
+
         $.ajax({
             dataType: 'json',
             type: "POST",
@@ -84,7 +84,7 @@
             },
             success: function(data) {
                 $("#previous_due").val(data);
-                
+
                 var current_due = +$("#total_sale_price").val() - +$("#cash_paid_amount").val() + +$("#previous_due").val();
                 $("#current_due").val(current_due);
             }
@@ -105,7 +105,7 @@
 
 <script type="text/javascript">
     $(function() {
-        
+
         $("#save_sale_order").on("click", function() {
             //validation checking of sale order
             //checking whether staff is selected or not
@@ -126,7 +126,7 @@
                 alert('Incorrect Order #');
                 return;
             }
-            if ( +$("#total_sale_price").val() < (+$("#cash_paid_amount").val()) )
+            if (+$("#total_sale_price").val() < (+$("#cash_paid_amount").val()))
             {
                 alert('Please click on Due Collect to pay previous due.');
                 return;
@@ -143,7 +143,7 @@
             {
                 alert('Please select at least one product.');
                 return;
-            }            
+            }
             set_modal_confirmation_category_id(get_modal_confirmation_save_sale_order_category_id());
             $('#myModal').modal('show');
         });
@@ -167,7 +167,7 @@
                         }
                         if ($(this).attr("name") === "product_name")
                         {
-                            product_info.setName( $(this).attr("value") );
+                            product_info.setName($(this).attr("value"));
                         }
                         if ($(this).attr("name") === "purchase_order_no")
                         {
@@ -218,24 +218,24 @@
                         if (data['status'] === '1')
                         {
                             $("#print_sale_order_no").val($("#sale_order_no").val());
-                            if($("#checkbox_download_sale_order").prop('checked'))
+                            if ($("#checkbox_download_sale_order").prop('checked'))
                             {
                                 $("#form_download_sale_order").submit();
-                            } 
+                            }
                             else
                             {
-                                alert('Sale order is executed successfully.');                                
+                                alert('Sale order is executed successfully.');
                             }
                             set_default_values_at_sale();
                             //printPDF();
 //                            alert('Sale order is executed successfully.');// replace this w
-                            
+
                         }
                         else if (data['status'] === '0')
                         {
                             alert(data['message']);
                         }
-                        
+
                     }
                 });
             }
@@ -252,8 +252,8 @@
             $("input", "#tbody_selected_product_list").each(function() {
                 if ($(this).attr("name") === "purchase_order_no" && $(this).val() != '' && is_valid)
                 {
-                    var key = $(this).attr("id")+'_'+$(this).val();
-                    if(product_lot_map.indexOf(key) >= 0) {
+                    var key = $(this).attr("id") + '_' + $(this).val();
+                    if (product_lot_map.indexOf(key) >= 0) {
                         alert('Duplicate lot no. Please use a different lot no.');
                         $(this).attr('value', '');
                         $(this).val('');
@@ -265,7 +265,7 @@
                     }
                 }
             });
-            if(!is_valid)
+            if (!is_valid)
             {
                 return;
             }
@@ -273,23 +273,23 @@
                 if ($(this).attr("name") === "purchase_order_no")
                 {
                     /*if ($(this).val() === '')
-                    {
-                        $(this).val('1');
-                        alert("Invalid Lot No.");
-                        return false;
-                    }*/
+                     {
+                     $(this).val('1');
+                     alert("Invalid Lot No.");
+                     return false;
+                     }*/
                     $(this).attr('value', $(this).val());
                 }
                 if ($(this).attr("name") === "quantity")
                 {
                     /*if ($(this).val() === '' || $(this).val() <= 0 || !isNumber($(this).val()))
-                    {
-                        $(this).val('1');
-                        alert("Invalid quantity.");
-                        return false;
-                    }*/
+                     {
+                     $(this).val('1');
+                     alert("Invalid quantity.");
+                     return false;
+                     }*/
                     $(this).attr('value', $(this).val());
-                    if($(this).val() == '' || !isNumber($(this).val() ))
+                    if ($(this).val() == '' || !isNumber($(this).val()))
                     {
                         product_quantity = 0;
                     }
@@ -301,13 +301,13 @@
                 if ($(this).attr("name") === "price")
                 {
                     /*if ($(this).val() === '' || $(this).val() < 0 || !isNumber($(this).val()))
-                    {
-                        $(this).val('1');
-                        alert("Invalid quantity.");
-                        return false;
-                    }*/
+                     {
+                     $(this).val('1');
+                     alert("Invalid quantity.");
+                     return false;
+                     }*/
                     $(this).attr('value', $(this).val());
-                    if($(this).val() == '' || !isNumber($(this).val() ) )
+                    if ($(this).val() == '' || !isNumber($(this).val()))
                     {
                         product_unit_price = 0;
                     }
@@ -317,20 +317,20 @@
                     }
                 }
                 /*if ($(this).attr("name") === "discount")
-                {
-                    if ($(this).val() === '' || !isNumber($(this).val()) || +$(this).val() < 0 || +$(this).val() > 100)
-                    {
-                        $(this).val('0');
-                        alert("Invalid discount.");
-                        return false;
-                    }
-                    $(this).attr('value', $(this).val());
-                    product_discount = $(this).val();
-                }*/
+                 {
+                 if ($(this).val() === '' || !isNumber($(this).val()) || +$(this).val() < 0 || +$(this).val() > 100)
+                 {
+                 $(this).val('0');
+                 alert("Invalid discount.");
+                 return false;
+                 }
+                 $(this).attr('value', $(this).val());
+                 product_discount = $(this).val();
+                 }*/
                 if ($(this).attr("name") === "product_price")
                 {
                     //total_product_price = (product_quantity * product_unit_price) - (product_quantity * product_unit_price * product_discount / 100);
-                    total_product_price = (product_quantity * product_unit_price) ;
+                    total_product_price = (product_quantity * product_unit_price);
                     $(this).attr('value', total_product_price);
                     $(this).val(total_product_price);
                 }
@@ -364,112 +364,98 @@
 </script>
 <h3>Daily Sale</h3>
 <div class ="form-horizontal top-bottom-padding form-background">
-            <div class="row">
-                <div class ="col-md-offset-8 col-md-4 form-horizontal margin-top-bottom">
-                    <div class="form-group" id="div_button_warehouse_purchase_order">
-                    <label for="save" class="col-md-4 control-label requiredField"></label>
-                    <div class ="col-md-6">
-                        <?php echo form_button(array('name' => 'button_add_row_1', 'id' => 'button_add_row_1', 'content' => 'Add Row', 'class' => 'form-control btn-success')); ?>
-                    </div> 
-                </div>
-                </div>
+    <div class="row">
+        <div class ="col-md-offset-8 col-md-4 form-horizontal margin-top-bottom">
+            <div class="form-group" id="div_button_warehouse_purchase_order">
+                <label for="save" class="col-md-4 control-label requiredField"></label>
+                <div class ="col-md-6">
+                    <?php echo form_button(array('name' => 'button_add_row_1', 'id' => 'button_add_row_1', 'content' => 'Add Row', 'class' => 'form-control btn-success')); ?>
+                </div> 
             </div>
-            <?php $this->load->view("sales/order_process_products"); ?>
-            <div class="row margin-top-bottom">
-                <div class ="col-md-offset-1 col-md-10 form-horizontal">
-                    <div class="form-group">
-                        <label for="sale_remarks" class="col-md-7 control-label requiredField">
-                            Remarks
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_textarea(array('name' => 'sale_remarks', 'id' => 'sale_remarks', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
+        </div>
+    </div>
+    <?php $this->load->view("sales/order_process_products"); ?>
+    <div class="row margin-top-bottom">
+        <div class ="col-md-offset-1 col-md-10 form-horizontal">
+            <div class="form-group">
+                <label for="sale_remarks" class="col-md-7 control-label requiredField">
+                    Remarks
+                </label>
+                <div class ="col-md-3">
+                    <?php echo form_textarea(array('name' => 'sale_remarks', 'id' => 'sale_remarks', 'class' => 'form-control', 'rows' => '5', 'cols' => '4')); ?>
 
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="total_sale_price" class="col-md-7 control-label requiredField">
-                            Total
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'total_sale_price', 'id' => 'total_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="previous_due" class="col-md-7 control-label requiredField">
-                            Previous Due
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control' , 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="cash_paid_amount" class="col-md-7 control-label requiredField">
-                            Cash Payment
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'cash_paid_amount', 'id' => 'cash_paid_amount', 'class' => 'form-control')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="current_due" class="col-md-7 control-label requiredField">
-                            Current Due
-                        </label>
-                        <div class ="col-md-3">
-                            <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <label for="checkbox_download_sale_order" class="col-md-7 control-label requiredField">
-                            Download sale order
-                        </label>
-                        <div class ="col-md-3">
-                            <input style="margin-top: 10px;" id="checkbox_download_sale_order" name="checkbox_download_sale_order" type="checkbox"/>
-                        </div> 
-                    </div>
-                    <div class="form-group">
-                        <?php echo form_open("sale/sale_order", array('id' => 'form_download_sale_order', 'class' => 'form-horizontal'));?>
-                        <input type="hidden" id="print_sale_order_no" name="print_sale_order_no" value=""/>
-                        <?php echo form_close();?>
-                    </div>
-                    <div class="form-group">
-                        <label for="save_sale_order" class="col-md-2 control-label requiredField">
-
-                        </label>
-                        <div class ="col-md-3 col-md-offset-5">
-                            <?php echo form_button(array('name' => 'save_sale_order', 'id' => 'save_sale_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
-                        </div> 
-                    </div>
-                </div>
+                </div> 
             </div>
+            <div class="form-group">
+                <label for="total_sale_price" class="col-md-7 control-label requiredField">
+                    Total
+                </label>
+                <div class ="col-md-3">
+                    <?php echo form_input(array('name' => 'total_sale_price', 'id' => 'total_sale_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="previous_due" class="col-md-7 control-label requiredField">
+                    Previous Due
+                </label>
+                <div class ="col-md-3">
+                    <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="cash_paid_amount" class="col-md-7 control-label requiredField">
+                    Cash Payment
+                </label>
+                <div class ="col-md-3">
+                    <?php echo form_input(array('name' => 'cash_paid_amount', 'id' => 'cash_paid_amount', 'class' => 'form-control')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="current_due" class="col-md-7 control-label requiredField">
+                    Current Due
+                </label>
+                <div class ="col-md-3">
+                    <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="checkbox_download_sale_order" class="col-md-7 control-label requiredField">
+                    Download sale order
+                </label>
+                <div class ="col-md-3">
+                    <input style="margin-top: 10px;" id="checkbox_download_sale_order" name="checkbox_download_sale_order" type="checkbox"/>
+                </div> 
+            </div>
+            <div class="form-group">
+                <?php echo form_open("sale/sale_order", array('id' => 'form_download_sale_order', 'class' => 'form-horizontal')); ?>
+                <input type="hidden" id="print_sale_order_no" name="print_sale_order_no" value=""/>
+                <?php echo form_close(); ?>
+            </div>
+            <div class="form-group">
+                <label for="save_sale_order" class="col-md-2 control-label requiredField">
+
+                </label>
+                <div class ="col-md-3 col-md-offset-5">
+                    <?php echo form_button(array('name' => 'save_sale_order', 'id' => 'save_sale_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+
+    <?php $this->load->view("sales/modal_delete_daily_sale_row"); ?>
+    <?php $this->load->view("sales/modal_select_customer"); ?>
+    <?php $this->load->view("common/modal_select_product_order"); ?>
+    <?php $this->load->view('common/wait_screen'); ?>
+
     
-<!-- Modal -->
-<div class="modal fade" id="modal_delete_row_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
-      </div>
-      <div class="modal-body">
-       Do You want to proceed?
-      </div>
-      <div class="modal-footer">          
-        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
-        <button type="button" id ="modal_button_cancel" class="btn btn-default" data-dismiss="modal">No</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
     <script type="text/javascript">
         $('#button_add_row_1').on('click', function() {
-        $('#daily_sale_row_1').show();
-    });
-     $('#modal_button_confirm').on('click', function() {
-        $('#modal_delete_row_1').modal('hide');
-        $('#daily_sale_row_1').hide();
-    });
-</script>
-
-<?php $this->load->view("sales/modal_select_customer"); ?>
-<?php $this->load->view("common/modal_select_product_order"); ?>
-<?php $this->load->view('common/wait_screen');
+            $('#daily_sale_row_1').show();
+        });
+        $('#modal_button_confirm').on('click', function() {
+            $('#modal_delete_row_1').modal('hide');
+            $('#daily_sale_row_1').hide();
+        });
+    </script>

@@ -65,10 +65,13 @@
     </div>
 </div>
 
-
 <?php $this->load->view("purchase/modal_delete_daily_purchase_row"); ?>
 <script type="text/javascript">
     $('#delete_row_button_1').on('click', function() {
-        $('#modal_delete_row_1').modal('show');
+        $('#modal_daily_purchase_delete_row').modal('show');
+    });
+     $('#modal_ok_click_id').on('click', function() {
+        $('#modal_daily_purchase_delete_row').modal('hide');
+        $('#daily_purchase_row_1').hide();
     });
 </script>
