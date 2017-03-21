@@ -5,6 +5,8 @@ class Product extends CI_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->library('org/product/product_library');
+        $this->load->library('org/product/product_size_library');
+        $this->load->library('org/product/product_category1_library');
         $this->load->helper('url');
         $this->load->helper('file');
 
@@ -654,7 +656,8 @@ class Product extends CI_Controller {
      */
     public function product_categories1()
     {
-        $this->data['message'] = '';
+        $this->data['message'] = $this->session->flashdata('message'); 
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
         $this->template->load(null, 'product/category1/index',$this->data);
     }
     
@@ -666,6 +669,50 @@ class Product extends CI_Controller {
     public function create_product_category1()
     {
         $this->data['message'] = '';
+        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
+        $this->form_validation->set_rules('category1_title', 'Sub Lot No', 'xss_clean|required');
+        if ($this->input->post('submit_create_product_category1')) 
+        {            
+            if($this->form_validation->run() == true)
+            {
+                $additional_data = array(
+                    'shop_id' => $this->ion_auth->get_shop_id()
+                    
+                );                
+                $title = $this->input->post('category1_title');
+                $product_size_id = $this->product_category1_library->add_product_category1_info($title, $additional_data);
+                if( $product_size_id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->product_category1_library->messages());
+                    redirect('product/product_categories1','refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->product_category1_library->errors();
+                }
+            }
+            else 
+            { 
+                $this->data['message'] = validation_errors();
+            }            
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }        
+      
+        $this->data['category1_title'] = array(
+            'name' => 'category1_title',
+            'id' => 'category1_title',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('category1_title'),
+        );
+        $this->data['submit_create_product_category1'] = array(
+            'name' => 'submit_create_product_category1',
+            'id' => 'submit_create_product_category1',
+            'type' => 'submit',
+            'value' => 'Add',
+        );
         $this->template->load(null, 'product/category1/create-product-category1',$this->data);
     }
     
@@ -674,9 +721,67 @@ class Product extends CI_Controller {
      * @author nazmul hasan
      * @created on 18th march 17
      */
-    public function update_product_category1()
+    public function update_product_category1($product_category1_id = 0)
     {
+        if($product_category1_id == 0)
+        {
+            redirect("product/product_categories1","refresh");
+        }
         $this->data['message'] = '';
+        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
+        $this->form_validation->set_rules('category1_title', 'Sub Lot No', 'xss_clean|required');
+        
+        $product_category1_info = array();
+        $product_category1_info_array = $this->product_category1_library->get_product_category1_info($product_category1_id)->result_array();
+        if(empty($product_category1_info_array))
+        {
+            redirect("product/product_categories1","refresh");
+        }
+        else
+        {
+            $product_category1_info = $product_category1_info_array[0];
+        }
+        $this->data['product_category1_info'] = $product_category1_info;
+        if ($this->input->post('submit_update_product_category1')) 
+        {            
+            if($this->form_validation->run() == true)
+            {
+                $additional_data = array(
+                    'title' => $this->input->post('category1_title')
+                );                
+                
+                if( $this->product_category1_library->update_product_category1_info($product_category1_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->product_category1_library->messages());
+                    redirect('product/update_product_category1/'.$product_category1_info['product_category1_id'],'refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->product_category1_library->errors();
+                }
+            }
+            else 
+            { 
+                $this->data['message'] = validation_errors();
+            }            
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $this->data['category1_title'] = array(
+            'name' => 'category1_title',
+            'id' => 'category1_title',
+            'type' => 'text',
+            'value' => $product_category1_info['title']
+        );
+        $this->data['submit_update_product_category1'] = array(
+            'name' => 'submit_update_product_category1',
+            'id' => 'submit_update_product_category1',
+            'type' => 'submit',
+            'value' => 'Update',
+        );
         $this->template->load(null, 'product/category1/update-product-category1',$this->data);
     }
     
@@ -688,7 +793,17 @@ class Product extends CI_Controller {
      */
     public function delete_product_category1()
     {
-        
+        $result = array();
+        $id = $this->input->post('id');
+        if($this->product_category1_library->delete_product_category1_info($id))
+        {
+            $this->session->set_flashdata('message', $this->product_category1_library->messages());
+        }
+        else
+        {
+            $this->session->set_flashdata('message', $this->product_category1_library->messages());
+        }
+        echo json_encode($result);
     }
     
     /*
@@ -698,7 +813,8 @@ class Product extends CI_Controller {
      */
     public function product_sizes()
     {
-        $this->data['message'] = '';
+        $this->data['message'] = $this->session->flashdata('message'); 
+        $this->data['product_size_list'] = $this->product_size_library->get_all_product_sizes()->result_array();
         $this->template->load(null, 'product/size/index',$this->data);
     }
     
@@ -710,6 +826,50 @@ class Product extends CI_Controller {
     public function create_product_size()
     {
         $this->data['message'] = '';
+        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
+        $this->form_validation->set_rules('size_title', 'Product Size', 'xss_clean|required');
+        if ($this->input->post('submit_create_product_size')) 
+        {            
+            if($this->form_validation->run() == true)
+            {
+                $additional_data = array(
+                    'shop_id' => $this->ion_auth->get_shop_id()
+                    
+                );                
+                $title = $this->input->post('size_title');
+                $product_size_id = $this->product_size_library->add_product_size_info($title, $additional_data);
+                if( $product_size_id !== FALSE )
+                {
+                    $this->session->set_flashdata('message', $this->product_size_library->messages());
+                    redirect('product/product_sizes','refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->product_size_library->errors();
+                }
+            }
+            else 
+            { 
+                $this->data['message'] = validation_errors();
+            }            
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }        
+      
+        $this->data['size_title'] = array(
+            'name' => 'size_title',
+            'id' => 'size_title',
+            'type' => 'text',
+            'value' => $this->form_validation->set_value('size_title'),
+        );
+        $this->data['submit_create_product_size'] = array(
+            'name' => 'submit_create_product_size',
+            'id' => 'submit_create_product_size',
+            'type' => 'submit',
+            'value' => 'Add',
+        );
         $this->template->load(null, 'product/size/create-size',$this->data);
     }
     
@@ -718,9 +878,67 @@ class Product extends CI_Controller {
      * @author nazmul hasan
      * @created on 18th march 17
      */
-    public function update_product_size()
+    public function update_product_size($product_size_id)
     {
+        if($product_size_id == 0)
+        {
+            redirect("product/product_sizes","refresh");
+        }
         $this->data['message'] = '';
+        $this->form_validation->set_error_delimiters("<div style='color:red'>", '</div>');
+        $this->form_validation->set_rules('size_title', 'Product Size', 'xss_clean|required');
+        
+        $product_size_info = array();
+        $product_size_info_array = $this->product_size_library->get_product_size_info($product_size_id)->result_array();
+        if(empty($product_size_info_array))
+        {
+            redirect("product/product_sizes","refresh");
+        }
+        else
+        {
+            $product_size_info = $product_size_info_array[0];
+        }
+        $this->data['product_size_info'] = $product_size_info;
+        if ($this->input->post('submit_update_product_size')) 
+        {            
+            if($this->form_validation->run() == true)
+            {
+                $additional_data = array(
+                    'title' => $this->input->post('size_title')
+                );                
+                
+                if( $this->product_size_library->update_product_size_info($product_size_id, $additional_data) )
+                {
+                    $this->session->set_flashdata('message', $this->product_size_library->messages());
+                    redirect('product/update_product_size/'.$product_size_info['product_size_id'],'refresh');
+                }
+                else
+                {
+                    $this->data['message'] = $this->product_size_library->errors();
+                }
+            }
+            else 
+            { 
+                $this->data['message'] = validation_errors();
+            }            
+        }
+        else
+        {
+            $this->data['message'] = $this->session->flashdata('message'); 
+        }
+        
+        $this->data['size_title'] = array(
+            'name' => 'size_title',
+            'id' => 'size_title',
+            'type' => 'text',
+            'value' => $product_size_info['title']
+        );
+        $this->data['submit_update_product_size'] = array(
+            'name' => 'submit_update_product_size',
+            'id' => 'submit_update_product_size',
+            'type' => 'submit',
+            'value' => 'Update',
+        );
         $this->template->load(null, 'product/size/update-size',$this->data);
     }
     
@@ -732,6 +950,16 @@ class Product extends CI_Controller {
      */
     public function delete_product_size()
     {
-        
+        $result = array();
+        $id = $this->input->post('id');
+        if($this->product_size_library->delete_product_size_info($id))
+        {
+            $this->session->set_flashdata('message', $this->product_size_library->messages());
+        }
+        else
+        {
+            $this->session->set_flashdata('message', $this->product_size_library->messages());
+        }
+        echo json_encode($result);
     }
 }

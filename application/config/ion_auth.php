@@ -40,6 +40,8 @@ $config['tables']['account_status']                 = 'account_status';
 $config['tables']['shop_info']                      = 'shop_info';
 $config['tables']['users_shop_info']                = 'users_shop_info';
 $config['tables']['product_info']                   = 'product_info';
+$config['tables']['product_sizes']                  = 'product_sizes';
+$config['tables']['product_categories1']            = 'product_categories1';
 $config['tables']['suppliers']                      = 'suppliers';
 $config['tables']['customers']                      = 'customers';
 $config['tables']['purchase_order']                 = 'purchase_order';
@@ -73,7 +75,7 @@ $config['tables']['custom_message']                 = 'custom_message';
 $config['tables']['phone_directory']                = 'phone_directory';
 $config['tables']['phone_upload_list']              = 'phone_upload_list';
 $config['tables']['queue_table']                    = 'queue_table';
-$config['tables']['test_queue']                    = 'test_queue';
+$config['tables']['test_queue']                     = 'test_queue';
 
 
 $config['tables']['warehouse_product_purchase_order']     = 'warehouse_product_purchase_order';
@@ -99,9 +101,11 @@ $config['user_group']['salesman_id']        = '3';
 $config['user_group']['supplier_id']        = '4';
 $config['user_group']['customer_id']        = '5';
 
-$config['shop_identity_column']             = 'name';
-$config['product_identity_column']          = 'name';
-$config['customer_identity_column']         = 'card_no';
+$config['shop_identity_column']                  = 'name';
+$config['product_identity_column']               = 'name';
+$config['product_size_identity_column']          = 'title';
+$config['product_category1_identity_column']     = 'title';
+$config['customer_identity_column']              = 'card_no';
 
 $config['expense_type']['all']              = '0';
 $config['expense_type']['shop']             = '1';

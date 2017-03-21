@@ -69,6 +69,22 @@ $lang['email_activation_subject']            = 'Account Activation';
 $lang['email_registration_success_subject']            = 'Account Registered';
 
 // Product
+$lang['product_size_creation_successful']                           = 'Product Size Successfully Created.';
+$lang['product_size_creation_unsuccessful']                         = 'Unable to Create Product Size.';
+$lang['product_size_creation_duplicate_product_size']               = 'Product Size Already Used or Invalid.';
+$lang['product_size_update_successful']                             = 'Product Size is Updated Successfully.';
+$lang['product_size_update_duplicate_size']                         = 'Product Size Already Used or Invalid.';
+$lang['product_size_delete_fail']                                   = 'Failed to delete product size.';
+$lang['product_size_delete_successful']                             = 'Product Size is deleted successfully.';
+
+$lang['product_category1_creation_successful']                      = 'Sub Lot No Successfully Created.';
+$lang['product_category1_creation_unsuccessful']                    = 'Unable to Create Sub Lot No.';
+$lang['product_category1_creation_duplicate_product_category1']     = 'Sub Lot No Already Used or Invalid.';
+$lang['product_category1_update_successful']                        = 'Sub Lot No is Updated Successfully.';
+$lang['product_category1_update_duplicate_size']                    = 'Sub Lot No Already Used or Invalid.';
+$lang['product_category1_delete_fail']                              = 'Failed to delete Sub Lot No.';
+$lang['product_category1_delete_successful']                        = 'Sub Lot No is deleted successfully.';
+
 $lang['product_creation_successful'] 	  	   = 'Product Successfully Created.';
 $lang['product_creation_unsuccessful'] 	 	   = 'Unable to Create Product.';
 $lang['product_creation_duplicate_product_name']   = 'Product Name Already Used or Invalid.';
