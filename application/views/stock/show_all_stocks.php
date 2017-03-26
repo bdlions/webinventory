@@ -3,13 +3,17 @@
         $("#button_search_stock").on("click", function() {
             var product_id = $("#product_list").val();
             var purchase_order_no = $("#input_lot_no").val();
+            var product_category1 = $("#product_category1").val();
+            var product_size = $("#product_size").val();
             $.ajax({
                 dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "stock/search_stock",
                 data: {
                     product_id: product_id,
-                    purchase_order_no: purchase_order_no
+                    purchase_order_no: purchase_order_no,
+                    product_category1: product_category1,
+                    product_size: product_size
                 },
                 success: function(data) {
                     $("#tbody_stock_list").html(tmpl("tmpl_stock_list", data['stock_list']));
@@ -27,8 +31,8 @@
     <td>{%= stock_info.first_name %} {%= stock_info.last_name %}</td>
     <td>{%= stock_info.product_name %}</td>
     <td>{%= stock_info.purchase_order_no %}</td>
-    <td>1</td>
-    <td>sm</td>
+    <td>{%= stock_info.product_category1 %}</td>
+    <td>{%= stock_info.product_size %}</td>
     <td>{%= stock_info.current_stock %}</td>
     <td>{%= stock_info.unit_category %}</td>
     <td>{%= stock_info.unit_price %}</td>
@@ -79,28 +83,30 @@
                     </td>
                     <td>  
                         <div class="form-group">
-                            <label for="select_sub_lot_no" class="col-md-4 control-label requiredField">
+                            <label for="product_category1" class="col-md-4 control-label requiredField">
                                 Sub Lot No
                             </label>
                             <div class ="col-md-8">
-                                <select name="select_sub_lot_no" id="select_sub_lot_no" class="form-control">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                <select name="product_category1" id="product_category1" class="form-control">
+                                    <option value="">All</option>
+                                    <?php foreach($product_category1_list as $product_category1_info){?>
+                                    <option value="<?php echo $product_category1_info['title'];?>"><?php echo $product_category1_info['title'];?></option>
+                                    <?php } ?>
                                 </select>
                             </div> 
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <label for="select_product_size" class="col-md-4 control-label requiredField">
+                            <label for="product_size" class="col-md-4 control-label requiredField">
                                 Size
                             </label>
                             <div class ="col-md-8">
-                                <select name="select_product_size" id="select_product_size" class="form-control">
-                                    <option value="lg">lg</option>
-                                    <option value="xl">xl</option>
-                                    <option value="sm">sm</option>
+                                <select name="product_size" id="product_size" class="form-control">
+                                    <option value="">All</option>
+                                    <?php foreach($product_size_list as $product_size_info){?>
+                                    <option value="<?php echo $product_size_info['title'];?>"><?php echo $product_size_info['title'];?></option>
+                                    <?php } ?>
                                 </select>
                             </div> 
                         </div>
@@ -146,8 +152,8 @@
                         <td><?php echo $stock_info['first_name'] . ' ' . $stock_info['last_name'] ?></td>
                         <td><?php echo $stock_info['product_name'] ?></td>
                         <td><?php echo $stock_info['purchase_order_no'] ?></td>
-                        <td>1</td>
-                        <td>xl</td>
+                        <td><?php echo $stock_info['product_category1'] ?></td>
+                        <td><?php echo $stock_info['product_size'] ?></td>
                         <td><?php echo $stock_info['current_stock'] ?></td>
                         <td><?php echo $stock_info['unit_category'] ?></td>
                         <td><?php echo $stock_info['unit_price'] ?></td>

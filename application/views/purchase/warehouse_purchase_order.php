@@ -72,6 +72,8 @@
                             product_info.setProductId($(this).attr("id"));
                             product_info.setQuantity($(this).attr("value"));
                             product_info.setPurchaseOrderNo($("#purchase_order_no").val());
+                            product_info.setProductCategory1($("#warehouse_purchase_order_product_category1").val());
+                            product_info.setProductSize($("#warehouse_purchase_order_product_size").val());
                         }
                         if ($(this).attr("name") === "price")
                         {
@@ -92,6 +94,8 @@
                 }
                 var purchase_info = new Purchase();
                 purchase_info.setOrderNo($("#purchase_order_no").val());
+                purchase_info.setProductCategory1($("#warehouse_purchase_order_product_category1").val());
+                purchase_info.setProductSize($("#warehouse_purchase_order_product_size").val());
                 purchase_info.setSupplierId($("#input_add_purchase_supplier_id").val());
                 purchase_info.setRemarks($("#remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
@@ -328,26 +332,26 @@
                         </div> 
                     </div>
                      <div class="form-group">
-                                <label for="purchase_sub_order_no" class="col-md-4 control-label requiredField">
+                                <label for="warehouse_purchase_order_product_category1" class="col-md-4 control-label requiredField">
                                     Sub Lot No
                                 </label>
                                 <div class ="col-md-8">
-                                    <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                    <select name="warehouse_purchase_order_product_category1" id="warehouse_purchase_order_product_category1" class="form-control">
+                                        <?php foreach($product_category1_list as $product_category1_info){?>
+                                        <option value="<?php echo $product_category1_info['title'];?>"><?php echo $product_category1_info['title'];?></option>
+                                        <?php } ?>
                                     </select>
                                 </div> 
                             </div>
                             <div class="form-group">
-                                <label for="purchase_order_product_size" class="col-md-4 control-label requiredField">
+                                <label for="warehouse_purchase_order_product_size" class="col-md-4 control-label requiredField">
                                     Size
                                 </label>
                                 <div class ="col-md-8">
-                                    <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
-                                        <option value="lg">lg</option>
-                                        <option value="xl">xl</option>
-                                        <option value="sm">sm</option>
+                                    <select name="warehouse_purchase_order_product_size" id="warehouse_purchase_order_product_size" class="form-control">
+                                        <?php foreach($product_size_list as $product_size_info){?>
+                                        <option value="<?php echo $product_size_info['title'];?>"><?php echo $product_size_info['title'];?></option>
+                                        <?php } ?>
                                     </select>
                                 </div> 
                             </div>
@@ -424,7 +428,24 @@
         </div>
     </div>    
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h2 class="modal-title" id="myModalLabel">Confirm Message</h2>
+      </div>
+      <div class="modal-body">
+       Do You want to proceed?
+      </div>
+      <div class="modal-footer">          
+        <button type="button" id ="modal_button_confirm" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <?php $this->load->view("purchase/modal_select_supplier"); ?>
 <?php $this->load->view("common/modal_select_product_order"); ?>
 

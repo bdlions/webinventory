@@ -1,6 +1,8 @@
 function Purchase()
 {
     var order_no; 
+    var product_category1;
+    var product_size;
     var supplier_id;
     var remarks;
     var total;
@@ -13,6 +15,22 @@ function Purchase()
     Purchase.prototype.getOrderNo = function()
     {
         return this.order_no;
+    }
+    Purchase.prototype.setProductCategory1 = function(value)
+    {
+        this.product_category1 = value;
+    }
+    Purchase.prototype.getProductCategory1 = function()
+    {
+        return this.product_category1;
+    }
+    Purchase.prototype.setProductSize = function(value)
+    {
+        this.product_size = value;
+    }
+    Purchase.prototype.getProductSize = function()
+    {
+        return this.product_size;
     }
     Purchase.prototype.setSupplierId = function(value)
     {

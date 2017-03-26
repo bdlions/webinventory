@@ -40,6 +40,8 @@
                 <tr>
                     <th>Date</th>
                     <th>Lot No</th>
+                    <th>Sub Lot No</th>
+                    <th>Size</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Purchase Unit Price</th>
@@ -56,6 +58,8 @@
                     <tr>
                         <td><?php echo $supplier_transaction['created_on'] ?></td>
                         <td><?php echo $supplier_transaction['lot_no'] ?></td>
+                        <td><?php echo $supplier_transaction['product_category1'] ?></td>
+                        <td><?php echo $supplier_transaction['product_size'] ?></td>
                         <td><?php echo $supplier_transaction['name'] ?></td>
                         <td><?php echo $supplier_transaction['quantity'] ?></td>
                         <td><?php echo $supplier_transaction['unit_price'] ?></td>

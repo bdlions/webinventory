@@ -21,6 +21,8 @@
                 url: '<?php echo base_url(); ?>' + "search/search_sales_by_purchase_order_no",
                 data: {
                     purchase_order_no: $("#purchase_order_no").val(),
+                    product_category1: $("#product_category1").val(),
+                    product_size: $("#product_size").val(),
                     start_date: $("#start_date").val(),
                     end_date: $("#end_date").val()
                 },
@@ -41,8 +43,8 @@
     <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
     <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
     <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-    <td >1</td>
-    <td >sm</td>
+    <td ><?php echo '{%= sale_info.product_category1%}'; ?></td>
+    <td ><?php echo '{%= sale_info.product_size%}'; ?></td>
     <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
     <td ><?php echo '{%= sale_info.category_unit%}'; ?></td>
     <?php
@@ -127,14 +129,15 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label for="purchase_sub_order_no" class="col-md-6 control-label requiredField">
+                            <label for="product_category1" class="col-md-6 control-label requiredField">
                                 Sub Lot No
                             </label>
                             <div class ="col-md-6">
-                                <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                <select name="product_category1" id="product_category1" class="form-control">
+                                    <option value="">ALL</option>
+                                    <?php foreach($product_category1_list as $product_category1_info){?>
+                                    <option value="<?php echo $product_category1_info['title'];?>"><?php echo $product_category1_info['title'];?></option>
+                                    <?php } ?>
                                 </select>
                             </div> 
                         </div>
@@ -160,14 +163,15 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <label for="purchase_order_product_size" class="col-md-6 control-label requiredField">
+                            <label for="product_size" class="col-md-6 control-label requiredField">
                                 Size
                             </label>
                             <div class ="col-md-6">
-                                <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
-                                    <option value="lg">lg</option>
-                                    <option value="xl">xl</option>
-                                    <option value="sm">sm</option>
+                                <select name="product_size" id="product_size" class="form-control">
+                                    <option value="">ALL</option>
+                                    <?php foreach($product_size_list as $product_size_info){?>
+                                    <option value="<?php echo $product_size_info['title'];?>"><?php echo $product_size_info['title'];?></option>
+                                    <?php } ?>
                                 </select>
                             </div> 
                         </div>

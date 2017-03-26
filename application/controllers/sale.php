@@ -104,6 +104,12 @@ class Sale extends CI_Controller {
             }
         }
         $this->data['order_type'] = ORDER_TYPE_ADD_SALE;
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'sales/sales_order', $this->data);        
     }
     
@@ -202,11 +208,11 @@ class Sale extends CI_Controller {
         $product_lot_map = array();
         foreach ($selected_product_list as $key => $prod_info) 
         {
-            $key = $prod_info['product_id'].'_'.$prod_info['purchase_order_no'];
+            $key = $prod_info['product_id'].'_'.$prod_info['purchase_order_no'].'_'.$prod_info['product_category1'].'_'.$prod_info['product_size'];
             if(in_array($key, $product_lot_map))
             {
                 $response['status'] = '0';
-                $response['message'] = 'Error!! Duplicate lot no for same product.';
+                $response['message'] = 'Error!! Duplicate lot no, sub lot no and size for same product.';
                 echo json_encode($response);
                 return;
             }
@@ -219,7 +225,7 @@ class Sale extends CI_Controller {
         $product_quantity_map = array();
         $stock_list_array = $this->stock_library->search_stocks()->result_array();
         foreach ($stock_list_array as $key => $stock_info) {
-            $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no']] = $stock_info['current_stock'];
+            $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no']. '_' . $stock_info['product_category1']. '_' . $stock_info['product_size']] = $stock_info['current_stock'];
         }
         $customer_transaction_info_array = array();
         $total_products = count($selected_product_list);
@@ -232,6 +238,8 @@ class Sale extends CI_Controller {
                 'customer_id' => $sale_info['customer_id'],
                 'created_on' => $current_time,
                 'lot_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'name' => $prod_info['name'],
                 'quantity' => $prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
@@ -252,6 +260,8 @@ class Sale extends CI_Controller {
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'sale_order_no' => $sale_info['sale_order_no'],
                 'shop_id' => $shop_id,
                 'unit_price' => $prod_info['unit_price'],
@@ -260,10 +270,12 @@ class Sale extends CI_Controller {
             );
             $sale_product_list[] = $product_info;
             
-            if (array_key_exists($product_info['product_id'] . '_' . $product_info['purchase_order_no'], $product_quantity_map) && ( $product_quantity_map[$product_info['product_id'] . '_' . $product_info['purchase_order_no']] >= $prod_info['quantity'] )) {
+            if (array_key_exists($product_info['product_id'] . '_' . $product_info['purchase_order_no'] . '_' . $product_info['product_category1'] . '_' . $product_info['product_size'], $product_quantity_map) && ( $product_quantity_map[$product_info['product_id'] . '_' . $product_info['purchase_order_no'] . '_' . $product_info['product_category1'] . '_' . $product_info['product_size']] >= $prod_info['quantity'] )) {
                 $stock_out_info = array(
                     'product_id' => $prod_info['product_id'],
                     'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
                     'sale_order_no' => $sale_info['sale_order_no'],
                     'shop_id' => $shop_id,
                     'stock_out' => $prod_info['quantity'],
@@ -273,7 +285,7 @@ class Sale extends CI_Controller {
                 $stock_out_list[] = $stock_out_info;
             } else {
                 $response['status'] = '0';
-                $response['message'] = 'Insufficient stock for the product : ' . $prod_info['name'] . ' and lot no : ' . $prod_info['purchase_order_no'];
+                $response['message'] = 'Insufficient stock for the product : ' . $prod_info['name'] . ' and lot no : ' . $prod_info['purchase_order_no']. ' and sub lot no : ' . $prod_info['product_category1']. ' and size : ' . $prod_info['product_size'];
                 echo json_encode($response);
                 return;
             }
@@ -284,6 +296,8 @@ class Sale extends CI_Controller {
             'customer_id' => $sale_info['customer_id'],
             'created_on' => $current_time,
             'lot_no' => '',
+            'product_category1' => '',
+            'product_size' => '',
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
@@ -301,6 +315,8 @@ class Sale extends CI_Controller {
                     'customer_id' => $sale_info['customer_id'],
                     'created_on' => $current_time,
                     'lot_no' => '',
+                    'product_category1' => '',
+                    'product_size' => '',
                     'name' => '',
                     'quantity' => '',
                     'unit_price' => '',
@@ -318,6 +334,8 @@ class Sale extends CI_Controller {
                     'customer_id' => $sale_info['customer_id'],
                     'created_on' => $current_time,
                     'lot_no' => '',
+                    'product_category1' => '',
+                    'product_size' => '',
                     'name' => '',
                     'quantity' => '',
                     'unit_price' => '',
@@ -335,6 +353,8 @@ class Sale extends CI_Controller {
                     'customer_id' => $sale_info['customer_id'],
                     'created_on' => $current_time,
                     'lot_no' => '',
+                    'product_category1' => '',
+                    'product_size' => '',
                     'name' => '',
                     'quantity' => '',
                     'unit_price' => '',
@@ -501,7 +521,10 @@ class Sale extends CI_Controller {
         $customer_info = array();
         $sale_product_list = array();
         $customer_due = 0;
-        $sale_order_no = $_POST['sale_order_no'];
+        $purchase_order_no = '';
+        $product_category1 = '';
+        $product_size = '';
+        $sale_order_no = $this->input->post('sale_order_no');
         $sale_info_array = $this->sale_library->get_sale_info($sale_order_no)->result_array();
         if(!empty($sale_info_array))
         {
@@ -517,8 +540,14 @@ class Sale extends CI_Controller {
         $sale_product_list_array = $this->sale_library->get_sale_product_list($sale_order_no)->result_array();
         if(!empty($sale_product_list_array))
         {
-            $sale_product_list = $sale_product_list_array;            
+            $sale_product_list = $sale_product_list_array;  
+            $purchase_order_no = $sale_product_list_array[0]['purchase_order_no'];
+            $product_category1 = $sale_product_list_array[0]['product_category1'];
+            $product_size = $sale_product_list_array[0]['product_size'];
         }
+        $result['purchase_order_no'] = $purchase_order_no;
+        $result['product_category1'] = $product_category1;
+        $result['product_size'] = $product_size;        
         $result['customer_info'] = $customer_info;
         $result['customer_due'] = $customer_due;  
         $result['sale_product_list'] = $sale_product_list;        
@@ -577,11 +606,14 @@ class Sale extends CI_Controller {
     function update_return_sale_order() {
         $current_time = now();
         $shop_id = $this->session->userdata('shop_id');
-        $current_due = $_POST['current_due'];
-        $return_balance = $_POST['return_balance'];
-        $selected_product_list = $_POST['product_list'];
-        $sale_info = $_POST['sale_info'];
+        $current_due = $this->input->post('current_due');
+        $return_balance = $this->input->post('return_balance');
+        $selected_product_list = $this->input->post('product_list');
+        $sale_info = $this->input->post('sale_info');
         $sale_order_no = $sale_info['sale_order_no'];
+        $purchase_order_no = $sale_info['purchase_order_no'];
+        $product_category1 = $sale_info['product_category1'];
+        $product_size = $sale_info['product_size'];
         $user_id = $sale_info['created_by'];
         $response = array();
 
@@ -589,7 +621,7 @@ class Sale extends CI_Controller {
         $product_id_quantity_map = array();
         $sale_list_array = $this->sale_library->get_sale_current_product_quantity_list($sale_order_no)->result_array();
         foreach ($sale_list_array as $key => $product_info) {
-            $product_id_quantity_map[$product_info['purchase_order_no'].'_'.$product_info['product_id']] = $product_info['sale_quantity'];
+            $product_id_quantity_map[$purchase_order_no.'_'.$product_category1.'_'.$product_size.'_'.$product_info['product_id']] = $product_info['sale_quantity'];
         }
 
         $customer_transaction_info_array = array();
@@ -601,7 +633,9 @@ class Sale extends CI_Controller {
                 'shop_id' => $shop_id,
                 'customer_id' => $sale_info['customer_id'],
                 'created_on' => $current_time,
-                'lot_no' => $prod_info['purchase_order_no'],
+                'lot_no' => $purchase_order_no,
+                'product_category1' => $product_category1,
+                'product_size' => $product_size,
                 'name' => $prod_info['name'],
                 'quantity' => '-' . $prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
@@ -610,10 +644,12 @@ class Sale extends CI_Controller {
                 'profit' => ''
             );
             $customer_transaction_info_array[] = $customer_transaction_info;
-            if ($product_id_quantity_map[$prod_info['purchase_order_no'].'_'.$prod_info['product_id']] >= $prod_info['quantity']) {
+            if ($product_id_quantity_map[$purchase_order_no.'_'.$product_category1.'_'.$product_size.'_'.$prod_info['product_id']] >= $prod_info['quantity']) {
                 $add_stock_info = array(
                     'product_id' => $prod_info['product_id'],
-                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'purchase_order_no' => $purchase_order_no,
+                    'product_category1' => $product_category1,
+                    'product_size' => $product_size,
                     'sale_order_no' => $sale_order_no,
                     'shop_id' => $shop_id,
                     'stock_in' => $prod_info['quantity'],
@@ -624,7 +660,7 @@ class Sale extends CI_Controller {
             } 
             else {
                 $response['status'] = '0';
-                $response['message'] = 'Returned quantity: '.$prod_info['quantity'].' exceeds sale quantity for the product: ' . $prod_info['name'] . ' and lot no: ' . $prod_info['purchase_order_no'].'. Original sale quantity was: '.$product_id_quantity_map[$prod_info['purchase_order_no'].'_'.$prod_info['product_id']];
+                $response['message'] = 'Returned quantity: '.$prod_info['quantity'].' exceeds sale quantity for the product: ' . $prod_info['name'] . ' and lot no: ' . $purchase_order_no  . ' and sub lot no: ' . $product_category1  . ' and size: ' . $product_size .'. Original sale quantity was: '.$product_id_quantity_map[$purchase_order_no.'_'.$product_category1.'_'.$product_size.'_'.$prod_info['product_id']];
                 echo json_encode($response);
                 return;
             }
@@ -635,6 +671,8 @@ class Sale extends CI_Controller {
             'customer_id' => $sale_info['customer_id'],
             'created_on' => $current_time,
             'lot_no' => '',
+            'product_category1' => '',
+            'product_size' => '',
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
@@ -667,6 +705,8 @@ class Sale extends CI_Controller {
                 'customer_id' => $sale_info['customer_id'],
                 'created_on' => $current_time,
                 'lot_no' => '',
+                'product_category1' => '',
+                'product_size' => '',
                 'name' => '',
                 'quantity' => '',
                 'unit_price' => '',
@@ -751,6 +791,8 @@ class Sale extends CI_Controller {
                 'customer_id' => $prod_info['customer_id'],
                 'created_on' => $current_time,
                 'lot_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'name' => $prod_info['product_name'],
                 'quantity' => '-' . $prod_info['total_sale'],
                 'unit_price' => $prod_info['unit_price'],
@@ -762,6 +804,8 @@ class Sale extends CI_Controller {
             $add_stock_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'sale_order_no' => $sale_order_no,
                 'shop_id' => $shop_id,
                 'stock_in' => $prod_info['total_sale'],
@@ -789,6 +833,8 @@ class Sale extends CI_Controller {
             'customer_id' => $customer_id,
             'created_on' => $current_time,
             'lot_no' => '',
+            'product_category1' => '',
+            'product_size' => '',
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
@@ -820,6 +866,8 @@ class Sale extends CI_Controller {
                 'customer_id' => $customer_id,
                 'created_on' => $current_time,
                 'lot_no' => '',
+                'product_category1' => '',
+                'product_size' => '',
                 'name' => '',
                 'quantity' => '',
                 'unit_price' => '',

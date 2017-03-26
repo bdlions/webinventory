@@ -79,6 +79,12 @@ class Purchase extends CI_Controller {
             }
         }
         $this->data['order_type'] = ORDER_TYPE_ADD_WAREHOUSE_PURCHASE;
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'purchase/warehouse_purchase_order',$this->data);
     }
     
@@ -155,6 +161,8 @@ class Purchase extends CI_Controller {
                 'supplier_id' => $purchase_info['supplier_id'],
                 'created_on' => $current_time,
                 'lot_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'name' => $prod_info['name'],
                 'quantity' => $prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
@@ -173,6 +181,8 @@ class Purchase extends CI_Controller {
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'shop_id' => $shop_id,
                 'unit_price' => $prod_info['unit_price'],
                 'created_on' => $current_time,
@@ -182,6 +192,8 @@ class Purchase extends CI_Controller {
             $add_warehouse_stock_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'shop_id' => $shop_id,
                 'stock_in' => $prod_info['quantity'],
                 'created_on' => $current_time,
@@ -194,6 +206,8 @@ class Purchase extends CI_Controller {
             'supplier_id' => $purchase_info['supplier_id'],
             'created_on' => $current_time,
             'lot_no' => '',
+            'product_category1' => '',
+            'product_size' => '',
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
@@ -209,6 +223,8 @@ class Purchase extends CI_Controller {
                 'supplier_id' => $purchase_info['supplier_id'],
                 'created_on' => $current_time,
                 'lot_no' => '',
+                'product_category1' => '',
+                'product_size' => '',
                 'name' => '',
                 'quantity' => '',
                 'unit_price' => '',
@@ -224,6 +240,8 @@ class Purchase extends CI_Controller {
                     'supplier_id' => $purchase_info['supplier_id'],
                     'created_on' => $current_time,
                     'lot_no' => '',
+                    'product_category1' => '',
+                    'product_size' => '',
                     'name' => '',
                     'quantity' => '',
                     'unit_price' => '',
@@ -238,6 +256,8 @@ class Purchase extends CI_Controller {
         $additional_data = array(
             'order_date' => $current_time,
             'purchase_order_no' => $purchase_info['order_no'],
+            'product_category1' => $purchase_info['product_category1'],
+            'product_size' => $purchase_info['product_size'],
             'shop_id' => $shop_id,
             'supplier_id' => $purchase_info['supplier_id'],
             'purchase_order_status_id' => 1,
@@ -286,10 +306,14 @@ class Purchase extends CI_Controller {
         $selected_product_list = $_POST['product_list'];
         $purchase_info = $_POST['purchase_info']; 
         $order_no = $purchase_info['order_no'];
+        $product_category1 = $purchase_info['product_category1'];
+        $product_size = $purchase_info['product_size'];
         
         //product list of existing purchase order
         $existing_product_id_list = array();
-        $purchased_product_list_array = $this->purchase_library->get_purchased_product_list($order_no)->result_array();
+        //?????????????????????
+        //we should check from warehouse purchased product list instead of showroom, check the logic
+        $purchased_product_list_array = $this->purchase_library->get_warehouse_purchased_product_list($order_no, 0, $product_category1, $product_size)->result_array();
         foreach($purchased_product_list_array as $product_info)
         {
             if(!in_array($product_info['product_id'], $existing_product_id_list))
@@ -308,6 +332,8 @@ class Purchase extends CI_Controller {
                 'supplier_id' => $purchase_info['supplier_id'],
                 'created_on' => $current_time,
                 'lot_no' => $order_no,
+                'product_category1' => $product_category1,
+                'product_size' => $product_size,
                 'name' => $prod_info['name'],
                 'quantity' => $prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
@@ -320,6 +346,8 @@ class Purchase extends CI_Controller {
                 $product_info = array(
                     'product_id' => $prod_info['product_id'],
                     'purchase_order_no' => $order_no,
+                    'product_category1' => $product_category1,
+                    'product_size' => $product_size,
                     'shop_id' => $shop_id,
                     'unit_price' => $prod_info['unit_price'],
                     'created_on' => $current_time,
@@ -330,6 +358,8 @@ class Purchase extends CI_Controller {
             $add_warehouse_stock_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $product_category1,
+                'product_size' => $product_size,
                 'shop_id' => $shop_id,
                 'stock_in' => $prod_info['quantity'],
                 'created_on' => $current_time,
@@ -342,6 +372,8 @@ class Purchase extends CI_Controller {
             'supplier_id' => $purchase_info['supplier_id'],
             'created_on' => $current_time,
             'lot_no' => '',
+            'product_category1' => '',
+            'product_size' => '',
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
@@ -376,9 +408,11 @@ class Purchase extends CI_Controller {
         $purchased_product_list = array();
         $stock_purchased_product_list = array();
         $supplier_due = 0;
-        $purchase_order_no = $_POST['lot_no'];
+        $purchase_order_no = $this->input->post('lot_no');
+        $product_category1 = $this->input->post('product_category1');
+        $product_size = $this->input->post('product_size');
         //Instead of accessing database two times we can create one method to get purchase order info and supplier info
-        $purchase_info_array = $this->purchase_library->get_warehouse_purchase_order_info($purchase_order_no)->result_array();
+        $purchase_info_array = $this->purchase_library->get_warehouse_purchase_order_info($purchase_order_no, 0, $product_category1, $product_size)->result_array();
         if(!empty($purchase_info_array))
         {
             $purchase_info = $purchase_info_array[0];
@@ -391,12 +425,12 @@ class Purchase extends CI_Controller {
             }
         }
         
-        $purchased_product_list_array = $this->purchase_library->get_warehouse_purchased_product_list($purchase_order_no)->result_array();
+        $purchased_product_list_array = $this->purchase_library->get_warehouse_purchased_product_list($purchase_order_no, 0, $product_category1, $product_size)->result_array();
         if(!empty($purchased_product_list_array))
         {
             $purchased_product_list = $purchased_product_list_array;            
         }
-        $purchased_product_list_ary = $this->purchase_library->get_purchased_product_list($purchase_order_no)->result_array();
+        $purchased_product_list_ary = $this->purchase_library->get_purchased_product_list($purchase_order_no, 0, $product_category1, $product_size)->result_array();
         if(!empty($purchased_product_list_ary))
         {
             $stock_purchased_product_list = $purchased_product_list_ary;            
@@ -448,6 +482,12 @@ class Purchase extends CI_Controller {
             }
         }
         $this->data['order_type'] = ORDER_TYPE_RAISE_SHOWROOM_PURCHASE;
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'purchase/purchase_order',$this->data);
     }
     
@@ -464,7 +504,7 @@ class Purchase extends CI_Controller {
         $current_time = now();
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
-        $selected_product_list = $_POST['product_list'];
+        $selected_product_list = $this->input->post('product_list');
         $purchased_product_list = array();
         $add_stock_list = array();
         
@@ -475,6 +515,8 @@ class Purchase extends CI_Controller {
             $product_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'shop_id' => $shop_id,
                 'unit_price' => $prod_info['unit_price'],
                 'created_on' => $current_time,
@@ -484,6 +526,8 @@ class Purchase extends CI_Controller {
             $add_stock_info = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size'],
                 'shop_id' => $shop_id,
                 'stock_in' => $prod_info['quantity'],
                 'created_on' => $current_time,
@@ -605,6 +649,12 @@ class Purchase extends CI_Controller {
         $this->data['product_search_category']['name'] = "Product Name";
         $this->data['product_search_category']['all_product'] = "Select All";
         $this->data['order_type'] = ORDER_TYPE_RAISE_WAREHOUSE_PURCHASE;
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'purchase/raise_warehouse_purchase_order',$this->data);
     }
     function return_warehouse_purchase()
@@ -612,17 +662,19 @@ class Purchase extends CI_Controller {
         $current_time = now();
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
-        $current_due = $_POST['current_due'];
-        $return_balance = $_POST['return_balance'];
-        $selected_product_list = $_POST['product_list'];
-        $purchase_info = $_POST['purchase_info']; 
-        $order_no = $purchase_info['order_no'];        
+        $current_due = $this->input->post('current_due');
+        $return_balance = $this->input->post('return_balance');
+        $selected_product_list = $this->input->post('product_list');
+        $purchase_info = $this->input->post('purchase_info'); 
+        $order_no = $purchase_info['order_no'];
+        $product_category1 = $purchase_info['product_category1'];
+        $product_size = $purchase_info['product_size'];
         
         //existing stock list
         $product_quantity_map = array();
         $stock_list_array = $this->stock_library->search_warehouse_stocks()->result_array();
         foreach ($stock_list_array as $key => $stock_info) {
-            $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no']] = $stock_info['current_stock'];
+            $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no'] . '_' . $stock_info['product_category1'] . '_' . $stock_info['product_size']] = $stock_info['current_stock'];
         }
         
         $supplier_transaction_info_array = array();        
@@ -634,6 +686,8 @@ class Purchase extends CI_Controller {
                 'supplier_id' => $purchase_info['supplier_id'],
                 'created_on' => $current_time,
                 'lot_no' => $order_no,
+                'product_category1' => $product_category1,
+                'product_size' => $product_size,
                 'name' => $prod_info['name'],
                 'quantity' => '-'.$prod_info['quantity'],
                 'unit_price' => $prod_info['unit_price'],
@@ -641,10 +695,12 @@ class Purchase extends CI_Controller {
                 'payment_status' => 'Return goods'
             );
             $supplier_transaction_info_array[] = $supplier_transaction_info;
-            if ( array_key_exists($prod_info['product_id'].'_'.$order_no, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no] >= $prod_info['quantity'] ) ) {
+            if ( array_key_exists($prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size] >= $prod_info['quantity'] ) ) {
                 $add_stock_info = array(
                     'product_id' => $prod_info['product_id'],
                     'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
                     'shop_id' => $shop_id,
                     'stock_out' => $prod_info['quantity'],
                     'created_on' => $current_time,
@@ -655,7 +711,7 @@ class Purchase extends CI_Controller {
             else
             {
                 $response['status'] = '0';
-                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$order_no;
+                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$order_no.' and sub lot no : '.$product_category1.' and size : '.$product_size;
                 echo json_encode($response);
                 return;
             }                    
@@ -665,6 +721,8 @@ class Purchase extends CI_Controller {
             'supplier_id' => $purchase_info['supplier_id'],
             'created_on' => $current_time,
             'lot_no' => '',
+            'product_category1' => '',
+            'product_size' => '',
             'name' => '',
             'quantity' => '',
             'unit_price' => '',
@@ -695,6 +753,8 @@ class Purchase extends CI_Controller {
                 'supplier_id' => $purchase_info['supplier_id'],
                 'created_on' => $current_time,
                 'lot_no' => '',
+                'product_category1' => '',
+                'product_size' => '',
                 'name' => '',
                 'quantity' => '',
                 'unit_price' => '',
@@ -836,6 +896,12 @@ class Purchase extends CI_Controller {
             $this->data['product_list_array'] = $product_list_array;
         }
         $this->data['order_type'] = ORDER_TYPE_RETURN_SHOWROOM_PURCHASE;
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'purchase/return_purchase_order',$this->data);
     }
     
@@ -864,6 +930,12 @@ class Purchase extends CI_Controller {
             $this->data['product_list_array'] = $product_list_array;
         }
         $this->data['order_type'] = ORDER_TYPE_RETURN_WAREHOUSE_PURCHASE;
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'purchase/return_warehouse_purchase_order',$this->data);
     }
     /*
@@ -875,24 +947,28 @@ class Purchase extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
         $shop_id = $this->session->userdata('shop_id');
 
-        $selected_product_list = $_POST['product_list'];
-        $purchase_info = $_POST['purchase_info']; 
-        $order_no = $purchase_info['order_no'];        
+        $selected_product_list = $this->input->post('product_list');
+        $purchase_info = $this->input->post('purchase_info'); 
+        $order_no = $purchase_info['order_no'];
+        $product_category1 = $purchase_info['product_category1'];
+        $product_size = $purchase_info['product_size'];
         
         $product_quantity_map = array();
         $stock_list_array = $this->stock_library->search_stocks()->result_array();
         foreach ($stock_list_array as $key => $stock_info) {
-            $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no']] = $stock_info['current_stock'];
+            $product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no'] . '_' . $stock_info['product_category1'] . '_' . $stock_info['product_size']] = $stock_info['current_stock'];
         }
         
         $supplier_transaction_info_array = array();        
         $stock_out_list = array();        
         foreach($selected_product_list as $key => $prod_info)
         {
-            if ( array_key_exists($prod_info['product_id'].'_'.$order_no, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no] >= $prod_info['quantity'] ) ) {
+            if ( array_key_exists($prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size] >= $prod_info['quantity'] ) ) {
                 $add_stock_info = array(
                     'product_id' => $prod_info['product_id'],
                     'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
                     'shop_id' => $shop_id,
                     'stock_out' => $prod_info['quantity'],
                     'created_on' => $current_time,
@@ -903,7 +979,7 @@ class Purchase extends CI_Controller {
             else
             {
                 $response['status'] = '0';
-                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$order_no;
+                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$order_no.' and sub lot no : '.$product_category1.' and size : '.$product_size;
                 echo json_encode($response);
                 return;
             }                    
@@ -951,6 +1027,12 @@ class Purchase extends CI_Controller {
             'type' => 'submit',
             'value' => 'Search',
         );
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'purchase/show_showroom_purchase_transactions',$this->data);
     }
     
@@ -963,7 +1045,9 @@ class Purchase extends CI_Controller {
     {
         $result = array();
         $purchase_order_no = $this->input->post('purchase_order_no');
-        $result['purchase_list'] = $this->stock_library->get_showroom_purchase_transactions($purchase_order_no);
+        $product_category1 = $this->input->post('product_category1');
+        $product_size = $this->input->post('product_size');
+        $result['purchase_list'] = $this->stock_library->get_showroom_purchase_transactions($purchase_order_no, 0, $product_category1, $product_size);
         echo json_encode($result); 
     }
 

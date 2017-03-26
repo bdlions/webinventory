@@ -107,9 +107,9 @@
 <tr>
     <td >{%= sale_info.created_on%}</td>
     <td >{%= sale_info.purchase_order_no%}</td>
-    <td >{%= sale_info.product_name%}</td>
-    <td >1</td>
-    <td >sm</td>
+    <td >{%= sale_info.product_category1%}</td>
+    <td >{%= sale_info.product_size%}</td>
+    <td >{%= sale_info.product_name%}</td>    
     <td >{%= sale_info.total_sale%}</td>
     <td >{%= sale_info.category_unit%}</td>
     <td >{%= sale_info.sale_unit_price%}</td>
@@ -321,8 +321,8 @@
                     <tr>
                         <td><?php echo $sale_info['created_on']; ?></td>
                         <td><?php echo $sale_info['purchase_order_no']; ?></td>
-                        <td>1</td>
-                        <td>xl</td>
+                        <td><?php echo $sale_info['product_category1']; ?></td>
+                        <td><?php echo $sale_info['product_size']; ?></td>
                         <td><?php echo $sale_info['product_name']; ?></td>
                         <td><?php echo $sale_info['total_sale']; ?></td>
                         <td><?php echo $sale_info['category_unit']; ?></td>

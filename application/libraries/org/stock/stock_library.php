@@ -81,14 +81,14 @@ class Stock_library {
      * @param $shop_id, shop id
      * @Author Nazmul on 27th January 2015
      */
-    public function get_showroom_purchase_transactions($purchase_order_no, $shop_id = 0)
+    public function get_showroom_purchase_transactions($purchase_order_no, $shop_id = 0, $product_category1 = '', $product_size = '')
     {
         $transaction_list = array();
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
-        $transactions_array = $this->stock_model->get_showroom_purchase_transactions($purchase_order_no, $shop_id)->result_array();
+        $transactions_array = $this->stock_model->get_showroom_purchase_transactions($purchase_order_no, $shop_id, $product_category1, $product_size)->result_array();
         foreach($transactions_array as $transactions_info)
         {
             $transactions_info['created_on'] = $this->utils->process_time($transactions_info['created_on']);

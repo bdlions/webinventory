@@ -24,8 +24,8 @@
     <tr>
         <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
-        <td >1</td>
-        <td >sm</td>
+        <td ><?php echo '{%= sale_info.product_category1%}'; ?></td>
+        <td ><?php echo '{%= sale_info.product_size%}'; ?></td>
         <td ><?php echo '{%= sale_info.total_sale%}'; ?></td>
             <?php 
             if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)

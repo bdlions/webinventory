@@ -1,6 +1,9 @@
 function Sale()
 {
     var sale_order_no; 
+    var purchase_order_no;
+    var product_category1;
+    var product_size;
     var customer_id;
     var remarks;
     var created_by;
@@ -9,7 +12,7 @@ function Sale()
     var check_paid;
     var check_description;
     var previous_due;
-    var current_due;
+    var current_due;    
     Sale.prototype.setOrderNo = function(value)
     {
         this.sale_order_no = value;
@@ -17,6 +20,30 @@ function Sale()
     Sale.prototype.getOrderNo = function()
     {
         return this.sale_order_no;
+    }
+    Sale.prototype.setPurchaseOrderNo = function(value)
+    {
+        this.purchase_order_no = value;
+    }
+    Sale.prototype.getPurchaseOrderNo = function()
+    {
+        return this.purchase_order_no;
+    }
+    Sale.prototype.setProductCategory1 = function(value)
+    {
+        this.product_category1 = value;
+    }
+    Sale.prototype.getProductCategory1 = function()
+    {
+        return this.product_category1;
+    }
+    Sale.prototype.setProductSize = function(value)
+    {
+        this.product_size = value;
+    }
+    Sale.prototype.getProductSize = function()
+    {
+        return this.product_size;
     }
     Sale.prototype.setCustomerId = function(value)
     {

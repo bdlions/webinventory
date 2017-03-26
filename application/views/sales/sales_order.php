@@ -43,6 +43,20 @@
             $(this).val($(lot_no_value).val());
         });
     }
+    
+    function set_all_categories1()
+    {
+        $('select[name^=product_category1]').each(function(){
+            $(this).val($("#sale_order_product_category1").val());
+        });
+    }
+    
+    function set_all_sizes()
+    {
+        $('select[name^=product_size]').each(function(){
+            $(this).val($("#sale_order_product_size").val());
+        });
+    }
 </script>
 <script>
     function append_selected_product(prod_info)
@@ -184,6 +198,16 @@
                         if ($(this).attr("name") === "product_price")
                         {
                             product_info.setSubTotal($(this).attr("value"));
+                        }
+                    });
+                    $("select", $(this)).each(function() {
+                        if ($(this).attr("name") === "product_category1")
+                        {
+                            product_info.setProductCategory1($(this).val());
+                        }
+                        if ($(this).attr("name") === "product_size")
+                        {
+                            product_info.setProductSize($(this).val());
                         }
                     });
                     product_list[product_list_counter++] = product_info;

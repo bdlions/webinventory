@@ -7,6 +7,8 @@ function Product()
     var discount = '';
     var sub_total = '';
     var purchase_order_no = '';
+    var product_category1 = '';
+    var product_size = '';
     
     Product.prototype.setProductId = function(value)
     {
@@ -63,6 +65,22 @@ function Product()
     Product.prototype.getPurchaseOrderNo = function()
     {
         return this.purchase_order_no;
+    }
+    Product.prototype.setProductCategory1 = function(value)
+    {
+        this.product_category1 = value;
+    }
+    Product.prototype.getProductCategory1 = function()
+    {
+        return this.product_category1;
+    }
+    Product.prototype.setProductSize = function(value)
+    {
+        this.product_size = value;
+    }
+    Product.prototype.getProductSize = function()
+    {
+        return this.product_size;
     }
 }
 

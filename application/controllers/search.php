@@ -154,7 +154,7 @@ class Search extends CI_Controller {
         $this->data = $this->process_daily_sale();
         $this->data['user_group'] = $user_group;
         $this->data['shop_info'] = $shop_info;
-       $this->template->load(null, 'search/sale/daily_sales', $this->data);
+        $this->template->load(null, 'search/sale/daily_sales', $this->data);
     }
     /*
      * Ajax call
@@ -465,9 +465,11 @@ class Search extends CI_Controller {
      */
     public function search_sales_by_purchase_order_no()
     {
-        $purchase_order_no = $_POST['purchase_order_no'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
+        $purchase_order_no = $this->input->post('purchase_order_no');
+        $product_category1 = $this->input->post('product_category1');
+        $product_size = $this->input->post('product_size');
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
         $start_time = $this->utils->get_human_to_unix($start_date);
         $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
         
@@ -478,7 +480,7 @@ class Search extends CI_Controller {
         $this->data['sale_list'] = array();
         
         $sale_list = array();
-        $sale_list_array = $this->sale_library->get_user_sales_by_purchase_order_no($start_time, $end_time, $purchase_order_no)->result_array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_purchase_order_no($start_time, $end_time, $purchase_order_no, 0, $product_category1, $product_size)->result_array();
         if( !empty($sale_list_array) )
         {
             foreach($sale_list_array as $sale_info)
@@ -529,6 +531,12 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
         $this->template->load(null, 'search/sale/purchase_order_no', $this->data);
     }
     
@@ -537,7 +545,7 @@ class Search extends CI_Controller {
      */
     public function search_sales_by_customer_card_no()
     {
-        $card_no = $_POST['card_no'];
+        $card_no = $this->input->post('card_no');
         $total_sale_price = 0;
         $total_quantity= 0;
         $total_profit = 0;
@@ -629,7 +637,7 @@ class Search extends CI_Controller {
      */
     public function search_sales_by_customer_name()
     {
-        $name = $_POST['name'];
+        $name = $this->input->post('name');
         $total_sale_price = 0;
         $total_quantity= 0;
         $total_profit= 0;
@@ -686,7 +694,7 @@ class Search extends CI_Controller {
      */
     public function search_sales_by_customer_phone()
     {
-        $phone = $_POST['phone'];
+        $phone = $this->input->post('phone');
         $total_sale_price = 0;
         $total_quantity= 0;
         $total_profit= 0;

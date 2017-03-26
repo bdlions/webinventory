@@ -11,6 +11,12 @@
         $("#purchase_order_no").change(function() {
             return_warehouse_info();
         });
+        $("#return_warehouse_purchase_order_product_category1").change(function() {
+            return_warehouse_info();
+        });
+        $("#return_warehouse_purchase_order_product_size").change(function() {
+            return_warehouse_info();
+        });
         
         var product_data = <?php echo json_encode($product_list_array) ?>;        
         set_product_list(product_data);
@@ -64,6 +70,8 @@
                             product_info.setProductId($(this).attr("id"));
                             product_info.setQuantity($(this).attr("value"));
                             product_info.setPurchaseOrderNo($("#purchase_order_no").val());
+                            product_info.setProductCategory1($("#return_warehouse_purchase_order_product_category1").val());
+                            product_info.setProductSize($("#return_warehouse_purchase_order_product_size").val());
                         }
                         if ($(this).attr("name") === "price")
                         {
@@ -84,6 +92,8 @@
                 }
                 var purchase_info = new Purchase();
                 purchase_info.setOrderNo($("#purchase_order_no").val());
+                purchase_info.setProductCategory1($("#return_warehouse_purchase_order_product_category1").val());
+                purchase_info.setProductSize($("#return_warehouse_purchase_order_product_size").val());
                 purchase_info.setSupplierId($("#input_return_purchase_supplier_id").val());
                 purchase_info.setRemarks($("#purchase_remarks").val());
                 purchase_info.setTotal($("#total_purchase_price").val());
@@ -236,7 +246,9 @@
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "purchase/get_warehouse_purchase_info_from_lot_no",
                 data: {
-                    lot_no: $("#purchase_order_no").val()
+                    lot_no: $("#purchase_order_no").val(),
+                    product_category1: $("#return_warehouse_purchase_order_product_category1").val(),
+                    product_size: $("#return_warehouse_purchase_order_product_size").val()
                 },
                 success: function(data) {
                     var supplier_info = data['supplier_info'];
@@ -326,26 +338,26 @@
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="purchase_sub_order_no" class="col-md-4 control-label requiredField">
+                        <label for="return_warehouse_purchase_order_product_category1" class="col-md-4 control-label requiredField">
                             Sub Lot No
                         </label>
                         <div class ="col-md-8">
-                            <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                            <select name="return_warehouse_purchase_order_product_category1" id="return_warehouse_purchase_order_product_category1" class="form-control">
+                                <?php foreach($product_category1_list as $product_category1_info){?>
+                                <option value="<?php echo $product_category1_info['title'];?>"><?php echo $product_category1_info['title'];?></option>
+                                <?php } ?>
                             </select>
                         </div> 
                     </div>
                     <div class="form-group">
-                        <label for="purchase_order_product_size" class="col-md-4 control-label requiredField">
+                        <label for="return_warehouse_purchase_order_product_size" class="col-md-4 control-label requiredField">
                             Size
                         </label>
                         <div class ="col-md-8">
-                            <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
-                                <option value="lg">lg</option>
-                                <option value="xl">xl</option>
-                                <option value="sm">sm</option>
+                            <select name="return_warehouse_purchase_order_product_size" id="return_warehouse_purchase_order_product_size" class="form-control">
+                                <?php foreach($product_size_list as $product_size_info){?>
+                                <option value="<?php echo $product_size_info['title'];?>"><?php echo $product_size_info['title'];?></option>
+                                <?php } ?>
                             </select>
                         </div> 
                     </div>

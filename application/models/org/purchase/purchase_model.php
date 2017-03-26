@@ -32,6 +32,18 @@ class Purchase_model extends Ion_auth_model {
         $this->db->where('purchase_order_no', $purchase_order_no);
         return $this->db->count_all_results($this->tables['purchase_order']) > 0;
     }
+    
+    public function purchase_identity_check($purchase_order_no = '', $product_category1 = '', $product_size = '') {
+        $this->trigger_events('purchase_order_no_check');
+        if (empty($purchase_order_no)) {
+            return FALSE;
+        }
+        $shop_id = $this->session->userdata('shop_id');
+        $this->db->where('shop_id', $shop_id);
+        $this->db->where('product_category1', $product_category1);
+        $this->db->where('product_size', $product_size);
+        return $this->db->count_all_results($this->tables['purchase_order']) > 0;
+    }
 
     /*
      * This method will add warehouse purchase order
@@ -40,7 +52,7 @@ class Purchase_model extends Ion_auth_model {
 
     public function add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array, $forward_showroom = 0) {
         $this->trigger_events('pre_add_purchase_order');
-        if ($this->purchase_order_no_check($additional_data['purchase_order_no'])) {
+        if ($this->purchase_identity_check($additional_data['purchase_order_no'], $additional_data['product_category1'], $additional_data['product_size'])) {
             $this->set_error('add_purchase_order_duplicate_purchase_order_no');
             return FALSE;
         }
@@ -77,6 +89,17 @@ class Purchase_model extends Ion_auth_model {
         return (isset($id)) ? $id : FALSE;
     }
 
+    public function warehouse_purchase_product_check($purchase_order_no, $product_category1, $product_size, $product_id) {
+        $this->db->where($this->tables['warehouse_product_purchase_order'] . '.purchase_order_no', $purchase_order_no);
+        $this->db->where($this->tables['warehouse_product_purchase_order'] . '.product_category1', $product_category1);
+        $this->db->where($this->tables['warehouse_product_purchase_order'] . '.product_size', $product_size);
+        $this->db->where($this->tables['warehouse_product_purchase_order'] . '.product_id', $product_id);
+        $qr_result = $this->db->select('*')
+                ->from($this->tables['warehouse_product_purchase_order'])
+                ->get()
+                ->result_array();
+        return !(empty($qr_result));
+    }
     /*
      * This method will raise warehouse purchase order
      * @Author Nazmul on 14th January 2015
@@ -103,14 +126,14 @@ class Purchase_model extends Ion_auth_model {
             return FALSE;
         }
         foreach ($new_warehouse_purchased_product_list as $warehouse_product_data) {
-            if ($this->warehouse_purchase_product_order_no_check($warehouse_product_data['purchase_order_no'], $warehouse_product_data['product_id'])) {
+            if ($this->warehouse_purchase_product_check($warehouse_product_data['purchase_order_no'], $warehouse_product_data['product_category1'], $warehouse_product_data['product_size'], $warehouse_product_data['product_id'])) {
                 continue;
             }
             $this->db->insert($this->tables['warehouse_product_purchase_order'], $warehouse_product_data);
         }
         if ($forward_showroom == 1) {
             foreach ($new_warehouse_purchased_product_list as $product_data) {
-                if ($this->purchase_product_order_no_check($product_data['purchase_order_no'], $product_data['product_id'])) {
+                if ($this->purchase_product_check($product_data['purchase_order_no'], $product_data['product_category1'], $product_data['product_size'], $product_data['product_id'])) {
                     continue;
                 }
                 $this->db->insert($this->tables['product_purchase_order'], $product_data);
@@ -164,11 +187,19 @@ class Purchase_model extends Ion_auth_model {
         return TRUE;
     }
 
-    public function get_warehouse_purchase_order_info($purchase_order_no, $shop_id = 0) {
+    public function get_warehouse_purchase_order_info($purchase_order_no, $shop_id = 0, $product_category1 = '', $product_size = '') {
         if ($shop_id == 0) {
             $shop_id = $this->session->userdata('shop_id');
         }
         $this->db->where($this->tables['purchase_order'] . '.purchase_order_no', $purchase_order_no);
+        if(!empty($product_category1))
+        {
+            $this->db->where($this->tables['purchase_order'] . '.product_category1', $product_category1);
+        }
+        if(!empty($product_size))
+        {
+            $this->db->where($this->tables['purchase_order'] . '.product_size', $product_size);
+        }
         $this->db->where($this->tables['purchase_order'] . '.shop_id', $shop_id);
         return $this->db->select('*')
                         ->from($this->tables['purchase_order'])
@@ -182,9 +213,17 @@ class Purchase_model extends Ion_auth_model {
      * @Author Nazmul on 14th January 2015
      */
 
-    public function get_warehouse_purchased_product_list($purchase_order_no, $shop_id = 0) {
+    public function get_warehouse_purchased_product_list($purchase_order_no, $shop_id = 0, $product_category1 = '', $product_size = '') {
         if ($shop_id == 0) {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if(!empty($product_category1))
+        {
+            $this->db->where($this->tables['warehouse_product_purchase_order'] . '.product_category1', $product_category1);
+        }
+        if(!empty($product_size))
+        {
+            $this->db->where($this->tables['warehouse_product_purchase_order'] . '.product_size', $product_size);
         }
         $this->db->where($this->tables['warehouse_product_purchase_order'] . '.purchase_order_no', $purchase_order_no);
         $this->db->where($this->tables['warehouse_product_purchase_order'] . '.shop_id', $shop_id);
@@ -194,6 +233,17 @@ class Purchase_model extends Ion_auth_model {
                         ->get();
     }
 
+    public function purchase_product_check($purchase_order_no, $product_category1, $product_size, $product_id) {
+        $this->db->where($this->tables['product_purchase_order'] . '.purchase_order_no', $purchase_order_no);
+        $this->db->where($this->tables['product_purchase_order'] . '.product_category1', $product_category1);
+        $this->db->where($this->tables['product_purchase_order'] . '.product_size', $product_size);
+        $this->db->where($this->tables['product_purchase_order'] . '.product_id', $product_id);
+        $qr_result = $this->db->select('*')
+                ->from($this->tables['product_purchase_order'])
+                ->get()
+                ->result_array();
+        return !(empty($qr_result));
+    }
     /**
      * Storing purchase order, product purchase order and stock into the database
      *
@@ -212,7 +262,7 @@ class Purchase_model extends Ion_auth_model {
 
     public function add_purchase_order($purchased_product_list, $add_stock_list) {
         foreach ($purchased_product_list as $product_data) {
-            if ($this->purchase_product_order_no_check($product_data['purchase_order_no'], $product_data['product_id'])) {
+            if ($this->purchase_product_check($product_data['purchase_order_no'], $product_data['product_category1'], $product_data['product_size'], $product_data['product_id'])) {
                 continue;
             }
             $this->db->insert($this->tables['product_purchase_order'], $product_data);
@@ -298,11 +348,19 @@ class Purchase_model extends Ion_auth_model {
      * @Author Nazmul on 14th January 2015
      */
 
-    public function get_purchased_product_list($purchase_order_no, $shop_id = 0) {
+    public function get_purchased_product_list($purchase_order_no, $shop_id = 0, $product_category1 = '', $product_size = '') {
         if ($shop_id == 0) {
             $shop_id = $this->session->userdata('shop_id');
         }
         $this->db->where($this->tables['product_purchase_order'] . '.purchase_order_no', $purchase_order_no);
+        if(!empty($product_category1))
+        {
+            $this->db->where($this->tables['product_purchase_order'] . '.product_category1', $product_category1);
+        }
+        if(!empty($product_size))
+        {
+            $this->db->where($this->tables['product_purchase_order'] . '.product_size', $product_size);
+        }
         $this->db->where($this->tables['product_purchase_order'] . '.shop_id', $shop_id);
         return $this->db->select($this->tables['product_purchase_order'] . '.product_id,' . $this->tables['product_purchase_order'] . '.unit_price,' . $this->tables['product_info'] . '.name as product_name')
                         ->from($this->tables['product_purchase_order'])

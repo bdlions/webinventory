@@ -1,12 +1,16 @@
 <script type="text/javascript">
     $(function() {
         $("#button_search_transactions").on("click", function() {
+            var product_category1 = $("#product_category1").val();
+            var product_size = $("#product_size").val();
             $.ajax({
                 dataType: 'json',
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "purchase/get_showroom_purchase_transactions",
                 data: {
-                    purchase_order_no: $("#purchase_order_no").val()
+                    purchase_order_no: $("#purchase_order_no").val(),
+                    product_category1: product_category1,
+                    product_size: product_size
                 },
                 success: function(data) {
                     $("#tbody_purchase_list").html(tmpl("tmpl_purchase_list", data['purchase_list']));
@@ -23,8 +27,8 @@
     <td ><?php echo '{%= purchase_info.created_on%}'; ?></td>
     <td ><?php echo '{%= purchase_info.first_name%}' . ' ' . '{%= purchase_info.last_name%}'; ?></td>
     <td ><?php echo '{%= purchase_info.purchase_order_no%}'; ?></td>
-    <td >1</td>
-    <td >sm</td>
+    <td ><?php echo '{%= purchase_info.product_category1%}'; ?></td>
+    <td ><?php echo '{%= purchase_info.product_size%}'; ?></td>
     <td ><?php echo '{%= purchase_info.product_name%}'; ?></td>
     <td ><?php echo '{%= purchase_info.unit_price%}'; ?></td>
     <td ><?php echo '{%= purchase_info.quantity%}'; ?></td>
@@ -50,26 +54,28 @@
                                 </div> 
                             </div>
                             <div class="form-group">
-                                <label for="purchase_sub_order_no" class="col-md-6 control-label requiredField">
+                                <label for="product_category1" class="col-md-6 control-label requiredField">
                                     Sub Lot No
                                 </label>
                                 <div class ="col-md-6">
-                                    <select name="purchase_sub_order_no" id="purchase_sub_order_no" class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                    <select name="product_category1" id="product_category1" class="form-control">
+                                        <option value="">All</option>
+                                        <?php foreach($product_category1_list as $product_category1_info){?>
+                                        <option value="<?php echo $product_category1_info['title'];?>"><?php echo $product_category1_info['title'];?></option>
+                                        <?php } ?>
                                     </select>
                                 </div> 
                             </div>
                             <div class="form-group">
-                                <label for="purchase_order_product_size" class="col-md-6 control-label requiredField">
+                                <label for="product_size" class="col-md-6 control-label requiredField">
                                     Size
                                 </label>
                                 <div class ="col-md-6">
-                                    <select name="purchase_order_product_size" id="purchase_order_product_size" class="form-control">
-                                        <option value="lg">lg</option>
-                                        <option value="xl">xl</option>
-                                        <option value="sm">sm</option>
+                                    <select name="product_size" id="product_size" class="form-control">
+                                        <option value="">All</option>
+                                        <?php foreach($product_size_list as $product_size_info){?>
+                                        <option value="<?php echo $product_size_info['title'];?>"><?php echo $product_size_info['title'];?></option>
+                                        <?php } ?>
                                     </select>
                                 </div> 
                             </div>

@@ -6,7 +6,7 @@
             for (var counter = 0; counter < p_list.length; counter++)
             {
                 var prod_info = p_list[counter];
-                if ( $(this).attr("id") === prod_info['product_id'] && $(this).attr("name") === prod_info['purchase_order_no'])
+                if ( $(this).attr("id") === prod_info['product_id'])
                 {
                     append_selected_product(prod_info);
                     $('div[class="clr dropdown open"]').removeClass('open');
