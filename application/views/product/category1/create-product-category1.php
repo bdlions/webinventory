@@ -9,7 +9,7 @@
             </div>
             <div class="form-group">
                 <label for="product_category1" class="col-md-6 control-label requiredField">
-                    Product Size
+                    Sub Lot No
                 </label>
                 <div class ="col-md-6">
                     <?php echo form_input($category1_title+array('class'=>'form-control')); ?>
