@@ -110,13 +110,28 @@ class Product_size_model extends Ion_auth_model
     
     public function delete_product_size_info($product_size_id)
     {
-        //check whether this size has a reference during purchase
-        //if not then delete from the database
         if(!isset($product_size_id) || $product_size_id <= 0)
         {
             $this->set_error('product_size_delete_fail');
             return FALSE;
         }
+        
+        $product_size_info_array = $this->get_product_size_info($product_size_id)->result_array();
+        if(!empty($product_size_info_array))
+        {
+            $this->db->where('product_size', $product_size_info_array[0]['title']);
+            if( $this->db->count_all_results($this->tables['warehouse_stock_info']) > 0)
+            {
+                $this->set_error('product_size_delete_fail_size_exists');
+                return FALSE;
+            }
+        }
+        else
+        {
+            $this->set_error('product_size_delete_fail');
+            return FALSE;
+        }
+        
         $this->db->where('id', $product_size_id);
         $this->db->delete($this->tables['product_sizes']);
         

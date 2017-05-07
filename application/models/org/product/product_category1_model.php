@@ -117,6 +117,23 @@ class Product_category1_model extends Ion_auth_model
             $this->set_error('product_category1_delete_fail');
             return FALSE;
         }
+        
+        $product_category1_info_array = $this->get_product_category1_info($product_category1_id)->result_array();
+        if(!empty($product_category1_info_array))
+        {
+            $this->db->where('product_category1', $product_category1_info_array[0]['title']);
+            if( $this->db->count_all_results($this->tables['warehouse_stock_info']) > 0)
+            {
+                $this->set_error('product_category1_delete_fail_category1_exists');
+                return FALSE;
+            }
+        }
+        else
+        {
+            $this->set_error('product_category1_delete_fail');
+            return FALSE;
+        }
+        
         $this->db->where('id', $product_category1_id);
         $this->db->delete($this->tables['product_categories1']);
         

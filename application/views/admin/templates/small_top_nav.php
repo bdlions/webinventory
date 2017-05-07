@@ -31,6 +31,7 @@
         <li><a href="<?php echo base_url("purchase/warehouse_purchase_order");?>">Add new purchase</a></li>
         <li><a href="<?php echo base_url("purchase/raise_warehouse_purchase_order");?>">Raise purchase</a></li>
         <li><a href="<?php echo base_url("purchase/return_warehouse_purchase_order");?>">Return purchase</a></li>
+        <li><a href="<?php echo base_url("purchase/show_warehouse_purchase_transactions");?>">Show warehouse purchase transactions</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("purchase/purchase_order");?>">Raise stock</a></li>
         <li><a href="<?php echo base_url("purchase/return_purchase_order");?>">Return stock</a></li>
@@ -53,6 +54,7 @@
         <li><a href="<?php echo base_url("./product/import_product");?>">Product List Import</a></li>
         <li class="divider"></li>        
         <li><a href="<?php echo base_url("stock/show_all_stocks");?>">show current stock</a></li> 
+        <li><a href="<?php echo base_url("stock/show_warehouse_stocks");?>">show warehouse stock</a></li> 
     </ul>
 </div>
 <div class="btn-group">
@@ -75,6 +77,7 @@
         <li><a href="<?php echo base_url("search/search_sales_purchase_order_no");?>">Search Customer Sales by Lot No</a></li>
         <li><a href="<?php echo base_url("search/search_customer_sales");?>">Search Customer Sales</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_card_no");?>">Search Customer Sales by Card No</a></li>
+        <li><a href="<?php echo base_url("search/search_staff_sales_customer_card_no");?>">Search Staff Sales by Customer Card No</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_name");?>">Search Customer Sales by Name</a></li>
         <li><a href="<?php echo base_url("search/search_sales_customer_phone");?>">Search Customer Sales by Phone</a></li>
         <li class="divider"></li>

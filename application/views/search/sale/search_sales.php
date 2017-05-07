@@ -39,6 +39,8 @@
     {% var i=0, sale_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(sale_info){ %}
     <tr>
+        <td ><?php echo '{%= sale_info.salesman_first_name%}'; ?> <?php echo '{%= sale_info.salesman_last_name%}'; ?></td>
+        <td ><?php echo '{%= sale_info.entry_first_name%}'; ?> <?php echo '{%= sale_info.entry_last_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
         <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
@@ -199,6 +201,8 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Staff</th>
+                    <th>Entry</th>
                     <th>Time & Date</th>
                     <th>Product Name</th>
                     <th>Lot No</th>

@@ -507,36 +507,65 @@ class Purchase extends CI_Controller {
         $selected_product_list = $this->input->post('product_list');
         $purchased_product_list = array();
         $add_stock_list = array();
+        $out_stock_list = array();
+        
+        $warehouse_product_quantity_map = array();
+        $stock_list_array = $this->stock_library->search_warehouse_stocks()->result_array();
+        foreach ($stock_list_array as $key => $stock_info) {
+            $warehouse_product_quantity_map[$stock_info['product_id'] . '_' . $stock_info['purchase_order_no'] . '_' . $stock_info['product_category1'] . '_' . $stock_info['product_size']] = $stock_info['current_stock'];
+        }
         
         $total_products = count($selected_product_list);
         $product_counter = 0;
         foreach($selected_product_list as $key => $prod_info)
         {
-            $product_info = array(
-                'product_id' => $prod_info['product_id'],
-                'purchase_order_no' => $prod_info['purchase_order_no'],
-                'product_category1' => $prod_info['product_category1'],
-                'product_size' => $prod_info['product_size'],
-                'shop_id' => $shop_id,
-                'unit_price' => $prod_info['unit_price'],
-                'created_on' => $current_time,
-                'created_by' => $user_id
-            );
-            $purchased_product_list[] = $product_info;
-            $add_stock_info = array(
-                'product_id' => $prod_info['product_id'],
-                'purchase_order_no' => $prod_info['purchase_order_no'],
-                'product_category1' => $prod_info['product_category1'],
-                'product_size' => $prod_info['product_size'],
-                'shop_id' => $shop_id,
-                'stock_in' => $prod_info['quantity'],
-                'created_on' => $current_time,
-                'transaction_category_id' => STOCK_PURCHASE_PARTIAL_IN
-            );
-            $add_stock_list[] = $add_stock_info;
+            if ( array_key_exists($prod_info['product_id'].'_'.$prod_info['purchase_order_no'].'_'.$prod_info['product_category1'].'_'.$prod_info['product_size'], $warehouse_product_quantity_map) && ( $warehouse_product_quantity_map[$prod_info['product_id'].'_'.$prod_info['purchase_order_no'].'_'.$prod_info['product_category1'].'_'.$prod_info['product_size']] >= $prod_info['quantity'] ) ) {
+                $product_info = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
+                    'shop_id' => $shop_id,
+                    'unit_price' => $prod_info['unit_price'],
+                    'created_on' => $current_time,
+                    'created_by' => $user_id
+                );
+                $purchased_product_list[] = $product_info;
+                $add_stock_info = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
+                    'shop_id' => $shop_id,
+                    'stock_in' => $prod_info['quantity'],
+                    'created_on' => $current_time,
+                    'transaction_category_id' => STOCK_PURCHASE_PARTIAL_IN
+                );
+                $out_stock_info = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
+                    'shop_id' => $shop_id,
+                    'stock_in' => 0,
+                    'stock_out' => $prod_info['quantity'],
+                    'created_on' => $current_time,
+                    'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_OUT_TO_SHOWROOM
+                );
+                $add_stock_list[] = $add_stock_info;
+                $out_stock_list[] = $out_stock_info;
+            }
+            else
+            {
+                $response['status'] = '0';
+                $response['message'] = 'Insufficient stock for the product : '.$prod_info['name'].' and lot no : '.$prod_info['purchase_order_no'].' and sub lot no : '.$prod_info['product_category1'].' and size : '.$prod_info['product_size'];
+                echo json_encode($response);
+                return;
+            }
+            
         }
 
-        $purchase_id = $this->purchase_library->add_purchase_order($purchased_product_list, $add_stock_list);
+        $purchase_id = $this->purchase_library->add_purchase_order($purchased_product_list, $add_stock_list, $out_stock_list);
         if( $purchase_id !== FALSE )
         {
             $response['status'] = '1';
@@ -960,7 +989,8 @@ class Purchase extends CI_Controller {
         }
         
         $supplier_transaction_info_array = array();        
-        $stock_out_list = array();        
+        $stock_out_list = array(); 
+        $stock_in_list = array(); 
         foreach($selected_product_list as $key => $prod_info)
         {
             if ( array_key_exists($prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size] >= $prod_info['quantity'] ) ) {
@@ -974,7 +1004,19 @@ class Purchase extends CI_Controller {
                     'created_on' => $current_time,
                     'transaction_category_id' => STOCK_PURCHASE_PARTIAL_OUT
                 );
+                $warehouse_stock_info = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size'],
+                    'shop_id' => $shop_id,
+                    'stock_in' => $prod_info['quantity'],
+                    'stock_out' => 0,
+                    'created_on' => $current_time,
+                    'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_IN_FROM_SHOWROOM
+                );
                 $stock_out_list[] = $add_stock_info;
+                $stock_in_list[] = $warehouse_stock_info;
             }
             else
             {
@@ -985,7 +1027,7 @@ class Purchase extends CI_Controller {
             }                    
         }
         
-        $status = $this->purchase_library->return_purchase_order($stock_out_list);
+        $status = $this->purchase_library->return_purchase_order($stock_out_list, $stock_in_list);
         if( $status === TRUE )
         {
             $response['status'] = '1';
@@ -1037,6 +1079,33 @@ class Purchase extends CI_Controller {
     }
     
     /*
+     * This method will load warehouse purchase transaction list
+     * @Author Nazmul on 6th May 2017
+     */
+    public function show_warehouse_purchase_transactions()
+    {
+        $this->data['message'] = "";
+        $this->data['purchase_order_no'] = array(
+            'name' => 'purchase_order_no',
+            'id' => 'purchase_order_no',
+            'type' => 'text'
+        );
+        $this->data['button_search_transactions'] = array(
+            'name' => 'button_search_transactions',
+            'id' => 'button_search_transactions',
+            'type' => 'submit',
+            'value' => 'Search',
+        );
+        //product category1 list
+        $this->load->model('org/product/product_category1_model');
+        $this->data['product_category1_list'] = $this->product_category1_model->get_all_product_categories1()->result_array();
+        //product size list
+        $this->load->model('org/product/product_size_model');
+        $this->data['product_size_list'] = $this->product_size_model->get_all_product_sizes()->result_array();
+        $this->template->load(null, 'purchase/show-warehouse-purchase-transactions',$this->data);
+    }
+    
+    /*
      * Ajax Call
      * This method will return showroom purchase transactions
      * @Author Nazmul on 27th January 2015
@@ -1048,6 +1117,21 @@ class Purchase extends CI_Controller {
         $product_category1 = $this->input->post('product_category1');
         $product_size = $this->input->post('product_size');
         $result['purchase_list'] = $this->stock_library->get_showroom_purchase_transactions($purchase_order_no, 0, $product_category1, $product_size);
+        echo json_encode($result); 
+    }
+    
+    /*
+     * Ajax Call
+     * This method will return showroom purchase transactions
+     * @Author Nazmul on 27th January 2015
+     */
+    public function get_warehouse_purchase_transactions()
+    {
+        $result = array();
+        $purchase_order_no = $this->input->post('purchase_order_no');
+        $product_category1 = $this->input->post('product_category1');
+        $product_size = $this->input->post('product_size');
+        $result['purchase_list'] = $this->stock_library->get_warehouse_purchase_transactions($purchase_order_no, 0, $product_category1, $product_size);
         echo json_encode($result); 
     }
 

@@ -8,16 +8,16 @@
                 alert("First Name is required.");
                 return;
             }
-            else if ($("#input_last_name").val().length == 0)
-            {
-                alert("Last Name is required.");
-                return;
-            }
-            else if ($("#phone_country_code").val().length == 0)
-            {
-                alert("Phone Country Code is required.");
-                return;
-            }
+//            else if ($("#input_last_name").val().length == 0)
+//            {
+//                alert("Last Name is required.");
+//                return;
+//            }
+//            else if ($("#phone_country_code").val().length == 0)
+//            {
+//                alert("Phone Country Code is required.");
+//                return;
+//            }
             else if ($("#input_phone_no").val().length == 0)
             {
                 alert("Phone is required.");
@@ -34,8 +34,8 @@
                 url: '<?php echo base_url(); ?>' + "supplier/create_supplier_purchase_order",
                 data: {
                     first_name: $("#input_first_name").val(),
-                    last_name: $("#input_last_name").val(),
-                    country_code: $("#phone_country_code").val(),
+                    //last_name: $("#input_last_name").val(),
+                    //country_code: $("#phone_country_code").val(),
                     phone_no: $("#input_phone_no").val(),
                     company: $("#input_company").val()
                 },
@@ -137,49 +137,49 @@
                         <div class ="col-md-9">
                             <div class="form-horizontal">
                                 <div class="row form-group">
-                                    <label for="input_first_name" class="col-md-5 control-label requiredField">
-                                        First Name
+                                    <label for="input_first_name" class="col-md-6 control-label requiredField">
+                                        First Name<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_input(array('name' => 'input_first_name', 'id' => 'input_first_name', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
-                                <div class="form-group">
-                                    <label for="input_last_name" class="col-md-5 control-label requiredField">
-                                        Last Name
+<!--                                <div class="form-group">
+                                    <label for="input_last_name" class="col-md-6 control-label requiredField">
+                                        Last Name<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
-                                        <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
+                                    <div class ="col-md-6">
+                                        <?php //echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
                                     </div> 
-                                </div>
-                                <div class="form-group">
-                                    <label for="country_code" class="col-md-5 control-label requiredField">
-                                        Phone Country Code
+                                </div>-->
+<!--                                <div class="form-group">
+                                    <label for="country_code" class="col-md-6 control-label requiredField">
+                                        Phone Country Code<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
-                                        <?php echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
+                                    <div class ="col-md-6">
+                                        <?php //echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
                                     </div> 
-                                </div>
+                                </div>-->
                                 <div class="form-group">
-                                    <label for="input_phone_no" class="col-md-5 control-label requiredField">
-                                        Phone No.
+                                    <label for="input_phone_no" class="col-md-6 control-label requiredField">
+                                        Phone No.<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="input_company" class="col-md-5 control-label requiredField">
-                                        Company
+                                    <label for="input_company" class="col-md-6 control-label requiredField">
+                                        Company<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_input(array('name' => 'input_company', 'id' => 'input_company', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="button_add_supplier" class="col-md-5 control-label requiredField">
+                                    <label for="button_add_supplier" class="col-md-6 control-label requiredField">
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_button(array('name' => 'button_add_supplier', 'class' => 'form-control btn btn-success', 'id' => 'button_add_supplier', 'content' => 'Submit')); ?>
                                     </div> 
                                 </div>

@@ -260,7 +260,7 @@ class Purchase_model extends Ion_auth_model {
         return !(empty($qr_result));
     }
 
-    public function add_purchase_order($purchased_product_list, $add_stock_list) {
+    public function add_purchase_order($purchased_product_list, $add_stock_list, $out_stock_list) {
         foreach ($purchased_product_list as $product_data) {
             if ($this->purchase_product_check($product_data['purchase_order_no'], $product_data['product_category1'], $product_data['product_size'], $product_data['product_id'])) {
                 continue;
@@ -269,6 +269,10 @@ class Purchase_model extends Ion_auth_model {
         }
         if (!empty($add_stock_list)) {
             $this->db->insert_batch($this->tables['stock_info'], $add_stock_list);
+        }
+        
+        if (!empty($out_stock_list)) {
+            $this->db->insert_batch($this->tables['warehouse_stock_info'], $out_stock_list);
         }
     }
 
@@ -295,7 +299,7 @@ class Purchase_model extends Ion_auth_model {
         return TRUE;
     }
 
-    public function return_purchase_order($stock_out_list) {
+    public function return_purchase_order($stock_out_list, $stock_in_list) {
         $this->trigger_events('pre_return_purchase_order');
         $this->db->trans_begin();
         if ($this->db->trans_status() === FALSE) {
@@ -304,6 +308,10 @@ class Purchase_model extends Ion_auth_model {
         }
         if (!empty($stock_out_list)) {
             $this->db->insert_batch($this->tables['stock_info'], $stock_out_list);
+        }
+        if(!empty($stock_in_list))
+        {
+            $this->db->insert_batch($this->tables['warehouse_stock_info'], $stock_in_list);
         }
 
         $this->db->trans_commit();

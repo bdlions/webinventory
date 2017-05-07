@@ -205,7 +205,7 @@ class Sale_model extends Ion_auth_model
         $this->db->group_by($this->tables['stock_info'].'.product_id');
         $this->db->order_by($this->tables['sale_order'].'.created_on','desc');
         $this->db->order_by($this->tables['stock_info'].'.purchase_order_no');
-        return $this->db->select($this->tables['sale_order'].'.created_on,'.$this->tables['product_sale_order'].'.purchase_order_no,'.$this->tables['product_sale_order'].'.product_category1,'.$this->tables['product_sale_order'].'.product_size,'.$this->tables['product_info'].'.name as product_name,sum(stock_out)-sum(stock_in) as total_sale,'.$this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['sale_order'].'.created_by, users_salesman.first_name as salesman_first_name, users_salesman.last_name as salesman_last_name, users_customers.first_name as customer_first_name, users_customers.last_name as customer_last_name,'.$this->tables['customers'].'.card_no,'.$this->tables['customers'].'.id as customer_id,'.$this->tables['stock_info'].'.sale_order_no,'.$this->tables['product_unit_category'].'.description as category_unit')
+        return $this->db->select($this->tables['sale_order'].'.created_on,'.$this->tables['product_sale_order'].'.purchase_order_no,'.$this->tables['product_sale_order'].'.product_category1,'.$this->tables['product_sale_order'].'.product_size,'.$this->tables['product_info'].'.name as product_name,sum(stock_out)-sum(stock_in) as total_sale,'.$this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['sale_order'].'.created_by, users_entry.first_name as entry_first_name, users_entry.last_name as entry_last_name, users_salesman.first_name as salesman_first_name, users_salesman.last_name as salesman_last_name, users_customers.first_name as customer_first_name, users_customers.last_name as customer_last_name,'.$this->tables['customers'].'.card_no,'.$this->tables['customers'].'.id as customer_id,'.$this->tables['stock_info'].'.sale_order_no,'.$this->tables['product_unit_category'].'.description as category_unit')
                     ->from($this->tables['stock_info'])
                     ->join($this->tables['sale_order'], $this->tables['sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no')
                     ->join($this->tables['product_sale_order'], $this->tables['product_sale_order'].'.purchase_order_no='.$this->tables['stock_info'].'.purchase_order_no AND '.$this->tables['product_sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no AND '.$this->tables['product_sale_order'].'.product_id='.$this->tables['stock_info'].'.product_id')
@@ -215,6 +215,7 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
                     ->join($this->tables['users'].' AS users_customers', 'users_customers.id='.$this->tables['customers'].'.user_id')
                     ->join($this->tables['users'].' AS users_salesman', 'users_salesman.id='.$this->tables['sale_order'].'.created_by')
+                    ->join($this->tables['users'].' AS users_entry', 'users_entry.id='.$this->tables['sale_order'].'.entry_by')
                     ->get();        
     }
     
@@ -242,7 +243,7 @@ class Sale_model extends Ion_auth_model
         $this->db->group_by($this->tables['stock_info'].'.purchase_order_no');
         $this->db->group_by($this->tables['stock_info'].'.product_id');
         $this->db->order_by($this->tables['sale_order'].'.created_on','desc');
-        return $this->db->select($this->tables['sale_order'].'.created_on,'.$this->tables['product_sale_order'].'.purchase_order_no,'.$this->tables['product_sale_order'].'.product_category1,'.$this->tables['product_sale_order'].'.product_size,'.$this->tables['product_info'].'.name as product_name,sum(stock_out)-sum(stock_in) as total_sale,'.$this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['sale_order'].'.created_by, users_salesman.first_name as salesman_first_name, users_salesman.last_name as salesman_last_name, users_customers.first_name as customer_first_name, users_customers.last_name as customer_last_name,'.$this->tables['customers'].'.card_no,'.$this->tables['customers'].'.id customer_id,'.$this->tables['stock_info'].'.sale_order_no,'.$this->tables['product_unit_category'].'.description as category_unit')
+        return $this->db->select($this->tables['sale_order'].'.created_on,'.$this->tables['product_sale_order'].'.purchase_order_no,'.$this->tables['product_sale_order'].'.product_category1,'.$this->tables['product_sale_order'].'.product_size,'.$this->tables['product_info'].'.name as product_name,sum(stock_out)-sum(stock_in) as total_sale,'.$this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['sale_order'].'.created_by, users_entry.first_name as entry_first_name, users_entry.last_name as entry_last_name, users_salesman.first_name as salesman_first_name, users_salesman.last_name as salesman_last_name, users_customers.first_name as customer_first_name, users_customers.last_name as customer_last_name,'.$this->tables['customers'].'.card_no,'.$this->tables['customers'].'.id customer_id,'.$this->tables['stock_info'].'.sale_order_no,'.$this->tables['product_unit_category'].'.description as category_unit')
                     ->from($this->tables['stock_info'])
                     ->join($this->tables['sale_order'], $this->tables['sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no')
                     ->join($this->tables['product_sale_order'], $this->tables['product_sale_order'].'.purchase_order_no='.$this->tables['stock_info'].'.purchase_order_no AND '.$this->tables['product_sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no AND '.$this->tables['product_sale_order'].'.product_id='.$this->tables['stock_info'].'.product_id')
@@ -252,6 +253,7 @@ class Sale_model extends Ion_auth_model
                     ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
                     ->join($this->tables['users'].' AS users_customers', 'users_customers.id='.$this->tables['customers'].'.user_id')
                     ->join($this->tables['users'].' AS users_salesman', 'users_salesman.id='.$this->tables['sale_order'].'.created_by')
+                    ->join($this->tables['users'].' AS users_entry', 'users_entry.id='.$this->tables['sale_order'].'.entry_by')
                     ->get();
     }
     
@@ -312,7 +314,7 @@ class Sale_model extends Ion_auth_model
                     ->get(); 
     }
     
-    public function get_user_sales_by_card_no($card_no = '' , $shop_id = 0)
+    public function get_user_sales_by_card_no($card_no = '' , $shop_id = 0, $offset = 0, $limit = 0)
     {        
         if($shop_id == 0)
         {
@@ -322,6 +324,54 @@ class Sale_model extends Ion_auth_model
         if(!empty($card_no))
         {
             $this->db->where($this->tables['customers'].'.card_no', $card_no);
+        }
+        
+        if($limit != 0)
+        {
+            $this->db->offset($offset);
+            $this->db->limit($limit);
+        }
+        
+        $this->db->where_in($this->tables['stock_info'].'.transaction_category_id', array(STOCK_SALE_IN, STOCK_SALE_PARTIAL_OUT, STOCK_SALE_DELETE));
+        $this->db->group_by($this->tables['stock_info'].'.sale_order_no');
+        $this->db->group_by($this->tables['stock_info'].'.purchase_order_no');
+        $this->db->group_by($this->tables['stock_info'].'.product_id');
+        $this->db->order_by($this->tables['sale_order'].'.created_on','desc');
+        return $this->db->select($this->tables['sale_order'].'.created_on,'.$this->tables['product_sale_order'].'.purchase_order_no,'.$this->tables['product_sale_order'].'.product_category1,'.$this->tables['product_sale_order'].'.product_size,'.$this->tables['product_info'].'.name as product_name,sum(stock_out)-sum(stock_in) as total_sale,'.$this->tables['product_sale_order'].'.unit_price as sale_unit_price,'.$this->tables['product_purchase_order'].'.unit_price as purchase_unit_price,'.$this->tables['sale_order'].'.created_by, users_salesman.first_name as salesman_first_name, users_salesman.last_name as salesman_last_name, users_customers.first_name as customer_first_name, users_customers.last_name as customer_last_name,'.$this->tables['customers'].'.card_no,'.$this->tables['customers'].'.id as customer_id,'.$this->tables['stock_info'].'.sale_order_no')
+                    ->from($this->tables['stock_info'])
+                    ->join($this->tables['sale_order'], $this->tables['sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no')
+                    ->join($this->tables['product_sale_order'], $this->tables['product_sale_order'].'.purchase_order_no='.$this->tables['stock_info'].'.purchase_order_no AND '.$this->tables['product_sale_order'].'.sale_order_no='.$this->tables['stock_info'].'.sale_order_no AND '.$this->tables['product_sale_order'].'.product_id='.$this->tables['stock_info'].'.product_id')
+                    ->join($this->tables['product_purchase_order'], $this->tables['product_purchase_order'].'.purchase_order_no='.$this->tables['stock_info'].'.purchase_order_no AND '.$this->tables['product_purchase_order'].'.product_id='.$this->tables['stock_info'].'.product_id')
+                    ->join($this->tables['product_info'], $this->tables['stock_info'].'.product_id='.$this->tables['product_info'].'.id ')
+                    ->join($this->tables['customers'], $this->tables['customers'].'.id='.$this->tables['sale_order'].'.customer_id')
+                    ->join($this->tables['users'].' AS users_customers', 'users_customers.id='.$this->tables['customers'].'.user_id')
+                    ->join($this->tables['users'].' AS users_salesman', 'users_salesman.id='.$this->tables['sale_order'].'.created_by')
+                    ->get();        
+    }
+    
+    public function get_staff_sales_by_card_no($card_no = '' , $cell = '', $staff_id = 0, $shop_id = 0, $offset = 0, $limit = 0)
+    {        
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['stock_info'].'.shop_id', $shop_id);
+        if(!empty($card_no))
+        {
+            $this->db->where($this->tables['customers'].'.card_no', $card_no);
+        }
+        if(!empty($cell))
+        {
+            $this->db->like('users_customers.phone', $cell);
+        }
+        if($staff_id != 0)
+        {
+            $this->db->where($this->tables['sale_order'].'.created_by', $staff_id);
+        }
+        if($limit != 0)
+        {
+            $this->db->offset($offset);
+            $this->db->limit($limit);
         }
         
         $this->db->where_in($this->tables['stock_info'].'.transaction_category_id', array(STOCK_SALE_IN, STOCK_SALE_PARTIAL_OUT, STOCK_SALE_DELETE));

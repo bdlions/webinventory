@@ -286,7 +286,7 @@
 
 </script>
 
-<h3>Return purchase</h3>
+<h3>Return purchase (Warehouse)</h3>
 <div class ="top-bottom-padding form-background">
     <div class="row">
         <div class="col-md-2">        

@@ -105,4 +105,35 @@ class Stock_library {
         }
         return $transaction_list;
     }
+    
+    /*
+     * This method will retunr warehouse purchase list
+     * @param $purchase_order_no, purchase order no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 27th January 2015
+     */
+    public function get_warehouse_purchase_transactions($purchase_order_no, $shop_id = 0, $product_category1 = '', $product_size = '')
+    {
+        $transaction_list = array();
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $transactions_array = $this->stock_model->get_warehouse_purchase_transactions($purchase_order_no, $shop_id, $product_category1, $product_size)->result_array();
+        foreach($transactions_array as $transactions_info)
+        {
+            $transactions_info['created_on'] = $this->utils->process_time($transactions_info['created_on']);
+            $transactions_info['quantity'] = 0;
+            if($transactions_info['transaction_category_id'] == STOCK_PURCHASE_PARTIAL_IN || $transactions_info['transaction_category_id'] == STOCK_PURCHASE_IN)
+            {
+                $transactions_info['quantity'] = $transactions_info['stock_in'];
+            }
+            else if($transactions_info['transaction_category_id'] == STOCK_PURCHASE_PARTIAL_OUT)
+            {
+                $transactions_info['quantity'] = $transactions_info['stock_out'];
+            }
+            $transaction_list[] = $transactions_info;
+        }
+        return $transaction_list;
+    }
 }

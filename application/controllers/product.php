@@ -801,7 +801,7 @@ class Product extends CI_Controller {
         }
         else
         {
-            $this->session->set_flashdata('message', $this->product_category1_library->messages());
+            $this->session->set_flashdata('message', $this->product_category1_library->errors());
         }
         echo json_encode($result);
     }
@@ -958,7 +958,7 @@ class Product extends CI_Controller {
         }
         else
         {
-            $this->session->set_flashdata('message', $this->product_size_library->messages());
+            $this->session->set_flashdata('message', $this->product_size_library->errors());
         }
         echo json_encode($result);
     }

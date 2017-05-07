@@ -550,7 +550,7 @@ class Search extends CI_Controller {
         $total_quantity= 0;
         $total_profit = 0;
         $sale_list = array();
-        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($card_no)->result_array();
+        $sale_list_array = $this->sale_library->get_user_sales_by_card_no($card_no, 0, 0, 0)->result_array();
         if( !empty($sale_list_array) )
         {
             foreach($sale_list_array as $sale_info)
@@ -576,18 +576,172 @@ class Search extends CI_Controller {
     }
     public function search_sales_customer_card_no()
     {
+        $search_params = "";
+        $card_no = "";
+        $page_id = 1;
+        $sale_counter = 0;
+        $page_counter = 0;
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $total_profit = 0;
+        $sale_list = array();
+        if($this->input->get('page_id'))
+        {
+            $page_id = $this->input->get('page_id'); 
+        }
+        if($this->input->get('card_no'))
+        {
+            $card_no = $this->input->get('card_no');                       
+            $sale_list_counter_array = $this->sale_library->get_user_sales_by_card_no($card_no, 0, 0, 0)->result_array();
+            if(!empty($sale_list_counter_array))
+            {
+                $sale_counter = count($sale_list_counter_array);
+            }
+            $page_counter = ($sale_counter/SEARCH_CUSTOMER_SALE_CARD_NO_DEFAULT_LIMIT);
+            if(($sale_counter%SEARCH_CUSTOMER_SALE_CARD_NO_DEFAULT_LIMIT) > 0)
+            {
+                $page_counter++;
+            }
+            
+            $sale_list_array = $this->sale_library->get_user_sales_by_card_no($card_no, 0, (($page_id-1)*SEARCH_CUSTOMER_SALE_CARD_NO_DEFAULT_LIMIT), SEARCH_CUSTOMER_SALE_CARD_NO_DEFAULT_LIMIT)->result_array();
+            if( !empty($sale_list_array) )
+            {
+                foreach($sale_list_array as $sale_info)
+                {
+                    $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                    $total_quantity = $total_quantity + $sale_info['total_sale'];
+                    $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                    $sale_list[] = $sale_info;
+                }
+            }
+            $search_params = "&card_no=".$card_no;
+        }
         $this->data['card_no'] = array(
             'name' => 'card_no',
             'id' => 'card_no',
-            'type' => 'text'
+            'type' => 'text',
+            'value' => $card_no
         );
         $this->data['button_search_sale'] = array(
             'name' => 'button_search_sale',
             'id' => 'button_search_sale',
-            'type' => 'reset',
+            'type' => 'submit',
             'value' => 'Search',
         );
+        $this->data['sale_list'] = $sale_list;  
+        $this->data['total_sale_price'] = $total_sale_price;
+        $this->data['total_quantity'] = $total_quantity;
+        $this->data['total_profit'] = $total_profit;
+        $this->data['search_params'] = $search_params;
+        $this->data['page_index'] = $page_id;
+        $this->data['total_pages'] = $page_counter;        
         $this->template->load(null, 'search/sale/customer_card_no', $this->data);
+    }
+    
+    public function search_staff_sales_customer_card_no()
+    {
+        $search_params = "";
+        $card_no = "";
+        $cell = "";
+        $page_id = 1;
+        $sale_counter = 0;
+        $page_counter = 0;
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $total_profit = 0;
+        $sale_list = array();
+        $staff_id = 0;
+        $form_submitted = false;
+        if($this->input->get('button_search_sale'))
+        {
+            $form_submitted = true;
+        }
+        if($this->input->get('page_id'))
+        {
+            $form_submitted = true;
+            $page_id = $this->input->get('page_id'); 
+        }
+        if($this->input->get('staff_list'))
+        {
+            $form_submitted = true;
+            $staff_id = $this->input->get('staff_list');
+        }
+        if($this->input->get('card_no'))
+        {
+            $form_submitted = true;
+            $card_no = $this->input->get('card_no');
+        }
+        if($this->input->get('cell'))
+        {
+            $form_submitted = true;
+            $cell = $this->input->get('cell');
+        }
+        if($form_submitted)
+        {
+            //$staff_id = $this->input->get('staff_list');
+            //$card_no = $this->input->get('card_no');
+            //$cell = $this->input->get('cell');
+            $sale_list_counter_array = $this->sale_library->get_staff_sales_by_card_no($card_no, $cell, $staff_id, 0, 0, 0)->result_array();
+            if(!empty($sale_list_counter_array))
+            {
+                $sale_counter = count($sale_list_counter_array);
+            }
+            $page_counter = ($sale_counter/SEARCH_STAFF_SALE_CARD_NO_DEFAULT_LIMIT);
+            if(($sale_counter%SEARCH_STAFF_SALE_CARD_NO_DEFAULT_LIMIT) > 0)
+            {
+                $page_counter++;
+            }
+            
+            $sale_list_array = $this->sale_library->get_staff_sales_by_card_no($card_no, $cell, $staff_id, 0, (($page_id-1)*SEARCH_STAFF_SALE_CARD_NO_DEFAULT_LIMIT), SEARCH_STAFF_SALE_CARD_NO_DEFAULT_LIMIT)->result_array();
+            if( !empty($sale_list_array) )
+            {
+                foreach($sale_list_array as $sale_info)
+                {
+                    $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                    $total_quantity = $total_quantity + $sale_info['total_sale'];
+                    $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                    $sale_list[] = $sale_info;
+                }
+            }
+            $search_params = "&card_no=".$card_no."&cell=".$cell."&staff_list=".$staff_id;
+        }
+        $this->data['card_no'] = array(
+            'name' => 'card_no',
+            'id' => 'card_no',
+            'type' => 'text',
+            'value' => $card_no
+        );
+        $this->data['cell'] = array(
+            'name' => 'cell',
+            'id' => 'cell',
+            'type' => 'text',
+            'value' => $cell
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'submit',
+            'value' => 'Search',
+        );
+        $staff_list = array();
+        $staff_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        if(!empty($staff_list_array))
+        {
+            foreach($staff_list_array as $key => $staff_info)
+            {
+                $staff_list[$staff_info['user_id']] = $staff_info['first_name'].' '.$staff_info['last_name'];
+            }
+        }
+        $this->data['staff_list'] = $staff_list;
+        $this->data['staff_id'] = $staff_id;
+        $this->data['sale_list'] = $sale_list;  
+        $this->data['total_sale_price'] = $total_sale_price;
+        $this->data['total_quantity'] = $total_quantity;
+        $this->data['total_profit'] = $total_profit;
+        $this->data['search_params'] = $search_params;
+        $this->data['page_index'] = $page_id;
+        $this->data['total_pages'] = $page_counter;        
+        $this->template->load(null, 'search/sale/staff-sale-customer-card-no', $this->data);
     }
     
     public function search_customer_sales()

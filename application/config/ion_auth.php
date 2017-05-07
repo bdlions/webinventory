@@ -78,8 +78,9 @@ $config['tables']['queue_table']                    = 'queue_table';
 $config['tables']['test_queue']                     = 'test_queue';
 
 
-$config['tables']['warehouse_product_purchase_order']     = 'warehouse_product_purchase_order';
-$config['tables']['warehouse_stock_info']                 = 'warehouse_stock_info';
+$config['tables']['warehouse_product_purchase_order']           = 'warehouse_product_purchase_order';
+$config['tables']['warehouse_stock_info']                       = 'warehouse_stock_info';
+$config['tables']['warehouse_stock_transaction_category']       = 'warehouse_stock_transaction_category';
 /*
  | Users table column and Group table column you want to join WITH.
  |

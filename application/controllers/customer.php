@@ -263,8 +263,8 @@ class Customer extends User {
             $shop_info = $shop_info_array[0];
         }
         $first_name = $this->input->post('first_name');
-        $last_name = $this->input->post('last_name');
-        $phone_no = $this->input->post('country_code').$this->input->post('phone_no');
+        //$last_name = $this->input->post('last_name');
+        $phone_no = $this->input->post('phone_no');
        
         $user_name = '';
         $password = "password";
@@ -272,7 +272,7 @@ class Customer extends User {
         $additional_data = array(
             'account_status_id' => $this->account_status_list['active_id'],
             'first_name' => $first_name,
-            'last_name' => $last_name,
+            //'last_name' => $last_name,
             'phone' => $phone_no,
             'created_date' => date('Y-m-d H:i:s')
         );

@@ -31,6 +31,7 @@
         <li><a href="<?php echo base_url("./product/show_all_products");?>">Product List</a></li>
         <li class="divider"></li>
         <li><a href="<?php echo base_url("stock/show_all_stocks");?>">show current stock</a></li> 
+        <li><a href="<?php echo base_url("stock/show_warehouse_stocks");?>">show warehouse stock</a></li> 
     </ul>
 </div>
 <div class="btn-group">

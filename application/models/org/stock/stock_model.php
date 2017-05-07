@@ -185,6 +185,41 @@ class Stock_model extends Ion_auth_model
     }
     
     /*
+     * This method will return all warehouse transactions under a lot no, product category1/sublot and size
+     * @param $purchase_order_no, purchase order no
+     * @param $shop_id, shop id
+     * @Author Nazmul on 27th January 2015
+     */
+    public function get_warehouse_purchase_transactions($purchase_order_no, $shop_id = 0, $product_category1 = '', $product_size = '')
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        $this->db->where($this->tables['warehouse_stock_info'].'.purchase_order_no', $purchase_order_no);
+        if(!empty($product_category1))
+        {
+            $this->db->where($this->tables['warehouse_stock_info'].'.product_category1', $product_category1);
+        }
+        if(!empty($product_size))
+        {
+            $this->db->where($this->tables['warehouse_stock_info'].'.product_size', $product_size);
+        }
+        $this->db->where($this->tables['warehouse_stock_info'].'.shop_id', $shop_id);
+        $this->db->where_in($this->tables['warehouse_stock_info'].'.transaction_category_id', array(STOCK_PURCHASE_IN, STOCK_PURCHASE_PARTIAL_IN, STOCK_PURCHASE_PARTIAL_OUT));
+        $this->db->order_by($this->tables['warehouse_stock_info'].'.created_on','desc');
+        return $this->db->select($this->tables['warehouse_stock_info'].'.product_id,'.$this->tables['warehouse_stock_info'].'.purchase_order_no,'.$this->tables['warehouse_stock_info'].'.product_category1,'.$this->tables['warehouse_stock_info'].'.product_size,'.$this->tables['warehouse_stock_info'].'.stock_in,'.$this->tables['warehouse_stock_info'].'.stock_out,'.$this->tables['warehouse_stock_info'].'.transaction_category_id,'.$this->tables['warehouse_stock_info'].'.created_on,'.$this->tables['warehouse_stock_transaction_category'].'.description as transaction_type,'.$this->tables['product_info'].'.name as product_name,'.$this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name,'.$this->tables['warehouse_product_purchase_order'].'.unit_price')
+                    ->from($this->tables['warehouse_stock_info'])
+                    ->join($this->tables['warehouse_stock_transaction_category'], $this->tables['warehouse_stock_info'].'.transaction_category_id='.$this->tables['warehouse_stock_transaction_category'].'.id')
+                    ->join($this->tables['purchase_order'], $this->tables['purchase_order'].'.purchase_order_no='.$this->tables['warehouse_stock_info'].'.purchase_order_no AND '.$this->tables['purchase_order'].'.shop_id ='.$this->tables['warehouse_stock_info'].'.shop_id')
+                    ->join($this->tables['warehouse_product_purchase_order'], $this->tables['warehouse_product_purchase_order'].'.purchase_order_no='.$this->tables['warehouse_stock_info'].'.purchase_order_no AND '.$this->tables['warehouse_product_purchase_order'].'.product_id='.$this->tables['warehouse_stock_info'].'.product_id')
+                    ->join($this->tables['product_info'], $this->tables['warehouse_stock_info'].'.product_id='.$this->tables['product_info'].'.id ')
+                    ->join($this->tables['suppliers'], $this->tables['suppliers'].'.id='.$this->tables['purchase_order'].'.supplier_id')
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['suppliers'].'.user_id')
+                    ->get(); 
+    }
+    
+    /*
      * This method will return product list with available stocks
      * @param $shop_id, shop id
      * @Author Nazmul on 27th January 2015
@@ -209,7 +244,10 @@ class Stock_model extends Ion_auth_model
                     ->join($this->tables['product_unit_category'],  $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id')
                     ->get();*/
         $this->db->group_by($this->tables['product_info'].'.id');
-        return $this->db->select('product_info.id, product_info.id as product_id, product_info.name,'.$this->tables['product_unit_category'].'.description as category_unit, sum(stock_in-stock_out) as current_stock')
+        $this->db->group_by($this->tables['stock_info'].'.purchase_order_no');
+        $this->db->group_by($this->tables['stock_info'].'.product_category1');
+        $this->db->group_by($this->tables['stock_info'].'.product_size');
+        return $this->db->select('product_info.id, product_info.id as product_id, product_info.name,'.$this->tables['product_unit_category'].'.description as category_unit, sum(stock_in-stock_out) as current_stock, purchase_order_no, product_category1, product_size')
                     ->from($this->tables['product_info'])
                     ->join($this->tables['stock_info'], $this->tables['stock_info'].'.product_id='.$this->tables['product_info'].'.id ','left')
                     ->join($this->tables['product_unit_category'],  $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id')
@@ -235,7 +273,10 @@ class Stock_model extends Ion_auth_model
         }
         $this->db->where($this->tables['product_info'].'.shop_id', $shop_id);
         $this->db->group_by($this->tables['product_info'].'.id');
-        return $this->db->select('product_info.id, product_info.id as product_id, product_info.name,'.$this->tables['product_unit_category'].'.description as category_unit, sum(stock_in-stock_out) as current_stock')
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.purchase_order_no');
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.product_category1');
+        $this->db->group_by($this->tables['warehouse_stock_info'].'.product_size');
+        return $this->db->select('product_info.id, product_info.id as product_id, product_info.name,'.$this->tables['product_unit_category'].'.description as category_unit, sum(stock_in-stock_out) as current_stock, purchase_order_no, product_category1, product_size')
                     ->from($this->tables['product_info'])
                     ->join($this->tables['warehouse_stock_info'], $this->tables['warehouse_stock_info'].'.product_id='.$this->tables['product_info'].'.id ','left')
                     ->join($this->tables['product_unit_category'],  $this->tables['product_unit_category'].'.id='.$this->tables['product_info'].'.unit_category_id')

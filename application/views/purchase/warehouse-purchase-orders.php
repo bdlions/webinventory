@@ -289,69 +289,12 @@
         </div>
     </div>
     <?php $this->load->view("purchase/order_process_products"); ?>
-    <div class="row margin-top-bottom">
-        <div class ="col-md-12 form-horizontal">
-            <div class="form-group">
-                <label for="remarks" class="col-md-7 control-label requiredField">
-                    Remarks
-                </label>
-                <div class ="col-md-3">
-                    <?php echo form_textarea(array('name' => 'remarks', 'id' => 'remarks', 'class' => 'form-control', 'rows' => '2', 'cols' => '4')); ?>
-
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="total_purchase_price" class="col-md-7 control-label requiredField">
-                    Total
-                </label>
-                <div class ="col-md-3">
-                    <?php echo form_input(array('name' => 'total_purchase_price', 'id' => 'total_purchase_price', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="previous_due" class="col-md-7 control-label requiredField">
-                    Previous Due
-                </label>
-                <div class ="col-md-3">
-                    <?php echo form_input(array('name' => 'previous_due', 'id' => 'previous_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="paid_amount" class="col-md-7 control-label requiredField">
-                    Payment Amount
-                </label>
-                <div class ="col-md-3">
-                    <?php echo form_input(array('name' => 'paid_amount', 'id' => 'paid_amount', 'class' => 'form-control')); ?>
-                </div> 
-            </div>
-            <div class="form-group">
-                <label for="current_due" class="col-md-7 control-label requiredField">
-                    Current Due
-                </label>
-                <div class ="col-md-3">
-                    <?php echo form_input(array('name' => 'current_due', 'id' => 'current_due', 'class' => 'form-control', 'readonly' => 'readonly')); ?>
-                </div> 
-            </div>
-            <?php if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) { ?>
-                <div class="form-group">
-                    <label for="current_due" class="col-md-7 control-label requiredField">
-                        Forward to Showroom
-                    </label>
-                    <div class ="col-md-3">
-                        <div style="margin-top: 10px;">
-                            <input id="checkbox_forward_showroom" name="checkbox_forward_showroom" type="checkbox"/>
-                        </div>
-                    </div> 
-                </div>
-            <?php } ?>
-            <div class="form-group" id="div_button_warehouse_purchase_order">
-                <label for="save" class="col-md-2 control-label requiredField">
-                </label>
-                <div class ="col-md-3 col-md-offset-5">
-                    <?php echo form_button(array('name' => 'button_save_purchase_order', 'id' => 'button_save_purchase_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
-                </div> 
-            </div>
-        </div>
+    <div class="form-group" id="div_button_warehouse_purchase_order">
+        <label for="save" class="col-md-2 control-label requiredField">
+        </label>
+        <div class ="col-md-3 col-md-offset-5">
+            <?php echo form_button(array('name' => 'button_save_purchase_order', 'id' => 'button_save_purchase_order', 'content' => 'Save', 'class' => 'form-control btn-success')); ?>
+        </div> 
     </div>
 </div>
 

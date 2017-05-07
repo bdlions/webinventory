@@ -147,8 +147,8 @@ class Supplier extends User {
         $response = array();
         $shop_id = $this->session->userdata('shop_id');
         $first_name = $this->input->post('first_name');
-        $last_name = $this->input->post('last_name');
-        $phone_no = $this->input->post('country_code').$this->input->post('phone_no');
+        //$last_name = $this->input->post('last_name');
+        $phone_no = $this->input->post('phone_no');
         $company = $this->input->post('company');
         $user_name = '';
         $password = "password";
@@ -157,7 +157,7 @@ class Supplier extends User {
             'company' => $company,
             'account_status_id' => ACCOUNT_STATUS_ACTIVE,
             'first_name' => $first_name,
-            'last_name' => $last_name,
+            //'last_name' => $last_name,
             'phone' => $phone_no,
             'created_on' => now()
         );

@@ -122,6 +122,7 @@
     }
     ?>
     <td >{%= sale_info.salesman_first_name%} {%=sale_info.salesman_last_name %}</td>
+    <td >{%= sale_info.entry_first_name%} {%=sale_info.entry_last_name %}</td>
     <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) { ?>
         <td >{%= sale_info.card_no%}</td>
     <?php } ?>
@@ -295,7 +296,8 @@
                         echo '<th>Profit</th>';
                     }
                     ?> 
-                    <th>Sale by Staff</th>
+                    <th>Staff</th>
+                    <th>Entry</th>
                     <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) { ?>
                         <th>Card No</th>
                     <?php } ?>
@@ -336,6 +338,7 @@
                         }
                         ?>
                         <td><?php echo $sale_info['salesman_first_name'] . ' ' . $sale_info['salesman_last_name']; ?></td>
+                        <td><?php echo $sale_info['entry_first_name'] . ' ' . $sale_info['entry_last_name']; ?></td>
                         <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) { ?>
                             <td><?php echo $sale_info['card_no']; ?></td>
                         <?php } ?>

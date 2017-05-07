@@ -74,6 +74,7 @@ $lang['product_size_creation_unsuccessful']                         = 'Unable to
 $lang['product_size_creation_duplicate_product_size']               = 'Product Size Already Used or Invalid.';
 $lang['product_size_update_successful']                             = 'Product Size is Updated Successfully.';
 $lang['product_size_update_duplicate_size']                         = 'Product Size Already Used or Invalid.';
+$lang['product_size_delete_fail_size_exists']                       = 'Failed to delete product size. Product size is used.';
 $lang['product_size_delete_fail']                                   = 'Failed to delete product size.';
 $lang['product_size_delete_successful']                             = 'Product Size is deleted successfully.';
 
@@ -82,6 +83,7 @@ $lang['product_category1_creation_unsuccessful']                    = 'Unable to
 $lang['product_category1_creation_duplicate_product_category1']     = 'Sub Lot No Already Used or Invalid.';
 $lang['product_category1_update_successful']                        = 'Sub Lot No is Updated Successfully.';
 $lang['product_category1_update_duplicate_size']                    = 'Sub Lot No Already Used or Invalid.';
+$lang['product_category1_delete_fail_category1_exists']             = 'Failed to delete Sub Lot No. Sub Lot No is used.';
 $lang['product_category1_delete_fail']                              = 'Failed to delete Sub Lot No.';
 $lang['product_category1_delete_successful']                        = 'Sub Lot No is deleted successfully.';
 

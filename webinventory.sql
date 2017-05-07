@@ -393,7 +393,9 @@ INSERT INTO `warehouse_stock_transaction_category` (`id`, `description`) VALUES
 (1, 'Purchase In'),
 (2, 'Purchase Partial In'),
 (3, 'Purchase partial Out'),
-(4, 'Purchase Delete'); 
+(4, 'Purchase Delete'),
+(5, 'Purchase Partial In From Showroom'),
+(6, 'Purchase Partial Out To Showroom'); 
  CREATE TABLE IF NOT EXISTS `warehouse_stock_info` (
 	`id` int NOT NULL auto_increment,
 	`shop_id` int NOT NULL,
@@ -448,6 +450,7 @@ CREATE TABLE IF NOT EXISTS `sale_order` (
 	`discount` double default 0,
 	`created_on` int(11) unsigned DEFAULT NULL,
     `created_by` int NOT NULL,
+	`entry_by` int DEFAULT 1,
     `modified_on` int(11) unsigned DEFAULT NULL,
     `modified_by` int default NULL,
 	`remarks` varchar(500),

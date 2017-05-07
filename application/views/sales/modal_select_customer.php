@@ -40,53 +40,56 @@
         
         $("#button_add_customer").on("click", function() {
             var first_name = $("#input_first_name").val();
-            var last_name = $("#input_last_name").val();
+            //var last_name = $("#input_last_name").val();
             var phone = $("#input_phone_no").val();
-            var country_code = $("#phone_country_code").val();
+            //var country_code = $("#phone_country_code").val();
             var card_no = 0;
             if (first_name.length == 0)
             {
                 alert("First Name is required.");
                 return;
             }
-            else if (last_name.length == 0)
-            {
-                alert("Last Name is required.");
-                return;
-            }
+//            else if (last_name.length == 0)
+//            {
+//                alert("Last Name is required.");
+//                return;
+//            }
             else if (phone.length == 0)
             {
                 alert("Phone is required.");
                 return;
             }
-            else if (country_code.length == 0)
-            {
-                alert("phone Country Code is required.");
-                return;
-            }
+//            else if (country_code.length == 0)
+//            {
+//                alert("phone Country Code is required.");
+//                return;
+//            }
             
-            <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
-            else if ($("#input_card_no").val().length == 0)
+            <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL)
             {
-                alert("Card No is required.");
-                return;
+            ?>
+                if ($("#input_card_no").val().length == 0)
+                {
+                    alert("Card No is required.");
+                    return;
+                }else{
+                    card_no = $("#input_card_no").val();
+                }
+            <?php 
             }
-            <?php }else{?>
-                card_no = $("#input_card_no").val();
-            <?php }?>
+            ?>
             $.ajax({
                 dataType: 'json',    
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "customer/create_customer_sale_order",
                 data: {
                     first_name: first_name,
-                    last_name: last_name,
+                    //last_name: last_name,
                     phone_no: phone,
                     card_no: card_no,
-                    country_code: country_code
+                    //country_code: country_code
                 },
                 success: function(data) {
-                    
                     if (data['status'] === '1')
                     {
                         alert('New customer is added successfully.');
@@ -141,53 +144,53 @@
                         <div class ="col-md-9">
                             <div class="form-horizontal">
                                 <div class="row form-group">
-                                    <label for="input_first_name" class="col-md-5 control-label requiredField">
-                                        First Name
+                                    <label for="input_first_name" class="col-md-6 control-label requiredField">
+                                        First Name<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_input(array('name' => 'input_first_name', 'id' => 'input_first_name', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
-                                <div class="form-group">
-                                    <label for="input_last_name" class="col-md-5 control-label requiredField">
-                                        Last Name
+<!--                                <div class="form-group">
+                                    <label for="input_last_name" class="col-md-6 control-label requiredField">
+                                        Last Name<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
-                                        <?php echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
+                                    <div class ="col-md-6">
+                                        <?php //echo form_input(array('name' => 'input_last_name', 'id' => 'input_last_name', 'class' => 'form-control')); ?>
                                     </div> 
-                                </div>
+                                </div>-->
                                 
                                 
-                                <div class="form-group">
-                                    <label for="country_code" class="col-md-5 control-label requiredField">
-                                        Phone Country Code
+<!--                                <div class="form-group">
+                                    <label for="country_code" class="col-md-6 control-label requiredField">
+                                        Phone Country Code<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
-                                        <?php echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
+                                    <div class ="col-md-6">
+                                        <?php //echo form_input(array('name' => 'phone_country_code', 'id' => 'phone_country_code', 'class' => 'form-control')); ?>
                                     </div> 
-                                </div> 
+                                </div> -->
                                 <div class="form-group">
-                                    <label for="input_phone_no" class="col-md-5 control-label requiredField">
-                                        Phone No.
+                                    <label for="input_phone_no" class="col-md-6 control-label requiredField">
+                                        Phone No.<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_input(array('name' => 'input_phone_no', 'id' => 'input_phone_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>   
                                 <?php if($shop_info['shop_type_id'] == SHOP_TYPE_SMALL){?>
                                 <div class="form-group">
-                                    <label for="input_card_no" class="col-md-5 control-label requiredField">
-                                        Card No
+                                    <label for="input_card_no" class="col-md-6 control-label requiredField">
+                                        Card No<span style="color: red;font-size:16px">&nbsp;*</span>
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_input(array('name' => 'input_card_no', 'id' => 'input_card_no', 'class' => 'form-control')); ?>
                                     </div> 
                                 </div>
                                 <?php }?>
                                 <div class="form-group">
-                                    <label for="button_add_customer" class="col-md-5 control-label requiredField">
+                                    <label for="button_add_customer" class="col-md-6 control-label requiredField">
                                     </label>
-                                    <div class ="col-md-7">
+                                    <div class ="col-md-6">
                                         <?php echo form_button(array('name' => 'button_add_customer', 'class' => 'form-control btn btn-success', 'id' => 'button_add_customer', 'content' => 'Submit')); ?>
                                     </div> 
                                 </div>

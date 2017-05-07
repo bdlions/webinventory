@@ -405,7 +405,8 @@ class Sale extends CI_Controller {
             'customer_id' => $sale_info['customer_id'],
             'sale_order_status_id' => 1,
             'remarks' => $sale_info['remarks'],
-            'created_by' => $sale_info['created_by']
+            'created_by' => $sale_info['created_by'],
+            'entry_by' => $this->session->userdata('user_id')
         );
         $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $stock_out_list, $customer_payment_data_array, $customer_transaction_info_array);
         if ($sale_id !== FALSE) {

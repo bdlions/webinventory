@@ -47,7 +47,7 @@
     <body>
         <?php $this->load->view("admin/templates/header"); ?>
         <div class ="container">
-            <div>
+            <div> 
                 <!-- Menu Items -->
                 <?php 
                     $CI = &get_instance();
@@ -61,7 +61,7 @@
                 ?>
                 <?php echo $contents ?>
             </div>
-            <div>
+            <div class="row col-md-12">
                 <?php $this->load->view("admin/templates/footer"); ?>
             </div>
         </div>
