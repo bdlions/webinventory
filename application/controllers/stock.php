@@ -158,7 +158,7 @@ class Stock extends CI_Controller {
         $product_size           = $this->input->post('product_size');
         $total_quantity = 0;
         $total_stock_value = 0;
-        $stock_list_array = $this->stock_library->search_warehose_stocks($product_id, $purchase_order_no, 0 , $product_category1, $product_size)->result_array();
+        $stock_list_array = $this->stock_library->search_warehouse_stocks($product_id, $purchase_order_no, 0 , $product_category1, $product_size)->result_array();
         if( !empty($stock_list_array) )
         {
             foreach($stock_list_array as $stock_info)

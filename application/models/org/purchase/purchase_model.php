@@ -35,11 +35,12 @@ class Purchase_model extends Ion_auth_model {
     
     public function purchase_identity_check($purchase_order_no = '', $product_category1 = '', $product_size = '') {
         $this->trigger_events('purchase_order_no_check');
-        if (empty($purchase_order_no)) {
+        if (empty($purchase_order_no) || empty($product_category1) || empty($product_size)) {
             return FALSE;
         }
         $shop_id = $this->session->userdata('shop_id');
         $this->db->where('shop_id', $shop_id);
+        $this->db->where('purchase_order_no', $purchase_order_no);
         $this->db->where('product_category1', $product_category1);
         $this->db->where('product_size', $product_size);
         return $this->db->count_all_results($this->tables['purchase_order']) > 0;
@@ -50,7 +51,7 @@ class Purchase_model extends Ion_auth_model {
      * @Author Nazmul on 14th January 2015
      */
 
-    public function add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array, $forward_showroom = 0) {
+    public function add_warehouse_purchase_order($additional_data, $warehouse_purchased_product_list, $add_warehouse_stock_list, $forward_warehouse_stock_list, $supplier_payment_data, $supplier_transaction_info_array, $forward_showroom = 0) {
         $this->trigger_events('pre_add_purchase_order');
         if ($this->purchase_identity_check($additional_data['purchase_order_no'], $additional_data['product_category1'], $additional_data['product_size'])) {
             $this->set_error('add_purchase_order_duplicate_purchase_order_no');
@@ -81,6 +82,9 @@ class Purchase_model extends Ion_auth_model {
                         $stock_list[] = $stock_info;
                     }
                     $this->db->insert_batch($this->tables['stock_info'], $stock_list);
+                    if (!empty($forward_warehouse_stock_list)) {
+                        $this->db->insert_batch($this->tables['warehouse_stock_info'], $forward_warehouse_stock_list);
+                    }
                 }
             }
         }
