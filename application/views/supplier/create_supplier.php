@@ -23,14 +23,14 @@
                     <?php echo form_input($last_name+array('class'=>'form-control')); ?>
                 </div> 
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
                 <label for="country_code" class="col-md-6 control-label requiredField">
                     Phone Country Code
                 </label>
                 <div class ="col-md-6">
-                    <?php echo form_input($country_code+array('class'=>'form-control')); ?>
+                    <?php //echo form_input($country_code+array('class'=>'form-control')); ?>
                 </div> 
-            </div>
+            </div>-->
             <div class="form-group">
                 <label for="phone" class="col-md-6 control-label requiredField">
                     Phone No

@@ -220,24 +220,30 @@ CREATE TABLE IF NOT EXISTS `product_sizes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL DEFAULT '',
   `shop_id` int DEFAULT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_product_sizes_shop_info1_idx` (`shop_id`)  
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `product_sizes`
   ADD CONSTRAINT `fk_product_sizes_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+insert into product_sizes (title, shop_id) values('1', 1);
+
+
 CREATE TABLE IF NOT EXISTS `product_categories1` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL DEFAULT '',
   `shop_id` int DEFAULT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_product_categories1_shop_info1_idx` (`shop_id`)  
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `product_categories1`
   ADD CONSTRAINT `fk_product_categories1_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+insert into product_categories1 (title, shop_id) values('1', 1);
+
+
 CREATE TABLE IF NOT EXISTS `product_unit_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(200) NOT NULL DEFAULT '',
