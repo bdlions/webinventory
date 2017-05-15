@@ -124,9 +124,6 @@
     <tr>
     <td style="width: 20px; padding: 0px" ><label for="modal_<?php echo '{%= product_info.id%}'; ?>" style="padding: 5px 40px;"><input id="modal_<?php echo '{%= product_info.id%}'; ?>" name="product_select_checkbox_<? echo '{%=product_info.id%}';?>" class="" type="checkbox"></label></td>
     <td id="<?php echo '{%= product_info.id%}'; ?>"><?php echo '{%= product_info.name%}'; ?></td>
-    <td><?php echo '{%= product_info.purchase_order_no%}'; ?></td>
-    <td><?php echo '{%= product_info.product_category1%}'; ?></td>
-    <td><?php echo '{%= product_info.product_size%}'; ?></td>
     <td><?php echo '{%= product_info.current_stock%}'; ?></td>
     </tr>
     {% product_info = ((o instanceof Array) ? o[i++] : null); %}
@@ -154,10 +151,10 @@
                                             </label>
                                         </th>
                                         <th style="padding: 15px 0">Name</th>
-                                        <th style="padding: 15px 0">Lot No</th>
+<!--                                        <th style="padding: 15px 0">Lot No</th>
                                         <th style="padding: 15px 0">Sub Lot No</th>
-                                        <th style="padding: 15px 0">Size</th>
-                                        <th style="padding: 15px 0">Current stock</th>
+                                        <th style="padding: 15px 0">Size</th>-->
+                                        <th style="padding: 15px 0">Total stock</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_product_list">
@@ -170,10 +167,7 @@
                                                     <input id="modal_<?php echo $product['id'] ?>" name="product_select_checkbox_<?php echo $product['id'] ?>" type="checkbox">
                                                 </label>
                                             </td>
-                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>
-                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['purchase_order_no'] ?></td>
-                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['product_category1'] ?></td>
-                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['product_size'] ?></td>
+                                            <td id="<?php echo $product['id'] ?>"><?php echo $product['name'] ?></td>                                            
                                             <td><?php echo $product['current_stock'] ?></td>
                                         </tr>
                                         <?php

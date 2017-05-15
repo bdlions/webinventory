@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `phone` varchar(20) DEFAULT '',
   `address` varchar(500) DEFAULT '',
   `account_status_id` int NOT NULL,
-  `sms_code` int(11) NOT NULL,
+  `sms_code` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;
 ALTER TABLE `users`
