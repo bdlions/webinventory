@@ -155,6 +155,7 @@ class Purchase extends CI_Controller {
         
         $total_products = count($selected_product_list);
         $product_counter = 0;
+        $ec_product_info_list = array();
         foreach($selected_product_list as $key => $prod_info)
         {
             $product_counter++;
@@ -214,6 +215,12 @@ class Purchase extends CI_Controller {
                 'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_OUT_TO_SHOWROOM
             );
             $forward_warehouse_stock_list[] = $forward_warehouse_stock_info;
+            $ec_product_info_list[] = array(
+                'product_id' => $prod_info['product_id'],
+                'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size']
+            );
         }
         $supplier_transaction_info = array(
             'shop_id' => $shop_id,
@@ -300,6 +307,11 @@ class Purchase extends CI_Controller {
                 $purchase_info = $purchase_info_array[0];
             }*/
             $response['status'] = '1';
+            if($forward_showroom)
+            {
+                $this->load->library('ecommerce_library');
+                $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            }
         } 
         else
         {
@@ -338,7 +350,8 @@ class Purchase extends CI_Controller {
         $supplier_transaction_info_array = array();
         
         $new_warehouse_purchased_product_list = array();
-        $add_warehouse_stock_list = array();        
+        $add_warehouse_stock_list = array();    
+        $ec_product_info_list = array();
         foreach($selected_product_list as $prod_info)
         {
             $supplier_transaction_info = array(
@@ -380,6 +393,12 @@ class Purchase extends CI_Controller {
                 'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_IN
             );
             $add_warehouse_stock_list[] = $add_warehouse_stock_info;
+            $ec_product_info_list[] = array(
+                'product_id' => $prod_info['product_id'],
+                'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size']
+            );
         }
         $supplier_transaction_info = array(
             'shop_id' => $shop_id,
@@ -406,6 +425,11 @@ class Purchase extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
+            if($forward_showroom)
+            {
+                $this->load->library('ecommerce_library');
+                $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            }
         } 
         else
         {
@@ -531,6 +555,7 @@ class Purchase extends CI_Controller {
         
         $total_products = count($selected_product_list);
         $product_counter = 0;
+        $ec_product_info_list = array();
         foreach($selected_product_list as $key => $prod_info)
         {
             if ( array_key_exists($prod_info['product_id'].'_'.$prod_info['purchase_order_no'].'_'.$prod_info['product_category1'].'_'.$prod_info['product_size'], $warehouse_product_quantity_map) && ( $warehouse_product_quantity_map[$prod_info['product_id'].'_'.$prod_info['purchase_order_no'].'_'.$prod_info['product_category1'].'_'.$prod_info['product_size']] >= $prod_info['quantity'] ) ) {
@@ -568,6 +593,12 @@ class Purchase extends CI_Controller {
                 );
                 $add_stock_list[] = $add_stock_info;
                 $out_stock_list[] = $out_stock_info;
+                $ec_product_info_list[] = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size']
+                );
             }
             else
             {
@@ -583,6 +614,8 @@ class Purchase extends CI_Controller {
         if( $purchase_id !== FALSE )
         {
             $response['status'] = '1';
+            $this->load->library('ecommerce_library');
+            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {
@@ -1005,6 +1038,7 @@ class Purchase extends CI_Controller {
         $supplier_transaction_info_array = array();        
         $stock_out_list = array(); 
         $stock_in_list = array(); 
+        $ec_product_info_list = array();
         foreach($selected_product_list as $key => $prod_info)
         {
             if ( array_key_exists($prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size, $product_quantity_map) && ( $product_quantity_map[$prod_info['product_id'].'_'.$order_no.'_'.$product_category1.'_'.$product_size] >= $prod_info['quantity'] ) ) {
@@ -1031,6 +1065,12 @@ class Purchase extends CI_Controller {
                 );
                 $stock_out_list[] = $add_stock_info;
                 $stock_in_list[] = $warehouse_stock_info;
+                $ec_product_info_list[] = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size']
+                );
             }
             else
             {
@@ -1045,6 +1085,8 @@ class Purchase extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
+            $this->load->library('ecommerce_library');
+            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {

@@ -21,6 +21,7 @@
                 url: '<?php echo base_url(); ?>' + "search/search_by_sales",
                 data: {
                     user_id: $("#employee_list").val(),
+                    entry_user_id: $("#entry_list").val(),
                     product_id: $("#product_list").val(),
                     start_date: $("#start_date").val(),
                     end_date: $("#end_date").val()
@@ -161,6 +162,14 @@
                 </tr>
                 <tr>
                     <td>
+                        <label for="employee_list" class="col-md-6 control-label requiredField">
+                            Select Entry By
+                        </label>
+                        <div class ="col-md-6">
+                            <?php echo form_dropdown('entry_list', $entryby_list+array('0' => 'All'), '0','class="form-control" id="entry_list"'); ?>
+                        </div>
+                    </td>
+                    <td>
                         <label for="button_search_sale" class="col-md-6 control-label requiredField">
 
                         </label>
@@ -186,10 +195,7 @@
                                 }
                             ?>
                         </label>                      
-                    </td>
-                    <td>
-                        
-                    </td>
+                    </td>                    
                 </tr>
             </tbody>  
         </table>

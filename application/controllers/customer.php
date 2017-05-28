@@ -133,8 +133,8 @@ class Customer extends User {
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         //$this->form_validation->set_rules('country_code', 'Country Code', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
-        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        //$this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        //$this->form_validation->set_rules('address', 'Address', 'xss_clean');
         if ($this->input->post('submit_create_customer')) {
             if ($this->form_validation->run() == true) {
                 $user_name = '';
@@ -303,8 +303,8 @@ class Customer extends User {
                 $message_info = $message_info_array[0];
                 $message = $message_info['message_description'];
             }
-            $customer_name = $this->input->post('first_name') . ' ' . $this->input->post('last_name');
-            $this->sms_library->send_sms($this->input->post('phone'), "Dear " . $customer_name . ', ' . $message);
+            $customer_name = $this->input->post('first_name');
+            $this->sms_library->send_sms($phone_no, "Dear " . $customer_name . ', ' . $message);
         } 
         else {
             $response['status'] = '0';

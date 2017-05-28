@@ -201,6 +201,7 @@ class Sale extends CI_Controller {
         $selected_product_list = $this->input->post('product_list');
         $sale_product_list = array();
         $stock_out_list = array();
+        $ec_product_info_list = array();
         $sale_info = $this->input->post('sale_info');
         $customer_info = $this->input->post('customer_info');
         $current_due = $sale_info['current_due'];
@@ -283,6 +284,12 @@ class Sale extends CI_Controller {
                     'transaction_category_id' => STOCK_SALE_IN
                 );
                 $stock_out_list[] = $stock_out_info;
+                $ec_product_info_list[] = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $prod_info['purchase_order_no'],
+                    'product_category1' => $prod_info['product_category1'],
+                    'product_size' => $prod_info['product_size']
+                );
             } else {
                 $response['status'] = '0';
                 $response['message'] = 'Insufficient stock for the product : ' . $prod_info['name'] . ' and lot no : ' . $prod_info['purchase_order_no']. ' and sub lot no : ' . $prod_info['product_category1']. ' and size : ' . $prod_info['product_size'];
@@ -410,7 +417,9 @@ class Sale extends CI_Controller {
         );
         $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $stock_out_list, $customer_payment_data_array, $customer_transaction_info_array);
         if ($sale_id !== FALSE) {
-            $response['status'] = '1';            
+            $response['status'] = '1';     
+            $this->load->library('ecommerce_library');
+            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
             $print_table_rows = array();
             $serial_no = 1;
             foreach ($selected_product_list as $product_info) {
@@ -627,6 +636,7 @@ class Sale extends CI_Controller {
 
         $customer_transaction_info_array = array();
         $add_stock_list = array();
+        $ec_product_info_list = array();
         foreach ($selected_product_list as $key => $prod_info) 
         {
             $customer_transaction_info = array(
@@ -658,6 +668,12 @@ class Sale extends CI_Controller {
                     'transaction_category_id' => STOCK_SALE_PARTIAL_OUT
                 );
                 $add_stock_list[] = $add_stock_info;
+                $ec_product_info_list[] = array(
+                    'product_id' => $prod_info['product_id'],
+                    'purchase_order_no' => $purchase_order_no,
+                    'product_category1' => $product_category1,
+                    'product_size' => $product_size
+                );
             } 
             else {
                 $response['status'] = '0';
@@ -721,6 +737,8 @@ class Sale extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
+            $this->load->library('ecommerce_library');
+            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {
@@ -774,6 +792,7 @@ class Sale extends CI_Controller {
 
         $customer_transaction_info_array = array();
         $add_stock_list = array();
+        $ec_product_info_list = array();
         $customer_id = 0;
         
         //existing sale list
@@ -814,6 +833,12 @@ class Sale extends CI_Controller {
                 'transaction_category_id' => STOCK_SALE_DELETE
             );
             $add_stock_list[] = $add_stock_info;
+            $ec_product_info_list[] = array(
+                'product_id' => $prod_info['product_id'],
+                'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $prod_info['product_category1'],
+                'product_size' => $prod_info['product_size']
+            );
         }
         if( $existing_sale_product_price == 0)
         {
@@ -882,6 +907,8 @@ class Sale extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
+            $this->load->library('ecommerce_library');
+            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {

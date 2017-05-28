@@ -42,8 +42,8 @@ class Supplier extends User {
         //$this->form_validation->set_rules('country_code', 'Country Code', 'xss_clean|required');
         $this->form_validation->set_rules('phone', 'Phone', 'xss_clean|required');
         $this->form_validation->set_rules('first_name', 'First Name', 'xss_clean');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
-        $this->form_validation->set_rules('address', 'Address', 'xss_clean');
+        //$this->form_validation->set_rules('last_name', 'Last Name', 'xss_clean');
+        //$this->form_validation->set_rules('address', 'Address', 'xss_clean');
         $this->form_validation->set_rules('company', 'Company', 'xss_clean');
 
         if ($this->input->post('submit_create_supplier')) {
@@ -179,8 +179,8 @@ class Supplier extends User {
                 $message_info = $message_info_array[0];
                 $message = $message_info['message_description'];
             }
-            $supplier_name = $this->input->post('first_name') . ' ' . $this->input->post('last_name');
-            $this->sms_library->send_sms($this->input->post('phone'), "Dear, " . $supplier_name . ' ' . $message);
+            $supplier_name = $this->input->post('first_name');
+            $this->sms_library->send_sms($phone_no, "Dear, " . $supplier_name . ' ' . $message);
             $this->session->set_flashdata('message', $this->ion_auth->messages());
             $response['message'] = 'Supplier added successfully';
             $supplier_info_array = $this->ion_auth->get_supplier_info($user_id)->result_array();

@@ -219,7 +219,7 @@ class Sale_model extends Ion_auth_model
                     ->get();        
     }
     
-    public function get_user_sales($start_time, $end_time, $user_id = 0 , $product_id = '', $shop_id = 0)
+    public function get_user_sales($start_time, $end_time, $user_id = 0 , $product_id = '', $shop_id = 0, $entry_user_id = 0)
     {
         if($shop_id == 0)
         {
@@ -229,6 +229,10 @@ class Sale_model extends Ion_auth_model
         if( $user_id > 0)
         {
             $this->db->where($this->tables['sale_order'].'.created_by', $user_id);
+        }
+        if( $entry_user_id > 0)
+        {
+            $this->db->where($this->tables['sale_order'].'.entry_by', $entry_user_id);
         }
         if(!empty($product_id) && $product_id > 0)
         {

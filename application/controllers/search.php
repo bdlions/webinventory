@@ -369,10 +369,17 @@ class Search extends CI_Controller {
      */
     public function search_by_sales()
     {
-        $user_id = $_POST['user_id'];
-        $product_id = $_POST['product_id'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
+        //$user_id = $_POST['user_id'];        
+        //$product_id = $_POST['product_id'];
+        //$start_date = $_POST['start_date'];
+        //$end_date = $_POST['end_date'];
+        
+        $user_id = $this->input->post('user_id');  
+        $product_id = $this->input->post('product_id');
+        $start_date = $this->input->post('start_date');
+        $end_date = $this->input->post('end_date');
+        $entry_user_id = $this->input->post('entry_user_id');
+        
         $start_time = $this->utils->get_human_to_unix($start_date);
         $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
         
@@ -383,7 +390,7 @@ class Search extends CI_Controller {
         $this->data['sale_list'] = array();
         
         $sale_list = array();
-        $sale_list_array = $this->sale_library->get_user_sales($start_time, $end_time, $user_id, $product_id)->result_array();
+        $sale_list_array = $this->sale_library->get_user_sales($start_time, $end_time, $user_id, $product_id, 0, $entry_user_id)->result_array();
         if( !empty($sale_list_array) )
         {
             foreach($sale_list_array as $sale_info)
@@ -420,6 +427,16 @@ class Search extends CI_Controller {
             }
         }
         $this->data['employee_list'] = $employee_list;
+        $entryby_list = array();
+        $entryby_list_array = $this->ion_auth->get_all_users(0, array(USER_GROUP_ADMIN, USER_GROUP_MANAGER, USER_GROUP_STAFF_ID))->result_array();
+        if(!empty($entryby_list_array))
+        {
+            foreach($entryby_list_array as $key => $entryby_info)
+            {
+                $entryby_list[$entryby_info['user_id']] = $entryby_info['first_name'].' '.$entryby_info['last_name'];
+            }
+        }
+        $this->data['entryby_list'] = $entryby_list;
         $this->data['user_info'] = array();
         $user_info_array = $this->ion_auth->user()->result_array();
         if(!empty($user_info_array))

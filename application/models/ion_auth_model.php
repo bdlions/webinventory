@@ -2024,6 +2024,28 @@ class Ion_auth_model extends CI_Model {
         return true;
     }
 
+    public function get_all_users($shop_id = 0, $group_id_list = array(), $account_status_id = 0)
+    {
+        if($shop_id == 0)
+        {
+            $shop_id = $this->session->userdata('shop_id');
+        }
+        if($account_status_id > 0)
+        {
+            $this->db->where($this->tables['users'].'.account_status_id',$account_status_id); 
+        }
+        if(!empty($group_id_list))
+        {
+            $this->db->where_in($this->tables['users_groups'].'.group_id',$group_id_list);
+        }
+        $this->db->where($this->tables['users_shop_info'].'.shop_id',$shop_id);
+        return $this->db->select($this->tables['users'].'.id as user_id,'. $this->tables['users'].'.username,'. $this->tables['users'].'.first_name,'.$this->tables['users'].'.last_name, '.$this->tables['users'].'.phone ,'.$this->tables['users'].'.address,'.$this->tables['users'].'.account_status_id,'.$this->tables['account_status'].'.description as account_status')
+                    ->from($this->tables['users'])
+                    ->join($this->tables['users_groups'], $this->tables['users'].'.id='.$this->tables['users_groups'].'.user_id')
+                    ->join($this->tables['users_shop_info'], $this->tables['users'].'.id='.$this->tables['users_shop_info'].'.user_id')
+                    ->join($this->tables['account_status'], $this->tables['account_status'].'.id='.$this->tables['users'].'.account_status_id')
+                    ->get();  
+    }
 
     // -------------------------------------- Staff Module ---------------------------------//
     /*
