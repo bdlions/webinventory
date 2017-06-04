@@ -15,6 +15,10 @@
                     <?php echo form_input($first_name+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN)
+            { 
+            ?>
             <div class="form-group">
                 <label for="last_name" class="col-md-6 control-label requiredField">
                     Last Name
@@ -23,6 +27,9 @@
                     <?php echo form_input($last_name+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php 
+            }
+            ?>
 <!--            <div class="form-group">
                 <label for="country_code" class="col-md-6 control-label requiredField">
                     Phone Country Code
@@ -39,6 +46,10 @@
                     <?php echo form_input($phone+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN)
+            { 
+            ?>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Address
@@ -47,6 +58,9 @@
                     <?php echo form_input($address+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php 
+            }
+            ?>
             <?php if ($shop_info['shop_type_id'] == SHOP_TYPE_SMALL) {?>
             <div class="form-group">
                 <label for="card_no" class="col-md-6 control-label requiredField">
@@ -56,6 +70,10 @@
                     <?php echo form_input($card_no+array('class'=>'form-control')); ?>
                 </div> 
             </div>
+            <?php 
+            if($user_group['id'] == USER_GROUP_ADMIN)
+            { 
+            ?>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">
                     Institution
@@ -72,6 +90,9 @@
                     <?php echo form_dropdown('profession_list', $profession_list+array('' => 'Select'), '', 'class=form-control'); ?>
                 </div> 
             </div>
+            <?php 
+            }
+            ?>
             <?php } ?>
             <div class="form-group">
                 <label for="address" class="col-md-6 control-label requiredField">

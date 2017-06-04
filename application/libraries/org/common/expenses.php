@@ -74,7 +74,7 @@ class Expenses {
      * @param $end_time, time
      * @Author Nazmul on 17th January 2015
      */
-    public function get_all_expenses($expense_type_id = 0, $reference_id= 0, $start_time, $end_time, $shop_id = 0)
+    public function get_all_expenses($expense_type_id = 0, $reference_id= 0, $start_time, $end_time, $shop_id = 0, $entry_by = 0)
     {
         $shop_name = '';
         $expensed_supplier_id_list_array = array();
@@ -85,7 +85,7 @@ class Expenses {
         $staff_id_info_map = array();
         
         $expense_list = array();
-        $expense_list_array = $this->expense_model->get_all_expenses($expense_type_id, $reference_id, $start_time, $end_time)->result_array();
+        $expense_list_array = $this->expense_model->get_all_expenses($expense_type_id, $reference_id, $start_time, $end_time, 0, $entry_by)->result_array();
         foreach($expense_list_array as $expense_info)
         {
             if($expense_info['expense_type_id'] == EXPENSE_SHOP_TYPE_ID)

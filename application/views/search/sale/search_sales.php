@@ -30,6 +30,7 @@
                     $("#label_total_sale_price").html(data['total_sale_price']);
                     $("#label_total_quantity").html(data['total_quantity']);
                     $("#label_total_profit").html(data['total_profit']);
+                    $("#label_total_expense").html(data['total_expense']);
                     $("#tbody_customer_sale_list").html(tmpl("tmpl_customer_sale_list", data['sale_list']));                    
                 }
             });
@@ -43,6 +44,7 @@
         <td ><?php echo '{%= sale_info.salesman_first_name%}'; ?> <?php echo '{%= sale_info.salesman_last_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.entry_first_name%}'; ?> <?php echo '{%= sale_info.entry_last_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.created_on%}'; ?></td>
+        <td ><?php echo '{%= sale_info.card_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.product_name%}'; ?></td>
         <td ><?php echo '{%= sale_info.purchase_order_no%}'; ?></td>
         <td ><?php echo '{%= sale_info.product_category1%}'; ?></td>
@@ -197,6 +199,18 @@
                         </label>                      
                     </td>                    
                 </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <label class="col-md-6 control-label requiredField">
+                            Total Expense :
+                        </label>
+                        <label id="label_total_expense" class="col-md-6 control-label requiredField">
+                            
+                        </label>
+                    </td>
+                </tr>
             </tbody>  
         </table>
     </div>     
@@ -210,6 +224,7 @@
                     <th>Staff</th>
                     <th>Entry</th>
                     <th>Time & Date</th>
+                    <th>Card No</th>
                     <th>Product Name</th>
                     <th>Lot No</th>
                     <th>Sub Lot No</th>

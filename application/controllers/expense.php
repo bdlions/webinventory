@@ -240,6 +240,17 @@ class Expense extends CI_Controller {
         
         $this->data['total_expense'] = $total_expense;
         
+        $entryby_list = array();
+        $entryby_list_array = $this->ion_auth->get_all_users(0, array(USER_GROUP_ADMIN, USER_GROUP_MANAGER, USER_GROUP_STAFF_ID))->result_array();
+        if(!empty($entryby_list_array))
+        {
+            foreach($entryby_list_array as $key => $entryby_info)
+            {
+                $entryby_list[$entryby_info['user_id']] = $entryby_info['first_name'].' '.$entryby_info['last_name'];
+            }
+        }
+        $this->data['entryby_list'] = $entryby_list;
+        
         $this->data['show_expense_start_date'] = array(
             'name' => 'show_expense_start_date',
             'id' => 'show_expense_start_date',
@@ -307,13 +318,14 @@ class Expense extends CI_Controller {
      */
     public function get_expense()
     {
+        $entryby_id = $this->input->post('entryby_id');
         $expense_type_id = $this->input->post('expense_type_id');
         $reference_id = $this->input->post('reference_id');
         $start_date = $this->input->post('start_date');
         $end_date = $this->input->post('end_date');
         $start_time = $this->utils->get_human_to_unix($start_date);
         $end_time = $this->utils->get_human_to_unix($end_date) + 86400;
-        $expense_list_array = $this->expenses->get_all_expenses($expense_type_id, $reference_id, $start_time, $end_time);
+        $expense_list_array = $this->expenses->get_all_expenses($expense_type_id, $reference_id, $start_time, $end_time, 0, $entryby_id);
         $total_expense = 0;
         foreach($expense_list_array as $expense_info)
         {

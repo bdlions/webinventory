@@ -90,6 +90,7 @@
                 type: "POST",
                 url: '<?php echo base_url(); ?>' + "expense/get_expense",
                 data: {
+                    entryby_id: $("#entryby_list").val(),
                     expense_type_id: $("#expense_categories").val(),
                     reference_id: $("#item_list").val(),
                     start_date: $("#show_expense_start_date").val(),
@@ -107,6 +108,7 @@
     {% var i=0, expense_info = ((o instanceof Array) ? o[i++] : o); %}
     {% while(expense_info){ %}
     <tr>
+        <td>{%= expense_info.created_by_first_name %} {%= expense_info.created_by_last_name %}</td>
         <td>{%= expense_info.expense_date %}</td>
         <td>{%= expense_info.category_title %}</td>
         <td>{%= expense_info.category_description %}</td>        
@@ -126,6 +128,14 @@
                 <div class ="col-md-12 form-horizontal">
                     <div class="row">
                         <div class ="col-md-6 margin-top-bottom">
+                            <div class="form-group">
+                                <label for="expense_categories" class="col-md-6 control-label requiredField">
+                                    Entry By
+                                </label>
+                                <div class ="col-md-6">
+                                    <?php echo form_dropdown('entryby_list', $entryby_list+ array('0' => 'All'), '0','class="form-control" id="entryby_list"'); ?>
+                                </div> 
+                            </div>
                             <div class="form-group">
                                 <label for="expense_categories" class="col-md-6 control-label requiredField">
                                     Select Type
@@ -198,6 +208,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Entry By</th>
                     <th>Date</th>
                     <th>Category</th>
                     <th>Name</th>
@@ -209,6 +220,7 @@
             <tbody id="tbody_expense_list">                    
                 <?php foreach($expense_list as $expense_info) { ?>
                     <tr>
+                        <td><?php echo $expense_info['created_by_first_name'].' '.$expense_info['created_by_last_name'];?></td>
                         <td><?php echo $expense_info['expense_date'];?></td>
                         <td><?php echo $expense_info['category_title'];?></td>
                         <td><?php echo $expense_info['category_description'];?></td>

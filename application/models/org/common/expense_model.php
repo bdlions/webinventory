@@ -172,13 +172,17 @@ class Expense_model extends Ion_auth_model {
      * @param $shop_id, shop id
      * @Author Nazmul on 17th January 2015
      */
-    public function get_all_expenses($expense_type_id = 0, $reference_id= 0, $start_time = 0, $end_time = 0, $shop_id = 0)
+    public function get_all_expenses($expense_type_id = 0, $reference_id= 0, $start_time = 0, $end_time = 0, $shop_id = 0, $entry_by = 0)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
         }
         $this->db->where('shop_id', $shop_id);
+        if($entry_by > 0)
+        {
+            $this->db->where('created_by', $entry_by);
+        }
         if($expense_type_id > 0)
         {
             $this->db->where('expense_type_id', $expense_type_id);
@@ -195,8 +199,12 @@ class Expense_model extends Ion_auth_model {
         {
             $this->db->where('expense_date <=', $end_time);
         }
-        $this->response = $this->db->get($this->tables['expense_info']);
-        return $this;
+        //$this->response = $this->db->get($this->tables['expense_info']);
+        //return $this;
+        return $this->db->select($this->tables['expense_info'].'.id as expense_id,'. $this->tables['expense_info'].'.*,'. $this->tables['users'].'.first_name as created_by_first_name,'.$this->tables['users'].'.last_name as created_by_last_name')
+                    ->from($this->tables['expense_info'])
+                    ->join($this->tables['users'], $this->tables['users'].'.id='.$this->tables['expense_info'].'.created_by')
+                    ->get(); 
     }
     
     /*

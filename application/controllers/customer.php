@@ -21,6 +21,13 @@ class Customer extends User {
         {
             redirect("user/login","refresh");
         }
+        $user_group = $this->ion_auth->get_users_groups()->result_array();        
+        if(!empty($user_group))
+        {
+            $user_group = $user_group[0];
+            $this->user_group = $user_group;
+            $this->data['user_group'] = $user_group;
+        }
     }
     
     function index()

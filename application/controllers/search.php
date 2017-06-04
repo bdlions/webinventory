@@ -413,6 +413,15 @@ class Search extends CI_Controller {
         {
                 $result_array['total_profit'] = '';
         }
+        
+        $this->load->library('org/common/expenses');
+        $expense_list_array = $this->expenses->get_all_expenses(0, 0, $start_time, $end_time, 0, $entry_user_id);
+        $total_expense = 0;
+        foreach($expense_list_array as $expense_info)
+        {
+            $total_expense = $total_expense + $expense_info['expense_amount'];
+        }
+        $result_array['total_expense'] = $total_expense;
         echo json_encode($result_array);
     }
     public function search_sales()
