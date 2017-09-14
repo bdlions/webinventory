@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
 	`address` varchar(500) NOT NULL default '',
 	`shop_phone` varchar(200) NOT NULL default '',	
     `picture` varchar(500) default '',
-	`created_on` int(11) unsigned DEFAULT NULL,
-	`modified_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
+	`modified_on` int(11) unsigned DEFAULT 0,
 	`shop_type_id` int(11) DEFAULT NULL,
 	`sale_default_purchase_order_no` varchar(500) default '',
 	`purchase_default_purchase_order_no` varchar(500) default '',
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `shop_info` (
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `shop_info`
   ADD CONSTRAINT `shop_info_ibfk_1` FOREIGN KEY (`shop_type_id`) REFERENCES `shop_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-INSERT INTO `shop_info` (`id`, `name`, `shop_type_id`) VALUES
-(1, 'Apurbo', 1);
+INSERT INTO `shop_info` (`id`, `name`, `shop_type_id`, `picture`) VALUES
+(1, 'Arong', 1, 'shop.jpg');
 
 -- user groups
 CREATE TABLE IF NOT EXISTS `groups` (
@@ -160,8 +160,8 @@ CREATE TABLE IF NOT EXISTS `profession` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	`shop_id` int NOT NULL,
-	`created_on` int(11) unsigned NOT NULL,
-	`modified_on` int(11) unsigned NOT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
+	`modified_on` int(11) unsigned DEFAULT 0,
 	PRIMARY KEY  (`id`),
 	KEY `fk_profession_shop_info1_idx` (`shop_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -169,19 +169,17 @@ ALTER TABLE `profession`
   ADD CONSTRAINT `fk_profession_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `profession` (`id`, `description`, `shop_id`) VALUES
 (1, 'Other', 1),
-(2, 'Student', 1),
-(3, 'Service', 1),
-(4, 'Business', 1),
-(5, 'Engineer', 1),
-(6, 'Doctor', 1),
-(7, 'Lawyear', 1),
-(8, 'job', 1);
+(2, 'Profession1', 1),
+(3, 'Profession2', 1),
+(4, 'Profession3', 1),
+(5, 'Profession4', 1),
+(6, 'Profession5', 1);
 CREATE TABLE IF NOT EXISTS `institution` (
 	`id` int NOT NULL auto_increment,
 	`description` varchar(200) NOT NULL default '',
 	`shop_id` int NOT NULL,	
-	`created_on` int(11) unsigned NOT NULL,
-	`modified_on` int(11) unsigned NOT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
+	`modified_on` int(11) unsigned DEFAULT 0,
 	PRIMARY KEY  (`id`),
 	KEY `fk_institution_shop_info1_idx` (`shop_id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -189,16 +187,11 @@ ALTER TABLE `institution`
   ADD CONSTRAINT `fk_institution_shop_info1` FOREIGN KEY (`shop_id`) REFERENCES `shop_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `institution` (`id`, `description`, `shop_id`) VALUES
 (1, 'Other', 1),
-(2, 'BUET', 1),
-(3, 'Dhaka University', 1),
-(4, 'Dhaka Medical', 1),
-(5, '1840', 1),
-(6, 'Dhaka imperial college', 1),
-(7, 'jahangirnagar university', 1),
-(8, 'mirpur bangla college', 1),
-(9, 'jagonnath university', 1),
-(10, 'Dhaka citycollege', 1),
-(11, 'Dhaka college', 1); 
+(2, 'Institution1', 1),
+(3, 'Institution2', 1),
+(4, 'Institution3', 1),
+(5, 'Institution4', 1),
+(6, 'Institution5', 1); 
  CREATE TABLE IF NOT EXISTS `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -248,8 +241,8 @@ CREATE TABLE IF NOT EXISTS `product_unit_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(200) NOT NULL DEFAULT '',
   `shop_id` int(11) NOT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_product_unit_category_shop_info1_idx` (`shop_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
@@ -272,9 +265,9 @@ INSERT INTO `product_unit_category` (`description`, `shop_id`) VALUES
 	`remarks` varchar(1000) DEFAULT '',
 	`shop_id` int DEFAULT NULL,
 	`unit_category_id` int DEFAULT NULL,
-	`created_on` int(11) unsigned NOT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned NOT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_product_info_shop_info1_idx` (`shop_id`),
@@ -288,31 +281,24 @@ ALTER TABLE `product_info`
   ADD CONSTRAINT `fk_product_info_users1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_product_info_users2` FOREIGN KEY (`modified_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 INSERT INTO `product_info` (`id`, `serial_no`, `name`, `shop_id`, `unit_category_id`) VALUES
-(1, 1,'750', 1, 1),
-(2, 2,'650', 1, 1),
-(3, 3,'550', 1, 1),
-(4, 4,'450', 1, 1),
-(5, 5,'jecket', 1, 1),
-(6, 6,'350', 1, 1),
-(7, 7,'290', 1, 1),
-(8, 8,'Eid collection', 1, 1),
-(9, 9,'wholesale', 1, 1),
-(10, 10,'850', 1, 1),
-(11, 11,'950', 1, 1),
-(12, 12,'1050', 1, 1),
-(13, 13,'1150', 1, 1),
-(14, 14,'1250', 1, 1),
-(15, 15,'1350', 1, 1),
-(16, 16,'1450', 1, 1),
-(17, 17,'1550', 1, 1);
+(1, 1,'Product1', 1, 1),
+(2, 2,'Product2', 1, 1),
+(3, 3,'Product3', 1, 1),
+(4, 4,'Product4', 1, 1),
+(5, 5,'Product5', 1, 1),
+(6, 6,'Product6', 1, 1),
+(7, 7,'Product7', 1, 1),
+(8, 8,'Product8', 1, 1),
+(9, 9,'Product9', 1, 1),
+(10, 10,'Product10', 1, 1);
 -- this table is not required actually. We will add a json object to store image list in product info table 
  CREATE TABLE IF NOT EXISTS `product_image_info` (
 	`id` int NOT NULL auto_increment,
 	`product_id` int NOT NULL,
 	`image_name` varchar(500),
-	`created_on` int(11) unsigned NOT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned NOT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_product_image_info_product_info1_idx` (`product_id`),
@@ -344,12 +330,12 @@ CREATE TABLE IF NOT EXISTS `purchase_order` (
 	`shop_id` int NOT NULL,
 	`supplier_id` int NOT NULL,
 	`purchase_order_status_id` int NOT NULL,
-	`order_date` int(11) unsigned NOT NULL,
-	`requested_ship_date` int(11) unsigned NOT NULL,	
+	`order_date` int(11) unsigned DEFAULT 0,
+	`requested_ship_date` int(11) unsigned DEFAULT 0,	
 	`discount` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	`remarks` varchar(500),
 	PRIMARY KEY  (`id`),
@@ -375,9 +361,9 @@ CREATE TABLE IF NOT EXISTS `warehouse_product_purchase_order` (
 	`shop_id` int NOT NULL,
 	`unit_price` double default 0,
 	`discount` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_wppo_purchase_order1_idx` (`purchase_order_no`),
@@ -411,9 +397,9 @@ INSERT INTO `warehouse_stock_transaction_category` (`id`, `description`) VALUES
 	`product_id` int NOT NULL,
 	`stock_in` double default 0,
 	`stock_out` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	`transaction_category_id` int NOT NULL,
 	PRIMARY KEY  (`id`),
@@ -454,10 +440,10 @@ CREATE TABLE IF NOT EXISTS `sale_order` (
 	`sale_order_status_id` int NOT NULL,
 	`sale_date` int(11) unsigned DEFAULT NULL,
 	`discount` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int NOT NULL,
 	`entry_by` int DEFAULT 1,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	`remarks` varchar(500),
 	PRIMARY KEY  (`id`),
@@ -484,9 +470,9 @@ CREATE TABLE IF NOT EXISTS `product_sale_order` (
 	`product_size` varchar(200) DEFAULT '',
 	`unit_price` double default 0,
 	`discount` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int NOT NULL,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_product_sale_order_sale_order1_idx` (`sale_order_no`),
@@ -512,9 +498,9 @@ CREATE TABLE IF NOT EXISTS `product_purchase_order` (
 	`shop_id` int NOT NULL,
 	`unit_price` double default 0,
 	`discount` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `fk_product_purchase_order_purchase_order1_idx` (`purchase_order_no`),
@@ -551,9 +537,9 @@ INSERT INTO `stock_transaction_category` (`id`, `description`) VALUES
 	`product_id` int NOT NULL,
 	`stock_in` double default 0,
 	`stock_out` double default 0,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
     `created_by` int,
-    `modified_on` int(11) unsigned DEFAULT NULL,
+    `modified_on` int(11) unsigned DEFAULT 0,
     `modified_by` int default NULL,
 	`transaction_category_id` int NOT NULL,
 	PRIMARY KEY  (`id`),
@@ -595,9 +581,9 @@ CREATE TABLE IF NOT EXISTS `expense_info` (
 	`description` varchar(200) NOT NULL,
 	`expense_amount` double DEFAULT 0,
 	`expense_date` int(11) unsigned DEFAULT NULL,
-	`created_on` int(11) unsigned DEFAULT NULL,
+	`created_on` int(11) unsigned DEFAULT 0,
 	`created_by` int,
-	`modified_on` int(11) unsigned DEFAULT NULL,
+	`modified_on` int(11) unsigned DEFAULT 0,
 	`modified_by` int default NULL,
 	PRIMARY KEY (`id`),
 	KEY `fk_expense_info_shop_info1_idx` (`shop_id`)
@@ -619,8 +605,8 @@ CREATE TABLE IF NOT EXISTS `operators` (
   `operator_prefix` varchar(50) NOT NULL,	
   `operator_name` varchar(200) NOT NULL,
   `description` varchar(500) NOT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
-  `modified_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`operator_prefix`, `operator_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;  
 
@@ -641,7 +627,7 @@ CREATE TABLE IF NOT EXISTS `supplier_payment_info` (
   `payment_category_id` int NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `reference_id` varchar(200) DEFAULT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_supplier_payment_info_shop_info1_idx` (`shop_id`),
   KEY `fk_supplier_payment_info_suppliers1_idx` (`supplier_id`),
@@ -659,7 +645,7 @@ CREATE TABLE IF NOT EXISTS `supplier_returned_payment_info` (
   `purchase_order_no` varchar(200),
   `amount` double default 0,
   `description` varchar(200) DEFAULT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
   `created_by` int,
   PRIMARY KEY (`id`),
   KEY `fk_supplier_returned_payment_info_shop_info1_idx` (`shop_id`),
@@ -675,7 +661,7 @@ CREATE TABLE IF NOT EXISTS `supplier_transaction_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `shop_id` int NOT NULL,
   `supplier_id` int NOT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
   `lot_no` varchar(200) DEFAULT '',
   `product_category1` varchar(200) DEFAULT '',
   `product_size` varchar(200) DEFAULT '',
@@ -721,7 +707,7 @@ CREATE TABLE IF NOT EXISTS `customer_payment_info` (
   `payment_category_id` int NOT NULL,
   `description` varchar(200) DEFAULT NULL,
   `reference_id` varchar(200) DEFAULT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_customer_payment_info_shop_info1_idx` (`shop_id`),
   KEY `fk_customer_payment_info_customers1_idx` (`customer_id`),
@@ -741,7 +727,7 @@ ALTER TABLE `customer_payment_info`
   `customer_id` int NOT NULL,
   `amount` double default 0,
   `description` varchar(200) DEFAULT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
   `created_by` int,
   PRIMARY KEY (`id`),
   KEY `fk_customer_returned_payment_info_shop_info1_idx` (`shop_id`),
@@ -759,7 +745,7 @@ CREATE TABLE IF NOT EXISTS `customer_transaction_info` (
   `shop_id` int NOT NULL,
   `sale_order_no` varchar(200),
   `customer_id` int NOT NULL,
-  `created_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
   `lot_no` varchar(200) DEFAULT '',
   `product_category1` varchar(200) DEFAULT '',
   `product_size` varchar(200) DEFAULT '',
@@ -801,8 +787,8 @@ CREATE TABLE IF NOT EXISTS `message_category` (
   `description` varchar(200) NOT NULL DEFAULT '',
   `shop_id` int(11) NOT NULL,
   `type_id` int(11) DEFAULT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ALTER TABLE `message_category`
@@ -816,8 +802,8 @@ CREATE TABLE IF NOT EXISTS `message_info` (
   `message_description` varchar(200) NOT NULL DEFAULT '',
   `message_category_id` int(11) DEFAULT NULL,
   `shop_id` int(11) NOT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 ALTER TABLE `message_info`
@@ -833,8 +819,8 @@ CREATE TABLE IF NOT EXISTS `supplier_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` varchar(200) NOT NULL DEFAULT '',
   `supplier_id` int(11) NOT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_supplier_message_suppliers1_idx` (`supplier_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -846,8 +832,8 @@ CREATE TABLE IF NOT EXISTS `custom_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shop_id` int(11) NOT NULL,
   `message` varchar(5000) NOT NULL DEFAULT '',
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `custom_message`
@@ -858,8 +844,8 @@ CREATE TABLE IF NOT EXISTS `phone_directory`(
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
   `phone_number` varchar(100),
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -867,8 +853,8 @@ CREATE TABLE IF NOT EXISTS `phone_upload_list`(
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `number_list` text,
   `global_msg` varchar(1000) DEFAULT '',
-  `created_on` int(11) unsigned NOT NULL,
-  `modified_on` int(11) unsigned NOT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -880,8 +866,8 @@ CREATE TABLE IF NOT EXISTS `queue_table` (
   `is_processing` boolean DEFAULT FALSE,
   `success_list` text,
   `failed_list` text,
-  `created_on` int(11) unsigned DEFAULT NULL,
-  `modified_on` int(11) unsigned DEFAULT NULL,
+  `created_on` int(11) unsigned DEFAULT 0,
+  `modified_on` int(11) unsigned DEFAULT 0,
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `queue_table`
