@@ -26,7 +26,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4"></div>
-        <div class ="col-md-4 col-md-offset-4 boxshad" style="background-image:url(<?php echo base_url(); ?>/assets/images/loginBG.jpg);background-repeat:no-repeat;background-size: 100% 100%;">
+        <div class ="col-md-4 boxshad" style="background-image:url(<?php echo base_url(); ?>/assets/images/loginBG.jpg);background-repeat:no-repeat;background-size: 100% 100%;">
             <div class =" row">
                 <div class ="col-md-12">
                     <h1><?php echo lang('login_heading'); ?></h1>
@@ -76,11 +76,11 @@
             </div>    
 
             <?php echo form_close(); ?>
-            <div class ="row">                
+<!--            <div class ="row">                
                 <div class ="col-md-offset-4 col-md-6">
-                    <a href="forgot_password"><?php echo lang('login_forgot_password'); ?></a>
+                    <a href="forgot_password"><?php //echo lang('login_forgot_password'); ?></a>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>

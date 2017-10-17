@@ -95,41 +95,6 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
-        SMS<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("./sms/sms_configuration_shop");?>">Configure SMS</a></li>
-        <li><a href="<?php echo base_url("./sms/sms_status");?>">SMS Status</a></li>
-        <li><a href="<?php echo base_url("./operator/create_operator");?>">Create Operator</a></li>
-        <li><a href="<?php echo base_url("./operator/show_all_operators");?>">Show All Operators</a></li>
-        <li><a href="<?php echo base_url("./sms/upload_file");?>">Process File</a></li>
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("./sms/all_message_category");?>">Show All Message Category</a></li>
-        <li><a href="<?php echo base_url("./sms/create_message_category");?>">Create new configure Message</a></li>
-        <li class="divider"></li>
-        <li><a href="<?php echo base_url("./sms/all_message");?>">All Message</a></li>
-        <li><a href="<?php echo base_url("./sms/create_message");?>">Create New Message</a></li>
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
-        Notebook<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url("./message/update_custom_message");?>">Create/Update Message</a></li>
-        <li><a href="<?php echo base_url("./message/view_custom_messages");?>">View Messages</a></li>
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
-        Queue<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?php echo base_url()?>queue">Queue</a></li>
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success btn_success_admin_style dropdown-toggle" data-toggle="dropdown">
         Help<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">

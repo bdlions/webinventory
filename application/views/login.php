@@ -43,7 +43,7 @@
         <div class="row">
             <div class="col-md-offset-1 col-md-5">
                 <div class="col-xs-12 col-sm-12" style="padding-top: 12px;">
-                    <img src="<?php echo base_url(); ?>resources/images/webinventory.png">
+                    <!--<img src="<?php //echo base_url(); ?>resources/images/webinventory.png">-->
                 </div>
             </div>
             <div class="col-md-offset-1 col-md-4">
@@ -142,15 +142,15 @@
                         <?php echo form_input($password_confirm + array('class' => 'form-control', 'placeholder' => 'Confirm Password')); ?>
                     </div> 
                 </div>
-                <div class="row form-group">
+<!--                <div class="row form-group">
                     <div class ="col-md-11 col-xs-12 col-sm-12">
                         <?php
-                        $publickey = "6LcIFQYTAAAAAEz35GE_UVbncmFeDqoP-34V38EP";
-                        echo recaptcha_get_html($publickey);
+                        //$publickey = "6LcIFQYTAAAAAEz35GE_UVbncmFeDqoP-34V38EP";
+                        //echo recaptcha_get_html($publickey);
                         ?>
                     </div> 
                     <div class ="col-md-1"></div>
-                </div>
+                </div>-->
                 <div class="row form-group">
                     <div class ="col-md-4 col-xs-5 col-sm-5">
                         <?php echo form_input($submit_create_manager + array('class' => 'form-control btn-success')); ?>

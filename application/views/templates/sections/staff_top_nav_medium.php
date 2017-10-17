@@ -74,15 +74,6 @@
 </div>
 <div class="btn-group">
     <button type="button" class="btn btn-success btn_success_staff_style dropdown-toggle" data-toggle="dropdown">
-        Notebook<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu"> 
-       <li><a href="<?php echo base_url("./message/update_custom_message");?>">Create/Update Message</a></li>
-       <li><a href="<?php echo base_url("./message/view_custom_messages");?>">View Message</a></li>
-    </ul>
-</div>
-<div class="btn-group">
-    <button type="button" class="btn btn-success btn_success_staff_style dropdown-toggle" data-toggle="dropdown">
         Help<span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">

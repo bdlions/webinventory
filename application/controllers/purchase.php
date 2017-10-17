@@ -309,8 +309,8 @@ class Purchase extends CI_Controller {
             $response['status'] = '1';
             if($forward_showroom)
             {
-                $this->load->library('ecommerce_library');
-                $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+                //$this->load->library('ecommerce_library');
+                //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
             }
         } 
         else
@@ -427,8 +427,8 @@ class Purchase extends CI_Controller {
             $response['status'] = '1';
             if($forward_showroom)
             {
-                $this->load->library('ecommerce_library');
-                $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+                //$this->load->library('ecommerce_library');
+                //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
             }
         } 
         else
@@ -614,8 +614,8 @@ class Purchase extends CI_Controller {
         if( $purchase_id !== FALSE )
         {
             $response['status'] = '1';
-            $this->load->library('ecommerce_library');
-            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            //$this->load->library('ecommerce_library');
+            //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {
@@ -1085,8 +1085,8 @@ class Purchase extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
-            $this->load->library('ecommerce_library');
-            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            //$this->load->library('ecommerce_library');
+            //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {

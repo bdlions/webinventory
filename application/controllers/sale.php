@@ -418,8 +418,8 @@ class Sale extends CI_Controller {
         $sale_id = $this->sale_library->add_sale_order($additional_data, $sale_product_list, $stock_out_list, $customer_payment_data_array, $customer_transaction_info_array);
         if ($sale_id !== FALSE) {
             $response['status'] = '1';     
-            $this->load->library('ecommerce_library');
-            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            //$this->load->library('ecommerce_library');
+            //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
             $print_table_rows = array();
             $serial_no = 1;
             foreach ($selected_product_list as $product_info) {
@@ -737,8 +737,8 @@ class Sale extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
-            $this->load->library('ecommerce_library');
-            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            //$this->load->library('ecommerce_library');
+            //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {
@@ -907,8 +907,8 @@ class Sale extends CI_Controller {
         if( $status === TRUE )
         {
             $response['status'] = '1';
-            $this->load->library('ecommerce_library');
-            $this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
+            //$this->load->library('ecommerce_library');
+            //$this->ecommerce_library->update_ecommerce_stock($ec_product_info_list);
         } 
         else
         {

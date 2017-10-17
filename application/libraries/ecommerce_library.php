@@ -54,34 +54,6 @@ class Ecommerce_library {
     
     public function update_ecommerce_stock($ec_product_info_list = array())
     {
-        $product_list_array = $this->product_library->get_all_products()->result_array();
-        $stock_list_array = $this->stock_library->search_stocks()->result_array();
-        $product_id_name_map = array();
-        $product_stock_map = array();
-        foreach($product_list_array as $temp_product_info)
-        {
-            $product_id_name_map[$temp_product_info['product_id']] = $temp_product_info['name'];
-        }
-        //print_r($product_id_name_map);
-        foreach($stock_list_array as $temp_stock)
-        {
-            $product_stock_map[$temp_stock['product_name'].'-'.$temp_stock['purchase_order_no'].'-'.$temp_stock['product_category1'].'-'.$temp_stock['product_size']] = $temp_stock['current_stock'];
-        }
-        //print_r($product_stock_map);
-        foreach($ec_product_info_list as $ec_product_info)
-        {
-            $product_identity = $product_id_name_map[$ec_product_info['product_id']].'-'.$ec_product_info['purchase_order_no'].'-'.$ec_product_info['product_category1'].'-'.$ec_product_info['product_size'];
-            $stock = 0;
-            if(array_key_exists($product_identity, $product_stock_map))
-            {
-                $stock = $product_stock_map[$product_identity];
-            }
-            //print_r($product_identity.":".$stock);
-            $this->curl->create("http://localhost/ecommercestocksync/stocksync");
-            $this->curl->post(array("product_identifier" => $product_identity, "stock" => $stock));
-            $this->curl->execute();
-            //$result_event = json_decode($this->curl->execute());
-            //print_r('webservice response:'.$this->curl->execute());
-        }
+        
     }
 }

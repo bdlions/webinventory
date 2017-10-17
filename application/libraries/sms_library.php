@@ -67,58 +67,6 @@ class Sms_library {
     
     public function send_sms($phoneNumber, $message, $check_configuration = true)
     {
-        if( $check_configuration == true)
-        {
-            $sms_configuration_shop_array = $this->sms_configuration->get_sms_configuration_shop()->result_array();
-            if(!empty($sms_configuration_shop_array))
-            {
-                $status = $sms_configuration_shop_array[0]['status'];
-                if($status == 0)
-                {
-                    //print_r('configuraion disabled');
-                    return 0;                
-                }
-            }
-            else
-            {
-                //print_r('configuraion not configured');
-                return 0;            
-            }
-        }
         
-        //print_r('sending');
-        //return;
-        /*if($phoneNumber == "" || $message == ""){
-                return 0;
-        }
-        else{
-            $execution_time = 5 * 60;//3 minutes
-            @set_time_limit($execution_time);
-            $url = $this->config->item('sms_sender_server_url', 'ion_auth').'?mobileNo='.urlencode($phoneNumber).'&message='.urlencode($message);
-            $result = @file_get_contents($url);
-            if($result == 1){
-                    return 1;
-            }
-            else{
-                    return 0;
-            }
-        }*/
-        //$client = new nusoap_client("http://cmp.robi.com.bd/WS/CMPWebService.asmx?wsdl", true);
-        $client = new nusoap_client("https://bmpws.robi.com.bd/ApacheGearWS/services/CMPWebServiceSoap?wsdl", true);
-        //print_r($client);
-        $params = array(
-        'Username' => 'apurbo',
-        //'Password' => '654321',
-        //'Password' => 'Robi@1234',
-        'Password' => 'Apur@1234',
-        'From' => '8801841104245',
-        'To' => $phoneNumber,
-        'Message' => $message
-        );
-        $result = $client->call('SendTextMessage', $params);
-        //echo "Result: ";
-        //echo "<pre>";
-        //print_r($result);
-        //echo "</pre>";
     }
 }
