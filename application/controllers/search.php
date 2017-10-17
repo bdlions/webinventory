@@ -424,7 +424,8 @@ class Search extends CI_Controller {
         $result_array['total_expense'] = $total_expense;
         echo json_encode($result_array);
     }
-    public function search_sales()
+    
+    /*public function search_sales()
     {
         $employee_list = array();
         $employee_list_array = $this->ion_auth->get_all_staffs()->result_array();
@@ -483,6 +484,159 @@ class Search extends CI_Controller {
             'type' => 'reset',
             'value' => 'Search',
         );
+        $this->template->load(null, 'search/sale/search_sales', $this->data);
+    }*/
+    
+    public function search_sales()
+    {
+        $user_id = 0;
+        $product_id = 0;
+        $entry_user_id = 0;
+        $start_date = $this->utils->get_current_date();
+        $end_date = $this->utils->get_current_date();
+                
+        $search_params = "";
+        $page_id = 1;
+        $sale_counter = 0;
+        $page_counter = 0;
+        $sale_list = array();
+        $total_sale_price = 0;
+        $total_quantity= 0;
+        $total_profit= 0;
+        $total_expense = 0;
+        if($this->input->get('page_id'))
+        {
+            $page_id = $this->input->get('page_id'); 
+        }
+        if($this->input->get('end_date') && $this->input->get('end_date'))
+        {
+            $user_id = $this->input->get('user_id');  
+            $product_id = $this->input->get('product_id');
+            $start_date = $this->input->get('start_date');
+            $end_date = $this->input->get('end_date');
+            $entry_user_id = $this->input->get('entry_user_id');
+            $search_params .= "&user_id=".$user_id;
+            $search_params .= "&product_id=".$product_id;
+            $search_params .= "&start_date=".$start_date;
+            $search_params .= "&end_date=".$end_date;
+            $search_params .= "&entry_user_id=".$entry_user_id;
+            
+            $start_time = $this->utils->get_human_to_unix($start_date);
+            $end_time = ($this->utils->get_human_to_unix($end_date) + 86400);
+            
+            $sale_list_counter_array = $this->sale_library->get_user_sales($start_time, $end_time, $user_id, $product_id, 0, $entry_user_id, 0, 0)->result_array();
+            if(!empty($sale_list_counter_array))
+            {
+                $sale_counter = count($sale_list_counter_array);
+                foreach($sale_list_counter_array as $sale_info)
+                {
+                    $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                    $total_quantity = $total_quantity + $sale_info['total_sale'];
+                    $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                }
+            }
+            $page_counter = ($sale_counter/SEARCH_SALE_DEFAULT_LIMIT);
+            if(($sale_counter%SEARCH_SALE_DEFAULT_LIMIT) > 0)
+            {
+                $page_counter++;
+            }
+            
+            $sale_list_array = $this->sale_library->get_user_sales($start_time, $end_time, $user_id, $product_id, 0, $entry_user_id, (($page_id-1)*SEARCH_SALE_DEFAULT_LIMIT), SEARCH_SALE_DEFAULT_LIMIT)->result_array();
+            if( !empty($sale_list_array) )
+            {
+                foreach($sale_list_array as $sale_info)
+                {
+                    $sale_info['created_on'] = $this->utils->process_time($sale_info['created_on']);                
+                    $sale_list[] = $sale_info;
+                }
+            }             
+            if($this->user_group['id'] == USER_GROUP_ADMIN || $this->user_group['id'] == USER_GROUP_MANAGER)
+            {
+                //do nothing
+            }
+            else
+            {
+                $total_profit = '';
+            }
+            $this->load->library('org/common/expenses');
+            $expense_list_array = $this->expenses->get_all_expenses(0, 0, $start_time, $end_time, 0, $entry_user_id);
+            foreach($expense_list_array as $expense_info)
+            {
+                $total_expense = $total_expense + $expense_info['expense_amount'];
+            }
+        }
+        
+        $employee_list = array();
+        $employee_list_array = $this->ion_auth->get_all_staffs()->result_array();
+        if(!empty($employee_list_array))
+        {
+            foreach($employee_list_array as $key => $employee_info)
+            {
+                $employee_list[$employee_info['user_id']] = $employee_info['first_name'].' '.$employee_info['last_name'];
+            }
+        }
+        $this->data['employee_list'] = $employee_list;
+        $entryby_list = array();
+        $entryby_list_array = $this->ion_auth->get_all_users(0, array(USER_GROUP_ADMIN, USER_GROUP_MANAGER, USER_GROUP_STAFF_ID))->result_array();
+        if(!empty($entryby_list_array))
+        {
+            foreach($entryby_list_array as $key => $entryby_info)
+            {
+                $entryby_list[$entryby_info['user_id']] = $entryby_info['first_name'].' '.$entryby_info['last_name'];
+            }
+        }
+        $this->data['entryby_list'] = $entryby_list;
+        $this->data['user_info'] = array();
+        $user_info_array = $this->ion_auth->user()->result_array();
+        if(!empty($user_info_array))
+        {
+            $this->data['user_info'] = $user_info_array[0];
+        }
+        
+        $product_list = array();
+        $product_list_array = $this->product_library->get_all_products()->result_array();
+        if( !empty($product_list_array) )
+        {
+            foreach($product_list_array as $key => $product_info)
+            {
+                $product_list[$product_info['id']] = $product_info['name'];
+            }
+        }
+        $this->data['product_list'] = $product_list;
+        //$date = $this->utils->get_current_date();
+        $this->data['start_date'] = array(
+            'name' => 'start_date',
+            'id' => 'start_date',
+            'type' => 'text',
+            'value' => $start_date
+        );
+        $this->data['end_date'] = array(
+            'name' => 'end_date',
+            'id' => 'end_date',
+            'type' => 'text',
+            'value' => $end_date
+        );
+        $this->data['button_search_sale'] = array(
+            'name' => 'button_search_sale',
+            'id' => 'button_search_sale',
+            'type' => 'submit',
+            'value' => 'Search',
+        );
+        
+        $this->data['user_id'] = $user_id;  
+        $this->data['product_id'] = $product_id;  
+        $this->data['entry_user_id'] = $entry_user_id;  
+        
+        $this->data['sale_list'] = $sale_list;  
+        $this->data['total_sale_price'] = $total_sale_price;  
+        $this->data['total_quantity'] = $total_quantity; 
+        $this->data['total_profit'] = $total_profit;
+        $this->data['total_expense'] = $total_expense;
+        
+        $this->data['search_params'] = $search_params;
+        $this->data['page_index'] = $page_id;
+        $this->data['total_pages'] = $page_counter;   
+        
         $this->template->load(null, 'search/sale/search_sales', $this->data);
     }
     

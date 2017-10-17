@@ -107,6 +107,7 @@
 </script>
 <h3>Search Sale</h3>
 <div class ="form-horizontal form-background top-bottom-padding">
+    <?php echo form_open("search/search_sales", array('method'=>'get', 'id' => 'form_search_sales', 'class' => 'form-horizontal')); ?>
     <div class="table-responsive">
         <table class="table table-bordered">
             <tbody>
@@ -116,7 +117,7 @@
                             Select User
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_dropdown('employee_list', $employee_list+array('0' => 'All'), '0','class="form-control" id="employee_list"'); ?>
+                            <?php echo form_dropdown('user_id', $employee_list+array('0' => 'All'), $user_id,'class="form-control" name="user_id"'); ?>
                         </div> 
                     </td> 
                     <td>
@@ -124,7 +125,7 @@
                             Total Sale Price : 
                         </label>
                         <label id="label_total_sale_price" class="col-md-6 control-label requiredField">
-                            <?php //echo $total_sale_price;?> 
+                            <?php echo $total_sale_price;?> 
                         </label>
                     </td>
                     <td>                        
@@ -142,7 +143,7 @@
                             Select Product
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_dropdown('product_list', $product_list+array('0' => 'All'), '0','class="form-control" id="product_list"'); ?>
+                            <?php echo form_dropdown('product_id', $product_list+array('0' => 'All'), $product_id,'class="form-control" name="product_id"'); ?>
                         </div>                        
                     </td>
                     <td>
@@ -150,7 +151,7 @@
                             Total Quantity : 
                         </label>
                         <label id="label_total_quantity" class="col-md-6 control-label requiredField">
-                            <?php //echo $total_expense;?>
+                            <?php echo $total_quantity;?>
                         </label>
                     </td>
                     <td>
@@ -168,7 +169,7 @@
                             Select Entry By
                         </label>
                         <div class ="col-md-6">
-                            <?php echo form_dropdown('entry_list', $entryby_list+array('0' => 'All'), '0','class="form-control" id="entry_list"'); ?>
+                            <?php echo form_dropdown('entry_user_id', $entryby_list+array('0' => 'All'), $entry_user_id,'class="form-control" name="entry_user_id"'); ?>
                         </div>
                     </td>
                     <td>
@@ -193,7 +194,7 @@
                             <?php 
                                 if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
                                 {                                    
-                                    //echo $total_profit;
+                                    echo $total_profit;
                                 }
                             ?>
                         </label>                      
@@ -207,13 +208,14 @@
                             Total Expense :
                         </label>
                         <label id="label_total_expense" class="col-md-6 control-label requiredField">
-                            
+                            <?php echo $total_expense;?>
                         </label>
                     </td>
                 </tr>
             </tbody>  
         </table>
-    </div>     
+    </div>  
+    <?php echo form_close(); ?>
 </div>
 <h3>Search Result</h3>
 <div class="form-background top-bottom-padding">
@@ -272,8 +274,78 @@
                 </tr>
             </thead>
             <tbody id="tbody_customer_sale_list">                
-            
+                <?php foreach ($sale_list as $sale_info) { ?>
+                    <tr>
+                        <td><?php echo $sale_info['salesman_first_name'].' '.$sale_info['salesman_last_name']; ?></td>
+                        <td><?php echo $sale_info['entry_first_name'].' '.$sale_info['entry_first_name']; ?></td>
+                        <td><?php echo $sale_info['created_on']; ?></td>
+                        <td><?php echo $sale_info['card_no']; ?></td>
+                        <td><?php echo $sale_info['product_name']; ?></td>
+                        <td><?php echo $sale_info['purchase_order_no']; ?></td>
+                        <td><?php echo $sale_info['product_category1']; ?></td>
+                        <td><?php echo $sale_info['product_size']; ?></td>
+                        <td><?php echo $sale_info['total_sale']; ?></td>
+                        <td><?php echo $sale_info['category_unit']; ?></td>
+                        <?php
+                        if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                            echo '<td>'.$sale_info['purchase_unit_price'].'</td>';
+                        }
+                        ?> 
+                        <td><?php echo $sale_info['sale_unit_price']; ?></td>
+                        <?php
+                        if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                            echo '<td>'.$sale_info['total_sale']*$sale_info['purchase_unit_price'].'</td>';
+                        }
+                        ?>
+                        <td><?php echo $sale_info['total_sale']*$sale_info['sale_unit_price']; ?></td>
+                        <?php
+                        if ($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER) {
+                            echo '<td>'.($sale_info['sale_unit_price']-$sale_info['purchase_unit_price'])*$sale_info['total_sale'].'</td>';
+                        }
+                        ?> 
+                        <?php 
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                            {                                    
+                                echo '<td>';
+                                echo '<a href="'.base_url().'transaction/show_customer_transactions/'.$sale_info['customer_id'].'">Show</a>';
+                                echo '</td>';
+                            }        
+                        ?>
+                        <?php 
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                            {                                    
+                                echo '<td>';
+                                echo '<a href="'.base_url().'sale/return_sale_order/'.$sale_info['sale_order_no'].'">Return</a>'; 
+                                echo '</td>';
+                            }        
+                        ?>
+                        <?php 
+                            if($user_group['id'] == USER_GROUP_ADMIN || $user_group['id'] == USER_GROUP_MANAGER)
+                            {                                    
+                                echo '<td>';
+                                echo '<a href="'.base_url().'sale/delete_sale/'.$sale_info['sale_order_no'].'">Delete</a>'; 
+                                echo '</td>';
+                            }        
+                        ?>
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
+    </div>
+    <div class="row col-md-12">
+        <?php for($counter = 1; $counter <= $total_pages; $counter++)
+        {
+            if($counter == $page_index)
+            {
+                echo "<strong>".$page_index."</strong>&nbsp;";
+            }
+            else
+            {
+                echo "<a href='".base_url()."search/search_sales?page_id=" . $counter . $search_params . "'>" . $counter . "</a>&nbsp;";
+            }
+        ?>
+        <?php 
+        }
+        ?>
     </div>
 </div>
