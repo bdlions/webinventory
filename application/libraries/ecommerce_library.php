@@ -54,7 +54,7 @@ class Ecommerce_library {
     
     public function update_ecommerce_stock($ec_product_info_list = array())
     {
-        $product_list_array = $this->product_library->get_all_products()->result_array();
+        /*$product_list_array = $this->product_library->get_all_products()->result_array();
         $stock_list_array = $this->stock_library->search_stocks()->result_array();
         $product_id_name_map = array();
         $product_stock_map = array();
@@ -82,6 +82,6 @@ class Ecommerce_library {
             $this->curl->execute();
             //$result_event = json_decode($this->curl->execute());
             //print_r('webservice response:'.$this->curl->execute());
-        }
+        }*/
     }
 }
