@@ -776,6 +776,12 @@ class Search extends CI_Controller {
             if(!empty($sale_list_counter_array))
             {
                 $sale_counter = count($sale_list_counter_array);
+                foreach($sale_list_counter_array as $sale_info)
+                {
+                    $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
+                    $total_quantity = $total_quantity + $sale_info['total_sale'];
+                    $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
+                }
             }
             $page_counter = ($sale_counter/SEARCH_CUSTOMER_SALE_CARD_NO_DEFAULT_LIMIT);
             if(($sale_counter%SEARCH_CUSTOMER_SALE_CARD_NO_DEFAULT_LIMIT) > 0)
@@ -788,9 +794,6 @@ class Search extends CI_Controller {
             {
                 foreach($sale_list_array as $sale_info)
                 {
-                    $total_sale_price = $total_sale_price + ($sale_info['sale_unit_price']*$sale_info['total_sale']);
-                    $total_quantity = $total_quantity + $sale_info['total_sale'];
-                    $total_profit = $total_profit + ($sale_info['sale_unit_price'] - $sale_info['purchase_unit_price'])*$sale_info['total_sale'];
                     $sale_list[] = $sale_info;
                 }
             }
