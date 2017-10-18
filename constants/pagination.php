@@ -7,4 +7,6 @@
     
     define("PAGINATION_SEARCH_CUSTOMER_DUE_COLLECT_LIMIT",                    15);
     define("PAGINATION_SEARCH_SUPPLIER_DUE_COLLECT_LIMIT",                    15);
+    
+    define("PAGINATION_CUSTOMER_TRANSACTION_LIST_LIMIT",                      50);
 ?>
