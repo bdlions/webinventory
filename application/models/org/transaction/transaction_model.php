@@ -38,11 +38,16 @@ class Transaction_model extends Ion_auth_model
      * @param $shop_id, shop id
      * @Author Nazmul on 15th January 2015
      */
-    public function get_customer_transactions($customer_id, $shop_id = 0)
+    public function get_customer_transactions($customer_id, $shop_id = 0, $limit = 0, $offset = 0)
     {
         if($shop_id == 0)
         {
             $shop_id = $this->session->userdata('shop_id');
+        }
+        if($limit != 0)
+        {
+            $this->db->offset($offset);
+            $this->db->limit($limit);
         }
         $this->db->where('shop_id', $shop_id);
         $this->db->where('customer_id', $customer_id);

@@ -100,10 +100,10 @@ class Transaction_library extends Ion_auth{
      * @param $customer_id, customer id
      * @Author Nazmul on 15th January 2015
      */
-    public function get_customer_transactions($customer_id)
+    public function get_customer_transactions($customer_id, $shop_id = 0, $limit = 0, $offset = 0)
     {
         $customer_transaction_list = array();
-        $customer_transactions_array = $this->transaction_model->get_customer_transactions($customer_id)->result_array();
+        $customer_transactions_array = $this->transaction_model->get_customer_transactions($customer_id, $shop_id, $limit, $offset)->result_array();
         //handle time synchronization
         if(!empty($customer_transactions_array))
         {

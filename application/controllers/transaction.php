@@ -64,7 +64,7 @@ class Transaction extends CI_Controller {
      * @param $customer_id, customer id
      * @Author Nazmul on 15th January 2015
      */
-    public function show_customer_transactions($customer_id)
+    public function show_customer_transactions($customer_id, $limit = PAGINATION_CUSTOMER_TRANSACTION_LIST_LIMIT, $offset = 0)
     {
         $shop_info = array();
         $shop_info_array = $this->shop_library->get_shop()->result_array();
@@ -73,7 +73,8 @@ class Transaction extends CI_Controller {
             $shop_info = $shop_info_array[0];
         }
         $this->data['shop_info'] = $shop_info;
-        $this->data['customer_transaction_list'] = $this->transaction_library->get_customer_transactions($customer_id);
+        $total_rows = count($this->transaction_library->get_customer_transactions($customer_id));
+        $this->data['customer_transaction_list'] = $this->transaction_library->get_customer_transactions($customer_id, 0, $limit, $offset);
         $customer_info = array();
         $customer_info_array = $this->ion_auth->get_customer_info(0, $customer_id)->result_array();
         if(!empty($customer_info_array))
@@ -98,6 +99,14 @@ class Transaction extends CI_Controller {
         $this->data['total_sale_price'] = $total_sale_price;
         $this->data['total_quantity'] = $total_quantity;
         $this->data['total_profit'] = $total_profit;
+        
+        $this->load->library('pagination');
+        $config['base_url'] = base_url() . 'transaction/show_customer_transactions/' . $customer_id . '/' . $limit;
+        $config['total_rows'] = $total_rows;
+        $config['uri_segment'] = 5;
+        $config['per_page'] = PAGINATION_CUSTOMER_TRANSACTION_LIST_LIMIT;
+        $this->pagination->initialize($config);
+        $this->data['pagination'] = $this->pagination->create_links();
         
         $this->template->load(null, 'customer/show_customer_transactions',$this->data);  
     }    
