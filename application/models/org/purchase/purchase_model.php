@@ -119,7 +119,7 @@ class Purchase_model extends Ion_auth_model {
         return !(empty($qr_result));
     }
 
-    public function raise_warehouse_purchase_order($additional_data, $new_warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_transaction_info_array, $forward_showroom = 0) {
+    public function raise_warehouse_purchase_order($additional_data, $new_warehouse_purchased_product_list, $add_warehouse_stock_list, $forward_warehouse_stock_list, $supplier_transaction_info_array, $forward_showroom = 0) {
         $this->trigger_events('pre_raise_purchase_order');
         $this->db->trans_begin();
         //filter out any data passed that doesnt have a matching column in the users table
@@ -149,6 +149,9 @@ class Purchase_model extends Ion_auth_model {
                     $stock_list[] = $stock_info;
                 }
                 $this->db->insert_batch($this->tables['stock_info'], $stock_list);
+                if (!empty($forward_warehouse_stock_list)) {
+                    $this->db->insert_batch($this->tables['warehouse_stock_info'], $forward_warehouse_stock_list);
+                }
             }
         }
         if (!empty($add_warehouse_stock_list)) {

@@ -351,6 +351,7 @@ class Purchase extends CI_Controller {
         
         $new_warehouse_purchased_product_list = array();
         $add_warehouse_stock_list = array();    
+        $forward_warehouse_stock_list = array();
         $ec_product_info_list = array();
         foreach($selected_product_list as $prod_info)
         {
@@ -393,6 +394,18 @@ class Purchase extends CI_Controller {
                 'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_IN
             );
             $add_warehouse_stock_list[] = $add_warehouse_stock_info;
+            $forward_warehouse_stock_info = array(
+                'product_id' => $prod_info['product_id'],
+                'purchase_order_no' => $prod_info['purchase_order_no'],
+                'product_category1' => $product_category1,
+                'product_size' => $product_size,
+                'shop_id' => $shop_id,
+                'stock_in' => 0,
+                'stock_out' => $prod_info['quantity'],
+                'created_on' => $current_time,
+                'transaction_category_id' => WAREHOUSE_STOCK_PURCHASE_PARTIAL_OUT_TO_SHOWROOM
+            );
+            $forward_warehouse_stock_list[] = $forward_warehouse_stock_info;
             $ec_product_info_list[] = array(
                 'product_id' => $prod_info['product_id'],
                 'purchase_order_no' => $prod_info['purchase_order_no'],
@@ -421,7 +434,7 @@ class Purchase extends CI_Controller {
             'modified_on' => $current_time,
             'modified_by' => $user_id
         ); 
-        $status = $this->purchase_library->raise_warehouse_purchase_order($additional_data, $new_warehouse_purchased_product_list, $add_warehouse_stock_list, $supplier_transaction_info_array, $forward_showroom);
+        $status = $this->purchase_library->raise_warehouse_purchase_order($additional_data, $new_warehouse_purchased_product_list, $add_warehouse_stock_list, $forward_warehouse_stock_list, $supplier_transaction_info_array, $forward_showroom);
         if( $status === TRUE )
         {
             $response['status'] = '1';
