@@ -25,7 +25,7 @@ class Customer extends User {
         if(!empty($user_group))
         {
             $user_group = $user_group[0];
-            $this->user_group = $user_group;
+            //$this->user_group = $user_group;
             $this->data['user_group'] = $user_group;
         }
     }
